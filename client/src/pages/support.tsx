@@ -1,31 +1,12 @@
-import { Link } from "wouter";
-import { MessageSquare, ArrowLeft, ShieldAlert } from "lucide-react";
+import { MessageSquare, ShieldAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import allianceLogo from "@assets/Design_sans_titre_(2)_1765292527261.png";
+import Layout from "@/components/layout/Layout";
 
 export default function Support() {
   return (
-    <div className="min-h-screen flex flex-col font-sans text-foreground overflow-x-hidden bg-background">
-      {/* OGame-style Top Bar */}
-      <div className="h-10 bg-[#0F1219] border-b border-[#2A3241] flex items-center justify-between px-4 text-xs font-mono uppercase tracking-wider text-muted-foreground z-50 relative">
-        <div className="flex items-center gap-4">
-          <span>Support Center</span>
-        </div>
-        <div className="flex items-center gap-4">
-          <Link href="/" className="hover:text-white cursor-pointer transition-colors flex items-center gap-2">
-            <ArrowLeft className="w-3 h-3" /> Retour
-          </Link>
-        </div>
-      </div>
-
-      <div className="flex-1 flex items-center justify-center p-4 relative overflow-hidden">
-        {/* Background elements */}
-        <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-10 bg-[length:100%_2px,3px_100%] pointer-events-none" />
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-[#0B0E14] via-[#13171F] to-[#0B0E14] opacity-90" />
-        </div>
-
-        <div className="relative z-10 max-w-2xl w-full">
+    <Layout>
+      <div className="flex-1 flex items-center justify-center p-4 py-16 md:py-24">
+        <div className="max-w-2xl w-full">
           <div className="bg-[#13171F] border border-[#2A3241] p-1 rounded-lg shadow-2xl">
             <div className="bg-[#0B0E14] border border-[#2A3241]/50 p-8 rounded text-center">
               
@@ -60,17 +41,10 @@ export default function Support() {
                 </a>
               </Button>
 
-              <Button size="lg" variant="outline" className="w-full mt-4 border-[#2A3241] text-gray-300 hover:bg-[#1F2532] hover:text-white font-display font-bold uppercase tracking-widest h-12 rounded transition-all" asChild>
-                <Link href="/">
-                  <ArrowLeft className="mr-3 w-4 h-4" />
-                  Retour au site
-                </Link>
-              </Button>
-
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 }

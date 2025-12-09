@@ -8,11 +8,17 @@ import Home from "@/pages/home";
 import Support from "@/pages/support";
 import Legal from "@/pages/legal";
 import Admin from "@/pages/admin";
+import Tutorials from "@/pages/tutorials";
+import Alliance from "@/pages/alliance";
+import Projects from "@/pages/projects";
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+      <Route path="/tutoriels" component={Tutorials} />
+      <Route path="/alliance" component={Alliance} />
+      <Route path="/projets" component={Projects} />
       <Route path="/support" component={Support} />
       <Route path="/mentions-legales" component={Legal} />
       <Route path="/admin" component={Admin} />

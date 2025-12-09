@@ -1,26 +1,13 @@
-import { Link } from "wouter";
-import { ArrowLeft } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import allianceLogo from "@assets/Design_sans_titre_(2)_1765292527261.png";
+import Layout from "@/components/layout/Layout";
 
 export default function Legal() {
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <div className="fixed inset-0 space-bg opacity-30 pointer-events-none z-0"></div>
-      
-      <div className="container mx-auto px-4 py-12 relative z-10">
-        <Link href="/">
-          <Button variant="ghost" className="mb-8 text-gray-400 hover:text-white">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Retour à l'accueil
-          </Button>
-        </Link>
-
+    <Layout>
+      <div className="container mx-auto px-4 py-16 md:py-24">
         <div className="max-w-3xl mx-auto">
-          <div className="flex items-center gap-4 mb-8">
-            <img src={allianceLogo} alt="Logo" className="w-12 h-12 opacity-80" />
-            <h1 className="font-display text-3xl font-bold text-white">Mentions Légales</h1>
-          </div>
+          <h1 className="font-display text-3xl md:text-4xl font-bold text-white mb-8">
+            Mentions Légales
+          </h1>
 
           <div className="bg-[#1C2230] border border-[#2E384D] rounded-lg p-8 space-y-8">
             <section>
@@ -57,7 +44,7 @@ export default function Legal() {
             <section>
               <h2 className="font-display text-xl font-bold text-primary mb-4">4. Données personnelles</h2>
               <p className="text-gray-400 leading-relaxed">
-                Ce site ne collecte aucune donnée personnelle. Aucun cookie de suivi n'est utilisé.
+                Ce site collecte des données de visite anonymisées à des fins statistiques. Aucun cookie de suivi n'est utilisé.
                 <br /><br />
                 Les liens vers Discord et YouTube sont des liens externes. L'utilisation de ces plateformes est soumise à leurs propres politiques de confidentialité.
               </p>
@@ -89,6 +76,6 @@ export default function Legal() {
           </p>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 }
