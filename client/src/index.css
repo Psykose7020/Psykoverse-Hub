@@ -6,57 +6,61 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
+  --radius-xl: 8px;
   
-  /* Space Theme Colors - Dark Future / Sci-Fi */
-  --color-background: hsl(240 30% 8%); /* Deep Space Blue/Black */
-  --color-foreground: hsl(210 20% 90%); /* Off-white/Ice Blue */
+  /* OGame Inspired Palette - "Classic Space Strategy" */
+  /* Dark, industrial, metallic blues and greys with high-contrast highlights */
   
-  --color-card: hsl(240 25% 12%); /* Slightly lighter space bg */
-  --color-card-foreground: hsl(210 20% 90%);
+  --color-background: #0B0E14; /* Deep void black/blue */
+  --color-foreground: #BCC2CC; /* Off-white text, slightly metallic */
   
-  --color-popover: hsl(240 25% 12%);
-  --color-popover-foreground: hsl(210 20% 90%);
+  --color-card: #13171F; /* Panel background */
+  --color-card-foreground: #D1D5DB;
   
-  --color-primary: hsl(280 80% 60%); /* Neon Purple */
-  --color-primary-foreground: hsl(0 0% 100%);
+  --color-popover: #13171F;
+  --color-popover-foreground: #D1D5DB;
   
-  --color-secondary: hsl(180 100% 50%); /* Cyan/Neon Blue */
-  --color-secondary-foreground: hsl(240 30% 10%);
+  /* Primary: The "OGame Tech Blue" */
+  --color-primary: #00BFFF; 
+  --color-primary-foreground: #000000;
   
-  --color-muted: hsl(240 20% 20%);
-  --color-muted-foreground: hsl(215 20% 65%);
+  /* Secondary: The "Alert/Resource Orange" */
+  --color-secondary: #FF9600;
+  --color-secondary-foreground: #000000;
   
-  --color-accent: hsl(280 80% 60%);
-  --color-accent-foreground: hsl(0 0% 100%);
+  --color-muted: #1F2532;
+  --color-muted-foreground: #6B7280;
   
-  --color-destructive: hsl(0 80% 50%);
-  --color-destructive-foreground: hsl(0 0% 100%);
+  --color-accent: #1F2532;
+  --color-accent-foreground: #FFFFFF;
   
-  --color-border: hsl(240 20% 25%);
-  --color-input: hsl(240 20% 20%);
-  --color-ring: hsl(280 80% 60%); /* Purple Ring */
+  --color-destructive: #991B1B;
+  --color-destructive-foreground: #FFFFFF;
   
-  --color-chart-1: hsl(280 80% 60%);
-  --color-chart-2: hsl(180 100% 50%);
-  --color-chart-3: hsl(300 100% 50%);
-  --color-chart-4: hsl(200 100% 50%);
-  --color-chart-5: hsl(240 100% 60%);
+  --color-border: #2A3241; /* Distinct borders for UI panels */
+  --color-input: #1A202C;
+  --color-ring: #00BFFF;
   
-  --color-sidebar: hsl(240 30% 10%);
-  --color-sidebar-foreground: hsl(210 20% 90%);
-  --color-sidebar-primary: hsl(280 80% 60%);
-  --color-sidebar-primary-foreground: hsl(0 0% 100%);
-  --color-sidebar-accent: hsl(240 20% 20%);
-  --color-sidebar-accent-foreground: hsl(210 20% 90%);
-  --color-sidebar-border: hsl(240 20% 25%);
-  --color-sidebar-ring: hsl(280 80% 60%);
+  --color-chart-1: #00BFFF;
+  --color-chart-2: #FF9600;
+  --color-chart-3: #10B981;
+  --color-chart-4: #8B5CF6;
+  --color-chart-5: #EC4899;
+  
+  --color-sidebar: #0F1219;
+  --color-sidebar-foreground: #9CA3AF;
+  --color-sidebar-primary: #00BFFF;
+  --color-sidebar-primary-foreground: #000000;
+  --color-sidebar-accent: #1F2532;
+  --color-sidebar-accent-foreground: #FFFFFF;
+  --color-sidebar-border: #2A3241;
+  --color-sidebar-ring: #00BFFF;
 
-  --font-sans: 'Rajdhani', sans-serif;
-  --font-display: 'Orbitron', sans-serif;
+  --font-sans: 'Roboto', sans-serif;
+  --font-display: 'Exo 2', sans-serif;
   
   --radius: 0.25rem;
 }
@@ -68,34 +72,32 @@
   body {
     @apply font-sans antialiased bg-background text-foreground;
     background-image: 
-      radial-gradient(circle at 50% 0%, hsla(280, 50%, 20%, 0.3), transparent 70%),
-      radial-gradient(circle at 10% 20%, hsla(180, 50%, 20%, 0.2), transparent 50%);
-  }
-  
-  /* Custom Scrollbar for Sci-fi feel */
-  ::-webkit-scrollbar {
-    width: 8px;
-  }
-  ::-webkit-scrollbar-track {
-    background: hsl(240 30% 10%);
-  }
-  ::-webkit-scrollbar-thumb {
-    background: hsl(280 50% 40%);
-    border-radius: 4px;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: hsl(280 60% 50%);
+      url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
+    background-color: var(--color-background);
   }
 }
 
 @layer utilities {
   .text-glow {
-    text-shadow: 0 0 10px currentColor;
+    text-shadow: 0 0 8px currentColor;
   }
   .box-glow {
     box-shadow: 0 0 20px -5px currentColor;
   }
   .font-display {
     font-family: var(--font-display);
+  }
+  .tech-border {
+    position: relative;
+    border: 1px solid var(--color-border);
+  }
+  .tech-border::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-border), transparent);
   }
 }
