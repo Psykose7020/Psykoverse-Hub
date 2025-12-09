@@ -23,7 +23,7 @@ import heroBg from "@assets/generated_videos/cinematic_ogame_fleet_travel.mp4";
 import allianceLogo from "@assets/Design_sans_titre_(2)_1765292527261.png";
 import thumb1 from "@assets/generated_images/sci-fi_hud_tutorial_thumbnail.png";
 import thumb2 from "@assets/generated_images/spaceship_fleet_tactical_view_thumbnail.png";
-import thumb3 from "@assets/generated_images/spaceship_fleet_tactical_view_thumbnail.png";
+import thumb3 from "@assets/generated_images/space_battle_tactical_analysis_hud.png";
 
 export default function Home() {
   return (
