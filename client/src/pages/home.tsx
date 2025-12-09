@@ -31,7 +31,7 @@ export default function Home() {
       <div className="h-10 bg-[#0F1219] border-b border-[#2A3241] flex items-center justify-between px-4 text-xs font-mono uppercase tracking-wider text-muted-foreground z-50 relative">
         <div className="flex items-center gap-4">
           <span className="text-primary">Univers: Psykoverse</span>
-          <span>Abonnés YouTube: 1 240</span>
+          <span>Abonnés YouTube: 340</span>
         </div>
         <div className="flex items-center gap-4">
           <span className="hover:text-white cursor-pointer transition-colors">Forum</span>
