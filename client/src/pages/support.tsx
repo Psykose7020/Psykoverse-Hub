@@ -46,7 +46,7 @@ export default function Support() {
                 </h3>
                 <ol className="text-gray-400 space-y-4 text-sm list-decimal list-inside">
                   <li>Rejoignez notre serveur Discord officiel via le bouton ci-dessous.</li>
-                  <li>Rendez-vous dans le salon <span className="text-white font-mono bg-black/50 px-2 py-0.5 rounded">#support-ticket</span>.</li>
+                  <li>Rendez-vous dans le salon <span className="text-white font-mono bg-black/50 px-2 py-0.5 rounded">❓┆𝐃𝐞𝐦𝐚𝐧𝐝𝐞𝐬</span>.</li>
                   <li>Cliquez sur l'icône 📩 pour ouvrir un ticket privé avec le staff.</li>
                   <li>Décrivez votre problème ou votre demande en détail.</li>
                 </ol>

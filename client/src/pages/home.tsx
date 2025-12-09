@@ -34,7 +34,6 @@ export default function Home() {
           <span>Abonnés YouTube: 340</span>
         </div>
         <div className="flex items-center gap-4">
-          <span className="hover:text-white cursor-pointer transition-colors">Forum</span>
           <Link href="/support">
             <a className="hover:text-white cursor-pointer transition-colors">Support</a>
           </Link>
@@ -89,12 +88,13 @@ export default function Home() {
               transition={{ duration: 0.6 }}
             >
               <h1 className="font-display text-4xl md:text-6xl font-bold mb-6 text-white leading-tight">
-                LE POINT DE RENCONTRE <br/>
-                <span className="text-primary">DE LA COMMUNAUTÉ</span>
+                LE PORTAIL DE <br/>
+                <span className="text-primary">LA COMMUNAUTÉ</span>
               </h1>
               <p className="text-lg md:text-xl text-gray-400 mb-8 border-l-4 border-primary pl-6 py-2 bg-gradient-to-r from-primary/10 to-transparent">
-                Ce serveur est le point de rencontre de la communauté de ma chaîne YouTube. 
-                On y parle d’OGame, on échange nos expériences, on partage des astuces et on prend plaisir à discuter du jeu dans une ambiance détendue.
+                Bienvenue sur la page web officielle de la communauté Psykoverse. Ici, vous retrouverez toutes les dernières vidéos, les actualités de l'alliance et les informations mises à jour en temps réel.
+                <br/><br/>
+                Ce serveur est le point de rencontre de la chaîne YouTube. On y parle d’OGame, on échange nos expériences et on partage des astuces dans une ambiance détendue.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4">
@@ -115,6 +115,74 @@ export default function Home() {
           </div>
         </div>
       </header>
+
+      {/* Alliance Servers Info */}
+      <section className="py-16 bg-[#0F1219] border-b border-[#2A3241]">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="font-display text-2xl font-bold text-white mb-8 flex items-center justify-center gap-3">
+            <span className="w-8 h-[2px] bg-primary"></span>
+            ALLIANCE ACTIVE SUR
+            <span className="w-8 h-[2px] bg-primary"></span>
+          </h2>
+          <div className="flex flex-wrap justify-center gap-6">
+            <div className="px-8 py-4 bg-[#13171F] border border-[#2A3241] rounded hover:border-primary/50 transition-colors">
+              <span className="block text-xs text-gray-500 uppercase tracking-widest mb-1">Univers</span>
+              <span className="font-display text-2xl font-bold text-white">HERCULES</span>
+            </div>
+            <div className="px-8 py-4 bg-[#13171F] border border-[#2A3241] rounded hover:border-primary/50 transition-colors">
+              <span className="block text-xs text-gray-500 uppercase tracking-widest mb-1">Univers</span>
+              <span className="font-display text-2xl font-bold text-white">SCORPIUS</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* New Server Teaser */}
+      <section className="py-20 relative overflow-hidden bg-gradient-to-b from-[#0B0E14] to-[#13171F] border-b border-[#2A3241]">
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20" />
+        <div className="container relative z-10 mx-auto px-4">
+          <div className="text-center mb-12">
+            <div className="inline-block px-4 py-1 rounded-full bg-red-600/20 border border-red-500/50 text-red-500 text-xs font-bold uppercase tracking-widest mb-4 animate-pulse">
+              Arrivée Imminente • 19 Décembre
+            </div>
+            <h2 className="font-display text-4xl md:text-5xl font-bold text-white mb-4">
+              NOUVEAU SERVEUR DE SAISON
+            </h2>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+              L'alliance Psykoverse débarque en force. Préparez-vous pour une domination totale sur un univers ultra-rapide.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 max-w-5xl mx-auto">
+            {[
+              { label: "Économie", value: "x8" },
+              { label: "Flotte Hostile", value: "x6" },
+              { label: "Recherche", value: "x16" },
+              { label: "CDR", value: "80%" },
+              { label: "Défense CDR", value: "50%" },
+              { label: "Cases Bonus", value: "+25" },
+              { label: "Galaxies", value: "6" },
+              { label: "Conso Deut", value: "0.5" },
+              { label: "Catégorie", value: "AGRESSIF" },
+              { label: "AG/DG", value: "OUI" }
+            ].map((stat, i) => (
+              <div key={i} className="bg-[#0B0E14]/80 border border-[#2A3241] p-4 text-center rounded hover:border-primary/50 transition-colors">
+                <div className="text-gray-500 text-xs uppercase tracking-wider mb-1">{stat.label}</div>
+                <div className="font-display text-xl font-bold text-white">{stat.value}</div>
+              </div>
+            ))}
+          </div>
+          
+          <div className="mt-12 text-center">
+             <p className="text-sm text-gray-500 mb-6 font-mono">AM à l'activation: 10.000 • Deut dans CDR: OUI • Fret Sonde: NON</p>
+             <Button size="lg" className="bg-red-600 hover:bg-red-700 text-white font-display font-bold uppercase tracking-widest px-8 shadow-[0_0_20px_rgba(220,38,38,0.4)]" asChild>
+              <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer">
+                Rejoindre le Projet
+              </a>
+            </Button>
+          </div>
+        </div>
+      </section>
 
       {/* Welcome Section - "Tech Panel" Style */}
       <section id="about" className="py-20 bg-[#0F1219]">
