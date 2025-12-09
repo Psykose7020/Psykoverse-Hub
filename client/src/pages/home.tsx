@@ -361,15 +361,52 @@ export default function Home() {
         </div>
       </section>
 
+      {/* FAQ Section */}
+      <section id="faq" className="py-16 bg-[#151924] border-t border-[#2E384D] z-10 relative">
+        <div className="container mx-auto px-4">
+          <h2 className="font-display text-2xl font-bold text-white mb-8 text-center">QUESTIONS FRÉQUENTES</h2>
+          
+          <div className="max-w-2xl mx-auto space-y-4">
+            <div className="bg-[#1C2230] border border-[#2E384D] rounded-lg p-6">
+              <h3 className="font-display text-lg font-bold text-primary mb-2">Comment rejoindre la communauté ?</h3>
+              <p className="text-gray-400 mb-3">Rejoignez notre serveur Discord pour échanger avec les autres membres, poser vos questions et participer aux événements.</p>
+              <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-mono text-sm">
+                discord.gg/3PWk4HmfNn
+              </a>
+            </div>
+
+            <div className="bg-[#1C2230] border border-[#2E384D] rounded-lg p-6">
+              <h3 className="font-display text-lg font-bold text-primary mb-2">Où trouver les tutoriels vidéo ?</h3>
+              <p className="text-gray-400 mb-3">Tous les tutoriels sont disponibles sur la chaîne YouTube @7020Psykose. Abonnez-vous pour ne rien manquer !</p>
+              <a href="https://www.youtube.com/@7020Psykose" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-mono text-sm">
+                youtube.com/@7020Psykose
+              </a>
+            </div>
+
+            <div className="bg-[#1C2230] border border-[#2E384D] rounded-lg p-6">
+              <h3 className="font-display text-lg font-bold text-primary mb-2">L'alliance recrute-t-elle ?</h3>
+              <p className="text-gray-400">Oui ! Psykoverse est ouverte à tous les joueurs, débutants comme confirmés. Rejoignez le Discord et présentez-vous.</p>
+            </div>
+
+            <div className="bg-[#1C2230] border border-[#2E384D] rounded-lg p-6">
+              <h3 className="font-display text-lg font-bold text-primary mb-2">Comment obtenir de l'aide ?</h3>
+              <p className="text-gray-400">Sur le Discord, rendez-vous dans le salon de support ❓┆𝐃𝐞𝐦𝐚𝐧𝐝𝐞𝐬 pour poser vos questions.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Footer - "Game Credits" Style */}
       <footer className="py-12 bg-[#111620] border-t border-[#2E384D] text-center relative z-10">
         <div className="container mx-auto px-4">
           <img src={allianceLogo} alt="Logo" className="h-12 w-12 mx-auto mb-6 opacity-50 grayscale hover:grayscale-0 transition-all" />
           <p className="text-gray-500 text-sm mb-4">© 2025 Psykoverse Community. Fan project non affilié à Gameforge.</p>
           <div className="flex justify-center gap-6 text-sm font-bold text-gray-400 uppercase tracking-wider">
-            <a href="#" className="hover:text-primary transition-colors">Mentions Légales</a>
-            <a href="#" className="hover:text-primary transition-colors">Règlement</a>
-            <a href="#" className="hover:text-primary transition-colors">Contact</a>
+            <Link href="/mentions-legales">
+              <span className="hover:text-primary transition-colors cursor-pointer">Mentions Légales</span>
+            </Link>
+            <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">Discord</a>
+            <a href="https://www.youtube.com/@7020Psykose" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">YouTube</a>
           </div>
         </div>
       </footer>
