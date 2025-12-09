@@ -19,7 +19,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 
 // Assets
-import heroBg from "@assets/generated_images/epic_space_battle_scene_with_nebula_background.png";
+import heroBg from "@assets/generated_videos/cinematic_ogame_fleet_travel.mp4";
 import allianceLogo from "@assets/Design_sans_titre_(2)_1765292527261.png";
 import thumb1 from "@assets/generated_images/sci-fi_hud_tutorial_thumbnail.png";
 import thumb2 from "@assets/generated_images/spaceship_fleet_tactical_view_thumbnail.png";
@@ -81,6 +81,14 @@ export default function Home() {
       {/* Hero Section - Classic OGame "Galaxy View" feel */}
       <header className="relative py-24 lg:py-32 overflow-hidden flex items-center border-b border-[#2E384D]">
         <div className="absolute inset-0 z-0">
+          <video 
+            src={heroBg} 
+            autoPlay 
+            loop 
+            muted 
+            playsInline
+            className="w-full h-full object-cover opacity-30 saturate-50"
+          />
           <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent" />
           {/* Scanlines effect */}
           <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.1)_50%),linear-gradient(90deg,rgba(255,0,0,0.03),rgba(0,255,0,0.01),rgba(0,0,255,0.03))] z-10 bg-[length:100%_2px,3px_100%] pointer-events-none" />
@@ -260,7 +268,28 @@ export default function Home() {
         </div>
       </section>
 
-      {/* New Server Teaser - Moved below Discord */}
+      {/* Alliance Servers Info - Moved above New Server Teaser */}
+      <section className="py-16 bg-[#151924] border-t border-[#2E384D] z-10 relative">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="font-display text-2xl font-bold text-white mb-8 flex items-center justify-center gap-3">
+            <span className="w-8 h-[2px] bg-primary"></span>
+            ALLIANCE ACTIVE SUR
+            <span className="w-8 h-[2px] bg-primary"></span>
+          </h2>
+          <div className="flex flex-wrap justify-center gap-6">
+            <div className="px-8 py-4 bg-[#1C2230] border border-[#2E384D] rounded hover:border-primary/50 transition-colors shadow-lg">
+              <span className="block text-xs text-gray-500 uppercase tracking-widest mb-1">Univers</span>
+              <span className="font-display text-2xl font-bold text-white">HERCULES</span>
+            </div>
+            <div className="px-8 py-4 bg-[#1C2230] border border-[#2E384D] rounded hover:border-primary/50 transition-colors shadow-lg">
+              <span className="block text-xs text-gray-500 uppercase tracking-widest mb-1">Univers</span>
+              <span className="font-display text-2xl font-bold text-white">SCORPIUS</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* New Server Teaser */}
       <section className="py-20 relative overflow-hidden bg-gradient-to-b from-[#151924] to-[#1C2230] border-t border-[#2E384D] z-10">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20" />
         <div className="container relative z-10 mx-auto px-4">
@@ -303,27 +332,6 @@ export default function Home() {
                 Rejoindre le Projet
               </a>
             </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* Alliance Servers Info - Moved below Discord */}
-      <section className="py-16 bg-[#151924] border-t border-[#2E384D] z-10 relative">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="font-display text-2xl font-bold text-white mb-8 flex items-center justify-center gap-3">
-            <span className="w-8 h-[2px] bg-primary"></span>
-            ALLIANCE ACTIVE SUR
-            <span className="w-8 h-[2px] bg-primary"></span>
-          </h2>
-          <div className="flex flex-wrap justify-center gap-6">
-            <div className="px-8 py-4 bg-[#1C2230] border border-[#2E384D] rounded hover:border-primary/50 transition-colors shadow-lg">
-              <span className="block text-xs text-gray-500 uppercase tracking-widest mb-1">Univers</span>
-              <span className="font-display text-2xl font-bold text-white">HERCULES</span>
-            </div>
-            <div className="px-8 py-4 bg-[#1C2230] border border-[#2E384D] rounded hover:border-primary/50 transition-colors shadow-lg">
-              <span className="block text-xs text-gray-500 uppercase tracking-widest mb-1">Univers</span>
-              <span className="font-display text-2xl font-bold text-white">SCORPIUS</span>
-            </div>
           </div>
         </div>
       </section>
