@@ -45,7 +45,7 @@ export default function Home() {
           </span>
         </div>
         <div className="flex items-center gap-6">
-           <span className="hidden sm:inline text-gray-600">v3.4.0-stable</span>
+           <span className="hidden sm:inline text-gray-600">V1.0</span>
            <Link href="/support">
             <a className="hover:text-primary transition-colors flex items-center gap-2">
               <Shield className="w-3 h-3" />
