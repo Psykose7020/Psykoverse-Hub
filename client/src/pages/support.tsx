@@ -1,7 +1,7 @@
 import { Link } from "wouter";
 import { MessageSquare, ArrowLeft, ShieldAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import allianceLogo from "@assets/generated_images/psykoverse_alliance_futuristic_emblem_logo.png";
+import allianceLogo from "@assets/Design_sans_titre_(2)_1765292527261.png";
 
 export default function Support() {
   return (

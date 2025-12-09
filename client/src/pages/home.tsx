@@ -20,7 +20,7 @@ import { Separator } from "@/components/ui/separator";
 
 // Assets
 import heroBg from "@assets/generated_images/epic_space_battle_scene_with_nebula_background.png";
-import allianceLogo from "@assets/generated_images/psykoverse_alliance_futuristic_emblem_logo.png";
+import allianceLogo from "@assets/Design_sans_titre_(2)_1765292527261.png";
 import thumb1 from "@assets/generated_images/sci-fi_hud_tutorial_thumbnail.png";
 import thumb2 from "@assets/generated_images/spaceship_fleet_tactical_view_thumbnail.png";
 
