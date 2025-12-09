@@ -110,13 +110,28 @@ export default function Admin() {
     });
   };
 
-  const getBrowserFromUA = (ua: string | null) => {
-    if (!ua) return "Inconnu";
-    if (ua.includes("Chrome")) return "Chrome";
-    if (ua.includes("Firefox")) return "Firefox";
-    if (ua.includes("Safari")) return "Safari";
-    if (ua.includes("Edge")) return "Edge";
-    return "Autre";
+  const parseUserAgent = (ua: string | null) => {
+    if (!ua) return { browser: "Inconnu", os: "Inconnu", device: "Inconnu" };
+    
+    let browser = "Autre";
+    if (ua.includes("Edg/")) browser = "Edge";
+    else if (ua.includes("Chrome")) browser = "Chrome";
+    else if (ua.includes("Firefox")) browser = "Firefox";
+    else if (ua.includes("Safari")) browser = "Safari";
+    else if (ua.includes("Opera") || ua.includes("OPR")) browser = "Opera";
+    
+    let os = "Autre";
+    if (ua.includes("Windows")) os = "Windows";
+    else if (ua.includes("Mac OS")) os = "macOS";
+    else if (ua.includes("Linux")) os = "Linux";
+    else if (ua.includes("Android")) os = "Android";
+    else if (ua.includes("iPhone") || ua.includes("iPad")) os = "iOS";
+    
+    let device = "Desktop";
+    if (ua.includes("Mobile") || ua.includes("Android") || ua.includes("iPhone")) device = "Mobile";
+    else if (ua.includes("iPad") || ua.includes("Tablet")) device = "Tablette";
+    
+    return { browser, os, device };
   };
 
   if (!isLoggedIn) {
@@ -242,21 +257,38 @@ export default function Admin() {
                 <thead>
                   <tr className="text-left text-gray-400 text-sm border-b border-[#1E2A3A]">
                     <th className="pb-3">Page</th>
+                    <th className="pb-3">Device</th>
+                    <th className="pb-3">OS</th>
                     <th className="pb-3">Navigateur</th>
+                    <th className="pb-3">IP</th>
                     <th className="pb-3">Date</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {stats?.recentVisits.slice(0, 15).map((visit) => (
-                    <tr key={visit.id} className="border-b border-[#1E2A3A]/50 text-sm">
-                      <td className="py-3 text-white">{visit.page}</td>
-                      <td className="py-3 text-gray-400">{getBrowserFromUA(visit.userAgent)}</td>
-                      <td className="py-3 text-gray-500">{formatDate(visit.visitedAt)}</td>
-                    </tr>
-                  ))}
+                  {stats?.recentVisits.slice(0, 20).map((visit) => {
+                    const ua = parseUserAgent(visit.userAgent);
+                    return (
+                      <tr key={visit.id} className="border-b border-[#1E2A3A]/50 text-sm">
+                        <td className="py-3 text-white">{visit.page}</td>
+                        <td className="py-3">
+                          <span className={`px-2 py-1 rounded text-xs ${
+                            ua.device === "Mobile" ? "bg-green-900/50 text-green-400" :
+                            ua.device === "Tablette" ? "bg-purple-900/50 text-purple-400" :
+                            "bg-blue-900/50 text-blue-400"
+                          }`}>
+                            {ua.device}
+                          </span>
+                        </td>
+                        <td className="py-3 text-gray-400">{ua.os}</td>
+                        <td className="py-3 text-gray-400">{ua.browser}</td>
+                        <td className="py-3 text-gray-500 font-mono text-xs">{visit.ip || "-"}</td>
+                        <td className="py-3 text-gray-500">{formatDate(visit.visitedAt)}</td>
+                      </tr>
+                    );
+                  })}
                   {(!stats || stats.recentVisits.length === 0) && (
                     <tr>
-                      <td colSpan={3} className="py-8 text-center text-gray-500">
+                      <td colSpan={6} className="py-8 text-center text-gray-500">
                         Aucune visite enregistrée
                       </td>
                     </tr>
