@@ -94,7 +94,7 @@ export default function Home() {
               <p className="text-lg md:text-xl text-gray-400 mb-8 border-l-4 border-primary pl-6 py-2 bg-gradient-to-r from-primary/10 to-transparent">
                 Bienvenue sur la page web officielle de la communauté Psykoverse. Ici, vous retrouverez toutes les dernières vidéos, les actualités de l'alliance et les informations mises à jour en temps réel.
                 <br/><br/>
-                Ce serveur est le point de rencontre de la chaîne YouTube. On y parle d’OGame, on échange nos expériences et on partage des astuces dans une ambiance détendue.
+                Notre Discord est le point de rencontre de la communauté de la chaîne YouTube. On y parle d’OGame, on échange nos expériences et on partage des astuces dans une ambiance détendue.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4">
