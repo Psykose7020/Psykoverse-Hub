@@ -35,7 +35,9 @@ export default function Home() {
         </div>
         <div className="flex items-center gap-4">
           <span className="hover:text-white cursor-pointer transition-colors">Forum</span>
-          <span className="hover:text-white cursor-pointer transition-colors">Support</span>
+          <Link href="/support">
+            <a className="hover:text-white cursor-pointer transition-colors">Support</a>
+          </Link>
         </div>
       </div>
 
