@@ -116,76 +116,8 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Alliance Servers Info */}
-      <section className="py-16 bg-[#0F1219] border-b border-[#2A3241]">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="font-display text-2xl font-bold text-white mb-8 flex items-center justify-center gap-3">
-            <span className="w-8 h-[2px] bg-primary"></span>
-            ALLIANCE ACTIVE SUR
-            <span className="w-8 h-[2px] bg-primary"></span>
-          </h2>
-          <div className="flex flex-wrap justify-center gap-6">
-            <div className="px-8 py-4 bg-[#13171F] border border-[#2A3241] rounded hover:border-primary/50 transition-colors">
-              <span className="block text-xs text-gray-500 uppercase tracking-widest mb-1">Univers</span>
-              <span className="font-display text-2xl font-bold text-white">HERCULES</span>
-            </div>
-            <div className="px-8 py-4 bg-[#13171F] border border-[#2A3241] rounded hover:border-primary/50 transition-colors">
-              <span className="block text-xs text-gray-500 uppercase tracking-widest mb-1">Univers</span>
-              <span className="font-display text-2xl font-bold text-white">SCORPIUS</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* New Server Teaser */}
-      <section className="py-20 relative overflow-hidden bg-gradient-to-b from-[#0B0E14] to-[#13171F] border-b border-[#2A3241]">
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20" />
-        <div className="container relative z-10 mx-auto px-4">
-          <div className="text-center mb-12">
-            <div className="inline-block px-4 py-1 rounded-full bg-red-600/20 border border-red-500/50 text-red-500 text-xs font-bold uppercase tracking-widest mb-4 animate-pulse">
-              Arrivée Imminente • 19 Décembre
-            </div>
-            <h2 className="font-display text-4xl md:text-5xl font-bold text-white mb-4">
-              NOUVEAU SERVEUR DE SAISON
-            </h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              L'alliance Psykoverse débarque en force. Préparez-vous pour une domination totale sur un univers ultra-rapide.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 max-w-5xl mx-auto">
-            {[
-              { label: "Économie", value: "x8" },
-              { label: "Flotte Hostile", value: "x6" },
-              { label: "Recherche", value: "x16" },
-              { label: "CDR", value: "80%" },
-              { label: "Défense CDR", value: "50%" },
-              { label: "Cases Bonus", value: "+25" },
-              { label: "Galaxies", value: "6" },
-              { label: "Conso Deut", value: "0.5" },
-              { label: "Catégorie", value: "AGRESSIF" },
-              { label: "AG/DG", value: "OUI" }
-            ].map((stat, i) => (
-              <div key={i} className="bg-[#0B0E14]/80 border border-[#2A3241] p-4 text-center rounded hover:border-primary/50 transition-colors">
-                <div className="text-gray-500 text-xs uppercase tracking-wider mb-1">{stat.label}</div>
-                <div className="font-display text-xl font-bold text-white">{stat.value}</div>
-              </div>
-            ))}
-          </div>
-          
-          <div className="mt-12 text-center">
-             <p className="text-sm text-gray-500 mb-6 font-mono">AM à l'activation: 10.000 • Deut dans CDR: OUI • Fret Sonde: NON</p>
-             <Button size="lg" className="bg-red-600 hover:bg-red-700 text-white font-display font-bold uppercase tracking-widest px-8 shadow-[0_0_20px_rgba(220,38,38,0.4)]" asChild>
-              <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer">
-                Rejoindre le Projet
-              </a>
-            </Button>
-          </div>
-        </div>
-      </section>
-
       {/* Welcome Section - "Tech Panel" Style */}
-      <section id="about" className="py-20 bg-[#0F1219]">
+      <section id="about" className="py-20 bg-[#0F1219] border-b border-[#2A3241]">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-3 gap-8">
             {/* Feature 1 */}
@@ -234,7 +166,7 @@ export default function Home() {
       </section>
 
       {/* YouTube Section - "Data Logs" Style */}
-      <section id="youtube" className="py-20 border-t border-[#2A3241] bg-[#0B0E14]">
+      <section id="youtube" className="py-20 bg-[#0B0E14]">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-12">
             <div>
@@ -314,6 +246,74 @@ export default function Home() {
               <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-green-500"></div> 180 Membres</span>
               <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-primary"></div> Actif</span>
               <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-secondary"></div> Recrutement Ouvert</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* New Server Teaser - Moved below Discord */}
+      <section className="py-20 relative overflow-hidden bg-gradient-to-b from-[#0B0E14] to-[#13171F] border-t border-[#2A3241]">
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20" />
+        <div className="container relative z-10 mx-auto px-4">
+          <div className="text-center mb-12">
+            <div className="inline-block px-4 py-1 rounded-full bg-red-600/20 border border-red-500/50 text-red-500 text-xs font-bold uppercase tracking-widest mb-4 animate-pulse">
+              Arrivée Imminente • 19 Décembre
+            </div>
+            <h2 className="font-display text-4xl md:text-5xl font-bold text-white mb-4">
+              NOUVEAU SERVEUR DE SAISON
+            </h2>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+              L'alliance Psykoverse sera présente sur ce nouveau serveur. Une occasion idéale pour débuter ou reprendre l'aventure ensemble.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 max-w-5xl mx-auto">
+            {[
+              { label: "Économie", value: "x8" },
+              { label: "Flotte Hostile", value: "x6" },
+              { label: "Recherche", value: "x16" },
+              { label: "CDR", value: "80%" },
+              { label: "Défense CDR", value: "50%" },
+              { label: "Cases Bonus", value: "+25" },
+              { label: "Galaxies", value: "6" },
+              { label: "Conso Deut", value: "0.5" },
+              { label: "Catégorie", value: "AGRESSIF" },
+              { label: "AG/DG", value: "OUI" }
+            ].map((stat, i) => (
+              <div key={i} className="bg-[#0B0E14]/80 border border-[#2A3241] p-4 text-center rounded hover:border-primary/50 transition-colors">
+                <div className="text-gray-500 text-xs uppercase tracking-wider mb-1">{stat.label}</div>
+                <div className="font-display text-xl font-bold text-white">{stat.value}</div>
+              </div>
+            ))}
+          </div>
+          
+          <div className="mt-12 text-center">
+             <p className="text-sm text-gray-500 mb-6 font-mono">AM à l'activation: 10.000 • Deut dans CDR: OUI • Fret Sonde: NON</p>
+             <Button size="lg" className="bg-red-600 hover:bg-red-700 text-white font-display font-bold uppercase tracking-widest px-8 shadow-[0_0_20px_rgba(220,38,38,0.4)]" asChild>
+              <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer">
+                Rejoindre le Projet
+              </a>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Alliance Servers Info - Moved below Discord */}
+      <section className="py-16 bg-[#0F1219] border-t border-[#2A3241]">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="font-display text-2xl font-bold text-white mb-8 flex items-center justify-center gap-3">
+            <span className="w-8 h-[2px] bg-primary"></span>
+            ALLIANCE ACTIVE SUR
+            <span className="w-8 h-[2px] bg-primary"></span>
+          </h2>
+          <div className="flex flex-wrap justify-center gap-6">
+            <div className="px-8 py-4 bg-[#13171F] border border-[#2A3241] rounded hover:border-primary/50 transition-colors">
+              <span className="block text-xs text-gray-500 uppercase tracking-widest mb-1">Univers</span>
+              <span className="font-display text-2xl font-bold text-white">HERCULES</span>
+            </div>
+            <div className="px-8 py-4 bg-[#13171F] border border-[#2A3241] rounded hover:border-primary/50 transition-colors">
+              <span className="block text-xs text-gray-500 uppercase tracking-widest mb-1">Univers</span>
+              <span className="font-display text-2xl font-bold text-white">SCORPIUS</span>
             </div>
           </div>
         </div>
