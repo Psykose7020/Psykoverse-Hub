@@ -87,7 +87,13 @@ export default function Admin() {
     }
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/admin/logout", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+    } catch {}
     localStorage.removeItem("adminToken");
     setToken("");
     setIsLoggedIn(false);

@@ -1,6 +1,46 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
+import { randomBytes, createHmac } from "crypto";
+
+const SESSION_SECRET = process.env.ADMIN_PASSWORD || randomBytes(32).toString("hex");
+const activeSessions = new Map<string, { createdAt: number }>();
+
+function generateSecureToken(): string {
+  const sessionId = randomBytes(32).toString("hex");
+  const timestamp = Date.now().toString();
+  const signature = createHmac("sha256", SESSION_SECRET)
+    .update(sessionId + timestamp)
+    .digest("hex");
+  return `${sessionId}.${timestamp}.${signature}`;
+}
+
+function validateToken(token: string): boolean {
+  try {
+    const parts = token.split(".");
+    if (parts.length !== 3) return false;
+    
+    const [sessionId, timestamp, signature] = parts;
+    const expectedSignature = createHmac("sha256", SESSION_SECRET)
+      .update(sessionId + timestamp)
+      .digest("hex");
+    
+    if (signature !== expectedSignature) return false;
+    
+    const session = activeSessions.get(sessionId);
+    if (!session) return false;
+    
+    const tokenAge = Date.now() - parseInt(timestamp);
+    if (tokenAge > 24 * 60 * 60 * 1000) {
+      activeSessions.delete(sessionId);
+      return false;
+    }
+    
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 export async function registerRoutes(
   httpServer: Server,
@@ -37,13 +77,30 @@ export async function registerRoutes(
       }
       
       if (password === adminPassword) {
-        res.json({ success: true, token: Buffer.from(`admin:${Date.now()}`).toString("base64") });
+        const token = generateSecureToken();
+        const sessionId = token.split(".")[0];
+        activeSessions.set(sessionId, { createdAt: Date.now() });
+        res.json({ success: true, token });
       } else {
         res.status(401).json({ error: "Invalid password" });
       }
     } catch (error) {
       console.error("Login error:", error);
       res.status(500).json({ error: "Login failed" });
+    }
+  });
+
+  app.post("/api/admin/logout", async (req, res) => {
+    try {
+      const authHeader = req.headers.authorization;
+      if (authHeader?.startsWith("Bearer ")) {
+        const token = authHeader.slice(7);
+        const sessionId = token.split(".")[0];
+        activeSessions.delete(sessionId);
+      }
+      res.json({ success: true });
+    } catch (error) {
+      res.json({ success: true });
     }
   });
 
@@ -55,13 +112,8 @@ export async function registerRoutes(
       }
       
       const token = authHeader.slice(7);
-      try {
-        const decoded = Buffer.from(token, "base64").toString();
-        if (!decoded.startsWith("admin:")) {
-          return res.status(401).json({ error: "Invalid token" });
-        }
-      } catch {
-        return res.status(401).json({ error: "Invalid token" });
+      if (!validateToken(token)) {
+        return res.status(401).json({ error: "Invalid or expired token" });
       }
 
       const stats = await storage.getVisitStats();
