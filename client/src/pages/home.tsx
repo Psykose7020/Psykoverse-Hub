@@ -31,7 +31,7 @@ export default function Home() {
       <div className="h-10 bg-[#0F1219] border-b border-[#2A3241] flex items-center justify-between px-4 text-xs font-mono uppercase tracking-wider text-muted-foreground z-50 relative">
         <div className="flex items-center gap-4">
           <span className="text-primary">Univers: Psykoverse</span>
-          <span>Joueurs: 24,892</span>
+          <span>Abonnés YouTube: 1 240</span>
         </div>
         <div className="flex items-center gap-4">
           <span className="hover:text-white cursor-pointer transition-colors">Forum</span>
@@ -179,7 +179,7 @@ export default function Home() {
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">
-            <div className="group cursor-pointer">
+            <a href="https://www.youtube.com/watch?v=uyxCLrgZ8mA" target="_blank" rel="noopener noreferrer" className="group cursor-pointer block">
               <div className="relative aspect-video bg-black border border-[#2A3241] overflow-hidden mb-4">
                 <img src={thumb1} alt="Tuto 1" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
@@ -191,11 +191,13 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-              <h3 className="font-display text-xl font-bold text-gray-200 group-hover:text-primary transition-colors">Optimisation des Ressources & Mines</h3>
-              <p className="text-sm text-gray-500 mt-2">Maximiser la production horaire • Analyse Rentabilité</p>
-            </div>
+              <h3 className="font-display text-xl font-bold text-gray-200 group-hover:text-primary transition-colors">Prise en retour d'attaque</h3>
+              <p className="text-sm text-gray-500 mt-2">
+                Maîtrisez l'art de l'interception. Apprenez à calculer le retour de flotte ennemi à la seconde près pour transformer une attaque adverse en champ de débris.
+              </p>
+            </a>
 
-            <div className="group cursor-pointer">
+            <a href="https://www.youtube.com/watch?v=aJt84QvLz8Y" target="_blank" rel="noopener noreferrer" className="group cursor-pointer block">
               <div className="relative aspect-video bg-black border border-[#2A3241] overflow-hidden mb-4">
                 <img src={thumb2} alt="Tuto 2" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
@@ -207,9 +209,11 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-              <h3 className="font-display text-xl font-bold text-gray-200 group-hover:text-primary transition-colors">Composition de Flotte Optimale</h3>
-              <p className="text-sm text-gray-500 mt-2">Ratios de combat • Simulation de batailles</p>
-            </div>
+              <h3 className="font-display text-xl font-bold text-gray-200 group-hover:text-primary transition-colors">Guide LifeForms</h3>
+              <p className="text-sm text-gray-500 mt-2">
+                Les formes de vie changent tout. Découvrez comment optimiser vos bonus raciaux et booster votre économie grâce à la mise à jour Lifeforms.
+              </p>
+            </a>
           </div>
         </div>
       </section>
@@ -237,7 +241,7 @@ export default function Home() {
             </Button>
 
             <div className="mt-8 flex justify-center gap-8 text-sm text-gray-500 font-mono uppercase">
-              <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-green-500"></div> En Ligne</span>
+              <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-green-500"></div> 180 Membres</span>
               <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-primary"></div> Actif</span>
               <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-secondary"></div> Recrutement Ouvert</span>
             </div>
