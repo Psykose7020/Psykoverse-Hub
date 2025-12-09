@@ -491,13 +491,15 @@ export default function Home() {
             <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">Discord</a>
             <a href="https://www.youtube.com/@7020Psykose" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">YouTube</a>
           </div>
-          <Link 
-            href="/admin" 
-            className="mt-6 inline-block text-[10px] text-gray-700 hover:text-gray-500 transition-colors opacity-30 hover:opacity-60"
-            data-testid="link-admin"
-          >
-            •
-          </Link>
+          <div className="mt-8 pt-4 border-t border-[#2E384D]/30">
+            <Link 
+              href="/admin" 
+              className="text-[10px] text-gray-600 hover:text-gray-400 transition-colors"
+              data-testid="link-admin"
+            >
+              Admin
+            </Link>
+          </div>
         </div>
       </footer>
     </div>

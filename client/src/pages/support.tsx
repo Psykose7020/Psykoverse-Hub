@@ -9,14 +9,11 @@ export default function Support() {
       {/* OGame-style Top Bar */}
       <div className="h-10 bg-[#0F1219] border-b border-[#2A3241] flex items-center justify-between px-4 text-xs font-mono uppercase tracking-wider text-muted-foreground z-50 relative">
         <div className="flex items-center gap-4">
-          <span className="text-primary">Univers: Psykoverse</span>
           <span>Support Center</span>
         </div>
         <div className="flex items-center gap-4">
-          <Link href="/">
-            <a className="hover:text-white cursor-pointer transition-colors flex items-center gap-2">
-              <ArrowLeft className="w-3 h-3" /> Retour
-            </a>
+          <Link href="/" className="hover:text-white cursor-pointer transition-colors flex items-center gap-2">
+            <ArrowLeft className="w-3 h-3" /> Retour
           </Link>
         </div>
       </div>
