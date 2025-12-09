@@ -181,9 +181,9 @@ export default function Home() {
             loop 
             muted 
             playsInline
-            className="w-full h-full object-cover opacity-25"
+            className="w-full h-full object-cover opacity-50"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/90 to-background/60" />
+          <div className="absolute inset-0 bg-gradient-to-r from-background/80 via-background/50 to-transparent" />
         </div>
 
         <div className="container relative z-20 px-4">
