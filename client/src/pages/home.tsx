@@ -278,9 +278,9 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-              <h3 className="font-display text-lg font-bold text-gray-200 group-hover:text-primary transition-colors">Optimisation Avancée</h3>
+              <h3 className="font-display text-lg font-bold text-gray-200 group-hover:text-primary transition-colors">Mécaniques de Combat</h3>
               <p className="text-xs text-gray-500 mt-2 line-clamp-3">
-                Techniques avancées pour maximiser votre rendement et surpasser vos rivaux dans la course aux ressources.
+                Tout savoir sur le système de combat : RapidFire, ordre de tir et composition de flotte pour dominer vos batailles spatiales.
               </p>
             </a>
           </div>
