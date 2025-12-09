@@ -23,6 +23,7 @@ import heroBg from "@assets/generated_videos/cinematic_ogame_fleet_travel.mp4";
 import allianceLogo from "@assets/Design_sans_titre_(2)_1765292527261.png";
 import thumb1 from "@assets/generated_images/sci-fi_hud_tutorial_thumbnail.png";
 import thumb2 from "@assets/generated_images/spaceship_fleet_tactical_view_thumbnail.png";
+import thumb3 from "@assets/generated_images/spaceship_fleet_tactical_view_thumbnail.png";
 
 export default function Home() {
   return (
@@ -182,63 +183,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* YouTube Section - "Data Logs" Style */}
-      <section id="youtube" className="py-20 bg-[#111620] relative z-10">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between mb-12">
-            <div>
-              <h2 className="font-display text-3xl font-bold text-white mb-2">ARCHIVES VIDÉO</h2>
-              <p className="text-gray-500">Derniers rapports de transmission @7020Psykose</p>
-            </div>
-            <Button variant="outline" className="hidden md:flex border-[#2E384D] hover:bg-white/5 text-primary" asChild>
-              <a href="https://www.youtube.com/@7020Psykose" target="_blank" rel="noopener noreferrer">
-                ACCÉDER À LA CHAÎNE
-              </a>
-            </Button>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-6">
-            <a href="https://www.youtube.com/watch?v=uyxCLrgZ8mA" target="_blank" rel="noopener noreferrer" className="group cursor-pointer block">
-              <div className="relative aspect-video bg-black border border-[#2E384D] overflow-hidden mb-4 shadow-xl">
-                <img src={thumb1} alt="Tuto 1" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
-                  <div className="bg-red-600 text-white text-xs font-bold px-2 py-1 uppercase tracking-wider mb-2 inline-block">Tutoriel</div>
-                </div>
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="w-16 h-16 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/20">
-                    <Youtube className="w-8 h-8 text-white fill-current" />
-                  </div>
-                </div>
-              </div>
-              <h3 className="font-display text-xl font-bold text-gray-200 group-hover:text-primary transition-colors">Prise en retour d'attaque</h3>
-              <p className="text-sm text-gray-500 mt-2">
-                Maîtrisez l'art de l'interception. Apprenez à calculer le retour de flotte ennemi à la seconde près pour transformer une attaque adverse en champ de débris.
-              </p>
-            </a>
-
-            <a href="https://www.youtube.com/watch?v=aJt84QvLz8Y" target="_blank" rel="noopener noreferrer" className="group cursor-pointer block">
-              <div className="relative aspect-video bg-black border border-[#2E384D] overflow-hidden mb-4 shadow-xl">
-                <img src={thumb2} alt="Tuto 2" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
-                  <div className="bg-red-600 text-white text-xs font-bold px-2 py-1 uppercase tracking-wider mb-2 inline-block">Stratégie</div>
-                </div>
-                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="w-16 h-16 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/20">
-                    <Youtube className="w-8 h-8 text-white fill-current" />
-                  </div>
-                </div>
-              </div>
-              <h3 className="font-display text-xl font-bold text-gray-200 group-hover:text-primary transition-colors">Guide LifeForms</h3>
-              <p className="text-sm text-gray-500 mt-2">
-                Les formes de vie changent tout. Découvrez comment optimiser vos bonus raciaux et booster votre économie grâce à la mise à jour Lifeforms.
-              </p>
-            </a>
-          </div>
-        </div>
-      </section>
-
       {/* Discord CTA - "Join the Fleet" Style */}
-      <section id="discord" className="py-24 relative bg-[#151924] border-t border-[#2E384D] z-10">
+      <section id="discord" className="py-24 relative bg-[#151924] border-b border-[#2E384D] z-10">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-4xl mx-auto bg-gradient-to-b from-[#1C2230] to-[#151924] border border-[#2E384D] p-12 rounded-lg relative overflow-hidden shadow-2xl">
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-secondary to-primary opacity-50"></div>
@@ -264,6 +210,79 @@ export default function Home() {
               <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-primary"></div> Actif</span>
               <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-secondary"></div> Recrutement Ouvert</span>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* YouTube Section - "Data Logs" Style */}
+      <section id="youtube" className="py-20 bg-[#111620] relative z-10">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between mb-12">
+            <div>
+              <h2 className="font-display text-3xl font-bold text-white mb-2">APERÇU DES TUTORIELS</h2>
+              <p className="text-gray-500">Derniers rapports de transmission @7020Psykose</p>
+            </div>
+            <Button variant="outline" className="hidden md:flex border-[#2E384D] hover:bg-white/5 text-primary" asChild>
+              <a href="https://www.youtube.com/@7020Psykose" target="_blank" rel="noopener noreferrer">
+                ACCÉDER À LA CHAÎNE
+              </a>
+            </Button>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            <a href="https://www.youtube.com/watch?v=uyxCLrgZ8mA" target="_blank" rel="noopener noreferrer" className="group cursor-pointer block">
+              <div className="relative aspect-video bg-black border border-[#2E384D] overflow-hidden mb-4 shadow-xl">
+                <img src={thumb1} alt="Tuto 1" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
+                  <div className="bg-red-600 text-white text-xs font-bold px-2 py-1 uppercase tracking-wider mb-2 inline-block">Tutoriel</div>
+                </div>
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="w-16 h-16 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/20">
+                    <Youtube className="w-8 h-8 text-white fill-current" />
+                  </div>
+                </div>
+              </div>
+              <h3 className="font-display text-lg font-bold text-gray-200 group-hover:text-primary transition-colors">Prise en retour d'attaque</h3>
+              <p className="text-xs text-gray-500 mt-2 line-clamp-3">
+                Maîtrisez l'art de l'interception. Apprenez à calculer le retour de flotte ennemi à la seconde près.
+              </p>
+            </a>
+
+            <a href="https://www.youtube.com/watch?v=aJt84QvLz8Y" target="_blank" rel="noopener noreferrer" className="group cursor-pointer block">
+              <div className="relative aspect-video bg-black border border-[#2E384D] overflow-hidden mb-4 shadow-xl">
+                <img src={thumb2} alt="Tuto 2" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
+                  <div className="bg-red-600 text-white text-xs font-bold px-2 py-1 uppercase tracking-wider mb-2 inline-block">Stratégie</div>
+                </div>
+                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="w-16 h-16 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/20">
+                    <Youtube className="w-8 h-8 text-white fill-current" />
+                  </div>
+                </div>
+              </div>
+              <h3 className="font-display text-lg font-bold text-gray-200 group-hover:text-primary transition-colors">Guide LifeForms</h3>
+              <p className="text-xs text-gray-500 mt-2 line-clamp-3">
+                Découvrez comment optimiser vos bonus raciaux et booster votre économie avec Lifeforms.
+              </p>
+            </a>
+
+            <a href="https://www.youtube.com/watch?v=nyhSBnkyG7A" target="_blank" rel="noopener noreferrer" className="group cursor-pointer block">
+              <div className="relative aspect-video bg-black border border-[#2E384D] overflow-hidden mb-4 shadow-xl">
+                <img src={thumb3} alt="Tuto 3" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
+                  <div className="bg-red-600 text-white text-xs font-bold px-2 py-1 uppercase tracking-wider mb-2 inline-block">Tutoriel</div>
+                </div>
+                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="w-16 h-16 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/20">
+                    <Youtube className="w-8 h-8 text-white fill-current" />
+                  </div>
+                </div>
+              </div>
+              <h3 className="font-display text-lg font-bold text-gray-200 group-hover:text-primary transition-colors">Optimisation Avancée</h3>
+              <p className="text-xs text-gray-500 mt-2 line-clamp-3">
+                Techniques avancées pour maximiser votre rendement et surpasser vos rivaux dans la course aux ressources.
+              </p>
+            </a>
           </div>
         </div>
       </section>
