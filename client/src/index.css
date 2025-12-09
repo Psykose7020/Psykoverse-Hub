@@ -11,37 +11,34 @@
   --radius-lg: 6px;
   --radius-xl: 8px;
   
-  /* OGame Inspired Palette - "Classic Space Strategy" */
-  /* Dark, industrial, metallic blues and greys with high-contrast highlights */
+  /* OGame Inspired Palette - Lighter / More Dynamic */
   
-  --color-background: #0B0E14; /* Deep void black/blue */
-  --color-foreground: #BCC2CC; /* Off-white text, slightly metallic */
+  --color-background: #151924; /* Lighter deep blue */
+  --color-foreground: #C4CAD6;
   
-  --color-card: #13171F; /* Panel background */
-  --color-card-foreground: #D1D5DB;
+  --color-card: #1C2230; /* Lighter panel */
+  --color-card-foreground: #E2E8F0;
   
-  --color-popover: #13171F;
-  --color-popover-foreground: #D1D5DB;
+  --color-popover: #1C2230;
+  --color-popover-foreground: #E2E8F0;
   
-  /* Primary: The "OGame Tech Blue" */
   --color-primary: #00BFFF; 
   --color-primary-foreground: #000000;
   
-  /* Secondary: The "Alert/Resource Orange" */
   --color-secondary: #FF9600;
   --color-secondary-foreground: #000000;
   
-  --color-muted: #1F2532;
-  --color-muted-foreground: #6B7280;
+  --color-muted: #252D3F;
+  --color-muted-foreground: #94A3B8;
   
-  --color-accent: #1F2532;
+  --color-accent: #252D3F;
   --color-accent-foreground: #FFFFFF;
   
   --color-destructive: #991B1B;
   --color-destructive-foreground: #FFFFFF;
   
-  --color-border: #2A3241; /* Distinct borders for UI panels */
-  --color-input: #1A202C;
+  --color-border: #2E384D;
+  --color-input: #1C2230;
   --color-ring: #00BFFF;
   
   --color-chart-1: #00BFFF;
@@ -50,13 +47,13 @@
   --color-chart-4: #8B5CF6;
   --color-chart-5: #EC4899;
   
-  --color-sidebar: #0F1219;
+  --color-sidebar: #151924;
   --color-sidebar-foreground: #9CA3AF;
   --color-sidebar-primary: #00BFFF;
   --color-sidebar-primary-foreground: #000000;
-  --color-sidebar-accent: #1F2532;
+  --color-sidebar-accent: #252D3F;
   --color-sidebar-accent-foreground: #FFFFFF;
-  --color-sidebar-border: #2A3241;
+  --color-sidebar-border: #2E384D;
   --color-sidebar-ring: #00BFFF;
 
   --font-sans: 'Roboto', sans-serif;
@@ -71,9 +68,8 @@
   }
   body {
     @apply font-sans antialiased bg-background text-foreground;
-    background-image: 
-      url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
-    background-color: var(--color-background);
+    background: radial-gradient(circle at 50% 0%, #1e2536 0%, #151924 100%);
+    min-height: 100vh;
   }
 }
 
@@ -87,17 +83,33 @@
   .font-display {
     font-family: var(--font-display);
   }
-  .tech-border {
-    position: relative;
-    border: 1px solid var(--color-border);
+  
+  /* Dynamic Space Background Animation */
+  .space-bg {
+    background: 
+      radial-gradient(1px 1px at 20px 30px, #eee, rgba(0,0,0,0)),
+      radial-gradient(1px 1px at 40px 70px, #fff, rgba(0,0,0,0)),
+      radial-gradient(1px 1px at 50px 160px, #ddd, rgba(0,0,0,0)),
+      radial-gradient(1px 1px at 90px 40px, #fff, rgba(0,0,0,0)),
+      radial-gradient(1px 1px at 130px 80px, #fff, rgba(0,0,0,0)),
+      radial-gradient(1px 1px at 160px 120px, #ddd, rgba(0,0,0,0));
+    background-repeat: repeat;
+    background-size: 200px 200px;
+    animation: stars 60s linear infinite;
   }
-  .tech-border::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--color-border), transparent);
+
+  @keyframes stars {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 1000px; }
+  }
+
+  .logo-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
   }
 }

@@ -26,9 +26,17 @@ import thumb2 from "@assets/generated_images/spaceship_fleet_tactical_view_thumb
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col font-sans text-foreground overflow-x-hidden bg-background">
+    <div className="min-h-screen flex flex-col font-sans text-foreground overflow-x-hidden bg-background relative">
+      {/* Dynamic Background */}
+      <div className="fixed inset-0 space-bg opacity-30 pointer-events-none z-0"></div>
+      
+      {/* Massive Background Logo Blend */}
+      <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] opacity-[0.03] pointer-events-none z-0">
+         <img src={allianceLogo} alt="" className="w-full h-full object-contain animate-[spin_120s_linear_infinite]" />
+      </div>
+
       {/* OGame-style Top Bar */}
-      <div className="h-10 bg-[#0F1219] border-b border-[#2A3241] flex items-center justify-between px-4 text-xs font-mono uppercase tracking-wider text-muted-foreground z-50 relative">
+      <div className="h-10 bg-[#151924] border-b border-[#2E384D] flex items-center justify-between px-4 text-xs font-mono uppercase tracking-wider text-muted-foreground z-50 relative">
         <div className="flex items-center gap-4">
           <span className="text-primary">Univers: Psykoverse</span>
           <span>Abonnés YouTube: 340</span>
@@ -41,12 +49,15 @@ export default function Home() {
       </div>
 
       {/* Navigation */}
-      <nav className="sticky top-0 w-full z-40 border-b border-[#2A3241] bg-[#13171F]/90 backdrop-blur-md shadow-lg">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <img src={allianceLogo} alt="Psykoverse Logo" className="h-10 w-10 rounded-sm border border-white/10" />
+      <nav className="sticky top-0 w-full z-40 border-b border-[#2E384D] bg-[#1C2230]/90 backdrop-blur-md shadow-lg">
+        <div className="container mx-auto px-4 h-20 flex items-center justify-between">
+          <div className="flex items-center gap-4 group">
+            <div className="relative">
+              <div className="absolute -inset-2 bg-primary/20 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <img src={allianceLogo} alt="Psykoverse Logo" className="h-14 w-14 relative z-10 logo-float drop-shadow-[0_0_10px_rgba(0,191,255,0.5)]" />
+            </div>
             <div className="flex flex-col">
-              <span className="font-display font-bold text-lg leading-none tracking-wide text-white">
+              <span className="font-display font-bold text-xl leading-none tracking-wide text-white group-hover:text-primary transition-colors">
                 PSYKOVERSE
               </span>
               <span className="text-[10px] uppercase tracking-widest text-primary font-bold">Alliance Officielle</span>
@@ -59,7 +70,7 @@ export default function Home() {
             <a href="#discord" className="px-4 py-2 hover:bg-white/5 rounded-sm transition-colors text-sm font-bold uppercase tracking-wide text-gray-300 hover:text-white">Communauté</a>
           </div>
 
-          <Button className="bg-secondary hover:bg-secondary/90 text-black font-bold uppercase text-xs tracking-widest px-6" asChild>
+          <Button className="bg-secondary hover:bg-secondary/90 text-black font-bold uppercase text-xs tracking-widest px-6 shadow-[0_0_15px_rgba(255,150,0,0.3)] hover:shadow-[0_0_25px_rgba(255,150,0,0.5)] transition-all" asChild>
             <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer">
               Rejoindre
             </a>
@@ -68,16 +79,11 @@ export default function Home() {
       </nav>
 
       {/* Hero Section - Classic OGame "Galaxy View" feel */}
-      <header className="relative py-24 lg:py-32 overflow-hidden flex items-center border-b border-[#2A3241]">
+      <header className="relative py-24 lg:py-32 overflow-hidden flex items-center border-b border-[#2E384D]">
         <div className="absolute inset-0 z-0">
-          <img 
-            src={heroBg} 
-            alt="Space Background" 
-            className="w-full h-full object-cover opacity-30 saturate-50"
-          />
           <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent" />
           {/* Scanlines effect */}
-          <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-10 bg-[length:100%_2px,3px_100%] pointer-events-none" />
+          <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.1)_50%),linear-gradient(90deg,rgba(255,0,0,0.03),rgba(0,255,0,0.01),rgba(0,0,255,0.03))] z-10 bg-[length:100%_2px,3px_100%] pointer-events-none" />
         </div>
 
         <div className="container relative z-20 px-4">
@@ -87,10 +93,13 @@ export default function Home() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <h1 className="font-display text-4xl md:text-6xl font-bold mb-6 text-white leading-tight">
-                LE PORTAIL DE <br/>
-                <span className="text-primary">LA COMMUNAUTÉ</span>
-              </h1>
+              <div className="flex items-center gap-4 mb-6">
+                <img src={allianceLogo} alt="" className="w-16 h-16 opacity-80 animate-pulse" />
+                <h1 className="font-display text-4xl md:text-6xl font-bold text-white leading-tight">
+                  LE PORTAIL DE <br/>
+                  <span className="text-primary text-glow">LA COMMUNAUTÉ</span>
+                </h1>
+              </div>
               <p className="text-lg md:text-xl text-gray-400 mb-8 border-l-4 border-primary pl-6 py-2 bg-gradient-to-r from-primary/10 to-transparent">
                 Bienvenue sur la page web officielle de la communauté Psykoverse. Ici, vous retrouverez toutes les dernières vidéos, les actualités de l'alliance et les informations mises à jour en temps réel.
                 <br/><br/>
@@ -117,11 +126,11 @@ export default function Home() {
       </header>
 
       {/* Welcome Section - "Tech Panel" Style */}
-      <section id="about" className="py-20 bg-[#0F1219] border-b border-[#2A3241]">
+      <section id="about" className="py-20 bg-[#151924] border-b border-[#2E384D] relative z-10">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-3 gap-8">
             {/* Feature 1 */}
-            <div className="bg-[#13171F] border border-[#2A3241] p-8 relative overflow-hidden group hover:border-primary/50 transition-colors">
+            <div className="bg-[#1C2230] border border-[#2E384D] p-8 relative overflow-hidden group hover:border-primary/50 transition-colors shadow-lg">
               <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
                 <Globe className="w-24 h-24" />
               </div>
@@ -135,7 +144,7 @@ export default function Home() {
             </div>
 
             {/* Feature 2 */}
-            <div className="bg-[#13171F] border border-[#2A3241] p-8 relative overflow-hidden group hover:border-primary/50 transition-colors">
+            <div className="bg-[#1C2230] border border-[#2E384D] p-8 relative overflow-hidden group hover:border-primary/50 transition-colors shadow-lg">
               <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
                 <Users className="w-24 h-24" />
               </div>
@@ -149,7 +158,7 @@ export default function Home() {
             </div>
 
             {/* Feature 3 */}
-            <div className="bg-[#13171F] border border-[#2A3241] p-8 relative overflow-hidden group hover:border-primary/50 transition-colors">
+            <div className="bg-[#1C2230] border border-[#2E384D] p-8 relative overflow-hidden group hover:border-primary/50 transition-colors shadow-lg">
               <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
                 <Star className="w-24 h-24" />
               </div>
@@ -166,14 +175,14 @@ export default function Home() {
       </section>
 
       {/* YouTube Section - "Data Logs" Style */}
-      <section id="youtube" className="py-20 bg-[#0B0E14]">
+      <section id="youtube" className="py-20 bg-[#111620] relative z-10">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-12">
             <div>
               <h2 className="font-display text-3xl font-bold text-white mb-2">ARCHIVES VIDÉO</h2>
               <p className="text-gray-500">Derniers rapports de transmission @7020Psykose</p>
             </div>
-            <Button variant="outline" className="hidden md:flex border-[#2A3241] hover:bg-white/5 text-primary" asChild>
+            <Button variant="outline" className="hidden md:flex border-[#2E384D] hover:bg-white/5 text-primary" asChild>
               <a href="https://www.youtube.com/@7020Psykose" target="_blank" rel="noopener noreferrer">
                 ACCÉDER À LA CHAÎNE
               </a>
@@ -182,7 +191,7 @@ export default function Home() {
 
           <div className="grid md:grid-cols-2 gap-6">
             <a href="https://www.youtube.com/watch?v=uyxCLrgZ8mA" target="_blank" rel="noopener noreferrer" className="group cursor-pointer block">
-              <div className="relative aspect-video bg-black border border-[#2A3241] overflow-hidden mb-4">
+              <div className="relative aspect-video bg-black border border-[#2E384D] overflow-hidden mb-4 shadow-xl">
                 <img src={thumb1} alt="Tuto 1" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
                   <div className="bg-red-600 text-white text-xs font-bold px-2 py-1 uppercase tracking-wider mb-2 inline-block">Tutoriel</div>
@@ -200,7 +209,7 @@ export default function Home() {
             </a>
 
             <a href="https://www.youtube.com/watch?v=aJt84QvLz8Y" target="_blank" rel="noopener noreferrer" className="group cursor-pointer block">
-              <div className="relative aspect-video bg-black border border-[#2A3241] overflow-hidden mb-4">
+              <div className="relative aspect-video bg-black border border-[#2E384D] overflow-hidden mb-4 shadow-xl">
                 <img src={thumb2} alt="Tuto 2" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
                   <div className="bg-red-600 text-white text-xs font-bold px-2 py-1 uppercase tracking-wider mb-2 inline-block">Stratégie</div>
@@ -221,9 +230,9 @@ export default function Home() {
       </section>
 
       {/* Discord CTA - "Join the Fleet" Style */}
-      <section id="discord" className="py-24 relative bg-[#0F1219] border-t border-[#2A3241]">
+      <section id="discord" className="py-24 relative bg-[#151924] border-t border-[#2E384D] z-10">
         <div className="container mx-auto px-4 text-center">
-          <div className="max-w-4xl mx-auto bg-gradient-to-b from-[#13171F] to-[#0B0E14] border border-[#2A3241] p-12 rounded-lg relative overflow-hidden">
+          <div className="max-w-4xl mx-auto bg-gradient-to-b from-[#1C2230] to-[#151924] border border-[#2E384D] p-12 rounded-lg relative overflow-hidden shadow-2xl">
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-secondary to-primary opacity-50"></div>
             
             <Monitor className="w-16 h-16 text-primary mx-auto mb-6 opacity-80" />
@@ -252,7 +261,7 @@ export default function Home() {
       </section>
 
       {/* New Server Teaser - Moved below Discord */}
-      <section className="py-20 relative overflow-hidden bg-gradient-to-b from-[#0B0E14] to-[#13171F] border-t border-[#2A3241]">
+      <section className="py-20 relative overflow-hidden bg-gradient-to-b from-[#151924] to-[#1C2230] border-t border-[#2E384D] z-10">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20" />
         <div className="container relative z-10 mx-auto px-4">
           <div className="text-center mb-12">
@@ -280,7 +289,7 @@ export default function Home() {
               { label: "Catégorie", value: "AGRESSIF" },
               { label: "AG/DG", value: "OUI" }
             ].map((stat, i) => (
-              <div key={i} className="bg-[#0B0E14]/80 border border-[#2A3241] p-4 text-center rounded hover:border-primary/50 transition-colors">
+              <div key={i} className="bg-[#151924]/80 border border-[#2E384D] p-4 text-center rounded hover:border-primary/50 transition-colors shadow-md">
                 <div className="text-gray-500 text-xs uppercase tracking-wider mb-1">{stat.label}</div>
                 <div className="font-display text-xl font-bold text-white">{stat.value}</div>
               </div>
@@ -299,7 +308,7 @@ export default function Home() {
       </section>
 
       {/* Alliance Servers Info - Moved below Discord */}
-      <section className="py-16 bg-[#0F1219] border-t border-[#2A3241]">
+      <section className="py-16 bg-[#151924] border-t border-[#2E384D] z-10 relative">
         <div className="container mx-auto px-4 text-center">
           <h2 className="font-display text-2xl font-bold text-white mb-8 flex items-center justify-center gap-3">
             <span className="w-8 h-[2px] bg-primary"></span>
@@ -307,11 +316,11 @@ export default function Home() {
             <span className="w-8 h-[2px] bg-primary"></span>
           </h2>
           <div className="flex flex-wrap justify-center gap-6">
-            <div className="px-8 py-4 bg-[#13171F] border border-[#2A3241] rounded hover:border-primary/50 transition-colors">
+            <div className="px-8 py-4 bg-[#1C2230] border border-[#2E384D] rounded hover:border-primary/50 transition-colors shadow-lg">
               <span className="block text-xs text-gray-500 uppercase tracking-widest mb-1">Univers</span>
               <span className="font-display text-2xl font-bold text-white">HERCULES</span>
             </div>
-            <div className="px-8 py-4 bg-[#13171F] border border-[#2A3241] rounded hover:border-primary/50 transition-colors">
+            <div className="px-8 py-4 bg-[#1C2230] border border-[#2E384D] rounded hover:border-primary/50 transition-colors shadow-lg">
               <span className="block text-xs text-gray-500 uppercase tracking-widest mb-1">Univers</span>
               <span className="font-display text-2xl font-bold text-white">SCORPIUS</span>
             </div>
@@ -320,7 +329,7 @@ export default function Home() {
       </section>
 
       {/* Footer - "Game Credits" Style */}
-      <footer className="py-12 bg-[#0B0E14] border-t border-[#2A3241] text-center">
+      <footer className="py-12 bg-[#111620] border-t border-[#2E384D] text-center relative z-10">
         <div className="container mx-auto px-4">
           <img src={allianceLogo} alt="Logo" className="h-12 w-12 mx-auto mb-6 opacity-50 grayscale hover:grayscale-0 transition-all" />
           <p className="text-gray-500 text-sm mb-4">© 2025 Psykoverse Community. Fan project non affilié à Gameforge.</p>
