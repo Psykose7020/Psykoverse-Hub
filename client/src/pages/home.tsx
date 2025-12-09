@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { 
@@ -60,6 +60,17 @@ function FAQItem({ question, children }: { question: string; children: React.Rea
 
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/visit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        page: window.location.pathname,
+        referrer: document.referrer || null,
+      }),
+    }).catch(() => {});
+  }, []);
 
   const scrollToSection = (id: string) => {
     setMobileMenuOpen(false);
@@ -480,6 +491,13 @@ export default function Home() {
             <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">Discord</a>
             <a href="https://www.youtube.com/@7020Psykose" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">YouTube</a>
           </div>
+          <Link 
+            href="/admin" 
+            className="mt-6 inline-block text-[10px] text-gray-700 hover:text-gray-500 transition-colors opacity-30 hover:opacity-60"
+            data-testid="link-admin"
+          >
+            •
+          </Link>
         </div>
       </footer>
     </div>

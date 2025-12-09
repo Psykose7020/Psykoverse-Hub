@@ -1,0 +1,324 @@
+import { useState, useEffect } from "react";
+import { useLocation } from "wouter";
+import { Lock, Users, Eye, Calendar, TrendingUp, ExternalLink, LogOut, BarChart3 } from "lucide-react";
+
+interface VisitStats {
+  total: number;
+  today: number;
+  thisWeek: number;
+  thisMonth: number;
+  recentVisits: Array<{
+    id: string;
+    page: string;
+    userAgent: string | null;
+    ip: string | null;
+    referrer: string | null;
+    visitedAt: string;
+  }>;
+  pageStats: Array<{ page: string; count: number }>;
+}
+
+export default function Admin() {
+  const [, setLocation] = useLocation();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [stats, setStats] = useState<VisitStats | null>(null);
+  const [token, setToken] = useState("");
+
+  useEffect(() => {
+    const savedToken = localStorage.getItem("adminToken");
+    if (savedToken) {
+      setToken(savedToken);
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isLoggedIn && token) {
+      fetchStats();
+      const interval = setInterval(fetchStats, 30000);
+      return () => clearInterval(interval);
+    }
+  }, [isLoggedIn, token]);
+
+  const fetchStats = async () => {
+    try {
+      const res = await fetch("/api/admin/stats", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setStats(data);
+      } else if (res.status === 401) {
+        handleLogout();
+      }
+    } catch (err) {
+      console.error("Failed to fetch stats:", err);
+    }
+  };
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    try {
+      const res = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setToken(data.token);
+        localStorage.setItem("adminToken", data.token);
+        setIsLoggedIn(true);
+        setPassword("");
+      } else {
+        setError("Mot de passe incorrect");
+      }
+    } catch (err) {
+      setError("Erreur de connexion");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("adminToken");
+    setToken("");
+    setIsLoggedIn(false);
+    setStats(null);
+  };
+
+  const formatDate = (dateStr: string) => {
+    return new Date(dateStr).toLocaleString("fr-FR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+
+  const getBrowserFromUA = (ua: string | null) => {
+    if (!ua) return "Inconnu";
+    if (ua.includes("Chrome")) return "Chrome";
+    if (ua.includes("Firefox")) return "Firefox";
+    if (ua.includes("Safari")) return "Safari";
+    if (ua.includes("Edge")) return "Edge";
+    return "Autre";
+  };
+
+  if (!isLoggedIn) {
+    return (
+      <div className="min-h-screen bg-[#0B0E14] flex items-center justify-center p-4">
+        <div className="bg-[#12161F] border border-[#1E2A3A] rounded-lg p-8 w-full max-w-md">
+          <div className="flex items-center justify-center mb-6">
+            <div className="w-16 h-16 bg-gradient-to-br from-[#00BFFF] to-[#0080FF] rounded-full flex items-center justify-center">
+              <Lock className="w-8 h-8 text-white" />
+            </div>
+          </div>
+          <h1 className="text-2xl font-bold text-white text-center mb-6 font-['Exo_2']">
+            Espace Administrateur
+          </h1>
+          
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div>
+              <label className="block text-gray-400 text-sm mb-2">Mot de passe</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full bg-[#0B0E14] border border-[#1E2A3A] rounded-lg px-4 py-3 text-white focus:border-[#00BFFF] focus:outline-none transition-colors"
+                placeholder="Entrez le mot de passe"
+                data-testid="input-admin-password"
+              />
+            </div>
+            
+            {error && (
+              <p className="text-red-500 text-sm text-center">{error}</p>
+            )}
+            
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-gradient-to-r from-[#00BFFF] to-[#0080FF] text-white font-semibold py-3 rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50"
+              data-testid="button-admin-login"
+            >
+              {loading ? "Connexion..." : "Se connecter"}
+            </button>
+          </form>
+          
+          <button
+            onClick={() => setLocation("/")}
+            className="w-full mt-4 text-gray-500 text-sm hover:text-gray-400 transition-colors"
+            data-testid="link-back-home"
+          >
+            ← Retour au site
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-[#0B0E14] p-4 md:p-8">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+          <div>
+            <h1 className="text-3xl font-bold text-white font-['Exo_2']">
+              Dashboard Administrateur
+            </h1>
+            <p className="text-gray-400 mt-1">Psykoverse - Statistiques visiteurs</p>
+          </div>
+          
+          <div className="flex gap-3">
+            <a
+              href="https://replit.com/@7020Psykose/psykoverse"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 bg-[#F26207] hover:bg-[#E55100] text-white px-4 py-2 rounded-lg transition-colors"
+              data-testid="link-replit-edit"
+            >
+              <ExternalLink className="w-4 h-4" />
+              Modifier sur Replit
+            </a>
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 bg-[#1E2A3A] hover:bg-[#2A3A4A] text-gray-300 px-4 py-2 rounded-lg transition-colors"
+              data-testid="button-logout"
+            >
+              <LogOut className="w-4 h-4" />
+              Déconnexion
+            </button>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <StatCard
+            icon={<Eye className="w-6 h-6" />}
+            label="Total visites"
+            value={stats?.total || 0}
+            color="from-[#00BFFF] to-[#0080FF]"
+          />
+          <StatCard
+            icon={<Calendar className="w-6 h-6" />}
+            label="Aujourd'hui"
+            value={stats?.today || 0}
+            color="from-[#10B981] to-[#059669]"
+          />
+          <StatCard
+            icon={<TrendingUp className="w-6 h-6" />}
+            label="Cette semaine"
+            value={stats?.thisWeek || 0}
+            color="from-[#F59E0B] to-[#D97706]"
+          />
+          <StatCard
+            icon={<Users className="w-6 h-6" />}
+            label="Ce mois"
+            value={stats?.thisMonth || 0}
+            color="from-[#8B5CF6] to-[#7C3AED]"
+          />
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2 bg-[#12161F] border border-[#1E2A3A] rounded-lg p-6">
+            <h2 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+              <Eye className="w-5 h-5 text-[#00BFFF]" />
+              Visites récentes
+            </h2>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="text-left text-gray-400 text-sm border-b border-[#1E2A3A]">
+                    <th className="pb-3">Page</th>
+                    <th className="pb-3">Navigateur</th>
+                    <th className="pb-3">Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {stats?.recentVisits.slice(0, 15).map((visit) => (
+                    <tr key={visit.id} className="border-b border-[#1E2A3A]/50 text-sm">
+                      <td className="py-3 text-white">{visit.page}</td>
+                      <td className="py-3 text-gray-400">{getBrowserFromUA(visit.userAgent)}</td>
+                      <td className="py-3 text-gray-500">{formatDate(visit.visitedAt)}</td>
+                    </tr>
+                  ))}
+                  {(!stats || stats.recentVisits.length === 0) && (
+                    <tr>
+                      <td colSpan={3} className="py-8 text-center text-gray-500">
+                        Aucune visite enregistrée
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div className="bg-[#12161F] border border-[#1E2A3A] rounded-lg p-6">
+            <h2 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+              <BarChart3 className="w-5 h-5 text-[#00BFFF]" />
+              Pages populaires
+            </h2>
+            <div className="space-y-3">
+              {stats?.pageStats.map((page, index) => (
+                <div key={page.page} className="flex items-center justify-between">
+                  <span className="text-gray-300">{page.page}</span>
+                  <div className="flex items-center gap-2">
+                    <div
+                      className="h-2 bg-gradient-to-r from-[#00BFFF] to-[#0080FF] rounded-full"
+                      style={{
+                        width: `${Math.min(100, (page.count / (stats?.total || 1)) * 200)}px`,
+                      }}
+                    />
+                    <span className="text-white font-medium min-w-[40px] text-right">
+                      {page.count}
+                    </span>
+                  </div>
+                </div>
+              ))}
+              {(!stats || stats.pageStats.length === 0) && (
+                <p className="text-gray-500 text-center py-4">Aucune donnée</p>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-6 text-center text-gray-600 text-sm">
+          Les statistiques se rafraîchissent automatiquement toutes les 30 secondes
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function StatCard({
+  icon,
+  label,
+  value,
+  color,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: number;
+  color: string;
+}) {
+  return (
+    <div className="bg-[#12161F] border border-[#1E2A3A] rounded-lg p-6">
+      <div className="flex items-center gap-4">
+        <div className={`w-12 h-12 bg-gradient-to-br ${color} rounded-lg flex items-center justify-center text-white`}>
+          {icon}
+        </div>
+        <div>
+          <p className="text-gray-400 text-sm">{label}</p>
+          <p className="text-2xl font-bold text-white">{value.toLocaleString("fr-FR")}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
