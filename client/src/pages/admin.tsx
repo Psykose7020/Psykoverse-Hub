@@ -363,7 +363,7 @@ export default function Admin() {
             Carte des visiteurs
           </h2>
           <div className="relative w-full h-[300px] md:h-[400px] bg-[#0B0E14] rounded-lg overflow-hidden">
-            <svg viewBox="0 0 1000 500" className="w-full h-full">
+            <svg viewBox="0 0 1000 500" className="w-full h-full" preserveAspectRatio="xMidYMid meet">
               <defs>
                 <radialGradient id="pointGlow" cx="50%" cy="50%" r="50%">
                   <stop offset="0%" stopColor="#00BFFF" stopOpacity="1" />
@@ -371,23 +371,48 @@ export default function Admin() {
                 </radialGradient>
               </defs>
               <rect fill="#0B0E14" width="1000" height="500" />
-              <path
-                d="M150,120 L180,100 L220,105 L260,95 L300,100 L340,90 L380,95 L420,85 L460,90 L500,80 L540,85 L580,75 L620,80 L660,70 L700,75 L740,65 L780,70 L820,60 L860,65
-                   M100,180 L140,170 L180,175 L220,165 L260,170 L300,160 L340,165 L380,155 L420,160 L460,150 L500,155 L540,145 L580,150 L620,140 L660,145 L700,135 L740,140 L780,130 L820,135 L860,125 L900,130
-                   M80,240 L120,235 L160,240 L200,230 L240,235 L280,225 L320,230 L360,220 L400,225 L440,215 L480,220 L520,210 L560,215 L600,205 L640,210 L680,200 L720,205 L760,195 L800,200 L840,190 L880,195 L920,185
-                   M100,300 L140,295 L180,300 L220,290 L260,295 L300,285 L340,290 L380,280 L420,285 L460,275 L500,280 L540,270 L580,275 L620,265 L660,270 L700,260 L740,265 L780,255 L820,260 L860,250 L900,255
-                   M120,360 L160,355 L200,360 L240,350 L280,355 L320,345 L360,350 L400,340 L440,345 L480,335 L520,340 L560,330 L600,335 L640,325 L680,330 L720,320 L760,325 L800,315 L840,320 L880,310
-                   M150,420 L190,415 L230,420 L270,410 L310,415 L350,405 L390,410 L430,400 L470,405 L510,395 L550,400 L590,390 L630,395 L670,385 L710,390 L750,380 L790,385 L830,375"
-                stroke="#1E2A3A"
-                strokeWidth="0.5"
-                fill="none"
-              />
-              <ellipse cx="280" cy="200" rx="120" ry="100" fill="#1E2A3A" opacity="0.3" />
-              <ellipse cx="520" cy="180" rx="80" ry="120" fill="#1E2A3A" opacity="0.3" />
-              <ellipse cx="750" cy="220" rx="100" ry="80" fill="#1E2A3A" opacity="0.3" />
-              <ellipse cx="850" cy="350" rx="60" ry="50" fill="#1E2A3A" opacity="0.3" />
-              <ellipse cx="350" cy="380" rx="80" ry="60" fill="#1E2A3A" opacity="0.3" />
-              <ellipse cx="550" cy="380" rx="40" ry="30" fill="#1E2A3A" opacity="0.3" />
+              
+              {/* North America */}
+              <path d="M120,80 L140,70 L180,65 L220,70 L250,80 L270,100 L280,130 L260,160 L240,180 L200,200 L180,220 L160,250 L140,280 L150,300 L180,320 L200,350 L180,360 L150,340 L120,300 L100,260 L90,220 L80,180 L90,140 L100,100 Z" fill="#1E2A3A" stroke="#2E384D" strokeWidth="1" />
+              
+              {/* Central America */}
+              <path d="M180,320 L200,330 L220,350 L240,370 L250,390 L240,400 L220,390 L200,370 L180,350 L170,330 Z" fill="#1E2A3A" stroke="#2E384D" strokeWidth="1" />
+              
+              {/* South America */}
+              <path d="M250,390 L280,380 L320,390 L340,420 L350,460 L330,490 L300,495 L270,480 L250,450 L240,420 L250,400 Z" fill="#1E2A3A" stroke="#2E384D" strokeWidth="1" />
+              
+              {/* Europe */}
+              <path d="M450,80 L480,70 L520,75 L560,80 L580,100 L570,130 L550,150 L520,160 L490,155 L460,140 L440,120 L440,100 Z" fill="#1E2A3A" stroke="#2E384D" strokeWidth="1" />
+              
+              {/* UK */}
+              <path d="M430,100 L440,90 L450,95 L455,110 L445,120 L430,115 Z" fill="#1E2A3A" stroke="#2E384D" strokeWidth="1" />
+              
+              {/* Africa */}
+              <path d="M450,180 L500,170 L550,180 L580,210 L590,260 L580,320 L560,370 L520,400 L480,410 L450,390 L430,350 L420,300 L430,250 L440,210 Z" fill="#1E2A3A" stroke="#2E384D" strokeWidth="1" />
+              
+              {/* Russia/Asia North */}
+              <path d="M580,60 L650,50 L720,45 L800,50 L860,60 L900,80 L920,100 L910,130 L880,150 L820,160 L750,155 L680,145 L620,130 L590,110 L580,80 Z" fill="#1E2A3A" stroke="#2E384D" strokeWidth="1" />
+              
+              {/* Middle East */}
+              <path d="M580,160 L620,150 L660,160 L680,190 L670,220 L640,240 L600,230 L580,200 L575,175 Z" fill="#1E2A3A" stroke="#2E384D" strokeWidth="1" />
+              
+              {/* India */}
+              <path d="M680,200 L720,190 L750,210 L760,250 L740,290 L700,310 L670,290 L660,250 L670,220 Z" fill="#1E2A3A" stroke="#2E384D" strokeWidth="1" />
+              
+              {/* China/East Asia */}
+              <path d="M750,120 L800,110 L850,120 L880,150 L870,190 L840,220 L800,240 L760,230 L740,200 L740,160 Z" fill="#1E2A3A" stroke="#2E384D" strokeWidth="1" />
+              
+              {/* Japan */}
+              <path d="M890,140 L910,130 L920,145 L915,170 L900,180 L885,170 L880,155 Z" fill="#1E2A3A" stroke="#2E384D" strokeWidth="1" />
+              
+              {/* Southeast Asia */}
+              <path d="M800,250 L840,240 L870,260 L880,300 L860,330 L820,340 L790,320 L780,280 Z" fill="#1E2A3A" stroke="#2E384D" strokeWidth="1" />
+              
+              {/* Australia */}
+              <path d="M820,380 L880,370 L920,390 L940,430 L920,470 L870,480 L820,460 L800,420 L810,390 Z" fill="#1E2A3A" stroke="#2E384D" strokeWidth="1" />
+              
+              {/* New Zealand */}
+              <path d="M950,450 L965,440 L975,455 L970,475 L955,480 L945,465 Z" fill="#1E2A3A" stroke="#2E384D" strokeWidth="1" />
               
               {geoData.map((geo, i) => {
                 const x = ((geo.lon + 180) / 360) * 1000;
