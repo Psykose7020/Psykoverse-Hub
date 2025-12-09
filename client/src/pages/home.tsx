@@ -98,10 +98,6 @@ export default function Home() {
         </div>
         <div className="flex items-center gap-6">
           <span className="text-gray-600">V1.0</span>
-          <Link href="/support" className="hover:text-primary transition-colors flex items-center gap-2">
-            <Shield className="w-3 h-3" />
-            <span className="hidden sm:inline">Support</span>
-          </Link>
         </div>
       </div>
 
