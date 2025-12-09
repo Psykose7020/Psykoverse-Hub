@@ -60,6 +60,13 @@ export default function Support() {
                 </a>
               </Button>
 
+              <Button size="lg" variant="outline" className="w-full mt-4 border-[#2A3241] text-gray-300 hover:bg-[#1F2532] hover:text-white font-display font-bold uppercase tracking-widest h-12 rounded transition-all" asChild>
+                <Link href="/">
+                  <ArrowLeft className="mr-3 w-4 h-4" />
+                  Retour au site
+                </Link>
+              </Button>
+
             </div>
           </div>
         </div>
