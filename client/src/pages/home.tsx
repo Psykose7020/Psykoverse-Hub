@@ -36,15 +36,21 @@ export default function Home() {
          <img src={allianceLogo} alt="" className="w-full h-full object-contain animate-[spin_120s_linear_infinite]" />
       </div>
 
-      {/* OGame-style Top Bar */}
-      <div className="h-10 bg-[#151924] border-b border-[#2E384D] flex items-center justify-between px-4 text-xs font-mono uppercase tracking-wider text-muted-foreground z-50 relative">
+      {/* OGame-style Top Bar - Integrated System Status */}
+      <div className="h-8 bg-[#0B0E14] border-b border-white/5 flex items-center justify-between px-4 text-[10px] font-mono uppercase tracking-widest text-gray-500 z-50 relative">
         <div className="flex items-center gap-4">
-          <span className="text-primary">Univers: Psykoverse</span>
-          <span>Abonnés YouTube: 340</span>
+          <span className="flex items-center gap-2 text-gray-400">
+             <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse shadow-[0_0_8px_rgba(239,68,68,0.5)]"></div>
+             Abonnés YouTube: 340
+          </span>
         </div>
-        <div className="flex items-center gap-4">
-          <Link href="/support">
-            <a className="hover:text-white cursor-pointer transition-colors">Support</a>
+        <div className="flex items-center gap-6">
+           <span className="hidden sm:inline text-gray-600">v3.4.0-stable</span>
+           <Link href="/support">
+            <a className="hover:text-primary transition-colors flex items-center gap-2">
+              <Shield className="w-3 h-3" />
+              Centre de Support
+            </a>
           </Link>
         </div>
       </div>
