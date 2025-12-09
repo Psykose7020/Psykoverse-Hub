@@ -135,6 +135,10 @@ export default function Home() {
             <button onClick={() => scrollToSection('faq')} className="px-4 py-2 hover:bg-white/5 rounded transition-colors text-sm font-bold uppercase tracking-wide text-gray-300 hover:text-white">
               FAQ
             </button>
+            <Link href="/support" className="px-4 py-2 hover:bg-primary/10 rounded transition-colors text-sm font-bold uppercase tracking-wide text-primary hover:text-primary flex items-center gap-2">
+              <Shield className="w-4 h-4" />
+              Support
+            </Link>
           </div>
 
           {/* Desktop CTA */}
@@ -157,7 +161,7 @@ export default function Home() {
         </div>
 
         {/* Mobile Menu */}
-        <div className={`md:hidden overflow-hidden transition-all duration-300 ${mobileMenuOpen ? 'max-h-80' : 'max-h-0'}`}>
+        <div className={`md:hidden overflow-hidden transition-all duration-300 ${mobileMenuOpen ? 'max-h-96' : 'max-h-0'}`}>
           <div className="px-4 pb-4 space-y-2 border-t border-[#2E384D]">
             <button onClick={() => scrollToSection('about')} className="block w-full text-left px-4 py-3 hover:bg-white/5 rounded text-sm font-bold uppercase tracking-wide text-gray-300 hover:text-white">
               À Propos
@@ -171,6 +175,14 @@ export default function Home() {
             <button onClick={() => scrollToSection('faq')} className="block w-full text-left px-4 py-3 hover:bg-white/5 rounded text-sm font-bold uppercase tracking-wide text-gray-300 hover:text-white">
               FAQ
             </button>
+            <Link 
+              href="/support" 
+              className="flex items-center gap-2 w-full px-4 py-3 hover:bg-primary/10 rounded text-sm font-bold uppercase tracking-wide text-primary"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <Shield className="w-4 h-4" />
+              Support
+            </Link>
             <a 
               href="https://discord.gg/3PWk4HmfNn" 
               target="_blank" 
