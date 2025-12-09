@@ -124,5 +124,47 @@ export async function registerRoutes(
     }
   });
 
+  app.get("/api/admin/geo", async (req, res) => {
+    try {
+      const authHeader = req.headers.authorization;
+      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+      
+      const token = authHeader.slice(7);
+      if (!validateToken(token)) {
+        return res.status(401).json({ error: "Invalid or expired token" });
+      }
+
+      const stats = await storage.getVisitStats();
+      const uniqueIPs = [...new Set(stats.recentVisits.map(v => v.ip).filter(Boolean))];
+      
+      const geoData: Array<{ ip: string; lat: number; lon: number; city: string; country: string; count: number }> = [];
+      
+      for (const ip of uniqueIPs.slice(0, 20)) {
+        try {
+          const response = await fetch(`http://ip-api.com/json/${ip}?fields=status,country,city,lat,lon`);
+          const data = await response.json();
+          if (data.status === "success") {
+            const count = stats.recentVisits.filter(v => v.ip === ip).length;
+            geoData.push({
+              ip: ip as string,
+              lat: data.lat,
+              lon: data.lon,
+              city: data.city || "Inconnu",
+              country: data.country || "Inconnu",
+              count
+            });
+          }
+        } catch {}
+      }
+      
+      res.json(geoData);
+    } catch (error) {
+      console.error("Geo error:", error);
+      res.status(500).json({ error: "Failed to get geo data" });
+    }
+  });
+
   return httpServer;
 }
