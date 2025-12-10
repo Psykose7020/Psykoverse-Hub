@@ -87,8 +87,10 @@ export default function SpaceGame() {
   const [univers, setUnivers] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [gameOffset, setGameOffset] = useState({ x: 0, y: 0 });
   
   const gameRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<HTMLDivElement>(null);
   const playerXRef = useRef(50);
   const targetXRef = useRef(50);
@@ -97,6 +99,8 @@ export default function SpaceGame() {
   const obstacleIdRef = useRef(0);
   const isPlayingRef = useRef(false);
   const scoreRef = useRef(0);
+  const shakeTargetRef = useRef({ x: 0, y: 0 });
+  const lastShakeTimeRef = useRef(0);
 
   useEffect(() => {
     const saved = localStorage.getItem("psykoverse:highscore");
@@ -118,6 +122,7 @@ export default function SpaceGame() {
     setGameState("gameover");
     isPlayingRef.current = false;
     document.exitPointerLock?.();
+    setGameOffset({ x: 0, y: 0 });
     const finalScore = scoreRef.current;
     setScore(finalScore);
     const currentHigh = parseInt(localStorage.getItem("psykoverse:highscore") || "0");
@@ -167,6 +172,8 @@ export default function SpaceGame() {
     setScore(0);
     scoreRef.current = 0;
     setObstacles([]);
+    setGameOffset({ x: 0, y: 0 });
+    shakeTargetRef.current = { x: 0, y: 0 };
     playerXRef.current = 50;
     targetXRef.current = 50;
     if (playerRef.current) {
@@ -176,6 +183,7 @@ export default function SpaceGame() {
     setPseudo("");
     setUnivers("");
     lastTimeRef.current = performance.now();
+    lastShakeTimeRef.current = performance.now();
     gameRef.current?.requestPointerLock?.();
   };
 
@@ -222,6 +230,28 @@ export default function SpaceGame() {
         
         updatePlayerPosition();
 
+        if (scoreRef.current >= 5000) {
+          const shakeDelta = time - lastShakeTimeRef.current;
+          const progress = Math.min((scoreRef.current - 5000) / 35000, 1);
+          const maxOffset = 150 * progress;
+          const changeInterval = Math.max(100, 800 - progress * 700);
+          
+          if (shakeDelta > changeInterval) {
+            lastShakeTimeRef.current = time;
+            const angle = Math.random() * Math.PI * 2;
+            const distance = Math.random() * maxOffset;
+            shakeTargetRef.current = {
+              x: Math.cos(angle) * distance,
+              y: Math.sin(angle) * distance * 0.6
+            };
+          }
+          
+          setGameOffset(prev => ({
+            x: prev.x + (shakeTargetRef.current.x - prev.x) * 0.08,
+            y: prev.y + (shakeTargetRef.current.y - prev.y) * 0.08
+          }));
+        }
+
         setObstacles(prev => {
           const updated = prev
             .map(o => ({ ...o, y: o.y + o.speed }))
@@ -266,32 +296,41 @@ export default function SpaceGame() {
   const currentShip = SHIP_VARIANTS[shipVariant];
 
   return (
-    <div className="hidden lg:block">
-      <div className="flex items-center justify-between mb-2 px-2">
-        <div className="flex items-center gap-2">
-          <Gamepad2 className="w-4 h-4 text-primary/70" />
-          <span className="font-display font-bold text-white/80 text-xs">Space Escape</span>
-        </div>
-        <div className="flex items-center gap-3 text-xs">
-          <Link 
-            href="/classement" 
-            className="bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30 px-2 py-1 rounded text-xs font-medium transition-colors flex items-center gap-1"
-            data-testid="link-leaderboard"
-          >
-            <Trophy className="w-3 h-3" />
-            Top
-          </Link>
-          <span className="text-primary font-bold">{score}</span>
-          <span className="text-yellow-400 flex items-center gap-1">
-            <Trophy className="w-3 h-3" />{highScore}
-          </span>
-        </div>
-      </div>
-
-      <div
-        ref={gameRef}
-        className="relative h-[320px] bg-black/20 rounded-2xl overflow-hidden cursor-none select-none border border-white/10 backdrop-blur-sm"
+    <div ref={containerRef} className="hidden lg:block">
+      <div 
+        className="transition-transform duration-75 ease-out"
+        style={{ 
+          transform: `translate(${gameOffset.x}px, ${gameOffset.y}px)`,
+        }}
       >
+        <div className="flex items-center justify-between mb-2 px-2">
+          <div className="flex items-center gap-2">
+            <Gamepad2 className="w-4 h-4 text-primary/70" />
+            <span className="font-display font-bold text-white/80 text-xs">Space Escape</span>
+            {score >= 5000 && (
+              <span className="text-orange-400 text-[10px] animate-pulse">MODE CHAOS</span>
+            )}
+          </div>
+          <div className="flex items-center gap-3 text-xs">
+            <Link 
+              href="/classement" 
+              className="bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30 px-2 py-1 rounded text-xs font-medium transition-colors flex items-center gap-1"
+              data-testid="link-leaderboard"
+            >
+              <Trophy className="w-3 h-3" />
+              Top
+            </Link>
+            <span className="text-primary font-bold">{score}</span>
+            <span className="text-yellow-400 flex items-center gap-1">
+              <Trophy className="w-3 h-3" />{highScore}
+            </span>
+          </div>
+        </div>
+
+        <div
+          ref={gameRef}
+          className="relative h-[320px] bg-black/20 rounded-2xl overflow-hidden cursor-none select-none border border-white/10 backdrop-blur-sm"
+        >
         {gameState === "playing" && (
           <>
             <div
@@ -470,6 +509,7 @@ export default function SpaceGame() {
             </motion.div>
           )}
         </AnimatePresence>
+      </div>
       </div>
     </div>
   );
