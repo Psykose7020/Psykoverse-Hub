@@ -1,6 +1,16 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
-import { Lock, Users, Eye, Calendar, TrendingUp, ExternalLink, LogOut, BarChart3, Globe } from "lucide-react";
+import { Lock, Users, Eye, Calendar, TrendingUp, ExternalLink, LogOut, BarChart3, Globe, MessageCircle, Mail, Archive, CheckCircle, Clock, ChevronRight, X } from "lucide-react";
+
+interface Feedback {
+  id: string;
+  message: string;
+  page: string | null;
+  userAgent: string | null;
+  ip: string | null;
+  status: string;
+  createdAt: string;
+}
 
 interface VisitStats {
   total: number;
@@ -36,6 +46,9 @@ export default function Admin() {
   const [stats, setStats] = useState<VisitStats | null>(null);
   const [geoData, setGeoData] = useState<GeoData[]>([]);
   const [token, setToken] = useState("");
+  const [feedbackList, setFeedbackList] = useState<Feedback[]>([]);
+  const [selectedFeedback, setSelectedFeedback] = useState<Feedback | null>(null);
+  const [activeTab, setActiveTab] = useState<"stats" | "feedback">("stats");
 
   useEffect(() => {
     const savedToken = localStorage.getItem("adminToken");
@@ -49,11 +62,14 @@ export default function Admin() {
     if (isLoggedIn && token) {
       fetchStats();
       fetchGeoData();
+      fetchFeedback();
       const interval = setInterval(fetchStats, 30000);
       const geoInterval = setInterval(fetchGeoData, 60000);
+      const feedbackInterval = setInterval(fetchFeedback, 30000);
       return () => {
         clearInterval(interval);
         clearInterval(geoInterval);
+        clearInterval(feedbackInterval);
       };
     }
   }, [isLoggedIn, token]);
@@ -85,6 +101,42 @@ export default function Admin() {
       }
     } catch (err) {
       console.error("Failed to fetch stats:", err);
+    }
+  };
+
+  const fetchFeedback = async () => {
+    try {
+      const res = await fetch("/api/admin/feedback", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setFeedbackList(data);
+      }
+    } catch (err) {
+      console.error("Failed to fetch feedback:", err);
+    }
+  };
+
+  const updateFeedbackStatus = async (id: string, status: string) => {
+    try {
+      const res = await fetch(`/api/admin/feedback/${id}`, {
+        method: "PATCH",
+        headers: { 
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ status }),
+      });
+      if (res.ok) {
+        const updated = await res.json();
+        setFeedbackList(prev => prev.map(f => f.id === id ? updated : f));
+        if (selectedFeedback?.id === id) {
+          setSelectedFeedback(updated);
+        }
+      }
+    } catch (err) {
+      console.error("Failed to update feedback:", err);
     }
   };
 
@@ -248,6 +300,40 @@ export default function Admin() {
           </div>
         </div>
 
+        <div className="flex gap-2 mb-6">
+          <button
+            onClick={() => setActiveTab("stats")}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+              activeTab === "stats" 
+                ? "bg-gradient-to-r from-[#00BFFF] to-[#0080FF] text-white" 
+                : "bg-[#1E2A3A] text-gray-400 hover:text-white"
+            }`}
+            data-testid="tab-stats"
+          >
+            <BarChart3 className="w-4 h-4" />
+            Statistiques
+          </button>
+          <button
+            onClick={() => setActiveTab("feedback")}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors relative ${
+              activeTab === "feedback" 
+                ? "bg-gradient-to-r from-[#00BFFF] to-[#0080FF] text-white" 
+                : "bg-[#1E2A3A] text-gray-400 hover:text-white"
+            }`}
+            data-testid="tab-feedback"
+          >
+            <Mail className="w-4 h-4" />
+            Boîte aux lettres
+            {feedbackList.filter(f => f.status === "nouveau").length > 0 && (
+              <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
+                {feedbackList.filter(f => f.status === "nouveau").length}
+              </span>
+            )}
+          </button>
+        </div>
+
+        {activeTab === "stats" && (
+        <>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <StatCard
             icon={<Eye className="w-6 h-6" />}
@@ -449,6 +535,164 @@ export default function Admin() {
         <div className="mt-6 text-center text-gray-600 text-sm">
           Les statistiques se rafraîchissent automatiquement toutes les 30 secondes
         </div>
+        </>
+        )}
+
+        {activeTab === "feedback" && (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2 bg-[#12161F] border border-[#1E2A3A] rounded-lg p-6">
+              <h2 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+                <Mail className="w-5 h-5 text-[#00BFFF]" />
+                Messages reçus
+                <span className="text-sm text-gray-500 font-normal">({feedbackList.length})</span>
+              </h2>
+              
+              <div className="space-y-3 max-h-[600px] overflow-y-auto">
+                {feedbackList.map((fb) => (
+                  <div
+                    key={fb.id}
+                    onClick={() => setSelectedFeedback(fb)}
+                    className={`p-4 rounded-lg border cursor-pointer transition-all ${
+                      selectedFeedback?.id === fb.id
+                        ? "bg-[#1E2A3A] border-[#00BFFF]"
+                        : fb.status === "nouveau"
+                        ? "bg-[#0B0E14] border-[#1E2A3A] hover:border-[#00BFFF]/50"
+                        : "bg-[#0B0E14]/50 border-[#1E2A3A]/50 hover:border-[#1E2A3A]"
+                    }`}
+                    data-testid={`feedback-item-${fb.id}`}
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          {fb.status === "nouveau" && (
+                            <span className="w-2 h-2 bg-[#00BFFF] rounded-full animate-pulse"></span>
+                          )}
+                          <span className={`text-xs px-2 py-0.5 rounded ${
+                            fb.status === "nouveau" ? "bg-blue-900/50 text-blue-400" :
+                            fb.status === "lu" ? "bg-green-900/50 text-green-400" :
+                            "bg-gray-900/50 text-gray-400"
+                          }`}>
+                            {fb.status === "nouveau" ? "Nouveau" : fb.status === "lu" ? "Lu" : "Archivé"}
+                          </span>
+                          {fb.page && (
+                            <span className="text-xs text-gray-500">{fb.page}</span>
+                          )}
+                        </div>
+                        <p className={`text-sm truncate ${fb.status === "nouveau" ? "text-white" : "text-gray-400"}`}>
+                          {fb.message}
+                        </p>
+                        <span className="text-xs text-gray-600 mt-1 block">{formatDate(fb.createdAt)}</span>
+                      </div>
+                      <ChevronRight className="w-5 h-5 text-gray-600 flex-shrink-0" />
+                    </div>
+                  </div>
+                ))}
+                
+                {feedbackList.length === 0 && (
+                  <div className="text-center py-12">
+                    <Mail className="w-12 h-12 text-gray-600 mx-auto mb-3" />
+                    <p className="text-gray-500">Aucun message pour le moment</p>
+                    <p className="text-gray-600 text-sm">Les visiteurs peuvent vous envoyer des feedbacks anonymes</p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="bg-[#12161F] border border-[#1E2A3A] rounded-lg p-6">
+              <h2 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+                <MessageCircle className="w-5 h-5 text-[#00BFFF]" />
+                Détails
+              </h2>
+              
+              {selectedFeedback ? (
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className={`text-sm px-3 py-1 rounded-full ${
+                      selectedFeedback.status === "nouveau" ? "bg-blue-900/50 text-blue-400" :
+                      selectedFeedback.status === "lu" ? "bg-green-900/50 text-green-400" :
+                      "bg-gray-900/50 text-gray-400"
+                    }`}>
+                      {selectedFeedback.status === "nouveau" ? "Nouveau" : selectedFeedback.status === "lu" ? "Lu" : "Archivé"}
+                    </span>
+                    <button
+                      onClick={() => setSelectedFeedback(null)}
+                      className="text-gray-500 hover:text-white"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                  
+                  <div className="bg-[#0B0E14] rounded-lg p-4">
+                    <p className="text-white whitespace-pre-wrap">{selectedFeedback.message}</p>
+                  </div>
+                  
+                  <div className="space-y-2 text-sm">
+                    <div className="flex items-center gap-2 text-gray-400">
+                      <Clock className="w-4 h-4" />
+                      <span>{formatDate(selectedFeedback.createdAt)}</span>
+                    </div>
+                    {selectedFeedback.page && (
+                      <div className="flex items-center gap-2 text-gray-400">
+                        <Globe className="w-4 h-4" />
+                        <span>Page : {selectedFeedback.page}</span>
+                      </div>
+                    )}
+                    {selectedFeedback.ip && (
+                      <div className="flex items-center gap-2 text-gray-500">
+                        <span className="font-mono text-xs">IP : {selectedFeedback.ip}</span>
+                      </div>
+                    )}
+                    {selectedFeedback.userAgent && (
+                      <div className="text-gray-600 text-xs mt-2 p-2 bg-[#0B0E14] rounded">
+                        {(() => {
+                          const ua = parseUserAgent(selectedFeedback.userAgent);
+                          return `${ua.device} • ${ua.os} • ${ua.browser}`;
+                        })()}
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div className="flex gap-2 pt-4 border-t border-[#1E2A3A]">
+                    {selectedFeedback.status !== "lu" && (
+                      <button
+                        onClick={() => updateFeedbackStatus(selectedFeedback.id, "lu")}
+                        className="flex-1 flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg text-sm transition-colors"
+                        data-testid="btn-mark-read"
+                      >
+                        <CheckCircle className="w-4 h-4" />
+                        Marquer lu
+                      </button>
+                    )}
+                    {selectedFeedback.status !== "archivé" && (
+                      <button
+                        onClick={() => updateFeedbackStatus(selectedFeedback.id, "archivé")}
+                        className="flex-1 flex items-center justify-center gap-2 bg-[#1E2A3A] hover:bg-[#2A3A4A] text-gray-300 px-3 py-2 rounded-lg text-sm transition-colors"
+                        data-testid="btn-archive"
+                      >
+                        <Archive className="w-4 h-4" />
+                        Archiver
+                      </button>
+                    )}
+                    {selectedFeedback.status === "archivé" && (
+                      <button
+                        onClick={() => updateFeedbackStatus(selectedFeedback.id, "nouveau")}
+                        className="flex-1 flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-sm transition-colors"
+                      >
+                        Restaurer
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <div className="text-center py-12">
+                  <MessageCircle className="w-12 h-12 text-gray-600 mx-auto mb-3" />
+                  <p className="text-gray-500">Sélectionnez un message</p>
+                  <p className="text-gray-600 text-sm">Cliquez sur un message pour voir les détails</p>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
