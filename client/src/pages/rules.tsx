@@ -56,6 +56,12 @@ export default function Rules() {
     <Layout>
       <section className="py-12 md:py-20">
         <div className="container mx-auto px-4">
+          <Link href="/tutoriels">
+            <Button variant="ghost" className="mb-6 text-gray-400 hover:text-white">
+              ← Retour aux tutoriels
+            </Button>
+          </Link>
+          
           <motion.div
             initial="hidden"
             animate="visible"
