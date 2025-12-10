@@ -7,7 +7,7 @@ import {
   GraduationCap, Compass, Trophy, Shield, Eye, Crosshair, Moon, Globe2,
   Target, TrendingUp, Ghost, Layers, Bomb, Plane, Sparkles, Scale,
   ArrowLeftRight, Swords, Dna, Settings, Search, Filter, ChevronRight,
-  Star, Clock, Zap, MessageSquare, ChevronDown
+  Star, Clock, Zap, MessageSquare, ChevronDown, Network
 } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
@@ -53,6 +53,7 @@ const categories = [
       { title: "Classes Alliance", description: "Guerrier, Marchand, Chercheur", icon: Users, color: "from-violet-500 to-purple-600", link: "/guide/alliance-classes", featured: true },
       { title: "Production", description: "Mines et gestion de l'énergie", icon: Factory, color: "from-green-500 to-emerald-600", link: "/guide/production" },
       { title: "Recherches", description: "Arbre des technologies", icon: FlaskConical, color: "from-teal-500 to-cyan-600", link: "/guide/recherches" },
+      { title: "Optimisation RRI", description: "Réseau de Recherche Intergalactique", icon: Network, color: "from-purple-500 to-indigo-600", link: "/guide/rri" },
       { title: "Chantier", description: "Construction de vaisseaux", icon: Rocket, color: "from-slate-500 to-slate-700", link: "/guide/chantier" },
       { title: "Galaxie", description: "Navigation et exploration", icon: Globe, color: "from-indigo-500 to-purple-600", link: "/guide/galaxie" },
       { title: "Jargon", description: "Vocabulaire de la communauté", icon: BookText, color: "from-amber-500 to-orange-600", link: "/guide/jargon" },
