@@ -397,17 +397,17 @@ export default function GuideChantier() {
                     
                     {selectedShip ? (
                       <div className="space-y-4">
-                        <img 
-                          src={selectedShip.image} 
-                          alt={selectedShip.nom}
-                          className="w-full h-32 rounded-lg object-cover"
-                        />
+                        <div className="relative">
+                          <img 
+                            src={selectedShip.image} 
+                            alt={selectedShip.nom}
+                            className="w-full h-48 rounded-xl object-contain bg-[#151924] p-4"
+                          />
+                          <span className="absolute top-3 right-3 text-sm bg-primary/90 text-white px-3 py-1 rounded-lg font-bold shadow-lg">
+                            {selectedShip.abbr}
+                          </span>
+                        </div>
                         <div>
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="text-sm bg-primary/20 text-primary px-2 py-0.5 rounded font-bold">
-                              {selectedShip.abbr}
-                            </span>
-                          </div>
                           <h3 className="text-xl font-bold text-white">{selectedShip.nom}</h3>
                           <p className="text-gray-400 text-sm">{selectedShip.role}</p>
                         </div>
