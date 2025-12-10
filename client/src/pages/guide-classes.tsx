@@ -230,21 +230,6 @@ export default function GuideClasses() {
               </div>
             </div>
 
-            <div className="bg-[#1C2230] border border-[#2E384D] rounded-xl p-6 mb-8">
-              <h2 className="font-display text-xl font-bold text-white mb-4">Tutoriel & Récompenses 7 jours</h2>
-              <p className="text-gray-300 mb-4">
-                Un tutoriel avec récompenses est disponible pendant les 7 premiers jours. 
-                Accédez-y via les icônes en haut de l'écran.
-              </p>
-              <div className="bg-[#0B0E14] rounded-lg p-4">
-                <img 
-                  src="https://img.tedomum.net/data/tuto%204-da68a2.png" 
-                  alt="Tutoriel et récompenses"
-                  className="rounded max-w-md mx-auto"
-                />
-              </div>
-            </div>
-
             <RelatedGuides currentGuide="classes" />
           </motion.div>
         </div>
