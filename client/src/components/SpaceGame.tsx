@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Gamepad2, Trophy, Send } from "lucide-react";
+import { Gamepad2, Trophy, Send, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 
@@ -14,41 +14,71 @@ interface Obstacle {
 }
 
 const SHIP_VARIANTS = [
-  { body: "#00BFFF", accent: "#0080FF", glow: "rgba(0,191,255,0.8)" },
-  { body: "#FF6B6B", accent: "#FF4444", glow: "rgba(255,107,107,0.8)" },
-  { body: "#4ADE80", accent: "#22C55E", glow: "rgba(74,222,128,0.8)" },
-  { body: "#F59E0B", accent: "#D97706", glow: "rgba(245,158,11,0.8)" },
-  { body: "#A855F7", accent: "#9333EA", glow: "rgba(168,85,247,0.8)" },
-  { body: "#EC4899", accent: "#DB2777", glow: "rgba(236,72,153,0.8)" },
-  { body: "#14B8A6", accent: "#0D9488", glow: "rgba(20,184,166,0.8)" },
-  { body: "#EF4444", accent: "#B91C1C", glow: "rgba(239,68,68,0.8)" },
-  { body: "#8B5CF6", accent: "#7C3AED", glow: "rgba(139,92,246,0.8)" },
-  { body: "#06B6D4", accent: "#0891B2", glow: "rgba(6,182,212,0.8)" },
-  { body: "#F97316", accent: "#EA580C", glow: "rgba(249,115,22,0.8)" },
-  { body: "#84CC16", accent: "#65A30D", glow: "rgba(132,204,22,0.8)" },
-  { body: "#E879F9", accent: "#D946EF", glow: "rgba(232,121,249,0.8)" },
-  { body: "#FBBF24", accent: "#F59E0B", glow: "rgba(251,191,36,0.8)" },
-  { body: "#38BDF8", accent: "#0EA5E9", glow: "rgba(56,189,248,0.8)" },
+  { name: "Chasseur Léger", body: "#4ADE80", accent: "#22C55E", glow: "rgba(74,222,128,0.8)", wings: "pointed" },
+  { name: "Chasseur Lourd", body: "#EF4444", accent: "#B91C1C", glow: "rgba(239,68,68,0.8)", wings: "wide" },
+  { name: "Croiseur", body: "#00BFFF", accent: "#0080FF", glow: "rgba(0,191,255,0.8)", wings: "angular" },
+  { name: "Vaisseau Bataille", body: "#8B5CF6", accent: "#7C3AED", glow: "rgba(139,92,246,0.8)", wings: "heavy" },
+  { name: "Traqueur", body: "#F59E0B", accent: "#D97706", glow: "rgba(245,158,11,0.8)", wings: "sleek" },
+  { name: "Bombardier", body: "#6B7280", accent: "#374151", glow: "rgba(107,114,128,0.8)", wings: "bomber" },
+  { name: "Destructeur", body: "#DC2626", accent: "#7F1D1D", glow: "rgba(220,38,38,0.8)", wings: "massive" },
+  { name: "Étoile Mort", body: "#1F2937", accent: "#111827", glow: "rgba(31,41,55,0.8)", wings: "sphere" },
+  { name: "Petit Transport", body: "#14B8A6", accent: "#0D9488", glow: "rgba(20,184,166,0.8)", wings: "cargo" },
+  { name: "Grand Transport", body: "#0EA5E9", accent: "#0369A1", glow: "rgba(14,165,233,0.8)", wings: "freighter" },
+  { name: "Colonisateur", body: "#84CC16", accent: "#65A30D", glow: "rgba(132,204,22,0.8)", wings: "colony" },
+  { name: "Recycleur", body: "#A3A3A3", accent: "#525252", glow: "rgba(163,163,163,0.8)", wings: "recycler" },
+  { name: "Sonde", body: "#E879F9", accent: "#D946EF", glow: "rgba(232,121,249,0.8)", wings: "probe" },
+  { name: "Satellite", body: "#FBBF24", accent: "#F59E0B", glow: "rgba(251,191,36,0.8)", wings: "solar" },
+  { name: "Faucheur", body: "#EC4899", accent: "#DB2777", glow: "rgba(236,72,153,0.8)", wings: "reaper" },
 ];
 
-const OBSTACLE_VARIANTS = [
-  { from: "#8B7355", to: "#4A3728", ring: false, name: "asteroid" },
-  { from: "#CD5C5C", to: "#8B2323", ring: false, name: "mars" },
-  { from: "#4169E1", to: "#191970", ring: false, name: "neptune" },
-  { from: "#DEB887", to: "#8B7355", ring: false, name: "venus" },
-  { from: "#F4A460", to: "#8B4513", ring: true, name: "saturn" },
-  { from: "#4682B4", to: "#1E3A5F", ring: false, name: "earth" },
-  { from: "#FFE4B5", to: "#CD853F", ring: false, name: "mercury" },
-  { from: "#87CEEB", to: "#4682B4", ring: true, name: "uranus" },
-  { from: "#808080", to: "#2F2F2F", ring: false, name: "moon" },
-  { from: "#FFA500", to: "#8B4500", ring: false, name: "io" },
-  { from: "#D2691E", to: "#5C3317", ring: false, name: "titan" },
-  { from: "#B0C4DE", to: "#4A5568", ring: false, name: "europa" },
+const PLANET_VARIANTS = [
+  { from: "#8B7355", to: "#4A3728", hasRing: false },
+  { from: "#CD5C5C", to: "#8B2323", hasRing: false },
+  { from: "#4169E1", to: "#191970", hasRing: false },
+  { from: "#DEB887", to: "#8B7355", hasRing: false },
+  { from: "#F4A460", to: "#8B4513", hasRing: true, ringColor: "#D4A574" },
+  { from: "#4682B4", to: "#1E3A5F", hasRing: false },
+  { from: "#FFE4B5", to: "#CD853F", hasRing: false },
+  { from: "#87CEEB", to: "#4682B4", hasRing: true, ringColor: "#A8D8EA" },
+  { from: "#808080", to: "#2F2F2F", hasRing: false },
+  { from: "#FFA500", to: "#8B4500", hasRing: false },
 ];
+
+function ShipPreview({ variant, size = 40 }: { variant: typeof SHIP_VARIANTS[0]; size?: number }) {
+  const scale = size / 40;
+  
+  return (
+    <div className="relative" style={{ width: size, height: size * 1.2 }}>
+      <div 
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+        style={{ filter: `drop-shadow(0 0 ${8 * scale}px ${variant.glow})` }}
+      >
+        <div 
+          className="relative"
+          style={{
+            width: 0,
+            height: 0,
+            borderLeft: `${8 * scale}px solid transparent`,
+            borderRight: `${8 * scale}px solid transparent`,
+            borderBottom: `${20 * scale}px solid ${variant.body}`,
+          }}
+        />
+        <div 
+          className="absolute -bottom-1 left-1/2 -translate-x-1/2 animate-pulse"
+          style={{
+            width: 4 * scale,
+            height: 8 * scale,
+            background: `linear-gradient(to bottom, ${variant.accent}, transparent)`,
+            opacity: 0.8
+          }}
+        />
+      </div>
+    </div>
+  );
+}
 
 export default function SpaceGame() {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isGameOver, setIsGameOver] = useState(false);
+  const [gameState, setGameState] = useState<"menu" | "playing" | "gameover">("menu");
   const [score, setScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
   const [obstacles, setObstacles] = useState<Obstacle[]>([]);
@@ -71,6 +101,8 @@ export default function SpaceGame() {
   useEffect(() => {
     const saved = localStorage.getItem("psykoverse:highscore");
     if (saved) setHighScore(parseInt(saved));
+    const savedShip = localStorage.getItem("psykoverse:ship");
+    if (savedShip) setShipVariant(parseInt(savedShip));
   }, []);
 
   const updatePlayerPosition = useCallback(() => {
@@ -83,9 +115,8 @@ export default function SpaceGame() {
   }, []);
 
   const endGame = useCallback(() => {
-    setIsPlaying(false);
+    setGameState("gameover");
     isPlayingRef.current = false;
-    setIsGameOver(true);
     document.exitPointerLock?.();
     const finalScore = scoreRef.current;
     setScore(finalScore);
@@ -130,11 +161,9 @@ export default function SpaceGame() {
   }, [endGame]);
 
   const startGame = () => {
-    const randomShip = Math.floor(Math.random() * SHIP_VARIANTS.length);
-    setShipVariant(randomShip);
-    setIsPlaying(true);
+    localStorage.setItem("psykoverse:ship", shipVariant.toString());
+    setGameState("playing");
     isPlayingRef.current = true;
-    setIsGameOver(false);
     setScore(0);
     scoreRef.current = 0;
     setObstacles([]);
@@ -147,6 +176,12 @@ export default function SpaceGame() {
     setPseudo("");
     setUnivers("");
     lastTimeRef.current = performance.now();
+    gameRef.current?.requestPointerLock?.();
+  };
+
+  const backToMenu = () => {
+    setGameState("menu");
+    setObstacles([]);
   };
 
   const submitScore = async () => {
@@ -166,8 +201,16 @@ export default function SpaceGame() {
     }
   };
 
+  const prevShip = () => {
+    setShipVariant(prev => (prev - 1 + SHIP_VARIANTS.length) % SHIP_VARIANTS.length);
+  };
+
+  const nextShip = () => {
+    setShipVariant(prev => (prev + 1) % SHIP_VARIANTS.length);
+  };
+
   useEffect(() => {
-    if (!isPlaying) return;
+    if (gameState !== "playing") return;
 
     const gameLoop = (time: number) => {
       const delta = time - lastTimeRef.current;
@@ -191,7 +234,7 @@ export default function SpaceGame() {
               y: -10,
               size: 14 + Math.random() * 18,
               speed: 0.7 + Math.random() * 1.0 + Math.min(scoreRef.current / 2500, 1.2),
-              variant: Math.floor(Math.random() * OBSTACLE_VARIANTS.length)
+              variant: Math.floor(Math.random() * PLANET_VARIANTS.length)
             });
           }
           
@@ -218,7 +261,7 @@ export default function SpaceGame() {
     return () => {
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
     };
-  }, [isPlaying, endGame, updatePlayerPosition]);
+  }, [gameState, endGame, updatePlayerPosition]);
 
   const currentShip = SHIP_VARIANTS[shipVariant];
 
@@ -248,14 +291,8 @@ export default function SpaceGame() {
       <div
         ref={gameRef}
         className="relative h-[320px] bg-black/20 rounded-2xl overflow-hidden cursor-none select-none border border-white/10 backdrop-blur-sm"
-        onClick={() => {
-          if (!isPlaying && !isGameOver) {
-            startGame();
-            gameRef.current?.requestPointerLock?.();
-          }
-        }}
       >
-        {isPlaying && (
+        {gameState === "playing" && (
           <>
             <div
               ref={playerRef}
@@ -280,7 +317,7 @@ export default function SpaceGame() {
             </div>
 
             {obstacles.map(obstacle => {
-              const v = OBSTACLE_VARIANTS[obstacle.variant];
+              const v = PLANET_VARIANTS[obstacle.variant];
               return (
                 <div
                   key={obstacle.id}
@@ -294,54 +331,97 @@ export default function SpaceGame() {
                   }}
                 >
                   <div
-                    className="w-full h-full rounded-full"
+                    className="w-full h-full rounded-full relative"
                     style={{
                       background: `radial-gradient(circle at 35% 25%, ${v.from}, ${v.to})`,
                       boxShadow: `inset -2px -2px 6px rgba(0,0,0,0.7), inset 1px 1px 3px rgba(255,255,255,0.2)`
                     }}
-                  />
-                  {v.ring && (
-                    <div
-                      className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 opacity-60"
-                      style={{
-                        width: obstacle.size * 1.6,
-                        height: obstacle.size * 0.4,
-                        borderColor: v.from,
-                        transform: "translate(-50%, -50%) rotateX(70deg)"
-                      }}
-                    />
-                  )}
+                  >
+                    {v.hasRing && (
+                      <svg 
+                        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+                        style={{ width: obstacle.size * 2, height: obstacle.size * 0.8 }}
+                        viewBox="0 0 100 40"
+                      >
+                        <ellipse 
+                          cx="50" cy="20" rx="48" ry="8" 
+                          fill="none" 
+                          stroke={v.ringColor || v.from}
+                          strokeWidth="3"
+                          opacity="0.6"
+                        />
+                        <ellipse 
+                          cx="50" cy="20" rx="40" ry="6" 
+                          fill="none" 
+                          stroke={v.ringColor || v.from}
+                          strokeWidth="2"
+                          opacity="0.4"
+                        />
+                      </svg>
+                    )}
+                  </div>
                 </div>
               );
             })}
           </>
         )}
 
-        <AnimatePresence>
-          {!isPlaying && !isGameOver && (
+        <AnimatePresence mode="wait">
+          {gameState === "menu" && (
             <motion.div
+              key="menu"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute inset-0 flex flex-col items-center justify-center bg-black/40"
+              className="absolute inset-0 flex flex-col items-center justify-center bg-black/40 p-4"
             >
-              <Gamepad2 className="w-10 h-10 text-primary mb-3 drop-shadow-[0_0_10px_rgba(0,191,255,0.5)]" />
-              <p className="text-white font-bold text-sm drop-shadow-lg">Cliquez pour jouer</p>
-              <p className="text-gray-300 text-xs mb-3">Évitez les planètes</p>
+              <Gamepad2 className="w-8 h-8 text-primary mb-2 drop-shadow-[0_0_10px_rgba(0,191,255,0.5)]" />
+              <p className="text-white font-bold text-sm mb-4">Choisissez votre vaisseau</p>
+              
+              <div className="flex items-center gap-4 mb-4">
+                <button 
+                  onClick={prevShip}
+                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+                >
+                  <ChevronLeft className="w-5 h-5 text-white" />
+                </button>
+                
+                <div className="flex flex-col items-center">
+                  <div className="w-16 h-20 flex items-center justify-center">
+                    <ShipPreview variant={currentShip} size={50} />
+                  </div>
+                  <p className="text-primary text-xs font-medium mt-1">{currentShip.name}</p>
+                  <p className="text-gray-500 text-[10px]">{shipVariant + 1}/{SHIP_VARIANTS.length}</p>
+                </div>
+                
+                <button 
+                  onClick={nextShip}
+                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+                >
+                  <ChevronRight className="w-5 h-5 text-white" />
+                </button>
+              </div>
+              
+              <Button onClick={startGame} size="sm" className="mb-2">
+                Jouer
+              </Button>
+              
               <Link 
                 href="/classement"
-                className="bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-400 px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
+                className="text-yellow-400 hover:text-yellow-300 text-xs flex items-center gap-1 transition-colors"
               >
-                <Trophy className="w-4 h-4" />
+                <Trophy className="w-3 h-3" />
                 Voir le classement
               </Link>
             </motion.div>
           )}
 
-          {isGameOver && (
+          {gameState === "gameover" && (
             <motion.div
+              key="gameover"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
               className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 p-4"
             >
               <div className="text-2xl mb-1">💥</div>
@@ -376,15 +456,15 @@ export default function SpaceGame() {
                       <Send className="w-3 h-3 mr-1" />
                       {isSubmitting ? "..." : "Save"}
                     </Button>
-                    <Button onClick={startGame} variant="outline" size="sm" className="border-primary/50">
-                      Rejouer
+                    <Button onClick={backToMenu} variant="outline" size="sm" className="border-primary/50">
+                      Menu
                     </Button>
                   </div>
                 </div>
               ) : (
                 <div className="space-y-2 text-center">
                   <p className="text-green-400 text-xs">Score enregistré !</p>
-                  <Button onClick={startGame} size="sm">Rejouer</Button>
+                  <Button onClick={backToMenu} size="sm">Menu</Button>
                 </div>
               )}
             </motion.div>
