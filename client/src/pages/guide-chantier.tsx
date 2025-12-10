@@ -4,6 +4,7 @@ import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { useState } from "react";
+import RelatedGuides from "@/components/RelatedGuides";
 
 import spaceshipImg1 from "@assets/stock_images/spaceship_sci-fi_dar_87b4cbf2.jpg";
 import spaceshipImg2 from "@assets/stock_images/spaceship_sci-fi_dar_c30d0033.jpg";
@@ -536,6 +537,8 @@ export default function GuideChantier() {
                   </Link>
                 </div>
               </div>
+
+              <RelatedGuides currentGuide="chantier" />
 
               <div className="bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/30 rounded-xl p-8 text-center">
                 <h3 className="font-display text-xl font-bold text-white mb-3">

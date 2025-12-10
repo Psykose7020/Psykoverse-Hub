@@ -3,6 +3,7 @@ import { Globe, Users, ExternalLink } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
+import RelatedGuides from "@/components/RelatedGuides";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -136,6 +137,8 @@ export default function GuideGalaxie() {
                   </div>
                 </div>
               </div>
+
+              <RelatedGuides currentGuide="galaxie" />
 
               <div className="bg-gradient-to-r from-[#5865F2]/20 to-[#5865F2]/5 border border-[#5865F2]/30 rounded-xl p-6">
                 <div className="flex items-center gap-4 mb-4">

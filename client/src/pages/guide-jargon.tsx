@@ -4,6 +4,7 @@ import { BookText, Search, ExternalLink } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
+import RelatedGuides from "@/components/RelatedGuides";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -122,6 +123,8 @@ export default function GuideJargon() {
                 </div>
               )}
             </div>
+
+            <RelatedGuides currentGuide="jargon" />
 
             <div className="mt-8 bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/30 rounded-xl p-8 text-center">
               <h3 className="font-display text-xl font-bold text-white mb-3">

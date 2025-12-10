@@ -3,6 +3,7 @@ import { Eye, ExternalLink } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
+import RelatedGuides from "@/components/RelatedGuides";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -132,6 +133,8 @@ export default function GuideEspionnage() {
                   <strong>Conseil :</strong> Montez votre technologie Espionnage et envoyez plusieurs sondes pour être sûr.
                 </p>
               </div>
+
+              <RelatedGuides currentGuide="espionnage" />
 
               <div className="bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/30 rounded-xl p-8 text-center">
                 <h3 className="font-display text-xl font-bold text-white mb-3">
