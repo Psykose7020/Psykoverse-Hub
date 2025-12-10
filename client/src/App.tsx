@@ -27,6 +27,8 @@ import GuideExpeditions from "@/pages/guide-expeditions";
 import GuideLune from "@/pages/guide-lune";
 import GuideAttaque from "@/pages/guide-attaque";
 import GuideACS from "@/pages/guide-acs";
+import GuideRaid from "@/pages/guide-raid";
+import GuideDeveloppement from "@/pages/guide-developpement";
 
 function Router() {
   return (
@@ -49,6 +51,8 @@ function Router() {
       <Route path="/guide/lune" component={GuideLune} />
       <Route path="/guide/attaque" component={GuideAttaque} />
       <Route path="/guide/acs" component={GuideACS} />
+      <Route path="/guide/raid" component={GuideRaid} />
+      <Route path="/guide/developpement" component={GuideDeveloppement} />
       <Route path="/alliance" component={Alliance} />
       <Route path="/projets" component={Projects} />
       <Route path="/support" component={Support} />

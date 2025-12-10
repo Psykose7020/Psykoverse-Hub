@@ -2,8 +2,9 @@ import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { 
   Play, BookOpen, Monitor, Users, Factory, FlaskConical, 
-  Rocket, Globe, BookText, AlertTriangle, ExternalLink, ArrowRight,
-  GraduationCap, Compass, Trophy, Shield, Eye, Crosshair, Moon, Globe2
+  Rocket, Globe, BookText, AlertTriangle, ExternalLink,
+  GraduationCap, Compass, Trophy, Shield, Eye, Crosshair, Moon, Globe2,
+  Target, TrendingUp, Ghost, Layers
 } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
@@ -47,7 +48,8 @@ const categories = [
     guides: [
       { title: "Colonisation", description: "S'étendre", icon: Globe2, color: "from-green-500 to-teal-600", link: "/guide/colonisation" },
       { title: "Expéditions", description: "Explorer", icon: Compass, color: "from-indigo-500 to-blue-600", link: "/guide/expeditions" },
-      { title: "Lune & CDR", description: "Débris et lunes", icon: Moon, color: "from-gray-500 to-slate-700", link: "/guide/lune" }
+      { title: "Lune & CDR", description: "Débris et lunes", icon: Moon, color: "from-gray-500 to-slate-700", link: "/guide/lune" },
+      { title: "Développement", description: "Stratégie de compte", icon: TrendingUp, color: "from-emerald-500 to-green-600", link: "/guide/developpement" }
     ]
   },
   {
@@ -58,8 +60,9 @@ const categories = [
     color: "from-red-500 to-rose-600",
     guides: [
       { title: "Espionnage", description: "Renseignement", icon: Eye, color: "from-violet-500 to-purple-600", link: "/guide/espionnage" },
-      { title: "Attaque", description: "Raid et pillage", icon: Crosshair, color: "from-red-500 to-rose-600", link: "/guide/attaque" },
-      { title: "ACS", description: "Combat groupé", icon: Users, color: "from-orange-500 to-red-600", link: "/guide/acs" },
+      { title: "Attaque", description: "Bases du combat", icon: Crosshair, color: "from-red-500 to-rose-600", link: "/guide/attaque" },
+      { title: "Raid Avancé", description: "Techniques pro", icon: Target, color: "from-orange-500 to-red-600", link: "/guide/raid" },
+      { title: "ACS", description: "Combat groupé", icon: Users, color: "from-orange-500 to-amber-600", link: "/guide/acs" },
       { title: "Classements", description: "Points d'honneur", icon: Trophy, color: "from-yellow-500 to-amber-600", link: "/guide/classements" }
     ]
   },
@@ -70,13 +73,15 @@ const categories = [
     icon: Shield,
     color: "from-blue-600 to-indigo-700",
     guides: [
-      { title: "Fleetsave", description: "Sauver sa flotte", icon: Shield, color: "from-blue-600 to-indigo-700", link: "/guide/fleetsave" },
+      { title: "Ghost", description: "12 techniques", icon: Ghost, color: "from-blue-600 to-indigo-700", link: "/guide/fleetsave" },
       { title: "Activité", description: "Triangle d'activité", icon: AlertTriangle, color: "from-red-500 to-red-700", link: "/guide/activite" }
     ]
   }
 ];
 
 export default function Tutorials() {
+  const totalGuides = categories.reduce((acc, cat) => acc + cat.guides.length, 0);
+  
   return (
     <Layout>
       <section className="py-12 md:py-20">
@@ -89,7 +94,7 @@ export default function Tutorials() {
           >
             <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
               <BookOpen className="w-4 h-4" />
-              16 guides disponibles
+              {totalGuides} guides disponibles
             </motion.div>
             <motion.h1 variants={fadeInUp} className="font-display text-4xl md:text-5xl font-bold text-white mb-4">
               Guides & Tutoriels
