@@ -1,31 +1,56 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Gamepad2, Trophy, Send, List } from "lucide-react";
+import { Gamepad2, Trophy, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 
-interface Asteroid {
+interface Obstacle {
   id: number;
   x: number;
   y: number;
   size: number;
   speed: number;
+  variant: number;
 }
 
-interface Star {
-  x: number;
-  y: number;
-  speed: number;
-  size: number;
-}
+const SHIP_VARIANTS = [
+  { body: "#00BFFF", accent: "#0080FF", glow: "rgba(0,191,255,0.8)" },
+  { body: "#FF6B6B", accent: "#FF4444", glow: "rgba(255,107,107,0.8)" },
+  { body: "#4ADE80", accent: "#22C55E", glow: "rgba(74,222,128,0.8)" },
+  { body: "#F59E0B", accent: "#D97706", glow: "rgba(245,158,11,0.8)" },
+  { body: "#A855F7", accent: "#9333EA", glow: "rgba(168,85,247,0.8)" },
+  { body: "#EC4899", accent: "#DB2777", glow: "rgba(236,72,153,0.8)" },
+  { body: "#14B8A6", accent: "#0D9488", glow: "rgba(20,184,166,0.8)" },
+  { body: "#EF4444", accent: "#B91C1C", glow: "rgba(239,68,68,0.8)" },
+  { body: "#8B5CF6", accent: "#7C3AED", glow: "rgba(139,92,246,0.8)" },
+  { body: "#06B6D4", accent: "#0891B2", glow: "rgba(6,182,212,0.8)" },
+  { body: "#F97316", accent: "#EA580C", glow: "rgba(249,115,22,0.8)" },
+  { body: "#84CC16", accent: "#65A30D", glow: "rgba(132,204,22,0.8)" },
+  { body: "#E879F9", accent: "#D946EF", glow: "rgba(232,121,249,0.8)" },
+  { body: "#FBBF24", accent: "#F59E0B", glow: "rgba(251,191,36,0.8)" },
+  { body: "#38BDF8", accent: "#0EA5E9", glow: "rgba(56,189,248,0.8)" },
+];
+
+const OBSTACLE_VARIANTS = [
+  { from: "#6B7280", to: "#374151", name: "asteroid" },
+  { from: "#EF4444", to: "#7F1D1D", name: "mars" },
+  { from: "#3B82F6", to: "#1E3A8A", name: "neptune" },
+  { from: "#F59E0B", to: "#78350F", name: "venus" },
+  { from: "#8B5CF6", to: "#4C1D95", name: "purple" },
+  { from: "#10B981", to: "#064E3B", name: "earth" },
+  { from: "#EC4899", to: "#831843", name: "pink" },
+  { from: "#6366F1", to: "#312E81", name: "indigo" },
+  { from: "#F97316", to: "#7C2D12", name: "orange" },
+  { from: "#14B8A6", to: "#134E4A", name: "teal" },
+];
 
 export default function SpaceGame() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
   const [score, setScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
-  const [asteroids, setAsteroids] = useState<Asteroid[]>([]);
-  const [stars, setStars] = useState<Star[]>([]);
+  const [obstacles, setObstacles] = useState<Obstacle[]>([]);
+  const [shipVariant, setShipVariant] = useState(0);
   const [pseudo, setPseudo] = useState("");
   const [univers, setUnivers] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -34,54 +59,62 @@ export default function SpaceGame() {
   const gameRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<HTMLDivElement>(null);
   const playerXRef = useRef(50);
+  const targetXRef = useRef(50);
   const animationRef = useRef<number | null>(null);
   const lastTimeRef = useRef<number>(0);
-  const asteroidIdRef = useRef(0);
+  const obstacleIdRef = useRef(0);
   const isPlayingRef = useRef(false);
+  const scoreRef = useRef(0);
 
   useEffect(() => {
     const saved = localStorage.getItem("psykoverse:highscore");
     if (saved) setHighScore(parseInt(saved));
-    
-    const initialStars = Array.from({ length: 30 }, () => ({
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      speed: 0.5 + Math.random() * 1.5,
-      size: 1 + Math.random() * 2
-    }));
-    setStars(initialStars);
   }, []);
 
-  const handleMove = useCallback((clientX: number) => {
-    if (!gameRef.current || !isPlayingRef.current) return;
-    const rect = gameRef.current.getBoundingClientRect();
-    const x = ((clientX - rect.left) / rect.width) * 100;
-    playerXRef.current = Math.max(5, Math.min(95, x));
+  const updatePlayerPosition = useCallback(() => {
+    if (!isPlayingRef.current) return;
+    const diff = targetXRef.current - playerXRef.current;
+    playerXRef.current += diff * 0.5;
     if (playerRef.current) {
       playerRef.current.style.left = `${playerXRef.current}%`;
     }
   }, []);
 
   useEffect(() => {
-    const handleGlobalMouseMove = (e: MouseEvent) => {
-      if (isPlayingRef.current) {
-        handleMove(e.clientX);
-      }
+    const handlePointerMove = (e: PointerEvent) => {
+      if (!gameRef.current || !isPlayingRef.current) return;
+      const rect = gameRef.current.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      targetXRef.current = Math.max(5, Math.min(95, x));
     };
-    
-    window.addEventListener("mousemove", handleGlobalMouseMove, { passive: true });
-    return () => window.removeEventListener("mousemove", handleGlobalMouseMove);
-  }, [handleMove]);
 
-  const handleMouseMove = (e: React.MouseEvent) => handleMove(e.clientX);
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!gameRef.current || !isPlayingRef.current) return;
+      const rect = gameRef.current.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      targetXRef.current = Math.max(5, Math.min(95, x));
+    };
+
+    window.addEventListener("pointermove", handlePointerMove, { passive: true });
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    
+    return () => {
+      window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, []);
 
   const startGame = () => {
+    const randomShip = Math.floor(Math.random() * SHIP_VARIANTS.length);
+    setShipVariant(randomShip);
     setIsPlaying(true);
     isPlayingRef.current = true;
     setIsGameOver(false);
     setScore(0);
-    setAsteroids([]);
+    scoreRef.current = 0;
+    setObstacles([]);
     playerXRef.current = 50;
+    targetXRef.current = 50;
     if (playerRef.current) {
       playerRef.current.style.left = "50%";
     }
@@ -95,15 +128,13 @@ export default function SpaceGame() {
     setIsPlaying(false);
     isPlayingRef.current = false;
     setIsGameOver(true);
-    setScore(prev => {
-      const finalScore = prev;
-      const currentHigh = parseInt(localStorage.getItem("psykoverse:highscore") || "0");
-      if (finalScore > currentHigh) {
-        setHighScore(finalScore);
-        localStorage.setItem("psykoverse:highscore", finalScore.toString());
-      }
-      return finalScore;
-    });
+    const finalScore = scoreRef.current;
+    setScore(finalScore);
+    const currentHigh = parseInt(localStorage.getItem("psykoverse:highscore") || "0");
+    if (finalScore > currentHigh) {
+      setHighScore(finalScore);
+      localStorage.setItem("psykoverse:highscore", finalScore.toString());
+    }
     if (animationRef.current) {
       cancelAnimationFrame(animationRef.current);
     }
@@ -134,35 +165,33 @@ export default function SpaceGame() {
       
       if (delta > 16) {
         lastTimeRef.current = time;
+        scoreRef.current += 1;
+        setScore(scoreRef.current);
         
-        setScore(s => s + 1);
-        
-        setStars(prev => prev.map(star => ({
-          ...star,
-          y: star.y + star.speed > 100 ? 0 : star.y + star.speed
-        })));
+        updatePlayerPosition();
 
-        setAsteroids(prev => {
+        setObstacles(prev => {
           const updated = prev
-            .map(a => ({ ...a, y: a.y + a.speed }))
-            .filter(a => a.y < 110);
+            .map(o => ({ ...o, y: o.y + o.speed }))
+            .filter(o => o.y < 110);
           
-          if (Math.random() < 0.015 + Math.min(score / 8000, 0.03)) {
+          if (Math.random() < 0.018 + Math.min(scoreRef.current / 10000, 0.025)) {
             updated.push({
-              id: asteroidIdRef.current++,
-              x: Math.random() * 90 + 5,
+              id: obstacleIdRef.current++,
+              x: Math.random() * 85 + 7.5,
               y: -10,
-              size: 12 + Math.random() * 15,
-              speed: 0.8 + Math.random() * 1.2 + Math.min(score / 2000, 1.5)
+              size: 14 + Math.random() * 18,
+              speed: 0.7 + Math.random() * 1.0 + Math.min(scoreRef.current / 2500, 1.2),
+              variant: Math.floor(Math.random() * OBSTACLE_VARIANTS.length)
             });
           }
           
           const playerY = 85;
           const playerSize = 8;
-          for (const a of updated) {
-            const dx = Math.abs(a.x - playerXRef.current);
-            const dy = Math.abs(a.y - playerY);
-            const minDist = (a.size / 2 + playerSize) * 0.4;
+          for (const o of updated) {
+            const dx = Math.abs(o.x - playerXRef.current);
+            const dy = Math.abs(o.y - playerY);
+            const minDist = (o.size / 2 + playerSize) * 0.35;
             if (dx < minDist && dy < minDist) {
               endGame();
               return [];
@@ -180,7 +209,9 @@ export default function SpaceGame() {
     return () => {
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
     };
-  }, [isPlaying, endGame, score]);
+  }, [isPlaying, endGame, updatePlayerPosition]);
+
+  const currentShip = SHIP_VARIANTS[shipVariant];
 
   return (
     <div className="hidden lg:block">
@@ -190,8 +221,13 @@ export default function SpaceGame() {
           <span className="font-display font-bold text-white/80 text-xs">Space Escape</span>
         </div>
         <div className="flex items-center gap-3 text-xs">
-          <Link href="/classement" className="text-gray-400 hover:text-primary transition-colors" title="Classement">
-            <List className="w-4 h-4" />
+          <Link 
+            href="/classement" 
+            className="bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30 px-2 py-1 rounded text-xs font-medium transition-colors flex items-center gap-1"
+            data-testid="link-leaderboard"
+          >
+            <Trophy className="w-3 h-3" />
+            Top
           </Link>
           <span className="text-primary font-bold">{score}</span>
           <span className="text-yellow-400 flex items-center gap-1">
@@ -202,50 +238,59 @@ export default function SpaceGame() {
 
       <div
         ref={gameRef}
-        className="relative h-[320px] bg-black/20 rounded-2xl overflow-hidden cursor-none select-none border border-white/10"
-        onMouseMove={handleMouseMove}
-        onClick={() => !isPlaying && !isGameOver && startGame()}
+        className="relative h-[320px] rounded-2xl overflow-hidden cursor-none select-none border border-white/10"
+        style={{
+          background: "radial-gradient(ellipse at center, #0a0a1a 0%, #050510 100%)"
+        }}
+        onPointerDown={(e) => {
+          if (!isPlaying && !isGameOver) {
+            startGame();
+          }
+          (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
+        }}
       >
-        {stars.map((star, i) => (
-          <div
-            key={i}
-            className="absolute bg-white rounded-full opacity-60"
-            style={{
-              left: `${star.x}%`,
-              top: `${star.y}%`,
-              width: star.size,
-              height: star.size,
-            }}
-          />
-        ))}
-
         {isPlaying && (
           <>
             <div
               ref={playerRef}
-              className="absolute will-change-transform"
+              className="absolute will-change-transform pointer-events-none"
               style={{ left: "50%", top: "85%", transform: "translate(-50%, -50%)" }}
             >
               <div className="relative">
-                <div className="w-0 h-0 border-l-[8px] border-r-[8px] border-b-[20px] border-l-transparent border-r-transparent border-b-primary drop-shadow-[0_0_10px_rgba(0,191,255,0.8)]" />
-                <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-4 bg-gradient-to-b from-orange-400 to-transparent opacity-80 animate-pulse" />
+                <div 
+                  className="w-0 h-0 border-l-[8px] border-r-[8px] border-b-[20px] border-l-transparent border-r-transparent"
+                  style={{ 
+                    borderBottomColor: currentShip.body,
+                    filter: `drop-shadow(0 0 10px ${currentShip.glow})`
+                  }}
+                />
+                <div 
+                  className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-4 opacity-80 animate-pulse"
+                  style={{
+                    background: `linear-gradient(to bottom, ${currentShip.accent}, transparent)`
+                  }}
+                />
               </div>
             </div>
 
-            {asteroids.map(asteroid => (
-              <div
-                key={asteroid.id}
-                className="absolute bg-gradient-to-br from-gray-500 to-gray-700 rounded-full shadow-lg will-change-transform"
-                style={{
-                  left: `${asteroid.x}%`,
-                  top: `${asteroid.y}%`,
-                  width: asteroid.size,
-                  height: asteroid.size,
-                  transform: "translate(-50%, -50%)",
-                  boxShadow: "inset -3px -3px 6px rgba(0,0,0,0.5), inset 2px 2px 4px rgba(255,255,255,0.1)"
-                }}
-              />
-            ))}
+            {obstacles.map(obstacle => {
+              const v = OBSTACLE_VARIANTS[obstacle.variant];
+              return (
+                <div
+                  key={obstacle.id}
+                  className="absolute rounded-full will-change-transform pointer-events-none"
+                  style={{
+                    left: `${obstacle.x}%`,
+                    top: `${obstacle.y}%`,
+                    width: obstacle.size,
+                    height: obstacle.size,
+                    transform: "translate(-50%, -50%)",
+                    background: `radial-gradient(circle at 30% 30%, ${v.from}, ${v.to})`,
+                    boxShadow: `inset -3px -3px 8px rgba(0,0,0,0.6), inset 2px 2px 4px rgba(255,255,255,0.15), 0 0 ${obstacle.size/3}px ${v.from}40`
+                  }}
+                />
+              );
+            })}
           </>
         )}
 
@@ -255,11 +300,18 @@ export default function SpaceGame() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute inset-0 flex flex-col items-center justify-center bg-black/30"
+              className="absolute inset-0 flex flex-col items-center justify-center bg-black/40"
             >
               <Gamepad2 className="w-10 h-10 text-primary mb-3 drop-shadow-[0_0_10px_rgba(0,191,255,0.5)]" />
               <p className="text-white font-bold text-sm drop-shadow-lg">Cliquez pour jouer</p>
-              <p className="text-gray-300 text-xs">Bougez la souris</p>
+              <p className="text-gray-300 text-xs mb-3">Évitez les planètes</p>
+              <Link 
+                href="/classement"
+                className="bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-400 px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
+              >
+                <Trophy className="w-4 h-4" />
+                Voir le classement
+              </Link>
             </motion.div>
           )}
 
@@ -267,7 +319,7 @@ export default function SpaceGame() {
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="absolute inset-0 flex flex-col items-center justify-center bg-black/50 p-4"
+              className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 p-4"
             >
               <div className="text-2xl mb-1">💥</div>
               <h4 className="font-display text-lg font-bold text-white">Game Over</h4>
