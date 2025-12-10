@@ -184,12 +184,13 @@ export default function Home() {
                 Mises à jour régulières. N'hésitez pas à signaler toute incohérence !
               </p>
             </div>
-            <Link href="/suggestion-tutoriel">
-              <span className="inline-flex items-center gap-2 bg-amber-600/30 hover:bg-amber-600/50 text-amber-100 px-4 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer border border-amber-600/50">
-                <MessageSquare className="w-4 h-4" />
-                Envoyer un feedback
-              </span>
-            </Link>
+            <button
+              onClick={() => window.dispatchEvent(new Event("openFeedbackModal"))}
+              className="inline-flex items-center gap-2 bg-amber-600/30 hover:bg-amber-600/50 text-amber-100 px-4 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer border border-amber-600/50"
+            >
+              <MessageSquare className="w-4 h-4" />
+              Envoyer un feedback
+            </button>
           </motion.div>
         </div>
       </section>

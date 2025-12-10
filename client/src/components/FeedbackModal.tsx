@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, X, Send, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -6,6 +6,12 @@ import { useLocation } from "wouter";
 
 export default function FeedbackModal() {
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    const handleOpenFeedback = () => setIsOpen(true);
+    window.addEventListener("openFeedbackModal", handleOpenFeedback);
+    return () => window.removeEventListener("openFeedbackModal", handleOpenFeedback);
+  }, []);
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -48,7 +54,7 @@ export default function FeedbackModal() {
     }
   };
 
-  if (location === "/") {
+  if (location !== "/") {
     return null;
   }
 
