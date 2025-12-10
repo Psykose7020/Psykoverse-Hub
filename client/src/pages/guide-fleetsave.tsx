@@ -13,6 +13,23 @@ const fadeInUp = {
 const techniques = [
   {
     id: 1,
+    title: "Ghost en stationner entre ses propres lunes",
+    description: "La meilleure technique ! Envoyez votre flotte en stationner vers votre propre lune. Surveillez l'aller pour ne pas vous faire moonbreak durant ce laps de temps, puis cliquez retour. À ce moment-là, la flotte est 100% safe.",
+    details: "Attention : un statio en direction d'une lune d'un AUTRE joueur est phalangeable au retour. Pour être totalement safe, utilisez uniquement VOS propres lunes.",
+    recommended: true,
+    avantages: [
+      "Flotte 100% safe après le retour",
+      "Invisible aux phalanges",
+      "Possibilité de rappeler à tout moment",
+      "50% deutérium récupéré si pas de retour"
+    ],
+    inconvenients: [
+      "Nécessite 2 lunes à vous",
+      "Surveiller l'aller pour éviter le moonbreak"
+    ]
+  },
+  {
+    id: 2,
     title: "Ghost sur CDR invisible depuis une lune",
     description: "Votre flotte étant sur votre lune, créez un CDR invisible avec une seule sonde en mode attaque. À partir du moment où une sonde en mode attaque atteint une cible, détruite ou non, elle laisse un CDR sur la position. Si le CDR apparaît car la sonde a été détruite lors de l'attaque, vous pouvez recycler le CDR, il ne restera donc plus de CDR visible sur la vue galaxie, mais vous pourrez tout de même envoyer des missions 'exploiter' (nécessite un recycleur dans la flotte). Une fois le CDR invisible formé, vous pourrez prendre la totalité de votre flotte et l'envoyer sur le CDR en question en mode exploiter. Choisissez la vitesse qui vous convient le mieux.",
     details: "Recommandé pour les petits ghosts entre des vagues d'expédition. Autre cas pratique : si quelqu'un vous espionne, lancez votre flotte sur le CDR afin d'esquiver la sonde sans être phalangé (utile si vous lancez sur votre planète). L'avantage c'est que ça coûte rien en deut, vous pouvez ghost toute votre flotte pendant 1 ou 2h pour 5k de deut.",
@@ -32,7 +49,7 @@ const techniques = [
     ]
   },
   {
-    id: 2,
+    id: 3,
     title: "Ghost en exploiter vers CDR sans planète",
     description: "Un ami colonise puis décolonise après que vous ayez créé un CDR invisible. Le CDR devient impossible à rendre visible.",
     avantages: [
@@ -45,7 +62,7 @@ const techniques = [
     ]
   },
   {
-    id: 3,
+    id: 4,
     title: "Ghost en stationner de planète à planète",
     description: "Envoyez en stationner puis rappelez pour que le retour soit invisible.",
     avantages: [
@@ -55,23 +72,6 @@ const techniques = [
     inconvenients: [
       "Aller visible aux phalanges !",
       "Surveillance peut révéler le moment du rappel"
-    ]
-  },
-  {
-    id: 4,
-    title: "Ghost en stationner entre ses propres lunes",
-    description: "La meilleure technique ! Envoyez votre flotte en stationner vers votre propre lune. Surveillez l'aller pour ne pas vous faire moonbreak durant ce laps de temps, puis cliquez retour. À ce moment-là, la flotte est 100% safe.",
-    details: "Attention : un statio en direction d'une lune d'un AUTRE joueur est phalangeable au retour. Pour être totalement safe, utilisez uniquement VOS propres lunes.",
-    recommended: true,
-    avantages: [
-      "Flotte 100% safe après le retour",
-      "Invisible aux phalanges",
-      "Possibilité de rappeler à tout moment",
-      "50% deutérium récupéré si pas de retour"
-    ],
-    inconvenients: [
-      "Nécessite 2 lunes à vous",
-      "Surveiller l'aller pour éviter le moonbreak"
     ]
   },
   {
