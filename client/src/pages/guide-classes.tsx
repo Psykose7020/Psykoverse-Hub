@@ -125,6 +125,31 @@ export default function GuideClasses() {
               </p>
             </div>
 
+            <div className="bg-green-900/20 border border-green-700/30 rounded-xl p-6 mb-8">
+              <div className="flex items-center gap-3 mb-4">
+                <Compass className="w-8 h-8 text-green-400" />
+                <h2 className="font-display text-xl font-bold text-green-400">L'Explorateur : LA classe compétitive</h2>
+              </div>
+              <p className="text-gray-300 mb-4">
+                En early et mid game, <strong className="text-white">l'Explorateur est la seule classe véritablement compétitive</strong>. 
+                Pourquoi ? Parce que les gains d'expédition sont <strong className="text-primary">multipliés par la vitesse économique du serveur</strong>.
+              </p>
+              <div className="bg-[#151924] rounded-lg p-4 mb-4">
+                <h3 className="font-bold text-white mb-2">Exemple concret</h3>
+                <p className="text-gray-300 text-sm">
+                  Sur un serveur ×7 économie, une expédition qui rapporterait 1M de métal en ×1 rapporte 
+                  <strong className="text-primary"> 7M de métal</strong>. Avec les Éclaireurs qui doublent les gains, 
+                  ça monte à <strong className="text-green-400">14M de métal</strong> par expédition !
+                </p>
+              </div>
+              <div className="bg-primary/10 border border-primary/30 rounded-lg p-4">
+                <p className="text-primary text-sm">
+                  <strong>Réalité actuelle :</strong> Toute la mécanique d'OGame tourne désormais autour des expéditions. 
+                  Les gains sont tellement supérieurs aux mines qu'ignorer les expéditions revient à jouer avec un handicap majeur.
+                </p>
+              </div>
+            </div>
+
             <div className="bg-[#1C2230] border border-[#2E384D] rounded-xl p-6 mb-8">
               <h2 className="font-display text-xl font-bold text-white mb-4">Choix de classe</h2>
               <p className="text-gray-300 mb-4">
