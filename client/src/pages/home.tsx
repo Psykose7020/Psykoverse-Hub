@@ -170,6 +170,30 @@ export default function Home() {
         </motion.div>
       </header>
 
+      <section className="py-4 bg-gradient-to-r from-amber-900/30 via-orange-900/20 to-amber-900/30 border-b border-amber-700/40">
+        <div className="container mx-auto px-4">
+          <motion.div 
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex flex-col md:flex-row items-center justify-center gap-4 text-center"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-2 h-2 bg-amber-400 rounded-full animate-pulse" />
+              <p className="text-amber-200 text-sm md:text-base">
+                <span className="font-bold text-amber-100">Site en développement</span> jusqu'à janvier 2026.
+                Mises à jour régulières. N'hésitez pas à signaler toute incohérence !
+              </p>
+            </div>
+            <Link href="/suggestion-tutoriel">
+              <span className="inline-flex items-center gap-2 bg-amber-600/30 hover:bg-amber-600/50 text-amber-100 px-4 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer border border-amber-600/50">
+                <MessageSquare className="w-4 h-4" />
+                Envoyer un feedback
+              </span>
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+
       <section className="py-6 bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 border-b border-[#2E384D]">
         <div className="container mx-auto px-4">
           <motion.div 

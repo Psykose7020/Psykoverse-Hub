@@ -48,6 +48,10 @@ export default function FeedbackModal() {
     }
   };
 
+  if (location === "/") {
+    return null;
+  }
+
   return (
     <>
       <motion.button
