@@ -61,12 +61,12 @@ export default function GuideTimingRaid() {
               <div className="bg-[#1C2230] border border-[#2E384D] rounded-xl p-6">
                 <div className="flex items-center gap-3 mb-4">
                   <Zap className="w-6 h-6 text-yellow-400" />
-                  <h2 className="font-display text-xl font-bold text-white">DG anticipée sur recyclage</h2>
+                  <h2 className="font-display text-xl font-bold text-white">Attaque Groupée anticipée</h2>
                 </div>
                 <div className="space-y-4">
                   <p className="text-gray-300">
                     Si vous connaissez l'heure de retour d'un joueur (via phalange ou observation), 
-                    vous pouvez préparer une attaque qui arrive <strong className="text-white">juste après son retour</strong>.
+                    vous pouvez préparer une <strong className="text-white">Attaque Groupée (AG/ACS)</strong> qui arrive juste après son retour.
                   </p>
                   
                   <div className="space-y-3">

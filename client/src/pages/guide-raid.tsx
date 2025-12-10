@@ -34,7 +34,7 @@ const raidGuides = [
   },
   {
     title: "Timing & Connexions Tardives",
-    description: "Exploiter les habitudes de connexion, DG anticipée, fenêtres d'opportunité",
+    description: "Exploiter les habitudes de connexion, AG anticipée, fenêtres d'opportunité",
     icon: Clock,
     color: "from-amber-500 to-orange-600",
     link: "/guide/timing-raid"
