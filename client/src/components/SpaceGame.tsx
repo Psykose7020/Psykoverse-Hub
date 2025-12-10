@@ -181,33 +181,22 @@ export default function SpaceGame() {
 
   return (
     <div className="hidden lg:block">
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
-            <Gamepad2 className="w-4 h-4 text-white" />
-          </div>
-          <div>
-            <h3 className="font-display font-bold text-white text-sm">Space Escape</h3>
-            <p className="text-xs text-gray-500">Évitez les astéroïdes</p>
-          </div>
+      <div className="flex items-center justify-between mb-2 px-2">
+        <div className="flex items-center gap-2">
+          <Gamepad2 className="w-4 h-4 text-primary/70" />
+          <span className="font-display font-bold text-white/80 text-xs">Space Escape</span>
         </div>
-        <div className="flex items-center gap-4">
-          <div className="text-right">
-            <div className="text-xs text-gray-500">Score</div>
-            <div className="font-bold text-primary">{score}</div>
-          </div>
-          <div className="text-right">
-            <div className="text-xs text-gray-500 flex items-center gap-1">
-              <Trophy className="w-3 h-3 text-yellow-400" /> Best
-            </div>
-            <div className="font-bold text-yellow-400 text-sm">{highScore}</div>
-          </div>
+        <div className="flex items-center gap-3 text-xs">
+          <span className="text-primary font-bold">{score}</span>
+          <span className="text-yellow-400 flex items-center gap-1">
+            <Trophy className="w-3 h-3" />{highScore}
+          </span>
         </div>
       </div>
 
       <div
         ref={gameRef}
-        className="relative h-48 bg-[#050508]/80 rounded-xl overflow-hidden cursor-none select-none backdrop-blur-sm border border-[#2E384D]/50"
+        className="relative h-[320px] bg-black/20 rounded-2xl overflow-hidden cursor-none select-none border border-white/10"
         onMouseMove={handleMouseMove}
         onClick={() => !isPlaying && !isGameOver && startGame()}
       >
@@ -260,11 +249,11 @@ export default function SpaceGame() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute inset-0 flex flex-col items-center justify-center bg-black/40 backdrop-blur-sm"
+              className="absolute inset-0 flex flex-col items-center justify-center bg-black/30"
             >
-              <Gamepad2 className="w-8 h-8 text-primary mb-2" />
-              <p className="text-white font-bold text-sm">Cliquez pour jouer</p>
-              <p className="text-gray-400 text-xs">Bougez la souris</p>
+              <Gamepad2 className="w-10 h-10 text-primary mb-3 drop-shadow-[0_0_10px_rgba(0,191,255,0.5)]" />
+              <p className="text-white font-bold text-sm drop-shadow-lg">Cliquez pour jouer</p>
+              <p className="text-gray-300 text-xs">Bougez la souris</p>
             </motion.div>
           )}
 
@@ -272,7 +261,7 @@ export default function SpaceGame() {
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+              className="absolute inset-0 flex flex-col items-center justify-center bg-black/50 p-4"
             >
               <div className="text-2xl mb-1">💥</div>
               <h4 className="font-display text-lg font-bold text-white">Game Over</h4>

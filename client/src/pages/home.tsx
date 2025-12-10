@@ -120,46 +120,57 @@ export default function Home() {
         </div>
 
         <div className="container relative z-20 px-4">
-          <motion.div 
-            className="max-w-3xl"
-            initial="hidden"
-            animate="visible"
-            variants={staggerContainer}
-          >
-            <motion.div variants={fadeInUp} className="flex items-center gap-4 mb-6">
-              <img src={allianceLogo} alt="" className="w-20 h-20 md:w-24 md:h-24 logo-float drop-shadow-[0_0_30px_rgba(0,191,255,0.4)]" />
-              <div>
-                <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-none">
-                  Guides OGame
-                </h1>
-                <span className="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-primary leading-none text-glow">
-                  Francophones
-                </span>
-              </div>
+          <div className="flex items-center justify-between">
+            <motion.div 
+              className="max-w-2xl"
+              initial="hidden"
+              animate="visible"
+              variants={staggerContainer}
+            >
+              <motion.div variants={fadeInUp} className="flex items-center gap-4 mb-6">
+                <img src={allianceLogo} alt="" className="w-20 h-20 md:w-24 md:h-24 logo-float drop-shadow-[0_0_30px_rgba(0,191,255,0.4)]" />
+                <div>
+                  <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-none">
+                    Guides OGame
+                  </h1>
+                  <span className="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-primary leading-none text-glow">
+                    Francophones
+                  </span>
+                </div>
+              </motion.div>
+              
+              <motion.p variants={fadeInUp} className="text-lg md:text-xl text-gray-300 mb-8 leading-relaxed max-w-2xl">
+                La ressource complète pour tous les joueurs OGame francophones. 
+                <span className="text-primary font-medium"> 35 guides complets</span>, des bases aux stratégies avancées, 
+                accessibles à <span className="text-primary font-medium">tous</span> !
+              </motion.p>
+              
+              <motion.div variants={fadeInUp} className="flex flex-wrap gap-4">
+                <Button size="lg" className="bg-[#5865F2] hover:bg-[#4752C4] text-white font-bold uppercase tracking-wide shadow-lg shadow-[#5865F2]/20 hover:shadow-[#5865F2]/40 transition-all" asChild>
+                  <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer" data-testid="btn-discord-hero">
+                    <MessageSquare className="w-5 h-5 mr-2" />
+                    Rejoindre Discord
+                    <span className="ml-2 text-xs opacity-80 bg-white/10 px-2 py-0.5 rounded">180</span>
+                  </a>
+                </Button>
+                <Button size="lg" variant="outline" className="border-primary/50 text-primary hover:bg-primary/10 hover:border-primary" asChild>
+                  <Link href="/tutoriels" data-testid="btn-tutorials-hero">
+                    <BookOpen className="w-5 h-5 mr-2" />
+                    Voir les guides
+                  </Link>
+                </Button>
+              </motion.div>
             </motion.div>
-            
-            <motion.p variants={fadeInUp} className="text-lg md:text-xl text-gray-300 mb-8 leading-relaxed max-w-2xl">
-              La ressource complète pour tous les joueurs OGame francophones. 
-              <span className="text-primary font-medium"> 35 guides complets</span>, des bases aux stratégies avancées, 
-              accessibles à <span className="text-primary font-medium">tous</span> !
-            </motion.p>
-            
-            <motion.div variants={fadeInUp} className="flex flex-wrap gap-4">
-              <Button size="lg" className="bg-[#5865F2] hover:bg-[#4752C4] text-white font-bold uppercase tracking-wide shadow-lg shadow-[#5865F2]/20 hover:shadow-[#5865F2]/40 transition-all" asChild>
-                <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer" data-testid="btn-discord-hero">
-                  <MessageSquare className="w-5 h-5 mr-2" />
-                  Rejoindre Discord
-                  <span className="ml-2 text-xs opacity-80 bg-white/10 px-2 py-0.5 rounded">180</span>
-                </a>
-              </Button>
-              <Button size="lg" variant="outline" className="border-primary/50 text-primary hover:bg-primary/10 hover:border-primary" asChild>
-                <Link href="/tutoriels" data-testid="btn-tutorials-hero">
-                  <BookOpen className="w-5 h-5 mr-2" />
-                  Voir les guides
-                </Link>
-              </Button>
+
+            <motion.div 
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.5, duration: 0.8 }}
+              className="hidden lg:block w-[280px] flex-shrink-0"
+            >
+              <SpaceGame />
             </motion.div>
-          </motion.div>
+          </div>
         </div>
 
         <motion.div 
@@ -202,27 +213,22 @@ export default function Home() {
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="flex flex-col lg:flex-row items-center gap-8"
+            className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8"
           >
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-2 gap-4 md:gap-6 flex-1">
-              {[
-                { value: "35", label: "Guides complets", icon: BookOpen },
-                { value: "180+", label: "Membres Discord", icon: Users },
-                { value: "3", label: "Univers actifs", icon: Globe },
-                { value: "340", label: "Abonnés YouTube", icon: Youtube }
-              ].map((stat, i) => (
-                <div key={i} className="flex items-center gap-3 justify-center lg:justify-start">
-                  <stat.icon className="w-5 h-5 text-primary/60" />
-                  <div>
-                    <div className="text-xl md:text-2xl font-bold text-white">{stat.value}</div>
-                    <div className="text-xs text-gray-500">{stat.label}</div>
-                  </div>
+            {[
+              { value: "35", label: "Guides complets", icon: BookOpen },
+              { value: "180+", label: "Membres Discord", icon: Users },
+              { value: "3", label: "Univers actifs", icon: Globe },
+              { value: "340", label: "Abonnés YouTube", icon: Youtube }
+            ].map((stat, i) => (
+              <div key={i} className="flex items-center gap-3 justify-center">
+                <stat.icon className="w-6 h-6 text-primary/60" />
+                <div>
+                  <div className="text-2xl md:text-3xl font-bold text-white">{stat.value}</div>
+                  <div className="text-xs text-gray-500">{stat.label}</div>
                 </div>
-              ))}
-            </div>
-            <div className="w-full lg:w-[450px] lg:flex-shrink-0">
-              <SpaceGame />
-            </div>
+              </div>
+            ))}
           </motion.div>
         </div>
       </section>
