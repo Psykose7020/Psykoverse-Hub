@@ -54,6 +54,7 @@ const guideCategories = [
       { name: "L'Interface du Jeu", link: "/guide/interface", highlight: true },
       { name: "Les Classes de Joueurs", link: "/guide/classes", highlight: true },
       { name: "Production & Énergie", link: "/guide/production", highlight: true },
+      { name: "Installations & Recherches", link: "/guide/recherches", highlight: true },
       { name: "Chantier & Dock Spatial", link: "/guide/chantier", highlight: true },
       { name: "Galaxie & Alliance", link: "/guide/galaxie", highlight: true },
       { name: "Jargon OGamien", link: "/guide/jargon", highlight: true },
@@ -65,9 +66,9 @@ const guideCategories = [
     title: "Économie & Production",
     description: "Maximisez vos ressources et votre croissance.",
     guides: [
-      { name: "Ratio mines optimal", link: null },
-      { name: "Expéditions rentables", link: null },
-      { name: "Commerce inter-joueurs", link: null }
+      { name: "Ratio mines optimal", link: null, highlight: false },
+      { name: "Expéditions rentables", link: null, highlight: false },
+      { name: "Commerce inter-joueurs", link: null, highlight: false }
     ]
   },
   {
@@ -75,9 +76,9 @@ const guideCategories = [
     title: "Combat & Stratégie",
     description: "Maîtrisez l'art de la guerre spatiale.",
     guides: [
-      { name: "Calcul de rentabilité", link: null },
-      { name: "Ninja et contre-attaque", link: null },
-      { name: "Recyclage efficace", link: null }
+      { name: "Calcul de rentabilité", link: null, highlight: false },
+      { name: "Ninja et contre-attaque", link: null, highlight: false },
+      { name: "Recyclage efficace", link: null, highlight: false }
     ]
   },
   {
@@ -85,9 +86,9 @@ const guideCategories = [
     title: "Défense & Sécurité",
     description: "Protégez vos planètes et votre flotte.",
     guides: [
-      { name: "Fleetsave avancé", link: null },
-      { name: "Défense optimale", link: null },
-      { name: "Moon destruction", link: null }
+      { name: "Fleetsave avancé", link: null, highlight: false },
+      { name: "Défense optimale", link: null, highlight: false },
+      { name: "Moon destruction", link: null, highlight: false }
     ]
   }
 ];

@@ -18,6 +18,7 @@ import GuideProduction from "@/pages/guide-production";
 import GuideChantier from "@/pages/guide-chantier";
 import GuideGalaxie from "@/pages/guide-galaxie";
 import GuideJargon from "@/pages/guide-jargon";
+import GuideRecherches from "@/pages/guide-recherches";
 
 function Router() {
   return (
@@ -31,6 +32,7 @@ function Router() {
       <Route path="/guide/chantier" component={GuideChantier} />
       <Route path="/guide/galaxie" component={GuideGalaxie} />
       <Route path="/guide/jargon" component={GuideJargon} />
+      <Route path="/guide/recherches" component={GuideRecherches} />
       <Route path="/alliance" component={Alliance} />
       <Route path="/projets" component={Projects} />
       <Route path="/support" component={Support} />
