@@ -92,6 +92,17 @@ export default function GuideTimingRaid() {
                       </div>
                     </div>
                   </div>
+
+                  <div className="mt-4 bg-green-900/20 border border-green-700/30 rounded-lg p-4">
+                    <h3 className="font-bold text-green-400 mb-2">Décaler l'AG jusqu'au retour</h3>
+                    <p className="text-gray-300 text-sm">
+                      L'avantage de l'Attaque Groupée : vous pouvez <strong className="text-white">décaler l'heure d'impact</strong> 
+                      (jusqu'à 30% du temps restant) pour faire coïncider votre arrivée avec le retour de la flotte du défenseur.
+                    </p>
+                    <p className="text-gray-400 text-xs mt-2">
+                      Lancez l'AG en avance, puis ajustez l'heure d'impact en ralentissant au fur et à mesure que vous observez le retour de sa flotte.
+                    </p>
+                  </div>
                 </div>
               </div>
 

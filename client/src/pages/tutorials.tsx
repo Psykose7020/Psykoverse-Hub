@@ -88,6 +88,7 @@ const categories = [
       { title: "Recherche Cibles", description: "Trouver les meilleures proies", icon: Eye, color: "from-violet-500 to-purple-600", link: "/guide/recherche-cibles" },
       { title: "Éviter Interception", description: "Raider en sécurité", icon: Shield, color: "from-blue-500 to-cyan-600", link: "/guide/eviter-interception" },
       { title: "Timing & Connexions", description: "Exploiter les habitudes", icon: Clock, color: "from-amber-500 to-orange-600", link: "/guide/timing-raid" },
+      { title: "Décalage à la Sonde", description: "Détecter les DG", icon: Eye, color: "from-cyan-500 to-blue-600", link: "/guide/decalage-sonde" },
       { title: "Split Flotte", description: "Optimisation des raids", icon: Layers, color: "from-purple-500 to-violet-600", link: "/guide/split" },
       { title: "ACS", description: "Combat en groupe", icon: Users, color: "from-orange-500 to-amber-600", link: "/guide/acs" },
       { title: "MoonBreak", description: "Destruction de lune", icon: Bomb, color: "from-red-600 to-red-800", link: "/guide/moonbreak" },

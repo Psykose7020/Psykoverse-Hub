@@ -72,6 +72,17 @@ export default function GuideACS() {
                     <p className="text-gray-300">Toutes les flottes arrivent ensemble au moment de l'impact</p>
                   </div>
                 </div>
+                
+                <div className="mt-4 bg-blue-900/20 border border-blue-700/30 rounded-lg p-4">
+                  <h3 className="font-bold text-blue-400 mb-2">Ralentissement de l'AG</h3>
+                  <p className="text-gray-300 text-sm">
+                    Quand vous rejoignez une AG, vous pouvez <strong className="text-white">ralentir votre flotte</strong> pour 
+                    décaler l'heure d'impact. Cette décélération est limitée à <strong className="text-primary">30% maximum</strong> du temps restant avant l'impact.
+                  </p>
+                  <p className="text-gray-400 text-xs mt-2">
+                    Exemple : S'il reste 1h avant l'impact, vous pouvez décaler de 18 minutes maximum.
+                  </p>
+                </div>
               </div>
 
               <div className="bg-[#1C2230] border border-[#2E384D] rounded-xl p-6">
