@@ -175,10 +175,18 @@ export default function GuideRRI() {
                     Comme pour les recherches classiques, on ne peut jamais descendre en dessous de 1% du temps de base.
                   </p>
                 </div>
+                <div className="bg-green-900/20 border border-green-700/30 rounded-lg p-4 mb-4">
+                  <p className="text-green-400 font-bold mb-2">Important : Le labo FDV ne s'applique qu'aux techs FDV !</p>
+                  <p className="text-gray-300 text-sm">
+                    Mais les <strong className="text-white">technologies FDV</strong> (une fois recherchées) peuvent 
+                    s'appliquer aux <strong className="text-white">recherches classiques</strong>. C'est pourquoi atteindre 
+                    le cap de -99% sur les techs FDV est intéressant : ces bonus aident ensuite vos recherches normales.
+                  </p>
+                </div>
                 <div className="space-y-3 text-gray-300 mb-4">
                   <p><strong className="text-white">Le calcul se fait en additionnant :</strong></p>
                   <ul className="list-disc list-inside space-y-1 text-sm ml-2">
-                    <li>Le % de réduction apporté par le <strong className="text-purple-400">labo FDV</strong></li>
+                    <li>Le % de réduction apporté par le <strong className="text-purple-400">labo FDV</strong> (techs FDV uniquement)</li>
                     <li>Le % de réduction apporté par les <strong className="text-purple-400">technologies labo FDV</strong></li>
                   </ul>
                 </div>
