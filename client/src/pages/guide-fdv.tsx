@@ -512,11 +512,11 @@ export default function GuideFDV() {
                   <div className="bg-amber-900/20 border border-amber-700/30 rounded-lg p-4">
                     <div className="flex items-center gap-2 mb-2">
                       <Clock className="w-5 h-5 text-amber-400" />
-                      <h3 className="font-bold text-amber-400">Débuff de 72h</h3>
+                      <h3 className="font-bold text-amber-400">Cooldown de 72h</h3>
                     </div>
                     <p className="text-gray-300 text-sm">
-                      Après avoir quitté une race, vous avez un <strong className="text-white">débuff de 72h</strong> sur cette race spécifique. 
-                      Vous ne pouvez pas la remettre pendant ce délai. <strong className="text-primary">Mais vous pouvez instantanément activer une autre race sans débuff !</strong>
+                      Après un changement de race, vous avez un <strong className="text-white">cooldown de 72h</strong> avant de pouvoir changer à nouveau. 
+                      Ce délai commence dès que vous effectuez un changement de race sur la planète.
                     </p>
                   </div>
 
