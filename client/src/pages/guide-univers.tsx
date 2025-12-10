@@ -296,7 +296,7 @@ export default function GuideUnivers() {
                     Cliquez sur une caractéristique pour voir les détails :
                   </p>
                   
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                  <div className="grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-3">
                     {caracteristiques.map((carac) => {
                       const Icon = carac.icon;
                       const isSelected = selectedCarac === carac.id;

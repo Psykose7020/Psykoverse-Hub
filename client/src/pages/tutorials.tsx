@@ -1,11 +1,13 @@
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
 import { 
   Play, BookOpen, Monitor, Users, Factory, FlaskConical, 
   Rocket, Globe, BookText, AlertTriangle, ExternalLink,
   GraduationCap, Compass, Trophy, Shield, Eye, Crosshair, Moon, Globe2,
   Target, TrendingUp, Ghost, Layers, Bomb, Plane, Sparkles, Scale,
-  ArrowLeftRight, Swords, Dna, Settings
+  ArrowLeftRight, Swords, Dna, Settings, Search, Filter, ChevronRight,
+  Star, Clock, Zap
 } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
@@ -30,15 +32,16 @@ const categories = [
     description: "Tout ce qu'il faut savoir pour bien démarrer",
     icon: GraduationCap,
     color: "from-green-500 to-emerald-600",
+    level: "Débutant",
     guides: [
-      { title: "L'Interface", description: "Vue d'ensemble", icon: Monitor, color: "from-blue-500 to-cyan-600", link: "/guide/interface" },
-      { title: "Les Classes", description: "Choisir son style", icon: Users, color: "from-purple-500 to-pink-600", link: "/guide/classes" },
-      { title: "Production", description: "Mines et énergie", icon: Factory, color: "from-green-500 to-emerald-600", link: "/guide/production" },
-      { title: "Recherches", description: "Technologies", icon: FlaskConical, color: "from-teal-500 to-cyan-600", link: "/guide/recherches" },
-      { title: "Chantier", description: "Vaisseaux", icon: Rocket, color: "from-slate-500 to-slate-700", link: "/guide/chantier" },
-      { title: "Galaxie", description: "Navigation", icon: Globe, color: "from-indigo-500 to-purple-600", link: "/guide/galaxie" },
-      { title: "Jargon", description: "Vocabulaire", icon: BookText, color: "from-amber-500 to-orange-600", link: "/guide/jargon" },
-      { title: "Univers", description: "Caractéristiques", icon: Settings, color: "from-indigo-500 to-purple-600", link: "/guide/univers" }
+      { title: "L'Interface", description: "Vue d'ensemble du jeu", icon: Monitor, color: "from-blue-500 to-cyan-600", link: "/guide/interface", featured: true },
+      { title: "Les Classes", description: "Collecteur, Général, Explorateur", icon: Users, color: "from-purple-500 to-pink-600", link: "/guide/classes", featured: true },
+      { title: "Production", description: "Mines et gestion de l'énergie", icon: Factory, color: "from-green-500 to-emerald-600", link: "/guide/production" },
+      { title: "Recherches", description: "Arbre des technologies", icon: FlaskConical, color: "from-teal-500 to-cyan-600", link: "/guide/recherches" },
+      { title: "Chantier", description: "Construction de vaisseaux", icon: Rocket, color: "from-slate-500 to-slate-700", link: "/guide/chantier" },
+      { title: "Galaxie", description: "Navigation et exploration", icon: Globe, color: "from-indigo-500 to-purple-600", link: "/guide/galaxie" },
+      { title: "Jargon", description: "Vocabulaire de la communauté", icon: BookText, color: "from-amber-500 to-orange-600", link: "/guide/jargon" },
+      { title: "Univers", description: "Caractéristiques et paramètres", icon: Settings, color: "from-indigo-500 to-purple-600", link: "/guide/univers" }
     ]
   },
   {
@@ -47,12 +50,13 @@ const categories = [
     description: "Développez votre empire galactique",
     icon: Globe2,
     color: "from-teal-500 to-cyan-600",
+    level: "Intermédiaire",
     guides: [
-      { title: "Colonisation", description: "S'étendre", icon: Globe2, color: "from-green-500 to-teal-600", link: "/guide/colonisation" },
-      { title: "Expéditions", description: "Explorer", icon: Compass, color: "from-indigo-500 to-blue-600", link: "/guide/expeditions" },
-      { title: "Lune & CDR", description: "Débris et lunes", icon: Moon, color: "from-gray-500 to-slate-700", link: "/guide/lune" },
-      { title: "Développement", description: "Stratégie compte", icon: TrendingUp, color: "from-emerald-500 to-green-600", link: "/guide/developpement" },
-      { title: "Volantes", description: "Flotte mobile", icon: Plane, color: "from-cyan-500 to-blue-600", link: "/guide/volante" }
+      { title: "Colonisation", description: "Étendre son empire", icon: Globe2, color: "from-green-500 to-teal-600", link: "/guide/colonisation" },
+      { title: "Expéditions", description: "Explorer l'espace profond", icon: Compass, color: "from-indigo-500 to-blue-600", link: "/guide/expeditions" },
+      { title: "Lune & CDR", description: "Champs de débris et lunes", icon: Moon, color: "from-gray-500 to-slate-700", link: "/guide/lune" },
+      { title: "Développement", description: "Stratégie de compte", icon: TrendingUp, color: "from-emerald-500 to-green-600", link: "/guide/developpement" },
+      { title: "Volantes", description: "Flotte mobile défensive", icon: Plane, color: "from-cyan-500 to-blue-600", link: "/guide/volante" }
     ]
   },
   {
@@ -61,13 +65,14 @@ const categories = [
     description: "Maîtrisez l'art de la guerre spatiale",
     icon: Crosshair,
     color: "from-red-500 to-rose-600",
+    level: "Avancé",
     guides: [
-      { title: "Espionnage", description: "Renseignement", icon: Eye, color: "from-violet-500 to-purple-600", link: "/guide/espionnage" },
+      { title: "Espionnage", description: "Renseignement et infiltration", icon: Eye, color: "from-violet-500 to-purple-600", link: "/guide/espionnage" },
       { title: "Attaque", description: "Bases du combat", icon: Crosshair, color: "from-red-500 to-rose-600", link: "/guide/attaque" },
-      { title: "Raid Avancé", description: "Techniques pro", icon: Target, color: "from-orange-500 to-red-600", link: "/guide/raid" },
-      { title: "Split Flotte", description: "Optimisation", icon: Layers, color: "from-purple-500 to-violet-600", link: "/guide/split" },
-      { title: "ACS", description: "Combat groupé", icon: Users, color: "from-orange-500 to-amber-600", link: "/guide/acs" },
-      { title: "MoonBreak", description: "Destruction lune", icon: Bomb, color: "from-red-600 to-red-800", link: "/guide/moonbreak" },
+      { title: "Raid Avancé", description: "Techniques de pro", icon: Target, color: "from-orange-500 to-red-600", link: "/guide/raid", featured: true },
+      { title: "Split Flotte", description: "Optimisation des raids", icon: Layers, color: "from-purple-500 to-violet-600", link: "/guide/split" },
+      { title: "ACS", description: "Combat en groupe", icon: Users, color: "from-orange-500 to-amber-600", link: "/guide/acs" },
+      { title: "MoonBreak", description: "Destruction de lune", icon: Bomb, color: "from-red-600 to-red-800", link: "/guide/moonbreak" },
       { title: "Classements", description: "Points d'honneur", icon: Trophy, color: "from-yellow-500 to-amber-600", link: "/guide/classements" }
     ]
   },
@@ -77,8 +82,9 @@ const categories = [
     description: "Protégez votre flotte et vos ressources",
     icon: Shield,
     color: "from-blue-600 to-indigo-700",
+    level: "Avancé",
     guides: [
-      { title: "Ghost", description: "12 techniques", icon: Ghost, color: "from-blue-600 to-indigo-700", link: "/guide/fleetsave" },
+      { title: "Ghost (Fleetsave)", description: "12 techniques de protection", icon: Ghost, color: "from-blue-600 to-indigo-700", link: "/guide/fleetsave", featured: true },
       { title: "Activité", description: "Triangle d'activité", icon: AlertTriangle, color: "from-red-500 to-red-700", link: "/guide/activite" }
     ]
   },
@@ -88,8 +94,9 @@ const categories = [
     description: "Les 4 races extraterrestres et leurs bonus",
     icon: Dna,
     color: "from-purple-500 to-pink-600",
+    level: "Expert",
     guides: [
-      { title: "Guide FDV", description: "Complet & interactif", icon: Dna, color: "from-purple-500 to-pink-600", link: "/guide/fdv" }
+      { title: "Guide Complet FDV", description: "Races, recherches, artéfacts", icon: Dna, color: "from-purple-500 to-pink-600", link: "/guide/fdv", featured: true }
     ]
   },
   {
@@ -98,27 +105,55 @@ const categories = [
     description: "Les règles officielles d'OGame.fr",
     icon: Scale,
     color: "from-amber-500 to-orange-600",
+    level: "Important",
     guides: [
-      { title: "Comptes", description: "Multicomptes & IP", icon: Users, color: "from-blue-500 to-cyan-600", link: "/regles/compte" },
-      { title: "Sitting", description: "Surveillance & échanges", icon: ArrowLeftRight, color: "from-green-500 to-emerald-600", link: "/regles/sitting" },
-      { title: "Push & Pull", description: "Commerce & mercenariat", icon: TrendingUp, color: "from-amber-500 to-orange-600", link: "/regles/push" },
+      { title: "Comptes & Multicomptes", description: "Règles sur les comptes", icon: Users, color: "from-blue-500 to-cyan-600", link: "/regles/compte" },
+      { title: "Sitting & Échanges", description: "Surveillance de compte", icon: ArrowLeftRight, color: "from-green-500 to-emerald-600", link: "/regles/sitting" },
+      { title: "Push & Pull", description: "Commerce et mercenariat", icon: TrendingUp, color: "from-amber-500 to-orange-600", link: "/regles/push" },
       { title: "Bash", description: "Limite d'attaques", icon: Swords, color: "from-red-500 to-rose-600", link: "/regles/bash" }
     ]
   }
 ];
 
+const levelColors: Record<string, string> = {
+  "Débutant": "bg-green-500/20 text-green-400 border-green-500/30",
+  "Intermédiaire": "bg-blue-500/20 text-blue-400 border-blue-500/30",
+  "Avancé": "bg-orange-500/20 text-orange-400 border-orange-500/30",
+  "Expert": "bg-purple-500/20 text-purple-400 border-purple-500/30",
+  "Important": "bg-amber-500/20 text-amber-400 border-amber-500/30"
+};
+
 export default function Tutorials() {
+  const [activeFilter, setActiveFilter] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  
   const totalGuides = categories.reduce((acc, cat) => acc + cat.guides.length, 0);
+  
+  const filteredCategories = categories
+    .filter(cat => !activeFilter || cat.id === activeFilter)
+    .map(cat => ({
+      ...cat,
+      guides: cat.guides.filter(guide => 
+        !searchQuery || 
+        guide.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        guide.description.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    }))
+    .filter(cat => cat.guides.length > 0);
+
+  const featuredGuides = categories.flatMap(cat => 
+    cat.guides.filter(g => g.featured).map(g => ({ ...g, category: cat.title }))
+  );
   
   return (
     <Layout>
-      <section className="py-12 md:py-20">
+      <section className="py-8 md:py-16">
         <div className="container mx-auto px-4">
           <motion.div
             initial="hidden"
             animate="visible"
             variants={staggerContainer}
-            className="text-center mb-12"
+            className="text-center mb-10"
           >
             <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
               <BookOpen className="w-4 h-4" />
@@ -127,56 +162,178 @@ export default function Tutorials() {
             <motion.h1 variants={fadeInUp} className="font-display text-4xl md:text-5xl font-bold text-white mb-4">
               Guides & Tutoriels
             </motion.h1>
-            <motion.p variants={fadeInUp} className="text-gray-400 max-w-2xl mx-auto text-lg">
+            <motion.p variants={fadeInUp} className="text-gray-400 max-w-2xl mx-auto text-lg mb-8">
               Apprenez à maîtriser OGame avec nos guides complets rédigés par la communauté
             </motion.p>
+
+            <motion.div variants={fadeInUp} className="max-w-xl mx-auto mb-8">
+              <div className="relative">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                <input
+                  type="text"
+                  placeholder="Rechercher un guide..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full bg-[#1C2230] border border-[#2E384D] rounded-xl pl-12 pr-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:border-primary/50 transition-colors"
+                  data-testid="search-guides"
+                />
+              </div>
+            </motion.div>
+
+            <motion.div variants={fadeInUp} className="flex flex-wrap justify-center gap-2 mb-8">
+              <button
+                onClick={() => setActiveFilter(null)}
+                className={`px-4 py-2 rounded-lg text-sm font-bold transition-all flex items-center gap-2 ${
+                  !activeFilter 
+                    ? "bg-primary text-black shadow-lg shadow-primary/30" 
+                    : "bg-[#1C2230] text-gray-400 hover:text-white border border-[#2E384D] hover:border-primary/30"
+                }`}
+                data-testid="filter-all"
+              >
+                <Filter className="w-4 h-4" />
+                Tous ({totalGuides})
+              </button>
+              {categories.map(cat => {
+                const Icon = cat.icon;
+                const isActive = activeFilter === cat.id;
+                return (
+                  <button
+                    key={cat.id}
+                    onClick={() => setActiveFilter(isActive ? null : cat.id)}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${
+                      isActive 
+                        ? "bg-primary text-black shadow-lg shadow-primary/30" 
+                        : "bg-[#1C2230] text-gray-400 hover:text-white border border-[#2E384D] hover:border-primary/30"
+                    }`}
+                    data-testid={`filter-${cat.id}`}
+                  >
+                    <Icon className="w-4 h-4" />
+                    <span className="hidden sm:inline">{cat.title}</span>
+                    <span className="sm:hidden">{cat.title.split(' ')[0]}</span>
+                    <span className={`text-xs px-1.5 py-0.5 rounded ${isActive ? 'bg-black/20' : 'bg-white/10'}`}>
+                      {cat.guides.length}
+                    </span>
+                  </button>
+                );
+              })}
+            </motion.div>
           </motion.div>
 
-          {categories.map((category) => {
-            const CategoryIcon = category.icon;
-            return (
-              <motion.div
-                key={category.id}
-                initial="hidden"
-                animate="visible"
-                variants={staggerContainer}
-                className="mb-10"
-              >
-                <motion.div variants={fadeInUp} className="flex items-center gap-3 mb-4">
-                  <div className={`w-10 h-10 bg-gradient-to-br ${category.color} rounded-lg flex items-center justify-center shadow-lg`}>
-                    <CategoryIcon className="w-5 h-5 text-white" />
+          {!activeFilter && !searchQuery && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-12"
+            >
+              <div className="bg-gradient-to-r from-yellow-500/10 via-amber-500/5 to-transparent border border-yellow-500/20 rounded-2xl p-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="w-8 h-8 bg-yellow-500/20 rounded-lg flex items-center justify-center">
+                    <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
                   </div>
-                  <div>
-                    <h2 className="font-display text-xl font-bold text-white">{category.title}</h2>
-                    <p className="text-gray-500 text-sm">{category.description}</p>
-                  </div>
-                </motion.div>
-
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3">
-                  {category.guides.map((guide, index) => {
+                  <h2 className="font-display text-lg font-bold text-white">Guides populaires</h2>
+                  <span className="text-xs text-yellow-400/70 bg-yellow-500/10 px-2 py-0.5 rounded-full">Recommandés</span>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {featuredGuides.slice(0, 4).map((guide, index) => {
                     const Icon = guide.icon;
                     return (
-                      <motion.div key={index} variants={fadeInUp}>
-                        <Link href={guide.link}>
-                          <div className="group h-full bg-[#1C2230] border border-[#2E384D] rounded-xl p-4 hover:border-primary/50 transition-all cursor-pointer hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1 text-center">
-                            <div className={`w-10 h-10 bg-gradient-to-br ${guide.color} rounded-lg flex items-center justify-center mx-auto mb-2 shadow-lg group-hover:scale-110 transition-transform`}>
+                      <Link key={index} href={guide.link}>
+                        <div className="group bg-[#1C2230]/80 border-2 border-yellow-500/20 rounded-xl p-4 hover:border-yellow-500/50 transition-all cursor-pointer hover:shadow-lg hover:shadow-yellow-500/10 hover:-translate-y-1">
+                          <div className="flex items-start gap-3">
+                            <div className={`w-11 h-11 bg-gradient-to-br ${guide.color} rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform flex-shrink-0`}>
                               <Icon className="w-5 h-5 text-white" />
                             </div>
-                            <h3 className="font-bold text-white text-sm mb-0.5 group-hover:text-primary transition-colors">
-                              {guide.title}
-                            </h3>
-                            <p className="text-gray-500 text-xs">
-                              {guide.description}
-                            </p>
+                            <div className="flex-1 min-w-0">
+                              <h3 className="font-bold text-white text-sm mb-0.5 group-hover:text-yellow-400 transition-colors leading-tight">
+                                {guide.title}
+                              </h3>
+                              <p className="text-gray-500 text-xs leading-tight">{guide.description}</p>
+                              <span className="text-[10px] text-primary/60 mt-1 block">{guide.category}</span>
+                            </div>
                           </div>
-                        </Link>
-                      </motion.div>
+                        </div>
+                      </Link>
                     );
                   })}
                 </div>
+              </div>
+            </motion.div>
+          )}
+
+          <AnimatePresence mode="wait">
+            {filteredCategories.length === 0 ? (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="text-center py-16"
+              >
+                <Search className="w-16 h-16 text-gray-600 mx-auto mb-4" />
+                <h3 className="text-xl font-bold text-white mb-2">Aucun guide trouvé</h3>
+                <p className="text-gray-500">Essayez avec d'autres termes de recherche</p>
               </motion.div>
-            );
-          })}
+            ) : (
+              filteredCategories.map((category) => {
+                const CategoryIcon = category.icon;
+                return (
+                  <motion.div
+                    key={category.id}
+                    initial="hidden"
+                    animate="visible"
+                    variants={staggerContainer}
+                    className="mb-10"
+                    layout
+                  >
+                    <motion.div variants={fadeInUp} className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-3">
+                        <div className={`w-10 h-10 bg-gradient-to-br ${category.color} rounded-lg flex items-center justify-center shadow-lg`}>
+                          <CategoryIcon className="w-5 h-5 text-white" />
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <h2 className="font-display text-xl font-bold text-white">{category.title}</h2>
+                            <span className={`text-xs px-2 py-0.5 rounded-full border ${levelColors[category.level]}`}>
+                              {category.level}
+                            </span>
+                          </div>
+                          <p className="text-gray-500 text-sm">{category.description}</p>
+                        </div>
+                      </div>
+                      <span className="text-gray-600 text-sm hidden sm:block">{category.guides.length} guides</span>
+                    </motion.div>
+
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-3">
+                      {category.guides.map((guide, index) => {
+                        const Icon = guide.icon;
+                        return (
+                          <motion.div key={index} variants={fadeInUp} layout>
+                            <Link href={guide.link}>
+                              <div className="group h-full bg-[#1C2230] border border-[#2E384D] rounded-xl p-4 hover:border-primary/50 transition-all cursor-pointer hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1 text-center relative">
+                                {guide.featured && (
+                                  <div className="absolute -top-1.5 -right-1.5">
+                                    <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+                                  </div>
+                                )}
+                                <div className={`w-12 h-12 bg-gradient-to-br ${guide.color} rounded-xl flex items-center justify-center mx-auto mb-3 shadow-lg group-hover:scale-110 transition-transform`}>
+                                  <Icon className="w-6 h-6 text-white" />
+                                </div>
+                                <h3 className="font-bold text-white text-sm mb-1 group-hover:text-primary transition-colors leading-tight">
+                                  {guide.title}
+                                </h3>
+                                <p className="text-gray-500 text-xs leading-tight">
+                                  {guide.description}
+                                </p>
+                              </div>
+                            </Link>
+                          </motion.div>
+                        );
+                      })}
+                    </div>
+                  </motion.div>
+                );
+              })
+            )}
+          </AnimatePresence>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -186,7 +343,7 @@ export default function Tutorials() {
           >
             <div className="flex items-center gap-3 mb-3">
               <Sparkles className="w-6 h-6 text-amber-400" />
-              <h3 className="font-display text-lg font-bold text-white">Guides par Triling of Borg</h3>
+              <h3 className="font-display text-lg font-bold text-white">Guides avancés par Triling of Borg</h3>
             </div>
             <p className="text-gray-400 text-sm">
               Les guides Raid Avancé, Split Flotte, MoonBreak, Volantes et Développement sont basés sur le tutoriel 
@@ -213,7 +370,7 @@ export default function Tutorials() {
                     Apprenez visuellement sur YouTube
                   </p>
                   <Button className="bg-red-600 hover:bg-red-700" size="sm" asChild>
-                    <a href="https://www.youtube.com/@7020Psykose" target="_blank" rel="noopener noreferrer">
+                    <a href="https://www.youtube.com/@7020Psykose" target="_blank" rel="noopener noreferrer" data-testid="link-youtube">
                       <Play className="w-4 h-4 mr-2" />
                       Voir la chaîne
                       <ExternalLink className="w-3 h-3 ml-2" />
@@ -241,7 +398,7 @@ export default function Tutorials() {
                     180 membres prêts à vous aider
                   </p>
                   <Button className="bg-[#5865F2] hover:bg-[#4752C4]" size="sm" asChild>
-                    <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer">
+                    <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer" data-testid="link-discord">
                       Rejoindre Discord
                       <ExternalLink className="w-3 h-3 ml-2" />
                     </a>
