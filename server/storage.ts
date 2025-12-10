@@ -1,4 +1,4 @@
-import { users, visits, feedback, suggestions, type User, type InsertUser, type InsertVisit, type Visit, type InsertFeedback, type Feedback, type InsertSuggestion, type Suggestion } from "@shared/schema";
+import { users, visits, feedback, suggestions, leaderboard, type User, type InsertUser, type InsertVisit, type Visit, type InsertFeedback, type Feedback, type InsertSuggestion, type Suggestion, type InsertLeaderboard, type Leaderboard } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, sql, gte } from "drizzle-orm";
 
@@ -21,6 +21,8 @@ export interface IStorage {
   updateFeedbackStatus(id: string, status: string): Promise<Feedback | undefined>;
   createSuggestion(data: InsertSuggestion): Promise<Suggestion>;
   listSuggestions(): Promise<Suggestion[]>;
+  addLeaderboardEntry(data: InsertLeaderboard): Promise<Leaderboard>;
+  getLeaderboard(limit?: number): Promise<Leaderboard[]>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -125,6 +127,15 @@ export class DatabaseStorage implements IStorage {
 
   async listSuggestions(): Promise<Suggestion[]> {
     return await db.select().from(suggestions).orderBy(desc(suggestions.createdAt));
+  }
+
+  async addLeaderboardEntry(data: InsertLeaderboard): Promise<Leaderboard> {
+    const [entry] = await db.insert(leaderboard).values(data).returning();
+    return entry;
+  }
+
+  async getLeaderboard(limit: number = 20): Promise<Leaderboard[]> {
+    return await db.select().from(leaderboard).orderBy(desc(leaderboard.score)).limit(limit);
   }
 }
 

@@ -61,6 +61,21 @@ export const insertSuggestionSchema = createInsertSchema(suggestions).omit({
 export type InsertSuggestion = z.infer<typeof insertSuggestionSchema>;
 export type Suggestion = typeof suggestions.$inferSelect;
 
+export const leaderboard = pgTable("leaderboard", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  pseudo: text("pseudo").notNull(),
+  score: integer("score").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const insertLeaderboardSchema = createInsertSchema(leaderboard).omit({
+  id: true,
+  createdAt: true,
+});
+
+export type InsertLeaderboard = z.infer<typeof insertLeaderboardSchema>;
+export type Leaderboard = typeof leaderboard.$inferSelect;
+
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
 export type InsertVisit = z.infer<typeof insertVisitSchema>;

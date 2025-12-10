@@ -359,5 +359,49 @@ export async function registerRoutes(
     }
   });
 
+  app.post("/api/leaderboard", async (req, res) => {
+    try {
+      const { pseudo, score } = req.body;
+      
+      if (!pseudo || typeof pseudo !== "string" || pseudo.trim().length < 2 || pseudo.length > 15) {
+        return res.status(400).json({ error: "Pseudo invalide (2-15 caractères)" });
+      }
+      
+      if (typeof score !== "number" || score < 0 || score > 1000000) {
+        return res.status(400).json({ error: "Score invalide" });
+      }
+      
+      await storage.addLeaderboardEntry({
+        pseudo: pseudo.trim(),
+        score,
+      });
+      
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Leaderboard error:", error);
+      res.status(500).json({ error: "Erreur lors de l'enregistrement du score" });
+    }
+  });
+
+  app.get("/api/admin/leaderboard", async (req, res) => {
+    try {
+      const authHeader = req.headers.authorization;
+      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+      
+      const token = authHeader.slice(7);
+      if (!validateToken(token)) {
+        return res.status(401).json({ error: "Invalid or expired token" });
+      }
+
+      const entries = await storage.getLeaderboard(50);
+      res.json(entries);
+    } catch (error) {
+      console.error("Leaderboard list error:", error);
+      res.status(500).json({ error: "Failed to get leaderboard" });
+    }
+  });
+
   return httpServer;
 }

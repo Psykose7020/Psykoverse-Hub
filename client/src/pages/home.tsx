@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Layout from "@/components/layout/Layout";
+import SpaceGame from "@/components/SpaceGame";
 
 import heroBg from "@assets/generated_videos/specific_ogame_destroyer_fleet_formation.mp4";
 import allianceLogo from "@assets/Design_sans_titre_(2)_1765292527261.png";
@@ -451,6 +452,19 @@ export default function Home() {
                 </a>
               </Button>
             </div>
+          </motion.div>
+        </div>
+      </section>
+
+      <section className="py-16 md:py-24 border-t border-[#2E384D]">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="max-w-2xl mx-auto"
+          >
+            <SpaceGame />
           </motion.div>
         </div>
       </section>

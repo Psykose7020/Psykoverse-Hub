@@ -37,6 +37,13 @@ interface GeoData {
   count: number;
 }
 
+interface LeaderboardEntry {
+  id: string;
+  pseudo: string;
+  score: number;
+  createdAt: string;
+}
+
 export default function Admin() {
   const [, setLocation] = useLocation();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -48,7 +55,8 @@ export default function Admin() {
   const [token, setToken] = useState("");
   const [feedbackList, setFeedbackList] = useState<Feedback[]>([]);
   const [selectedFeedback, setSelectedFeedback] = useState<Feedback | null>(null);
-  const [activeTab, setActiveTab] = useState<"stats" | "feedback">("stats");
+  const [activeTab, setActiveTab] = useState<"stats" | "feedback" | "leaderboard">("stats");
+  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
 
   useEffect(() => {
     const savedToken = localStorage.getItem("adminToken");
@@ -63,13 +71,16 @@ export default function Admin() {
       fetchStats();
       fetchGeoData();
       fetchFeedback();
+      fetchLeaderboard();
       const interval = setInterval(fetchStats, 30000);
       const geoInterval = setInterval(fetchGeoData, 60000);
       const feedbackInterval = setInterval(fetchFeedback, 30000);
+      const leaderboardInterval = setInterval(fetchLeaderboard, 60000);
       return () => {
         clearInterval(interval);
         clearInterval(geoInterval);
         clearInterval(feedbackInterval);
+        clearInterval(leaderboardInterval);
       };
     }
   }, [isLoggedIn, token]);
@@ -115,6 +126,20 @@ export default function Admin() {
       }
     } catch (err) {
       console.error("Failed to fetch feedback:", err);
+    }
+  };
+
+  const fetchLeaderboard = async () => {
+    try {
+      const res = await fetch("/api/admin/leaderboard", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setLeaderboard(data);
+      }
+    } catch (err) {
+      console.error("Failed to fetch leaderboard:", err);
     }
   };
 
@@ -329,6 +354,21 @@ export default function Admin() {
                 {feedbackList.filter(f => f.status === "nouveau").length}
               </span>
             )}
+          </button>
+          <button
+            onClick={() => setActiveTab("leaderboard")}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+              activeTab === "leaderboard" 
+                ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white" 
+                : "bg-[#1E2A3A] text-gray-400 hover:text-white"
+            }`}
+            data-testid="tab-leaderboard"
+          >
+            <TrendingUp className="w-4 h-4" />
+            Leaderboard
+            <span className="text-xs bg-white/20 px-2 py-0.5 rounded-full">
+              {leaderboard.length}
+            </span>
           </button>
         </div>
 
@@ -691,6 +731,73 @@ export default function Admin() {
                 </div>
               )}
             </div>
+          </div>
+        )}
+
+        {activeTab === "leaderboard" && (
+          <div className="bg-[#12161F] border border-[#1E2A3A] rounded-xl p-6">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+                <TrendingUp className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h3 className="font-bold text-white text-lg">Space Escape - Leaderboard</h3>
+                <p className="text-gray-500 text-sm">Top 50 des meilleurs scores</p>
+              </div>
+            </div>
+
+            {leaderboard.length === 0 ? (
+              <div className="text-center py-12">
+                <TrendingUp className="w-12 h-12 text-gray-600 mx-auto mb-3" />
+                <p className="text-gray-500">Aucun score enregistré</p>
+                <p className="text-gray-600 text-sm">Les joueurs n'ont pas encore soumis leurs scores</p>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {leaderboard.map((entry, index) => (
+                  <div
+                    key={entry.id}
+                    className={`flex items-center gap-4 p-4 rounded-lg ${
+                      index === 0 ? "bg-gradient-to-r from-yellow-500/20 to-amber-500/20 border border-yellow-500/30" :
+                      index === 1 ? "bg-gradient-to-r from-gray-400/20 to-slate-400/20 border border-gray-400/30" :
+                      index === 2 ? "bg-gradient-to-r from-orange-600/20 to-amber-600/20 border border-orange-500/30" :
+                      "bg-[#1E2A3A]"
+                    }`}
+                  >
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
+                      index === 0 ? "bg-yellow-500 text-black" :
+                      index === 1 ? "bg-gray-400 text-black" :
+                      index === 2 ? "bg-orange-600 text-white" :
+                      "bg-[#2A3A4A] text-gray-400"
+                    }`}>
+                      {index + 1}
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-bold text-white">{entry.pseudo}</p>
+                      <p className="text-xs text-gray-500">
+                        {new Date(entry.createdAt).toLocaleDateString("fr-FR", {
+                          day: "numeric",
+                          month: "short",
+                          hour: "2-digit",
+                          minute: "2-digit"
+                        })}
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p className={`font-bold text-lg ${
+                        index === 0 ? "text-yellow-400" :
+                        index === 1 ? "text-gray-300" :
+                        index === 2 ? "text-orange-400" :
+                        "text-primary"
+                      }`}>
+                        {entry.score.toLocaleString("fr-FR")}
+                      </p>
+                      <p className="text-xs text-gray-500">points</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>
