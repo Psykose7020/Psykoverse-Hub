@@ -31,7 +31,7 @@ export default function RulesCompte() {
                 <Users className="w-10 h-10 text-white" />
               </div>
               <h1 className="font-display text-4xl md:text-5xl font-bold text-white mb-4">
-                Comptes & Multicomptes
+                VPN, IP et Multi-comptes
               </h1>
               <p className="text-gray-400 text-lg max-w-2xl mx-auto">
                 Règles de propriété, VPN et gestion des comptes

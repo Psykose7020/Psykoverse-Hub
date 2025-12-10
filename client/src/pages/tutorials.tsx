@@ -35,7 +35,7 @@ const categories = [
     color: "from-amber-500 to-orange-600",
     level: "Important",
     guides: [
-      { title: "Comptes & Multicomptes", description: "Règles sur les comptes", icon: Users, color: "from-blue-500 to-cyan-600", link: "/regles/compte" },
+      { title: "VPN, IP et Multi-comptes", description: "Règles sur les comptes", icon: Users, color: "from-blue-500 to-cyan-600", link: "/regles/compte" },
       { title: "Sitting & Échanges", description: "Surveillance de compte", icon: ArrowLeftRight, color: "from-green-500 to-emerald-600", link: "/regles/sitting" },
       { title: "Push & Pull", description: "Commerce et mercenariat", icon: TrendingUp, color: "from-amber-500 to-orange-600", link: "/regles/push" },
       { title: "Bash", description: "Limite d'attaques", icon: Swords, color: "from-red-500 to-rose-600", link: "/regles/bash" }

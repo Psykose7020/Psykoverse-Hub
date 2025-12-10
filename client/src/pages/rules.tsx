@@ -22,7 +22,7 @@ const staggerContainer = {
 
 const rules = [
   {
-    title: "Comptes & Multicomptes",
+    title: "VPN, IP et Multi-comptes",
     description: "Règles de propriété, VPN, et multi-comptes",
     icon: Users,
     color: "from-blue-500 to-cyan-600",
