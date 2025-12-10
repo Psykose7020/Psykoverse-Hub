@@ -59,16 +59,19 @@ const techniques = [
   },
   {
     id: 4,
-    title: "Ghost en stationner de lune à lune",
-    description: "Faites voyager votre flotte en mode stationner vers une autre lune. Récupérez 50% du deutérium si pas de retour.",
+    title: "Ghost en stationner entre ses propres lunes",
+    description: "La meilleure technique ! Envoyez votre flotte en stationner vers votre propre lune. Surveillez l'aller pour ne pas vous faire moonbreak durant ce laps de temps, puis cliquez retour. À ce moment-là, la flotte est 100% safe.",
+    details: "Attention : un statio en direction d'une lune d'un AUTRE joueur est phalangeable au retour. Pour être totalement safe, utilisez uniquement VOS propres lunes.",
+    recommended: true,
     avantages: [
-      "Flotte invisible aux phalanges",
-      "Possibilité de rappeler",
+      "Flotte 100% safe après le retour",
+      "Invisible aux phalanges",
+      "Possibilité de rappeler à tout moment",
       "50% deutérium récupéré si pas de retour"
     ],
     inconvenients: [
-      "Moonbreak de destination = flotte phalangeable",
-      "Flotte séparée = plus vulnérable"
+      "Nécessite 2 lunes à vous",
+      "Surveiller l'aller pour éviter le moonbreak"
     ]
   },
   {
@@ -234,10 +237,13 @@ export default function GuideFleetsave() {
                 <div key={tech.id} className="bg-[#1C2230] border border-[#2E384D] rounded-xl overflow-hidden">
                   <div className="p-4 border-b border-[#2E384D] bg-[#151924]">
                     <div className="flex items-center gap-3">
-                      <span className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
+                      <span className={`w-8 h-8 ${tech.recommended ? 'bg-green-500' : 'bg-primary'} rounded-lg flex items-center justify-center text-white text-sm font-bold flex-shrink-0`}>
                         {tech.id}
                       </span>
                       <h3 className="font-bold text-white">{tech.title}</h3>
+                      {tech.recommended && (
+                        <span className="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded-full border border-green-500/30">Recommandé</span>
+                      )}
                     </div>
                   </div>
                   <div className="p-4">
