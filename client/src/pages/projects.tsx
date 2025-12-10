@@ -19,21 +19,21 @@ const staggerContainer = {
 const roadmapItems = [
   {
     status: "completed",
-    date: "Novembre 2024",
+    date: "2024",
     title: "Lancement du site web",
     description: "Création du site communautaire avec 35 guides et ressources pour tous les joueurs OGame francophones.",
     icon: Globe
   },
   {
     status: "completed",
-    date: "Décembre 2024",
+    date: "2024",
     title: "Chaîne YouTube",
     description: "340 abonnés sur la chaîne YouTube avec des tutoriels vidéo pour la communauté.",
     icon: Tv
   },
   {
     status: "in-progress",
-    date: "19 Décembre 2024",
+    date: "19 Décembre 2025",
     title: "Serveur Saison",
     description: "Lancement sur le nouveau serveur saison. Rejoignez-nous pour cette nouvelle aventure !",
     icon: Rocket
@@ -108,7 +108,7 @@ export default function Projects() {
             <div className="lg:col-span-2">
               <h2 className="font-display text-2xl font-bold text-white mb-8 flex items-center gap-3">
                 <Calendar className="w-6 h-6 text-primary" />
-                Roadmap 2024-2025
+                Roadmap 2025
               </h2>
 
               <div className="relative">

@@ -43,7 +43,7 @@ const universes = [
     description: "Nouveau départ pour tous ! Serveur saison avec règles spéciales et compétition intense.",
     features: ["CDR 80%", "Vitesse x6", "Catégorie Agressif"],
     joinable: true,
-    launchDate: "19 Décembre 2024"
+    launchDate: "19 Décembre 2025"
   }
 ];
 
