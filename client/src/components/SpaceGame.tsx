@@ -283,17 +283,14 @@ export default function SpaceGame() {
                     className="w-full bg-[#1C2230] border border-[#2E384D] rounded-lg px-3 py-1.5 text-white text-center text-sm placeholder:text-gray-500 focus:outline-none focus:border-primary"
                     maxLength={15}
                   />
-                  <select
+                  <input
+                    type="text"
                     value={univers}
-                    onChange={(e) => setUnivers(e.target.value)}
-                    className="w-full bg-[#1C2230] border border-[#2E384D] rounded-lg px-3 py-1.5 text-white text-center text-sm focus:outline-none focus:border-primary"
-                  >
-                    <option value="">Univers...</option>
-                    <option value="Hercules">Hercules</option>
-                    <option value="Scorpius">Scorpius</option>
-                    <option value="Saison">Serveur Saison</option>
-                    <option value="Autre">Autre</option>
-                  </select>
+                    onChange={(e) => setUnivers(e.target.value.slice(0, 25))}
+                    placeholder="Univers..."
+                    className="w-full bg-[#1C2230] border border-[#2E384D] rounded-lg px-3 py-1.5 text-white text-center text-sm placeholder:text-gray-500 focus:outline-none focus:border-primary"
+                    maxLength={25}
+                  />
                   <div className="flex gap-2">
                     <Button
                       onClick={submitScore}
