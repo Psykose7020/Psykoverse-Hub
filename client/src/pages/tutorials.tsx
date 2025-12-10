@@ -7,7 +7,7 @@ import {
   GraduationCap, Compass, Trophy, Shield, Eye, Crosshair, Moon, Globe2,
   Target, TrendingUp, Ghost, Layers, Bomb, Plane, Sparkles, Scale,
   ArrowLeftRight, Swords, Dna, Settings, Search, Filter, ChevronRight,
-  Star, Clock, Zap, MessageSquare
+  Star, Clock, Zap, MessageSquare, ChevronDown
 } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
@@ -127,6 +127,27 @@ const levelColors: Record<string, string> = {
 export default function Tutorials() {
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set(["debutant"]));
+  
+  const toggleCategory = (categoryId: string) => {
+    setExpandedCategories(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(categoryId)) {
+        newSet.delete(categoryId);
+      } else {
+        newSet.add(categoryId);
+      }
+      return newSet;
+    });
+  };
+
+  const expandAll = () => {
+    setExpandedCategories(new Set(categories.map(c => c.id)));
+  };
+
+  const collapseAll = () => {
+    setExpandedCategories(new Set());
+  };
   
   const totalGuides = categories.reduce((acc, cat) => acc + cat.guides.length, 0);
   
@@ -217,6 +238,24 @@ export default function Tutorials() {
                 );
               })}
             </motion.div>
+            
+            <motion.div variants={fadeInUp} className="flex justify-center gap-3 mb-4">
+              <button
+                onClick={expandAll}
+                className="text-xs text-gray-500 hover:text-primary transition-colors"
+                data-testid="btn-expand-all"
+              >
+                Tout déplier
+              </button>
+              <span className="text-gray-700">|</span>
+              <button
+                onClick={collapseAll}
+                className="text-xs text-gray-500 hover:text-primary transition-colors"
+                data-testid="btn-collapse-all"
+              >
+                Tout replier
+              </button>
+            </motion.div>
           </motion.div>
 
           {!activeFilter && !searchQuery && (
@@ -275,23 +314,29 @@ export default function Tutorials() {
             ) : (
               filteredCategories.map((category) => {
                 const CategoryIcon = category.icon;
+                const isExpanded = expandedCategories.has(category.id);
                 return (
                   <motion.div
                     key={category.id}
                     initial="hidden"
                     animate="visible"
                     variants={staggerContainer}
-                    className="mb-10"
+                    className="mb-6"
                     layout
                   >
-                    <motion.div variants={fadeInUp} className="flex items-center justify-between mb-4">
+                    <motion.button
+                      variants={fadeInUp}
+                      onClick={() => toggleCategory(category.id)}
+                      className="w-full flex items-center justify-between p-4 bg-[#1C2230] border border-[#2E384D] rounded-xl hover:border-primary/30 transition-all cursor-pointer group"
+                      data-testid={`toggle-category-${category.id}`}
+                    >
                       <div className="flex items-center gap-3">
                         <div className={`w-10 h-10 bg-gradient-to-br ${category.color} rounded-lg flex items-center justify-center shadow-lg`}>
                           <CategoryIcon className="w-5 h-5 text-white" />
                         </div>
-                        <div>
+                        <div className="text-left">
                           <div className="flex items-center gap-2">
-                            <h2 className="font-display text-xl font-bold text-white">{category.title}</h2>
+                            <h2 className="font-display text-lg font-bold text-white group-hover:text-primary transition-colors">{category.title}</h2>
                             <span className={`text-xs px-2 py-0.5 rounded-full border ${levelColors[category.level]}`}>
                               {category.level}
                             </span>
@@ -299,36 +344,56 @@ export default function Tutorials() {
                           <p className="text-gray-500 text-sm">{category.description}</p>
                         </div>
                       </div>
-                      <span className="text-gray-600 text-sm hidden sm:block">{category.guides.length} guides</span>
-                    </motion.div>
+                      <div className="flex items-center gap-3">
+                        <span className="text-gray-500 text-sm">{category.guides.length} guides</span>
+                        <ChevronDown className={`w-5 h-5 text-gray-500 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
+                      </div>
+                    </motion.button>
 
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-3">
-                      {category.guides.map((guide, index) => {
-                        const Icon = guide.icon;
-                        return (
-                          <motion.div key={index} variants={fadeInUp} layout>
-                            <Link href={guide.link}>
-                              <div className="group h-full bg-[#1C2230] border border-[#2E384D] rounded-xl p-4 hover:border-primary/50 transition-all cursor-pointer hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1 text-center relative">
-                                {guide.featured && (
-                                  <div className="absolute -top-1.5 -right-1.5">
-                                    <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-                                  </div>
-                                )}
-                                <div className={`w-12 h-12 bg-gradient-to-br ${guide.color} rounded-xl flex items-center justify-center mx-auto mb-3 shadow-lg group-hover:scale-110 transition-transform`}>
-                                  <Icon className="w-6 h-6 text-white" />
-                                </div>
-                                <h3 className="font-bold text-white text-sm mb-1 group-hover:text-primary transition-colors leading-tight">
-                                  {guide.title}
-                                </h3>
-                                <p className="text-gray-500 text-xs leading-tight">
-                                  {guide.description}
-                                </p>
-                              </div>
-                            </Link>
-                          </motion.div>
-                        );
-                      })}
-                    </div>
+                    <AnimatePresence>
+                      {isExpanded && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="overflow-hidden"
+                        >
+                          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-3 pt-4">
+                            {category.guides.map((guide, index) => {
+                              const Icon = guide.icon;
+                              return (
+                                <motion.div 
+                                  key={index} 
+                                  initial={{ opacity: 0, y: 10 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  transition={{ delay: index * 0.03 }}
+                                >
+                                  <Link href={guide.link}>
+                                    <div className="group h-full bg-[#1C2230] border border-[#2E384D] rounded-xl p-4 hover:border-primary/50 transition-all cursor-pointer hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1 text-center relative">
+                                      {guide.featured && (
+                                        <div className="absolute -top-1.5 -right-1.5">
+                                          <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+                                        </div>
+                                      )}
+                                      <div className={`w-12 h-12 bg-gradient-to-br ${guide.color} rounded-xl flex items-center justify-center mx-auto mb-3 shadow-lg group-hover:scale-110 transition-transform`}>
+                                        <Icon className="w-6 h-6 text-white" />
+                                      </div>
+                                      <h3 className="font-bold text-white text-sm mb-1 group-hover:text-primary transition-colors leading-tight">
+                                        {guide.title}
+                                      </h3>
+                                      <p className="text-gray-500 text-xs leading-tight">
+                                        {guide.description}
+                                      </p>
+                                    </div>
+                                  </Link>
+                                </motion.div>
+                              );
+                            })}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </motion.div>
                 );
               })
