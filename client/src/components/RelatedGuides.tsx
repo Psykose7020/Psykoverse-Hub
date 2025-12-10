@@ -43,7 +43,7 @@ const guideRelations: Record<string, RelatedGuide[]> = {
   ],
   "recherches": [
     { title: "Production & Énergie", link: "/guide/production" },
-    { title: "Chantier", link: "/guide/chantier" },
+    { title: "Chantier spatial", link: "/guide/chantier" },
     { title: "Développement", link: "/guide/developpement" }
   ],
   "colonisation": [
@@ -68,7 +68,7 @@ const guideRelations: Record<string, RelatedGuide[]> = {
   ],
   "expeditions": [
     { title: "Classes de joueur", link: "/guide/classes" },
-    { title: "Chantier", link: "/guide/chantier" },
+    { title: "Chantier spatial", link: "/guide/chantier" },
     { title: "Lune & CDR", link: "/guide/lune" }
   ],
   "lune": [
@@ -99,16 +99,16 @@ const guideRelations: Record<string, RelatedGuide[]> = {
   "split": [
     { title: "Techniques de Raid", link: "/guide/raid" },
     { title: "Attaque & Combat", link: "/guide/attaque" },
-    { title: "Chantier", link: "/guide/chantier" }
+    { title: "Chantier spatial", link: "/guide/chantier" }
   ],
   "moonbreak": [
     { title: "Lune & CDR", link: "/guide/lune" },
-    { title: "Chantier", link: "/guide/chantier" },
+    { title: "Chantier spatial", link: "/guide/chantier" },
     { title: "ACS", link: "/guide/acs" }
   ],
   "volante": [
     { title: "Fleetsave", link: "/guide/fleetsave" },
-    { title: "Chantier", link: "/guide/chantier" },
+    { title: "Chantier spatial", link: "/guide/chantier" },
     { title: "Attaque & Combat", link: "/guide/attaque" }
   ],
   "fdv": [

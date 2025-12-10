@@ -270,10 +270,10 @@ export default function GuideChantier() {
                 <Rocket className="w-10 h-10 text-white" />
               </div>
               <h1 className="font-display text-4xl md:text-5xl font-bold text-white mb-4">
-                Chantier & Vaisseaux
+                Chantier spatial et défense
               </h1>
               <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-                Guide complet des vaisseaux, leurs caractéristiques et utilisations
+                Guide complet des vaisseaux, défenses et leurs caractéristiques
               </p>
               <p className="text-sm text-gray-600 mt-4">
                 Guide pour tous niveaux • Données officielles OGame
