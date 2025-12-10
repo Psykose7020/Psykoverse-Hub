@@ -49,12 +49,15 @@ const guideCategories = [
   {
     icon: Rocket,
     title: "Débuter sur OGame",
-    description: "Les bases pour bien commencer : construction, production, protection.",
+    description: "Les bases essentielles pour bien commencer votre aventure spatiale.",
     guides: [
-      { name: "Le Triangle d'Activité", link: "/guide/activite", highlight: true },
-      { name: "Premier jour optimal", link: null },
-      { name: "Protection anti-raid", link: null },
-      { name: "Choix de classe", link: null }
+      { name: "L'Interface du Jeu", link: "/guide/interface", highlight: true },
+      { name: "Les Classes de Joueurs", link: "/guide/classes", highlight: true },
+      { name: "Production & Énergie", link: "/guide/production", highlight: true },
+      { name: "Chantier & Dock Spatial", link: "/guide/chantier", highlight: true },
+      { name: "Galaxie & Alliance", link: "/guide/galaxie", highlight: true },
+      { name: "Jargon OGamien", link: "/guide/jargon", highlight: true },
+      { name: "Le Triangle d'Activité", link: "/guide/activite", highlight: true }
     ]
   },
   {
