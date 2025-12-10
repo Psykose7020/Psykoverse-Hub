@@ -133,7 +133,15 @@ export default function GuideExpeditions() {
                     <span className="text-amber-400">•</span>
                     <span>Utilisez des Grands Transporteurs pour maximiser le fret récupérable</span>
                   </li>
-                                  </ul>
+                  <li className="flex items-start gap-2">
+                    <span className="text-amber-400">•</span>
+                    <span><strong className="text-white">PT vs GT :</strong> Si utiliser des Petits Transporteurs (plus rapides) vous permet de <strong className="text-primary">gagner une vague supplémentaire</strong> sur la journée, c'est souvent plus rentable que les GT</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-amber-400">•</span>
+                    <span><strong className="text-white">Vaisseaux de combat :</strong> Même logique - choisissez vos vaisseaux de combat en fonction de leur vitesse si cela permet de faire plus de vagues par jour</span>
+                  </li>
+                </ul>
               </div>
 
               <RelatedGuides currentGuide="expeditions" />
