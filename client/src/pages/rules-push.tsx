@@ -176,10 +176,54 @@ export default function RulesPush() {
                     </p>
                   </div>
                 </div>
+
+                <div className="bg-[#151924] rounded-lg p-4 mt-4">
+                  <h3 className="font-bold text-white mb-3">Flottes significatives (éligibles aux 50%)</h3>
+                  <ul className="space-y-1 text-gray-300 text-sm">
+                    <li>• Le combat principal</li>
+                    <li>• Les pillages significatifs (pas 1M sur plusieurs milliards)</li>
+                    <li>• Double AG pour dissuader une DG</li>
+                    <li>• Recyclage significatif</li>
+                    <li>• Destruction de lune</li>
+                  </ul>
+                </div>
+
+                <div className="bg-[#151924] rounded-lg p-4 mt-4">
+                  <h3 className="font-bold text-white mb-3">Exclus des 20% (participation passive)</h3>
+                  <ul className="space-y-1 text-gray-300 text-sm">
+                    <li>• Phalange</li>
+                    <li>• Surveillance passive de cible</li>
+                    <li>• Sondage avant impact</li>
+                    <li>• Décalage d'une AG</li>
+                    <li>• Cible trouvée lors d'un sondage</li>
+                  </ul>
+                </div>
+
+                <div className="bg-amber-900/20 border border-amber-700/30 rounded-lg p-4 mt-4">
+                  <h3 className="font-bold text-white mb-3">Exemple concret</h3>
+                  <p className="text-gray-300 text-sm mb-3">
+                    Rentabilité de <strong className="text-primary">1.000.000 métal</strong> avec :
+                  </p>
+                  <ul className="space-y-1 text-gray-300 text-sm mb-3">
+                    <li>• 5 joueurs dans le combat (flotte significative) après destruction de lune</li>
+                    <li>• 1 joueur (6ème) à l'origine de la destruction de lune</li>
+                  </ul>
+                  <div className="bg-red-900/30 border border-red-700/30 rounded p-3">
+                    <p className="text-red-300 text-sm">
+                      <strong>Interdit :</strong> Donner 500.000 métal (50%) au 6ème joueur.
+                      Cela laisserait seulement 100.000 à chaque combattant principal, 
+                      donc <strong>moins</strong> que le 6ème joueur.
+                    </p>
+                  </div>
+                  <p className="text-gray-400 text-xs mt-2">
+                    Les participants principaux doivent toujours avoir une part supérieure aux participants éligibles aux 20% ou 50%.
+                  </p>
+                </div>
+
                 <div className="bg-primary/10 border border-primary/30 rounded-lg p-4 mt-4">
                   <p className="text-primary text-sm">
                     <strong>Obligatoire :</strong> Le partage doit faire l'objet d'un ticket au support pour validation. 
-                    Incluez les clés API du combat et une explication du rôle de chacun.
+                    Incluez les clés API du combat, des combats annexes (pillages, recyclages) et une explication du rôle de chacun.
                   </p>
                 </div>
               </div>

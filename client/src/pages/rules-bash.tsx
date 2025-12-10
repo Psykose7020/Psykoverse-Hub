@@ -114,8 +114,14 @@ export default function RulesBash() {
                 <h2 className="font-display text-xl font-bold text-white mb-4">Le Lignage</h2>
                 <p className="text-gray-300 mb-4">
                   Le lignage consiste à envoyer des vaisseaux à <strong className="text-white">faible vitesse</strong> en mission hostile 
-                  (attaque, espionnage, destruction) pour créer le triangle rouge dans la vue événement de l'ennemi.
+                  (espionnage, attaque, destruction de lune) pour créer le <strong className="text-red-400">triangle rouge</strong> dans la vue événement de l'ennemi.
                 </p>
+                <div className="bg-primary/10 border border-primary/30 rounded-lg p-4 mb-4">
+                  <p className="text-primary text-sm">
+                    <strong>Règle générale :</strong> Le lignage est autorisé à condition que l'envoi soit rappelé avant impact, 
+                    peu importe si le ligneur est plus ou moins fort que l'adversaire.
+                  </p>
+                </div>
                 <div className="space-y-3">
                   <div className="flex items-start gap-3 p-3 bg-green-900/20 border border-green-700/30 rounded-lg">
                     <Check className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
@@ -129,7 +135,7 @@ export default function RulesBash() {
                     <Check className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
                     <div>
                       <p className="text-gray-300">
-                        <strong className="text-white">Autorisé :</strong> Laisser crasher <strong className="text-primary">1 seule sonde</strong>
+                        <strong className="text-white">Autorisé :</strong> Laisser crasher <strong className="text-primary">1 seule et unique sonde d'espionnage</strong>
                       </p>
                     </div>
                   </div>
@@ -137,15 +143,16 @@ export default function RulesBash() {
                     <Check className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
                     <div>
                       <p className="text-gray-300">
-                        <strong className="text-white">Autorisé :</strong> Lignage qui impacte sans pertes pour l'attaquant
+                        <strong className="text-white">Autorisé :</strong> Lignage qui impacte mais n'entraîne aucune perte pour l'attaquant
                       </p>
+                      <p className="text-gray-500 text-xs mt-1">(sera comptabilisé pour le calcul du bash)</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3 p-3 bg-red-900/20 border border-red-700/30 rounded-lg">
                     <X className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
                     <div>
                       <p className="text-gray-300">
-                        <strong className="text-white">Interdit :</strong> Lignage de plus d'une sonde qui se crash
+                        <strong className="text-white">Interdit :</strong> Lignage de <strong>plus d'une</strong> sonde qui se crash
                       </p>
                     </div>
                   </div>
@@ -156,6 +163,60 @@ export default function RulesBash() {
                         <strong className="text-white">Interdit :</strong> Lignage avec des vaisseaux qui impactent ET sont détruits
                       </p>
                     </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-[#1C2230] border border-[#2E384D] rounded-xl p-6">
+                <h2 className="font-display text-xl font-bold text-white mb-4">Exemples de Lignage</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-green-900/20 border border-green-700/30 rounded-lg p-4">
+                    <h3 className="font-bold text-green-400 mb-3 flex items-center gap-2">
+                      <Check className="w-4 h-4" />
+                      Autorisé
+                    </h3>
+                    <ul className="space-y-2 text-gray-300 text-sm">
+                      <li className="flex items-start gap-2">
+                        <span className="text-green-400">✓</span>
+                        <span>1 sonde d'espionnage qui se crash</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-green-400">✓</span>
+                        <span>1 recycleur qui impacte sans être détruit</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-green-400">✓</span>
+                        <span>Flotte rappelée avant impact</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-green-400">✓</span>
+                        <span>Vaisseaux qui impactent mais survivent</span>
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="bg-red-900/20 border border-red-700/30 rounded-lg p-4">
+                    <h3 className="font-bold text-red-400 mb-3 flex items-center gap-2">
+                      <X className="w-4 h-4" />
+                      Interdit
+                    </h3>
+                    <ul className="space-y-2 text-gray-300 text-sm">
+                      <li className="flex items-start gap-2">
+                        <span className="text-red-400">✗</span>
+                        <span>2+ sondes d'espionnage qui se crashent</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-red-400">✗</span>
+                        <span>1 recycleur qui impacte ET est détruit</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-red-400">✗</span>
+                        <span>Tout vaisseau envoyé qui est détruit</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-red-400">✗</span>
+                        <span>Flotte non rappelée avec pertes</span>
+                      </li>
+                    </ul>
                   </div>
                 </div>
               </div>
