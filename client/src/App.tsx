@@ -29,6 +29,9 @@ import GuideAttaque from "@/pages/guide-attaque";
 import GuideACS from "@/pages/guide-acs";
 import GuideRaid from "@/pages/guide-raid";
 import GuideDeveloppement from "@/pages/guide-developpement";
+import GuideSplit from "@/pages/guide-split";
+import GuideMoonbreak from "@/pages/guide-moonbreak";
+import GuideVolante from "@/pages/guide-volante";
 
 function Router() {
   return (
@@ -53,6 +56,9 @@ function Router() {
       <Route path="/guide/acs" component={GuideACS} />
       <Route path="/guide/raid" component={GuideRaid} />
       <Route path="/guide/developpement" component={GuideDeveloppement} />
+      <Route path="/guide/split" component={GuideSplit} />
+      <Route path="/guide/moonbreak" component={GuideMoonbreak} />
+      <Route path="/guide/volante" component={GuideVolante} />
       <Route path="/alliance" component={Alliance} />
       <Route path="/projets" component={Projects} />
       <Route path="/support" component={Support} />

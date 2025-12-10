@@ -4,7 +4,7 @@ import {
   Play, BookOpen, Monitor, Users, Factory, FlaskConical, 
   Rocket, Globe, BookText, AlertTriangle, ExternalLink,
   GraduationCap, Compass, Trophy, Shield, Eye, Crosshair, Moon, Globe2,
-  Target, TrendingUp, Ghost, Layers
+  Target, TrendingUp, Ghost, Layers, Bomb, Plane, Sparkles
 } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
@@ -41,7 +41,7 @@ const categories = [
   },
   {
     id: "expansion",
-    title: "Expansion & Exploration",
+    title: "Expansion & Développement",
     description: "Développez votre empire galactique",
     icon: Globe2,
     color: "from-teal-500 to-cyan-600",
@@ -49,7 +49,8 @@ const categories = [
       { title: "Colonisation", description: "S'étendre", icon: Globe2, color: "from-green-500 to-teal-600", link: "/guide/colonisation" },
       { title: "Expéditions", description: "Explorer", icon: Compass, color: "from-indigo-500 to-blue-600", link: "/guide/expeditions" },
       { title: "Lune & CDR", description: "Débris et lunes", icon: Moon, color: "from-gray-500 to-slate-700", link: "/guide/lune" },
-      { title: "Développement", description: "Stratégie de compte", icon: TrendingUp, color: "from-emerald-500 to-green-600", link: "/guide/developpement" }
+      { title: "Développement", description: "Stratégie compte", icon: TrendingUp, color: "from-emerald-500 to-green-600", link: "/guide/developpement" },
+      { title: "Volantes", description: "Flotte mobile", icon: Plane, color: "from-cyan-500 to-blue-600", link: "/guide/volante" }
     ]
   },
   {
@@ -62,7 +63,9 @@ const categories = [
       { title: "Espionnage", description: "Renseignement", icon: Eye, color: "from-violet-500 to-purple-600", link: "/guide/espionnage" },
       { title: "Attaque", description: "Bases du combat", icon: Crosshair, color: "from-red-500 to-rose-600", link: "/guide/attaque" },
       { title: "Raid Avancé", description: "Techniques pro", icon: Target, color: "from-orange-500 to-red-600", link: "/guide/raid" },
+      { title: "Split Flotte", description: "Optimisation", icon: Layers, color: "from-purple-500 to-violet-600", link: "/guide/split" },
       { title: "ACS", description: "Combat groupé", icon: Users, color: "from-orange-500 to-amber-600", link: "/guide/acs" },
+      { title: "MoonBreak", description: "Destruction lune", icon: Bomb, color: "from-red-600 to-red-800", link: "/guide/moonbreak" },
       { title: "Classements", description: "Points d'honneur", icon: Trophy, color: "from-yellow-500 to-amber-600", link: "/guide/classements" }
     ]
   },
@@ -150,7 +153,23 @@ export default function Tutorials() {
             );
           })}
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="bg-gradient-to-r from-amber-900/20 to-orange-900/20 border border-amber-700/30 rounded-xl p-6 mb-8"
+          >
+            <div className="flex items-center gap-3 mb-3">
+              <Sparkles className="w-6 h-6 text-amber-400" />
+              <h3 className="font-display text-lg font-bold text-white">Guides par Triling of Borg</h3>
+            </div>
+            <p className="text-gray-400 text-sm">
+              Les guides Raid Avancé, Split Flotte, MoonBreak, Volantes et Développement sont basés sur le tutoriel 
+              complet de Triling of Borg, raideur expérimenté de la communauté OGame.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
