@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
-import { Shield, Menu, X, BookOpen, Globe, Rocket, Scale } from "lucide-react";
+import { Shield, Menu, X, BookOpen, Globe, Rocket } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import allianceLogo from "@assets/Design_sans_titre_(2)_1765292527261.png";
 
 const navLinks = [
   { href: "/", label: "Accueil" },
   { href: "/tutoriels", label: "Tutoriels", icon: BookOpen },
-  { href: "/regles", label: "Règles", icon: Scale },
   { href: "/alliance", label: "Où nous trouver", icon: Globe },
   { href: "/projets", label: "Projets", icon: Rocket },
   { href: "/support", label: "Support", icon: Shield, highlight: true },

@@ -4,7 +4,8 @@ import {
   Play, BookOpen, Monitor, Users, Factory, FlaskConical, 
   Rocket, Globe, BookText, AlertTriangle, ExternalLink,
   GraduationCap, Compass, Trophy, Shield, Eye, Crosshair, Moon, Globe2,
-  Target, TrendingUp, Ghost, Layers, Bomb, Plane, Sparkles
+  Target, TrendingUp, Ghost, Layers, Bomb, Plane, Sparkles, Scale,
+  ArrowLeftRight, Swords
 } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
@@ -78,6 +79,19 @@ const categories = [
     guides: [
       { title: "Ghost", description: "12 techniques", icon: Ghost, color: "from-blue-600 to-indigo-700", link: "/guide/fleetsave" },
       { title: "Activité", description: "Triangle d'activité", icon: AlertTriangle, color: "from-red-500 to-red-700", link: "/guide/activite" }
+    ]
+  },
+  {
+    id: "regles",
+    title: "Règles du Jeu",
+    description: "Les règles officielles d'OGame.fr",
+    icon: Scale,
+    color: "from-amber-500 to-orange-600",
+    guides: [
+      { title: "Comptes", description: "Multicomptes & IP", icon: Users, color: "from-blue-500 to-cyan-600", link: "/regles/compte" },
+      { title: "Sitting", description: "Surveillance & échanges", icon: ArrowLeftRight, color: "from-green-500 to-emerald-600", link: "/regles/sitting" },
+      { title: "Push & Pull", description: "Commerce & mercenariat", icon: TrendingUp, color: "from-amber-500 to-orange-600", link: "/regles/push" },
+      { title: "Bash", description: "Limite d'attaques", icon: Swords, color: "from-red-500 to-rose-600", link: "/regles/bash" }
     ]
   }
 ];
