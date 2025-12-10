@@ -23,8 +23,13 @@
     <!-- Fonts: Exo 2 for headers (Game UI look), Roboto for body (Readable, classic) -->
     <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
   </head>
-  <body>
-    <div id="root"></div>
+  <body style="background-color: #0B0E14; margin: 0;">
+    <div id="root">
+      <div style="position: fixed; inset: 0; background: #0B0E14; display: flex; align-items: center; justify-content: center; z-index: 9999;">
+        <div style="width: 60px; height: 60px; border: 3px solid rgba(0,191,255,0.2); border-top-color: #00bfff; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+      </div>
+      <style>@keyframes spin { to { transform: rotate(360deg); } }</style>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
