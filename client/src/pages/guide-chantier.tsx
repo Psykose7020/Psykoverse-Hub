@@ -497,36 +497,45 @@ export default function GuideChantier() {
                     mais sont partiellement reconstruites après chaque combat (~70% de récupération).
                   </p>
                   
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-sm">
-                      <thead>
-                        <tr className="border-b border-[#2E384D]">
-                          <th className="text-left py-3 px-2 text-gray-400 font-medium">Défense</th>
-                          <th className="text-center py-3 px-2 text-gray-400 font-medium">Métal</th>
-                          <th className="text-center py-3 px-2 text-gray-400 font-medium">Cristal</th>
-                          <th className="text-center py-3 px-2 text-gray-400 font-medium">Bouclier</th>
-                          <th className="text-center py-3 px-2 text-gray-400 font-medium">Attaque</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {defenses.map((d, index) => (
-                          <tr key={index} className="border-b border-[#2E384D]/50 hover:bg-[#151924]">
-                            <td className="py-3 px-2">
-                              <div className="flex items-center gap-2">
-                                <span className="text-xs bg-amber-600/20 text-amber-400 px-2 py-0.5 rounded font-bold">
-                                  {d.abbr}
-                                </span>
-                                <span className="text-white">{d.nom}</span>
-                              </div>
-                            </td>
-                            <td className="text-center py-3 px-2 text-gray-300">{d.metal.toLocaleString()}</td>
-                            <td className="text-center py-3 px-2 text-gray-300">{d.cristal.toLocaleString()}</td>
-                            <td className="text-center py-3 px-2 text-blue-400">{d.bouclier.toLocaleString()}</td>
-                            <td className="text-center py-3 px-2 text-red-400">{d.attaque.toLocaleString()}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                    {defenses.map((d, index) => (
+                      <div 
+                        key={index}
+                        className="bg-[#151924] border border-[#2E384D] rounded-xl p-4 hover:border-amber-500/50 transition-all group"
+                      >
+                        <div className="flex flex-col items-center text-center">
+                          <div className="w-20 h-20 rounded-lg overflow-hidden mb-3 bg-gradient-to-br from-amber-900/30 to-amber-950/50 flex items-center justify-center group-hover:scale-105 transition-transform">
+                            <img 
+                              src={d.image} 
+                              alt={d.nom}
+                              className="w-full h-full object-contain"
+                            />
+                          </div>
+                          <span className="text-xs bg-amber-600/20 text-amber-400 px-2 py-0.5 rounded font-bold mb-1">
+                            {d.abbr}
+                          </span>
+                          <h4 className="text-white font-medium text-sm mb-2">{d.nom}</h4>
+                          <div className="grid grid-cols-2 gap-2 w-full text-xs">
+                            <div className="bg-[#1C2230] rounded p-1.5">
+                              <div className="text-gray-500">Métal</div>
+                              <div className="text-gray-300 font-medium">{d.metal.toLocaleString()}</div>
+                            </div>
+                            <div className="bg-[#1C2230] rounded p-1.5">
+                              <div className="text-gray-500">Cristal</div>
+                              <div className="text-cyan-400 font-medium">{d.cristal.toLocaleString()}</div>
+                            </div>
+                            <div className="bg-[#1C2230] rounded p-1.5">
+                              <div className="text-gray-500">Bouclier</div>
+                              <div className="text-blue-400 font-medium">{d.bouclier.toLocaleString()}</div>
+                            </div>
+                            <div className="bg-[#1C2230] rounded p-1.5">
+                              <div className="text-gray-500">Attaque</div>
+                              <div className="text-red-400 font-medium">{d.attaque.toLocaleString()}</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
 
                   <div className="mt-6 bg-amber-900/20 border border-amber-700/30 rounded-lg p-4">
