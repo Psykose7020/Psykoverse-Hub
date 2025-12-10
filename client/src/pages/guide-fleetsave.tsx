@@ -17,6 +17,7 @@ const techniques = [
     description: "Votre flotte étant sur votre lune, créez un CDR invisible avec une seule sonde en mode attaque. À partir du moment où une sonde en mode attaque atteint une cible, détruite ou non, elle laisse un CDR sur la position. Si le CDR apparaît car la sonde a été détruite lors de l'attaque, vous pouvez recycler le CDR, il ne restera donc plus de CDR visible sur la vue galaxie, mais vous pourrez tout de même envoyer des missions 'exploiter' (nécessite un recycleur dans la flotte). Une fois le CDR invisible formé, vous pourrez prendre la totalité de votre flotte et l'envoyer sur le CDR en question en mode exploiter. Choisissez la vitesse qui vous convient le mieux.",
     details: "Recommandé pour les petits ghosts entre des vagues d'expédition. Autre cas pratique : si quelqu'un vous espionne, lancez votre flotte sur le CDR afin d'esquiver la sonde sans être phalangé (utile si vous lancez sur votre planète). L'avantage c'est que ça coûte rien en deut, vous pouvez ghost toute votre flotte pendant 1 ou 2h pour 5k de deut.",
     astuce: "Les CDR sont tous reset le lundi à 03H00 du matin. Vous pouvez cependant les sauvegarder en envoyant une mission 'exploiter' sur le CDR avant le reset, en faisant en sorte que la mission arrive après le reset. Ainsi le CDR invisible sera sauvegardé pour la semaine qui suit !",
+    variante: "Variante leurrée : Envoyez plusieurs recycleurs avant et après votre flotte principale pour créer des leurres. En cas d'interception, vous perdrez probablement uniquement les recycleurs leurres.",
     avantages: [
       "Flotte invisible aux phalanges",
       "Vitesse variable (10% à 100%)",
@@ -32,19 +33,6 @@ const techniques = [
   },
   {
     id: 2,
-    title: "Ghost sur CDR invisible leurré",
-    description: "Recyclage multiple avant et après votre flotte principale pour créer des leurres.",
-    avantages: [
-      "Flotte invisible aux phalanges",
-      "En cas d'interception, vous perdez probablement que les recycleurs leurres"
-    ],
-    inconvenients: [
-      "Un joueur peut se caler si fait régulièrement",
-      "Heure de retour visible en cas de moonbreak"
-    ]
-  },
-  {
-    id: 3,
     title: "Ghost en exploiter vers CDR sans planète",
     description: "Un ami colonise puis décolonise après que vous ayez créé un CDR invisible. Le CDR devient impossible à rendre visible.",
     avantages: [
@@ -57,7 +45,7 @@ const techniques = [
     ]
   },
   {
-    id: 4,
+    id: 3,
     title: "Ghost en stationner de planète à planète",
     description: "Envoyez en stationner puis rappelez pour que le retour soit invisible.",
     avantages: [
@@ -70,7 +58,7 @@ const techniques = [
     ]
   },
   {
-    id: 5,
+    id: 4,
     title: "Ghost en stationner de lune à lune",
     description: "Faites voyager votre flotte en mode stationner vers une autre lune. Récupérez 50% du deutérium si pas de retour.",
     avantages: [
@@ -84,7 +72,7 @@ const techniques = [
     ]
   },
   {
-    id: 6,
+    id: 5,
     title: "Ghost en stationner planète vers lune",
     description: "Envoyez depuis une planète vers votre lune en mode stationner.",
     avantages: [
@@ -97,7 +85,7 @@ const techniques = [
     ]
   },
   {
-    id: 7,
+    id: 6,
     title: "Ghost vers expédition depuis une lune",
     description: "Envoyez toute votre flotte en mode Expédition vers une position X.X.16.",
     avantages: [
@@ -113,7 +101,7 @@ const techniques = [
     ]
   },
   {
-    id: 8,
+    id: 7,
     title: "Ghost en coloniser depuis une lune",
     description: "Envoyez votre flotte avec un vdc vers une coordonnée non colonisée.",
     avantages: [
@@ -127,7 +115,7 @@ const techniques = [
     ]
   },
   {
-    id: 9,
+    id: 8,
     title: "Ghost en attaquer lune vers lune",
     description: "Attaquez une lune (de préférence un inactif) depuis votre lune.",
     avantages: [
@@ -141,7 +129,7 @@ const techniques = [
     ]
   },
   {
-    id: 10,
+    id: 9,
     title: "Ghost en transporter lune vers lune",
     description: "Envoyez en mode transporter vers la lune d'un ami.",
     avantages: [
@@ -155,7 +143,7 @@ const techniques = [
     ]
   },
   {
-    id: 11,
+    id: 10,
     title: "Ghost en espionner lune vers lune",
     description: "Envoyez en mode espionner vers la lune d'un ami.",
     avantages: [
@@ -171,7 +159,7 @@ const techniques = [
     ]
   },
   {
-    id: 12,
+    id: 11,
     title: "Ghost en stationner allié lune vers lune",
     description: "Stationner chez un allié (0h de stationnement) depuis votre lune vers sa lune.",
     avantages: [
@@ -240,7 +228,7 @@ export default function GuideFleetsave() {
             </div>
 
             <div className="space-y-4">
-              <h2 className="font-display text-2xl font-bold text-white mb-4">Les 12 Techniques de Ghost</h2>
+              <h2 className="font-display text-2xl font-bold text-white mb-4">Les 11 Techniques de Ghost</h2>
               
               {techniques.map((tech) => (
                 <div key={tech.id} className="bg-[#1C2230] border border-[#2E384D] rounded-xl overflow-hidden">
@@ -261,6 +249,11 @@ export default function GuideFleetsave() {
                       <div className="bg-amber-900/20 border border-amber-700/30 rounded-lg p-3 mb-4">
                         <span className="text-amber-400 font-medium text-sm">Astuce : </span>
                         <span className="text-gray-300 text-sm">{tech.astuce}</span>
+                      </div>
+                    )}
+                    {tech.variante && (
+                      <div className="bg-purple-900/20 border border-purple-700/30 rounded-lg p-3 mb-4">
+                        <span className="text-purple-400 font-medium text-sm">{tech.variante}</span>
                       </div>
                     )}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
