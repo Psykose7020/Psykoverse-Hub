@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
+import { useQuery } from "@tanstack/react-query";
 import { 
   Play, BookOpen, Monitor, Users, Factory, FlaskConical, 
   Rocket, Globe, BookText, AlertTriangle, ExternalLink,
@@ -131,10 +132,35 @@ const levelColors: Record<string, string> = {
   "Important": "bg-amber-500/20 text-amber-400 border-amber-500/30"
 };
 
+const allGuides = categories.flatMap(cat => 
+  cat.guides.map(g => ({ ...g, category: cat.title }))
+);
+
+const guidesBySlug: Record<string, typeof allGuides[0]> = {};
+allGuides.forEach(g => {
+  const slug = g.link.replace('/guide/', '').replace('/regles/', '');
+  guidesBySlug[slug] = g;
+});
+
 export default function Tutorials() {
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set(["regles"]));
+
+  const { data: popularGuidesData } = useQuery<{ slug: string; views: number }[]>({
+    queryKey: ['/api/guides/popular'],
+    queryFn: async () => {
+      const res = await fetch('/api/guides/popular');
+      if (!res.ok) return [];
+      return res.json();
+    },
+    staleTime: 60000,
+  });
+
+  const popularGuides = (popularGuidesData || [])
+    .map(p => guidesBySlug[p.slug])
+    .filter(Boolean)
+    .slice(0, 4);
   
   const toggleCategory = (categoryId: string) => {
     setExpandedCategories(prev => {
@@ -173,6 +199,8 @@ export default function Tutorials() {
   const featuredGuides = categories.flatMap(cat => 
     cat.guides.filter(g => g.featured).map(g => ({ ...g, category: cat.title }))
   );
+  
+  const displayPopularGuides = popularGuides.length > 0 ? popularGuides : featuredGuides.slice(0, 4);
   
   return (
     <Layout>
@@ -277,10 +305,12 @@ export default function Tutorials() {
                     <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
                   </div>
                   <h2 className="font-display text-lg font-bold text-white">Guides populaires</h2>
-                  <span className="text-xs text-yellow-400/70 bg-yellow-500/10 px-2 py-0.5 rounded-full">Recommandés</span>
+                  <span className="text-xs text-yellow-400/70 bg-yellow-500/10 px-2 py-0.5 rounded-full">
+                    {popularGuides.length > 0 ? 'Les plus consultés' : 'Recommandés'}
+                  </span>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                  {featuredGuides.slice(0, 4).map((guide, index) => {
+                  {displayPopularGuides.map((guide, index) => {
                     const Icon = guide.icon;
                     return (
                       <Link key={index} href={guide.link}>

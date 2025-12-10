@@ -67,6 +67,16 @@ export async function registerRoutes(
     }
   });
 
+  app.get("/api/guides/popular", async (req, res) => {
+    try {
+      const popularGuides = await storage.getPopularGuides(4, 5);
+      res.json(popularGuides);
+    } catch (error) {
+      console.error("Error getting popular guides:", error);
+      res.status(500).json({ error: "Failed to get popular guides" });
+    }
+  });
+
   app.post("/api/admin/login", async (req, res) => {
     try {
       const { password } = req.body;

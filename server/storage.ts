@@ -15,6 +15,7 @@ export interface IStorage {
     recentVisits: Visit[];
     pageStats: { page: string; count: number }[];
   }>;
+  getPopularGuides(limit: number, minViews: number): Promise<{ slug: string; views: number }[]>;
   createFeedback(data: InsertFeedback): Promise<Feedback>;
   listFeedback(): Promise<Feedback[]>;
   updateFeedbackStatus(id: string, status: string): Promise<Feedback | undefined>;
@@ -82,6 +83,25 @@ export class DatabaseStorage implements IStorage {
       recentVisits,
       pageStats: pageStats.map(p => ({ page: p.page, count: Number(p.count) })),
     };
+  }
+
+  async getPopularGuides(limit: number = 4, minViews: number = 5): Promise<{ slug: string; views: number }[]> {
+    const results = await db
+      .select({
+        page: visits.page,
+        count: sql<number>`count(*)`,
+      })
+      .from(visits)
+      .where(sql`${visits.page} LIKE '/guide/%'`)
+      .groupBy(visits.page)
+      .having(sql`count(*) >= ${minViews}`)
+      .orderBy(desc(sql`count(*)`))
+      .limit(limit);
+
+    return results.map(r => ({
+      slug: r.page.replace('/guide/', ''),
+      views: Number(r.count)
+    }));
   }
 
   async createFeedback(data: InsertFeedback): Promise<Feedback> {
