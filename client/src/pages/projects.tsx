@@ -21,36 +21,43 @@ const roadmapItems = [
     status: "completed",
     date: "Novembre 2024",
     title: "Lancement du site web",
-    description: "Création du site communautaire Psykoverse avec tutoriels et ressources.",
+    description: "Création du site communautaire avec 35 guides et ressources pour tous les joueurs OGame francophones.",
     icon: Globe
   },
   {
     status: "completed",
     date: "Décembre 2024",
-    title: "Chaîne YouTube active",
-    description: "340 abonnés et tutoriels vidéo réguliers pour la communauté.",
+    title: "Chaîne YouTube",
+    description: "340 abonnés sur la chaîne YouTube avec des tutoriels vidéo pour la communauté.",
     icon: Tv
   },
   {
     status: "in-progress",
     date: "19 Décembre 2024",
     title: "Serveur Saison",
-    description: "Lancement officiel sur le nouveau serveur saison. Objectif : Top 10 alliance !",
+    description: "Lancement sur le nouveau serveur saison. Rejoignez-nous pour cette nouvelle aventure !",
     icon: Rocket
   },
   {
     status: "planned",
-    date: "Janvier 2025",
-    title: "Expansion multi-univers",
-    description: "Renforcement de notre présence sur Hercules et Scorpius.",
+    date: "En continu",
+    title: "Présence sur les Saisons",
+    description: "Participation à chaque nouveau serveur saison OGame pour vivre l'expérience avec la communauté.",
     icon: Target
   },
   {
     status: "planned",
-    date: "Q1 2025",
-    title: "Outils communautaires",
-    description: "Développement d'outils de calcul et de simulation pour les membres.",
-    icon: Users
+    date: "En continu",
+    title: "Mise à jour des guides",
+    description: "Amélioration et actualisation régulière des tutoriels selon les évolutions du jeu.",
+    icon: Calendar
+  },
+  {
+    status: "planned",
+    date: "Occasionnel",
+    title: "Vidéos tutoriels",
+    description: "Nouvelles vidéos explicatives sur YouTube quand le temps le permet.",
+    icon: Tv
   }
 ];
 
@@ -62,10 +69,10 @@ const upcomingEvents = [
     description: "Rendez-vous sur Discord pour coordonner le départ !"
   },
   {
-    date: "Chaque semaine",
-    title: "Nouveau tutoriel vidéo",
+    date: "En continu",
+    title: "Maintenance du site",
     type: "content",
-    description: "Une nouvelle vidéo chaque semaine sur la chaîne YouTube."
+    description: "Ajout de nouveaux guides et corrections selon vos retours."
   },
   {
     date: "En continu",
