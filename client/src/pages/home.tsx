@@ -207,13 +207,13 @@ export default function Home() {
           >
             <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-4">
               <Sparkles className="w-4 h-4" />
-              Tout pour réussir sur OGame
+              Votre aventure commence ici
             </motion.div>
             <motion.h2 variants={fadeInUp} className="font-display text-3xl md:text-4xl font-bold text-white mb-4">
-              Explorez les ressources
+              Découvrez nos sections
             </motion.h2>
             <motion.p variants={fadeInUp} className="text-gray-400 max-w-xl mx-auto">
-              Tout ce qu'il faut pour progresser sur OGame
+              Guides, communauté et ressources pour dominer l'univers
             </motion.p>
           </motion.div>
 
