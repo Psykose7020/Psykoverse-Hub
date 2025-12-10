@@ -29,10 +29,11 @@ const races = [
     avantages: [
       "Possède un bâtiment pour améliorer toutes les techno FDV",
       "Gameplay très polyvalent",
-      "Meilleure race en terme de rendement pur en late game"
+      "Meilleure race en terme de rendement pur en late game",
+      "Race la plus utilisée grâce à sa polyvalence"
     ],
     lateGame: "Meilleure race en terme de rendement pur",
-    avis: "Super race, gameplay très polyvalent."
+    avis: "La race la plus utilisée ! Même si les Mécas sont très appréciés, les Humains restent le choix préféré pour leur polyvalence."
   },
   {
     id: "rocktal",
@@ -48,10 +49,11 @@ const races = [
       "Race la plus simple à prendre en main pour FDV de production",
       "Race la plus rentable en début d'univers",
       "Meilleure race pour LB (lunaire)",
-      "Bâtiment qui réduit le coût des mines"
+      "Bâtiment qui réduit le coût des mines",
+      "Idéale si vous ne faites pas d'expéditions ni de raids"
     ],
     lateGame: "Race peu rentable, viable pour focus mines et LB",
-    avis: "Viable quelques mois, excellent switch pour lancer de très grosses mines."
+    avis: "Si vous ne faites pas d'expéditions ni de raids, c'est la race la plus appropriée ! Excellent switch pour lancer de très grosses mines."
   },
   {
     id: "mecas",
