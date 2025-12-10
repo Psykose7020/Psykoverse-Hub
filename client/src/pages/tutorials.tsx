@@ -27,6 +27,20 @@ const staggerContainer = {
 
 const categories = [
   {
+    id: "regles",
+    title: "Règles du Jeu",
+    description: "Les règles officielles d'OGame.fr",
+    icon: Scale,
+    color: "from-amber-500 to-orange-600",
+    level: "Important",
+    guides: [
+      { title: "Comptes & Multicomptes", description: "Règles sur les comptes", icon: Users, color: "from-blue-500 to-cyan-600", link: "/regles/compte" },
+      { title: "Sitting & Échanges", description: "Surveillance de compte", icon: ArrowLeftRight, color: "from-green-500 to-emerald-600", link: "/regles/sitting" },
+      { title: "Push & Pull", description: "Commerce et mercenariat", icon: TrendingUp, color: "from-amber-500 to-orange-600", link: "/regles/push" },
+      { title: "Bash", description: "Limite d'attaques", icon: Swords, color: "from-red-500 to-rose-600", link: "/regles/bash" }
+    ]
+  },
+  {
     id: "debutant",
     title: "Les Bases du Jeu",
     description: "Tout ce qu'il faut savoir pour bien démarrer",
@@ -36,6 +50,7 @@ const categories = [
     guides: [
       { title: "L'Interface", description: "Vue d'ensemble du jeu", icon: Monitor, color: "from-blue-500 to-cyan-600", link: "/guide/interface", featured: true },
       { title: "Les Classes", description: "Collecteur, Général, Explorateur", icon: Users, color: "from-purple-500 to-pink-600", link: "/guide/classes", featured: true },
+      { title: "Classes Alliance", description: "Guerrier, Marchand, Chercheur", icon: Users, color: "from-violet-500 to-purple-600", link: "/guide/alliance-classes", featured: true },
       { title: "Production", description: "Mines et gestion de l'énergie", icon: Factory, color: "from-green-500 to-emerald-600", link: "/guide/production" },
       { title: "Recherches", description: "Arbre des technologies", icon: FlaskConical, color: "from-teal-500 to-cyan-600", link: "/guide/recherches" },
       { title: "Chantier", description: "Construction de vaisseaux", icon: Rocket, color: "from-slate-500 to-slate-700", link: "/guide/chantier" },
@@ -56,8 +71,7 @@ const categories = [
       { title: "Expéditions", description: "Explorer l'espace profond", icon: Compass, color: "from-indigo-500 to-blue-600", link: "/guide/expeditions" },
       { title: "Lune & CDR", description: "Champs de débris et lunes", icon: Moon, color: "from-gray-500 to-slate-700", link: "/guide/lune" },
       { title: "Développement", description: "Stratégie de compte", icon: TrendingUp, color: "from-emerald-500 to-green-600", link: "/guide/developpement" },
-      { title: "Volantes", description: "Flotte mobile défensive", icon: Plane, color: "from-cyan-500 to-blue-600", link: "/guide/volante" },
-      { title: "Classes Alliance", description: "Guerrier, Marchand, Chercheur", icon: Users, color: "from-violet-500 to-purple-600", link: "/guide/alliance-classes", featured: true }
+      { title: "Volantes", description: "Flotte mobile défensive", icon: Plane, color: "from-cyan-500 to-blue-600", link: "/guide/volante" }
     ]
   },
   {
@@ -99,20 +113,6 @@ const categories = [
     guides: [
       { title: "Guide Complet FDV", description: "Races, recherches, artéfacts", icon: Dna, color: "from-purple-500 to-pink-600", link: "/guide/fdv", featured: true }
     ]
-  },
-  {
-    id: "regles",
-    title: "Règles du Jeu",
-    description: "Les règles officielles d'OGame.fr",
-    icon: Scale,
-    color: "from-amber-500 to-orange-600",
-    level: "Important",
-    guides: [
-      { title: "Comptes & Multicomptes", description: "Règles sur les comptes", icon: Users, color: "from-blue-500 to-cyan-600", link: "/regles/compte" },
-      { title: "Sitting & Échanges", description: "Surveillance de compte", icon: ArrowLeftRight, color: "from-green-500 to-emerald-600", link: "/regles/sitting" },
-      { title: "Push & Pull", description: "Commerce et mercenariat", icon: TrendingUp, color: "from-amber-500 to-orange-600", link: "/regles/push" },
-      { title: "Bash", description: "Limite d'attaques", icon: Swords, color: "from-red-500 to-rose-600", link: "/regles/bash" }
-    ]
   }
 ];
 
@@ -127,7 +127,7 @@ const levelColors: Record<string, string> = {
 export default function Tutorials() {
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set(["debutant"]));
+  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set(["regles"]));
   
   const toggleCategory = (categoryId: string) => {
     setExpandedCategories(prev => {
