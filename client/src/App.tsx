@@ -41,6 +41,7 @@ import GuideTimingRaid from "@/pages/guide-timing-raid";
 import GuideDecalageSonde from "@/pages/guide-decalage-sonde";
 import SuggestionTutoriel from "@/pages/suggestion-tutoriel";
 import GuideRRI from "@/pages/guide-rri";
+import GuideReductionFDV from "@/pages/guide-reduction-fdv";
 import Rules from "@/pages/rules";
 import RulesCompte from "@/pages/rules-compte";
 import RulesSitting from "@/pages/rules-sitting";
@@ -87,6 +88,7 @@ function Router() {
       <Route path="/guide/decalage-sonde" component={GuideDecalageSonde} />
       <Route path="/suggestion-tutoriel" component={SuggestionTutoriel} />
       <Route path="/guide/rri" component={GuideRRI} />
+      <Route path="/guide/reduction-fdv" component={GuideReductionFDV} />
       <Route path="/alliance" component={Alliance} />
       <Route path="/projets" component={Projects} />
       <Route path="/support" component={Support} />

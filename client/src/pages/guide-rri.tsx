@@ -161,48 +161,20 @@ export default function GuideRRI() {
                 </div>
               </div>
 
-              <div className="bg-purple-900/20 border border-purple-700/30 rounded-xl p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <Zap className="w-6 h-6 text-purple-400" />
-                  <h2 className="font-display text-xl font-bold text-purple-400">Formes de Vie : Cap des -99%</h2>
+              <Link href="/guide/reduction-fdv">
+                <div className="bg-purple-900/20 border border-purple-700/30 rounded-xl p-6 hover:bg-purple-900/30 transition-colors cursor-pointer group">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <Zap className="w-6 h-6 text-purple-400" />
+                      <div>
+                        <h2 className="font-display text-xl font-bold text-purple-400">Réduction de Temps FDV</h2>
+                        <p className="text-gray-400 text-sm">Cap des -99%, labo FDV vs technologies FDV</p>
+                      </div>
+                    </div>
+                    <span className="text-purple-400 group-hover:translate-x-1 transition-transform">→</span>
+                  </div>
                 </div>
-                <p className="text-gray-300 mb-4">
-                  Une mécanique importante à connaître pour les recherches FDV :
-                </p>
-                <div className="bg-[#151924] rounded-lg p-4 mb-4">
-                  <p className="text-white font-bold mb-2">La réduction de temps sur les recherches FDV est limitée à -99%</p>
-                  <p className="text-gray-400 text-sm">
-                    Comme pour les recherches classiques, on ne peut jamais descendre en dessous de 1% du temps de base.
-                  </p>
-                </div>
-                <div className="bg-green-900/20 border border-green-700/30 rounded-lg p-4 mb-4">
-                  <p className="text-green-400 font-bold mb-2">Important : Le labo FDV ne s'applique qu'aux techs FDV !</p>
-                  <p className="text-gray-300 text-sm">
-                    Mais les <strong className="text-white">technologies FDV</strong> (une fois recherchées) peuvent 
-                    s'appliquer aux <strong className="text-white">recherches classiques</strong>. C'est pourquoi atteindre 
-                    le cap de -99% sur les techs FDV est intéressant : ces bonus aident ensuite vos recherches normales.
-                  </p>
-                </div>
-                <div className="space-y-3 text-gray-300 mb-4">
-                  <p><strong className="text-white">Le calcul se fait en additionnant :</strong></p>
-                  <ul className="list-disc list-inside space-y-1 text-sm ml-2">
-                    <li>Le % de réduction apporté par le <strong className="text-purple-400">labo FDV</strong> (techs FDV uniquement)</li>
-                    <li>Le % de réduction apporté par les <strong className="text-purple-400">technologies labo FDV</strong></li>
-                  </ul>
-                </div>
-                <div className="bg-primary/10 border border-primary/30 rounded-lg p-4 mb-4">
-                  <p className="text-primary font-bold mb-2">Exemple concret :</p>
-                  <p className="text-gray-300 text-sm">
-                    Si j'ai déjà <strong className="text-white">-60%</strong> via mes technos labo FDV, alors le labo FDV 
-                    ne sert à rien au-delà de <strong className="text-white">40%</strong>, puisque le total atteindra déjà le cap des -99%.
-                  </p>
-                </div>
-                <div className="bg-red-900/20 border border-red-700/30 rounded-lg p-4">
-                  <p className="text-red-400 font-bold">
-                    Retenez donc : inutile d'over-up le labo FDV si vos technos vous approchent déjà du cap.
-                  </p>
-                </div>
-              </div>
+              </Link>
 
               <div className="bg-amber-900/20 border border-amber-700/30 rounded-xl p-6">
                 <div className="flex items-center gap-3 mb-4">
