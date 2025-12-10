@@ -11,12 +11,14 @@ import Admin from "@/pages/admin";
 import Tutorials from "@/pages/tutorials";
 import Alliance from "@/pages/alliance";
 import Projects from "@/pages/projects";
+import GuideActivite from "@/pages/guide-activite";
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/tutoriels" component={Tutorials} />
+      <Route path="/guide/activite" component={GuideActivite} />
       <Route path="/alliance" component={Alliance} />
       <Route path="/projets" component={Projects} />
       <Route path="/support" component={Support} />
