@@ -189,10 +189,6 @@ export default function GuideVolante() {
                 </ul>
               </div>
 
-              <div className="mt-8 text-center text-sm text-gray-500">
-                Guide basé sur le tutoriel de <span className="text-gray-400">Triling of Borg</span>
-              </div>
-
               <div className="bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/30 rounded-xl p-8 text-center">
                 <h3 className="font-display text-xl font-bold text-white mb-3">
                   Stratégies de volantes sur Discord

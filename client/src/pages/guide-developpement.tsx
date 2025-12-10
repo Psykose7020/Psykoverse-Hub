@@ -34,7 +34,7 @@ export default function GuideDeveloppement() {
                 Développement de Compte
               </h1>
               <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-                Stratégies d'implantation et de développement par Triling of Borg
+                Stratégies d'implantation et de développement efficace
               </p>
             </div>
 
@@ -240,10 +240,6 @@ export default function GuideDeveloppement() {
                     </p>
                   </div>
                 </div>
-              </div>
-
-              <div className="mt-8 text-center text-sm text-gray-500">
-                Guide basé sur le tutoriel de <span className="text-gray-400">Triling of Borg</span>
               </div>
 
               <div className="bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/30 rounded-xl p-8 text-center">

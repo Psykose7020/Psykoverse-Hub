@@ -7,7 +7,7 @@ import {
   GraduationCap, Compass, Trophy, Shield, Eye, Crosshair, Moon, Globe2,
   Target, TrendingUp, Ghost, Layers, Bomb, Plane, Sparkles, Scale,
   ArrowLeftRight, Swords, Dna, Settings, Search, Filter, ChevronRight,
-  Star, Clock, Zap
+  Star, Clock, Zap, MessageSquare
 } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
@@ -339,16 +339,37 @@ export default function Tutorials() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="bg-gradient-to-r from-amber-900/20 to-orange-900/20 border border-amber-700/30 rounded-xl p-6 mb-8"
+            className="bg-gradient-to-r from-primary/10 to-cyan-900/20 border border-primary/30 rounded-xl p-6 mb-8"
           >
             <div className="flex items-center gap-3 mb-3">
-              <Sparkles className="w-6 h-6 text-amber-400" />
-              <h3 className="font-display text-lg font-bold text-white">Guides avancés par Triling of Borg</h3>
+              <Sparkles className="w-6 h-6 text-primary" />
+              <h3 className="font-display text-lg font-bold text-white">Contribuez aux tutoriels !</h3>
             </div>
-            <p className="text-gray-400 text-sm">
-              Les guides Raid Avancé, Split Flotte, MoonBreak, Volantes et Développement sont basés sur le tutoriel 
-              complet de Triling of Borg, raideur expérimenté de la communauté OGame.
+            <p className="text-gray-400 text-sm mb-4">
+              Ces guides ont été rassemblés de toutes les sources possibles et inimaginables afin de vous offrir 
+              un endroit unique où retrouver tous les tutoriels OGame. Vous souhaitez participer ?
             </p>
+            <div className="flex flex-wrap gap-3">
+              <button 
+                onClick={() => {
+                  const feedbackBtn = document.querySelector('[data-testid="btn-feedback"]') as HTMLButtonElement;
+                  if (feedbackBtn) feedbackBtn.click();
+                }}
+                className="inline-flex items-center gap-2 bg-primary/20 hover:bg-primary/30 text-primary px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+              >
+                <MessageSquare className="w-4 h-4" />
+                Proposer via suggestions
+              </button>
+              <a 
+                href="https://discord.gg/3PWk4HmfNn" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-[#5865F2]/20 hover:bg-[#5865F2]/30 text-[#5865F2] px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+              >
+                <Users className="w-4 h-4" />
+                Partager sur Discord
+              </a>
+            </div>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">

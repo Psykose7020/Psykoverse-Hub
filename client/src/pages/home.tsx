@@ -85,8 +85,8 @@ const features = [
   },
   {
     icon: Trophy,
-    title: "Joueurs Expérimentés",
-    description: "Des guides rédigés par des vétérans comme Triling of Borg."
+    title: "Sources Multiples",
+    description: "Des guides rassemblés de toutes les sources de la communauté OGame."
   },
   {
     icon: Zap,
