@@ -208,10 +208,9 @@ export default function Tutorials() {
                     }`}
                     data-testid={`filter-${cat.id}`}
                   >
-                    <Icon className="w-4 h-4" />
-                    <span className="hidden sm:inline">{cat.title}</span>
-                    <span className="sm:hidden">{cat.title.split(' ')[0]}</span>
-                    <span className={`text-xs px-1.5 py-0.5 rounded ${isActive ? 'bg-black/20' : 'bg-white/10'}`}>
+                    <Icon className="w-4 h-4 flex-shrink-0" />
+                    <span className="whitespace-nowrap">{cat.title}</span>
+                    <span className={`text-xs px-1.5 py-0.5 rounded flex-shrink-0 ${isActive ? 'bg-black/20' : 'bg-white/10'}`}>
                       {cat.guides.length}
                     </span>
                   </button>
