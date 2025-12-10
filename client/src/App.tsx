@@ -1,8 +1,10 @@
-import { Switch, Route } from "wouter";
+import { Switch, Route, useLocation } from "wouter";
+import { useEffect } from "react";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import Support from "@/pages/support";
@@ -48,6 +50,16 @@ import RulesCompte from "@/pages/rules-compte";
 import RulesSitting from "@/pages/rules-sitting";
 import RulesPush from "@/pages/rules-push";
 import RulesBash from "@/pages/rules-bash";
+
+function ScrollToTop() {
+  const [location] = useLocation();
+  
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
+  
+  return null;
+}
 
 function Router() {
   return (
@@ -105,6 +117,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
+        <ScrollToTop />
         <Toaster />
         <Router />
       </TooltipProvider>

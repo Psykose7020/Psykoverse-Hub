@@ -37,7 +37,7 @@ export default function GuideRRI() {
             className="max-w-6xl mx-auto"
           >
             <Link href="/tutoriels">
-              <Button variant="ghost" className="mb-6 text-gray-400 hover:text-white">
+              <Button variant="outline" className="mb-6 bg-primary/10 border-primary/30 text-primary hover:bg-primary/20 hover:text-white">
                 ← Retour aux tutoriels
               </Button>
             </Link>

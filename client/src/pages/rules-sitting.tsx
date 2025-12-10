@@ -21,7 +21,7 @@ export default function RulesSitting() {
             className="max-w-4xl mx-auto"
           >
             <Link href="/regles">
-              <Button variant="ghost" className="mb-6 text-gray-400 hover:text-white">
+              <Button variant="outline" className="mb-6 bg-primary/10 border-primary/30 text-primary hover:bg-primary/20 hover:text-white">
                 ← Retour aux règles
               </Button>
             </Link>
