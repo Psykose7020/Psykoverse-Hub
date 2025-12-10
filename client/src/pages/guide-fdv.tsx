@@ -23,9 +23,16 @@ const races = [
     bgColor: "bg-blue-900/20",
     borderColor: "border-blue-700/30",
     textColor: "text-blue-400",
-    description: "Race de départ, équilibrée et polyvalente",
-    bonus: "Bonus variés sur production et commerce",
-    croissance: "Moyenne"
+    description: "Race polyvalente avec un excellent rendement en late game",
+    bonus: "Bâtiment pour améliorer toutes les techno FDV",
+    croissance: "Moyenne",
+    avantages: [
+      "Possède un bâtiment pour améliorer toutes les techno FDV",
+      "Gameplay très polyvalent",
+      "Meilleure race en terme de rendement pur en late game"
+    ],
+    lateGame: "Meilleure race en terme de rendement pur",
+    avis: "Super race, gameplay très polyvalent."
   },
   {
     id: "rocktal",
@@ -34,9 +41,17 @@ const races = [
     bgColor: "bg-amber-900/20",
     borderColor: "border-amber-700/30",
     textColor: "text-amber-400",
-    description: "Êtres de pierre, résistants et miniers",
-    bonus: "Bonus sur extraction de ressources et défense",
-    croissance: "Lente"
+    description: "Race simple pour production FDV, rentable en début d'univers",
+    bonus: "Bonus sur extraction de ressources et réduction coût mines",
+    croissance: "Lente",
+    avantages: [
+      "Race la plus simple à prendre en main pour FDV de production",
+      "Race la plus rentable en début d'univers",
+      "Meilleure race pour LB (lunaire)",
+      "Bâtiment qui réduit le coût des mines"
+    ],
+    lateGame: "Race peu rentable, viable pour focus mines et LB",
+    avis: "Viable quelques mois, excellent switch pour lancer de très grosses mines."
   },
   {
     id: "mecas",
@@ -45,9 +60,16 @@ const races = [
     bgColor: "bg-slate-900/20",
     borderColor: "border-slate-700/30",
     textColor: "text-slate-400",
-    description: "Machines intelligentes, efficaces",
-    bonus: "Bonus sur construction et technologies",
-    croissance: "Rapide"
+    description: "Machines efficaces avec double boost techno FDV",
+    bonus: "Double boost techno FDV + chantier + dock spatial",
+    croissance: "Rapide",
+    avantages: [
+      "2 bâtiments pour améliorer toutes les techno FDV",
+      "Bâtiment qui double les chaînes de production du chantier spatial (top pour reconstituer des pertes de flotte)",
+      "Bâtiment qui améliore le dock spatial (recyclages optimisés ou dock offensif du Général)"
+    ],
+    lateGame: "Excellente race d'optimisation",
+    avis: "Race préférée de beaucoup, mais ses boosts de production ne sont que sur le deut. Plus forte sur des planètes avec plus de deut."
   },
   {
     id: "kaelesh",
@@ -56,9 +78,16 @@ const races = [
     bgColor: "bg-purple-900/20",
     borderColor: "border-purple-700/30",
     textColor: "text-purple-400",
-    description: "Êtres mystiques, liés à l'espace",
-    bonus: "Bonus sur expéditions et découvertes",
-    croissance: "Variable"
+    description: "Êtres mystiques, parfaits pour débuter l'univers",
+    bonus: "Débloque toutes les techno d'exploration sans artéfact",
+    croissance: "Variable",
+    avantages: [
+      "Débloque toutes les technologies d'exploration sans utiliser d'artéfact (super fort en début d'univers)",
+      "Bâtiment qui augmente le nombre de cases (très utile sur planète pleine)",
+      "Bâtiment qui augmente la taille des lunes (défensivement très fort)"
+    ],
+    lateGame: "Sûrement la moins bonne race en terme d'optimisation",
+    avis: "Excellent pour commencer l'univers le temps d'avoir plein d'artéfacts. Excellent switch utilitaire pour faire des cases et/ou des grosses lunes."
   }
 ];
 
@@ -253,14 +282,27 @@ export default function GuideFDV() {
                           <div key={race.id} className={`${race.bgColor} ${race.borderColor} border rounded-xl p-4 mt-4`}>
                             <h3 className={`font-bold ${race.textColor} text-lg mb-2`}>{race.name}</h3>
                             <p className="text-gray-300 mb-3">{race.description}</p>
-                            <div className="grid grid-cols-2 gap-4 text-sm">
-                              <div>
-                                <span className="text-gray-500">Spécialité :</span>
-                                <p className="text-white">{race.bonus}</p>
+                            
+                            <div className="bg-[#151924] rounded-lg p-3 mb-3">
+                              <h4 className="font-bold text-white text-sm mb-2">Avantages :</h4>
+                              <ul className="space-y-1">
+                                {race.avantages.map((avantage, i) => (
+                                  <li key={i} className="text-gray-300 text-sm flex items-start gap-2">
+                                    <Check className="w-4 h-4 text-green-400 flex-shrink-0 mt-0.5" />
+                                    {avantage}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                            
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                              <div className="bg-[#151924] rounded-lg p-3">
+                                <span className="text-gray-500 text-xs">Late game :</span>
+                                <p className="text-white">{race.lateGame}</p>
                               </div>
-                              <div>
-                                <span className="text-gray-500">Croissance :</span>
-                                <p className="text-white">{race.croissance}</p>
+                              <div className="bg-[#151924] rounded-lg p-3">
+                                <span className="text-gray-500 text-xs">Avis :</span>
+                                <p className="text-primary">{race.avis}</p>
                               </div>
                             </div>
                           </div>
@@ -426,12 +468,12 @@ export default function GuideFDV() {
               </CollapsibleSection>
 
               <CollapsibleSection
-                title="Changer de Race"
+                title="Changer de Race (Switch)"
                 icon={<RefreshCw className="w-6 h-6 text-amber-400" />}
               >
                 <div className="space-y-4">
                   <p className="text-gray-300">
-                    Vous pouvez changer la race active sur une planète, mais attention aux conséquences !
+                    Vous pouvez changer la race active sur une planète. C'est une stratégie courante pour profiter des avantages de chaque race au bon moment !
                   </p>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -440,24 +482,28 @@ export default function GuideFDV() {
                       <ul className="space-y-1 text-gray-300 text-sm">
                         <li className="flex items-start gap-2">
                           <Check className="w-4 h-4 text-green-400 flex-shrink-0 mt-0.5" />
-                          <span>Niveaux des bâtiments de l'ancienne race</span>
+                          <span><strong className="text-white">Les bâtiments sont conservés</strong> - quand vous réactivez la race, ils reviennent</span>
                         </li>
                         <li className="flex items-start gap-2">
                           <Check className="w-4 h-4 text-green-400 flex-shrink-0 mt-0.5" />
-                          <span>Niveaux des technologies (globales)</span>
+                          <span><strong className="text-white">Les niveaux des techno FDV sont communs</strong> à toutes les races</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <Check className="w-4 h-4 text-green-400 flex-shrink-0 mt-0.5" />
+                          <span>Vous pouvez <strong className="text-white">remettre instantanément</strong> une autre race sans débuff en cours</span>
                         </li>
                       </ul>
                     </div>
                     <div className="bg-red-900/20 border border-red-700/30 rounded-lg p-4">
-                      <h3 className="font-bold text-red-400 mb-2">Ce qui est perdu</h3>
+                      <h3 className="font-bold text-red-400 mb-2">Seul vrai inconvénient</h3>
                       <ul className="space-y-1 text-gray-300 text-sm">
                         <li className="flex items-start gap-2">
                           <X className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
-                          <span>La <strong className="text-white">population repart à 0</strong></span>
+                          <span>La <strong className="text-white">population repart de zéro</strong> - c'est le seul vrai inconvénient</span>
                         </li>
                         <li className="flex items-start gap-2">
                           <X className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
-                          <span>Les bonus de bâtiments sont désactivés</span>
+                          <span>Les bonus de bâtiments sont désactivés temporairement</span>
                         </li>
                       </ul>
                     </div>
@@ -466,11 +512,18 @@ export default function GuideFDV() {
                   <div className="bg-amber-900/20 border border-amber-700/30 rounded-lg p-4">
                     <div className="flex items-center gap-2 mb-2">
                       <Clock className="w-5 h-5 text-amber-400" />
-                      <h3 className="font-bold text-amber-400">Délai de changement</h3>
+                      <h3 className="font-bold text-amber-400">Débuff de 72h</h3>
                     </div>
                     <p className="text-gray-300 text-sm">
-                      Après avoir changé de race, vous devez attendre <strong className="text-white">2 jours</strong> 
-                      avant de pouvoir changer à nouveau sur cette planète.
+                      Après avoir quitté une race, vous avez un <strong className="text-white">débuff de 72h</strong> sur cette race spécifique. 
+                      Vous ne pouvez pas la remettre pendant ce délai. <strong className="text-primary">Mais vous pouvez instantanément activer une autre race sans débuff !</strong>
+                    </p>
+                  </div>
+
+                  <div className="bg-primary/10 border border-primary/30 rounded-lg p-4">
+                    <p className="text-primary text-sm">
+                      <strong>Note :</strong> Le "late game" en FDV se compte en <strong>années</strong>, pas en semaines. 
+                      Prenez votre temps pour optimiser vos races selon vos besoins !
                     </p>
                   </div>
                 </div>
