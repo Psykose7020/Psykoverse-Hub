@@ -547,51 +547,6 @@ export default function GuideChantier() {
                 </div>
               )}
 
-              <div className="bg-[#1C2230] border border-[#2E384D] rounded-xl p-6">
-                <h2 className="font-display text-xl font-bold text-white mb-4">Composition de Flotte Recommandée</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="bg-[#151924] rounded-lg p-4">
-                    <h3 className="font-bold text-primary mb-2">Ratio optimal général</h3>
-                    <p className="text-2xl font-bold text-white mb-2">10 CL : 2 CR : 1 VdB</p>
-                    <p className="text-sm text-gray-400">
-                      Composition équilibrée efficace contre la majorité des flottes et défenses.
-                    </p>
-                  </div>
-                  <div className="bg-[#151924] rounded-lg p-4">
-                    <h3 className="font-bold text-green-400 mb-2">Pour le recyclage</h3>
-                    <ul className="text-sm text-gray-300 space-y-1">
-                      <li>• <strong className="text-white">Flotte lourde :</strong> VdB, DEST, TRAQ, CR</li>
-                      <li>• <strong className="text-white">Tampon :</strong> CL, CLo, PT</li>
-                      <li>• <strong className="text-white">Recycleurs :</strong> Toujours prévoir assez !</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-gradient-to-r from-primary/10 to-cyan-900/20 border border-primary/30 rounded-xl p-6">
-                <div className="flex items-center gap-3 mb-3">
-                  <Users className="w-6 h-6 text-primary" />
-                  <h3 className="font-display text-lg font-bold text-white">Guides connexes</h3>
-                </div>
-                <div className="flex flex-wrap gap-3">
-                  <Link href="/guide/raid">
-                    <span className="inline-flex items-center gap-2 bg-[#151924] hover:bg-[#1C2230] text-gray-300 px-4 py-2 rounded-lg text-sm transition-colors">
-                      → Techniques de Raid
-                    </span>
-                  </Link>
-                  <Link href="/guide/split">
-                    <span className="inline-flex items-center gap-2 bg-[#151924] hover:bg-[#1C2230] text-gray-300 px-4 py-2 rounded-lg text-sm transition-colors">
-                      → Split de Flotte
-                    </span>
-                  </Link>
-                  <Link href="/guide/volante">
-                    <span className="inline-flex items-center gap-2 bg-[#151924] hover:bg-[#1C2230] text-gray-300 px-4 py-2 rounded-lg text-sm transition-colors">
-                      → Stratégie Volante
-                    </span>
-                  </Link>
-                </div>
-              </div>
-
               <RelatedGuides currentGuide="chantier" />
             </div>
           </motion.div>
