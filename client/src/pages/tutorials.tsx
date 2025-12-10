@@ -5,7 +5,7 @@ import {
   Rocket, Globe, BookText, AlertTriangle, ExternalLink,
   GraduationCap, Compass, Trophy, Shield, Eye, Crosshair, Moon, Globe2,
   Target, TrendingUp, Ghost, Layers, Bomb, Plane, Sparkles, Scale,
-  ArrowLeftRight, Swords, Dna
+  ArrowLeftRight, Swords, Dna, Settings
 } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
@@ -37,7 +37,8 @@ const categories = [
       { title: "Recherches", description: "Technologies", icon: FlaskConical, color: "from-teal-500 to-cyan-600", link: "/guide/recherches" },
       { title: "Chantier", description: "Vaisseaux", icon: Rocket, color: "from-slate-500 to-slate-700", link: "/guide/chantier" },
       { title: "Galaxie", description: "Navigation", icon: Globe, color: "from-indigo-500 to-purple-600", link: "/guide/galaxie" },
-      { title: "Jargon", description: "Vocabulaire", icon: BookText, color: "from-amber-500 to-orange-600", link: "/guide/jargon" }
+      { title: "Jargon", description: "Vocabulaire", icon: BookText, color: "from-amber-500 to-orange-600", link: "/guide/jargon" },
+      { title: "Univers", description: "Caractéristiques", icon: Settings, color: "from-indigo-500 to-purple-600", link: "/guide/univers" }
     ]
   },
   {
