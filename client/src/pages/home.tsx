@@ -170,6 +170,32 @@ export default function Home() {
         </motion.div>
       </header>
 
+      <section className="py-6 bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 border-b border-[#2E384D]">
+        <div className="container mx-auto px-4">
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8"
+          >
+            {[
+              { value: "28", label: "Guides complets", icon: BookOpen },
+              { value: "180+", label: "Membres Discord", icon: Users },
+              { value: "3", label: "Univers actifs", icon: Globe },
+              { value: "340", label: "Abonnés YouTube", icon: Youtube }
+            ].map((stat, i) => (
+              <div key={i} className="flex items-center gap-3 justify-center">
+                <stat.icon className="w-6 h-6 text-primary/60" />
+                <div>
+                  <div className="text-2xl md:text-3xl font-bold text-white">{stat.value}</div>
+                  <div className="text-xs text-gray-500">{stat.label}</div>
+                </div>
+              </div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
       <section className="py-16 md:py-24 border-b border-[#2E384D]">
         <div className="container mx-auto px-4">
           <motion.div
