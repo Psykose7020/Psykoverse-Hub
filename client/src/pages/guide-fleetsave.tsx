@@ -14,16 +14,20 @@ const techniques = [
   {
     id: 1,
     title: "Ghost sur CDR invisible depuis une lune",
-    description: "Créez un CDR invisible avec une sonde en mode attaque, puis envoyez votre flotte en mode exploiter.",
+    description: "Votre flotte étant sur votre lune, créez un CDR invisible avec une seule sonde en mode attaque. À partir du moment où une sonde en mode attaque atteint une cible, détruite ou non, elle laisse un CDR sur la position. Si le CDR apparaît car la sonde a été détruite lors de l'attaque, vous pouvez recycler le CDR, il ne restera donc plus de CDR visible sur la vue galaxie, mais vous pourrez tout de même envoyer des missions 'exploiter' (nécessite un recycleur dans la flotte). Une fois le CDR invisible formé, vous pourrez prendre la totalité de votre flotte et l'envoyer sur le CDR en question en mode exploiter. Choisissez la vitesse qui vous convient le mieux.",
+    details: "Recommandé pour les petits ghosts entre des vagues d'expédition. Autre cas pratique : si quelqu'un vous espionne, lancez votre flotte sur le CDR afin d'esquiver la sonde sans être phalangé (utile si vous lancez sur votre planète). L'avantage c'est que ça coûte rien en deut, vous pouvez ghost toute votre flotte pendant 1 ou 2h pour 5k de deut.",
+    astuce: "Les CDR sont tous reset le lundi à 03H00 du matin. Vous pouvez cependant les sauvegarder en envoyant une mission 'exploiter' sur le CDR avant le reset, en faisant en sorte que la mission arrive après le reset. Ainsi le CDR invisible sera sauvegardé pour la semaine qui suit !",
     avantages: [
       "Flotte invisible aux phalanges",
       "Vitesse variable (10% à 100%)",
-      "Souvent moins coûteux en deutérium"
+      "Souvent moins coûteux en deutérium",
+      "Ghost pour 5k de deut pendant 1-2h"
     ],
     inconvenients: [
-      "CDR peut être rendu visible par un ennemi",
-      "Prévisible si fait régulièrement aux mêmes coordonnées",
-      "Heure de retour visible en cas de moonbreak"
+      "CDR peut être rendu visible par un joueur cherchant votre flotte",
+      "Prévisible si fait régulièrement aux mêmes coordonnées à la même vitesse",
+      "Heure de retour visible en cas de moonbreak",
+      "Pour les ghosts longs, préférez statio lune à lune"
     ]
   },
   {
@@ -250,6 +254,15 @@ export default function GuideFleetsave() {
                   </div>
                   <div className="p-4">
                     <p className="text-gray-300 mb-4">{tech.description}</p>
+                    {tech.details && (
+                      <p className="text-gray-400 text-sm mb-4 bg-[#151924] p-3 rounded-lg border-l-2 border-primary/50">{tech.details}</p>
+                    )}
+                    {tech.astuce && (
+                      <div className="bg-amber-900/20 border border-amber-700/30 rounded-lg p-3 mb-4">
+                        <span className="text-amber-400 font-medium text-sm">Astuce : </span>
+                        <span className="text-gray-300 text-sm">{tech.astuce}</span>
+                      </div>
+                    )}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="bg-green-900/10 border border-green-800/30 rounded-lg p-3">
                         <div className="flex items-center gap-2 text-green-400 font-medium mb-2">
@@ -309,6 +322,8 @@ export default function GuideFleetsave() {
 
             <div className="mt-8 text-center text-sm text-gray-500">
               Merci à <span className="text-gray-400">Samurai_Shogun</span> pour le tutoriel d'origine
+              <br />
+              et à <span className="text-gray-400">Mr White / Galio</span> pour le détail du Ghost CDR invisible
             </div>
 
             <RelatedGuides currentGuide="fleetsave" />
