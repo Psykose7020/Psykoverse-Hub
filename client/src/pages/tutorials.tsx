@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { Play, BookOpen, Sword, Shield, Rocket, TrendingUp, ExternalLink, AlertTriangle, ChevronRight } from "lucide-react";
+import { Play, BookOpen, Sword, Shield, Rocket, TrendingUp, ExternalLink } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 
@@ -50,25 +50,42 @@ const guideCategories = [
     icon: Rocket,
     title: "Débuter sur OGame",
     description: "Les bases pour bien commencer : construction, production, protection.",
-    guides: ["Premier jour optimal", "Protection anti-raid", "Choix de classe"]
+    guides: [
+      { name: "Le Triangle d'Activité", link: "/guide/activite", highlight: true },
+      { name: "Premier jour optimal", link: null },
+      { name: "Protection anti-raid", link: null },
+      { name: "Choix de classe", link: null }
+    ]
   },
   {
     icon: TrendingUp,
     title: "Économie & Production",
     description: "Maximisez vos ressources et votre croissance.",
-    guides: ["Ratio mines optimal", "Expéditions rentables", "Commerce inter-joueurs"]
+    guides: [
+      { name: "Ratio mines optimal", link: null },
+      { name: "Expéditions rentables", link: null },
+      { name: "Commerce inter-joueurs", link: null }
+    ]
   },
   {
     icon: Sword,
     title: "Combat & Stratégie",
     description: "Maîtrisez l'art de la guerre spatiale.",
-    guides: ["Calcul de rentabilité", "Ninja et contre-attaque", "Recyclage efficace"]
+    guides: [
+      { name: "Calcul de rentabilité", link: null },
+      { name: "Ninja et contre-attaque", link: null },
+      { name: "Recyclage efficace", link: null }
+    ]
   },
   {
     icon: Shield,
     title: "Défense & Sécurité",
     description: "Protégez vos planètes et votre flotte.",
-    guides: ["Fleetsave avancé", "Défense optimale", "Moon destruction"]
+    guides: [
+      { name: "Fleetsave avancé", link: null },
+      { name: "Défense optimale", link: null },
+      { name: "Moon destruction", link: null }
+    ]
   }
 ];
 
@@ -179,9 +196,16 @@ export default function Tutorials() {
                       <p className="text-gray-400 text-sm mb-4">{category.description}</p>
                       <ul className="space-y-2">
                         {category.guides.map((guide, gIndex) => (
-                          <li key={gIndex} className="text-sm text-gray-300 flex items-center gap-2">
-                            <span className="w-1.5 h-1.5 bg-primary rounded-full"></span>
-                            {guide}
+                          <li key={gIndex} className="text-sm flex items-center gap-2">
+                            <span className={`w-1.5 h-1.5 rounded-full ${guide.highlight ? 'bg-green-400' : 'bg-primary'}`}></span>
+                            {guide.link ? (
+                              <Link href={guide.link} className={`hover:underline ${guide.highlight ? 'text-green-400 font-medium' : 'text-gray-300 hover:text-primary'}`}>
+                                {guide.name}
+                                {guide.highlight && <span className="ml-2 text-[10px] bg-green-500/20 text-green-400 px-1.5 py-0.5 rounded uppercase">Disponible</span>}
+                              </Link>
+                            ) : (
+                              <span className="text-gray-500">{guide.name}</span>
+                            )}
                           </li>
                         ))}
                       </ul>
@@ -190,51 +214,6 @@ export default function Tutorials() {
                 </motion.div>
               );
             })}
-          </div>
-
-          <motion.h2
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="font-display text-2xl font-bold text-white mb-8 mt-16 flex items-center gap-3"
-          >
-            <AlertTriangle className="w-6 h-6 text-red-500" />
-            Guides Écrits
-          </motion.h2>
-
-          <div className="grid grid-cols-1 gap-4 mb-12">
-            <Link href="/guide/activite">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-                className="group bg-[#1C2230] border border-[#2E384D] rounded-lg p-6 hover:border-red-500/50 transition-all cursor-pointer"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-start gap-4">
-                    <div className="w-14 h-14 bg-red-500/20 rounded-lg flex items-center justify-center flex-shrink-0 border border-red-500/30">
-                      <AlertTriangle className="w-7 h-7 text-red-500" />
-                    </div>
-                    <div>
-                      <span className="text-xs text-gray-500 uppercase tracking-wider mb-1 block">Comportement du jeu</span>
-                      <h3 className="font-display font-bold text-white text-xl mb-2 group-hover:text-red-400 transition-colors">
-                        Le Triangle d'Activité
-                      </h3>
-                      <p className="text-gray-400 text-sm">
-                        Comprendre l'indicateur d'activité dans la galaxie : comment il fonctionne, son importance pour la sécurité, et tous les moyens de le faire apparaître.
-                      </p>
-                      <div className="flex items-center gap-4 mt-3 text-xs text-gray-500">
-                        <span>Guide complet</span>
-                        <span>•</span>
-                        <span>13 méthodes détaillées</span>
-                        <span>•</span>
-                        <span>Illustrations</span>
-                      </div>
-                    </div>
-                  </div>
-                  <ChevronRight className="w-6 h-6 text-gray-600 group-hover:text-red-400 transition-colors flex-shrink-0" />
-                </div>
-              </motion.div>
-            </Link>
           </div>
 
           <div className="mt-12 p-6 bg-[#151924] border border-[#2E384D] rounded-lg text-center">

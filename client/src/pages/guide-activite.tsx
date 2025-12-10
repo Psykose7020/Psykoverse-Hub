@@ -68,14 +68,6 @@ const methods = [
     cons: ["Consomme du deutérium"]
   },
   {
-    id: "allie",
-    icon: Users,
-    title: "Stationner chez un allié",
-    description: "Le SAB génère de l'activité chez votre allié.",
-    pros: ["Protège l'allié"],
-    cons: ["Flotte exposée"]
-  },
-  {
     id: "expedition",
     icon: Search,
     title: "Retour d'expédition",
@@ -164,7 +156,7 @@ export default function GuideActivite() {
                     : "bg-[#1C2230] text-gray-400 hover:text-white"
                 }`}
               >
-                12 Méthodes
+                11 Méthodes
               </button>
             </div>
 
@@ -271,7 +263,7 @@ export default function GuideActivite() {
 
                 <div className="text-center pt-4">
                   <Button size="lg" onClick={() => setActiveTab("methods")}>
-                    Voir les 12 méthodes
+                    Voir les 11 méthodes
                     <Rocket className="w-5 h-5 ml-2" />
                   </Button>
                 </div>
