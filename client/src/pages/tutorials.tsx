@@ -2,7 +2,8 @@ import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { 
   Play, BookOpen, Monitor, Users, Factory, FlaskConical, 
-  Rocket, Globe, BookText, AlertTriangle, ExternalLink, ArrowRight
+  Rocket, Globe, BookText, AlertTriangle, ExternalLink, ArrowRight,
+  TrendingUp, Sword, Shield, GraduationCap
 } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
@@ -20,62 +21,47 @@ const staggerContainer = {
   }
 };
 
-const guides = [
+const categories = [
   {
-    title: "L'Interface du Jeu",
-    description: "Comprendre la vue d'ensemble et naviguer efficacement dans OGame",
-    icon: Monitor,
-    color: "from-blue-500 to-cyan-600",
-    link: "/guide/interface"
-  },
-  {
-    title: "Les Classes",
-    description: "Collecteur, Général ou Explorateur : choisissez votre style de jeu",
-    icon: Users,
-    color: "from-purple-500 to-pink-600",
-    link: "/guide/classes"
-  },
-  {
-    title: "Production & Énergie",
-    description: "Maîtrisez vos mines, hangars et sources d'énergie",
-    icon: Factory,
+    id: "debutant",
+    title: "Débuter sur OGame",
+    description: "Les bases essentielles pour bien commencer votre aventure spatiale",
+    icon: GraduationCap,
     color: "from-green-500 to-emerald-600",
-    link: "/guide/production"
+    guides: [
+      { title: "L'Interface du Jeu", description: "Vue d'ensemble et navigation", icon: Monitor, color: "from-blue-500 to-cyan-600", link: "/guide/interface" },
+      { title: "Les Classes", description: "Collecteur, Général, Explorateur", icon: Users, color: "from-purple-500 to-pink-600", link: "/guide/classes" },
+      { title: "Production & Énergie", description: "Mines, hangars et énergie", icon: Factory, color: "from-green-500 to-emerald-600", link: "/guide/production" },
+      { title: "Installations & Recherches", description: "Bâtiments et technologies", icon: FlaskConical, color: "from-teal-500 to-cyan-600", link: "/guide/recherches" },
+      { title: "Chantier Spatial", description: "Vaisseaux et défenses", icon: Rocket, color: "from-slate-500 to-slate-700", link: "/guide/chantier" },
+      { title: "Galaxie & Alliance", description: "Exploration et coopération", icon: Globe, color: "from-indigo-500 to-purple-600", link: "/guide/galaxie" },
+      { title: "Jargon OGamien", description: "Termes et abréviations", icon: BookText, color: "from-amber-500 to-orange-600", link: "/guide/jargon" },
+      { title: "Triangle d'Activité", description: "Indicateur et sécurité", icon: AlertTriangle, color: "from-red-500 to-red-700", link: "/guide/activite" }
+    ]
   },
   {
-    title: "Installations & Recherches",
-    description: "Développez vos bâtiments et technologies",
-    icon: FlaskConical,
-    color: "from-teal-500 to-cyan-600",
-    link: "/guide/recherches"
+    id: "economie",
+    title: "Économie & Production",
+    description: "Maximisez vos ressources et votre croissance",
+    icon: TrendingUp,
+    color: "from-yellow-500 to-amber-600",
+    guides: []
   },
   {
-    title: "Chantier Spatial",
-    description: "Construisez vos vaisseaux et défenses",
-    icon: Rocket,
-    color: "from-slate-500 to-slate-700",
-    link: "/guide/chantier"
+    id: "combat",
+    title: "Combat & Stratégie",
+    description: "Maîtrisez l'art de la guerre spatiale",
+    icon: Sword,
+    color: "from-red-500 to-rose-600",
+    guides: []
   },
   {
-    title: "Galaxie & Alliance",
-    description: "Explorez l'univers et rejoignez une alliance",
-    icon: Globe,
-    color: "from-indigo-500 to-purple-600",
-    link: "/guide/galaxie"
-  },
-  {
-    title: "Jargon OGamien",
-    description: "Dictionnaire des termes et abréviations de la communauté",
-    icon: BookText,
-    color: "from-amber-500 to-orange-600",
-    link: "/guide/jargon"
-  },
-  {
-    title: "Triangle d'Activité",
-    description: "Comprendre l'indicateur d'activité et protéger vos planètes",
-    icon: AlertTriangle,
-    color: "from-red-500 to-red-700",
-    link: "/guide/activite"
+    id: "defense",
+    title: "Défense & Sécurité",
+    description: "Protégez vos planètes et votre flotte",
+    icon: Shield,
+    color: "from-blue-600 to-indigo-700",
+    guides: []
   }
 ];
 
@@ -92,69 +78,118 @@ export default function Tutorials() {
           >
             <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
               <BookOpen className="w-4 h-4" />
-              Guides pour débutants
+              Centre d'apprentissage
             </motion.div>
             <motion.h1 variants={fadeInUp} className="font-display text-4xl md:text-5xl font-bold text-white mb-4">
-              Apprenez à maîtriser OGame
+              Guides & Tutoriels
             </motion.h1>
             <motion.p variants={fadeInUp} className="text-gray-400 max-w-2xl mx-auto text-lg">
               Des guides complets rédigés par la communauté pour vous accompagner dans votre conquête spatiale
             </motion.p>
           </motion.div>
 
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={staggerContainer}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-16"
-          >
-            {guides.map((guide, index) => {
-              const Icon = guide.icon;
-              return (
-                <motion.div key={index} variants={fadeInUp}>
-                  <Link href={guide.link}>
-                    <div className="group h-full bg-[#1C2230] border border-[#2E384D] rounded-xl p-6 hover:border-primary/50 transition-all cursor-pointer hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1">
-                      <div className={`w-14 h-14 bg-gradient-to-br ${guide.color} rounded-xl flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform`}>
-                        <Icon className="w-7 h-7 text-white" />
-                      </div>
-                      <h3 className="font-display font-bold text-white text-lg mb-2 group-hover:text-primary transition-colors">
-                        {guide.title}
-                      </h3>
-                      <p className="text-gray-400 text-sm leading-relaxed mb-4">
-                        {guide.description}
-                      </p>
-                      <div className="flex items-center text-primary text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-                        Lire le guide
-                        <ArrowRight className="w-4 h-4 ml-1" />
+          {categories.map((category, catIndex) => {
+            const CategoryIcon = category.icon;
+            if (category.guides.length === 0) return null;
+            
+            return (
+              <motion.div
+                key={category.id}
+                initial="hidden"
+                animate="visible"
+                variants={staggerContainer}
+                className="mb-12"
+              >
+                <motion.div variants={fadeInUp} className="flex items-center gap-4 mb-6">
+                  <div className={`w-12 h-12 bg-gradient-to-br ${category.color} rounded-xl flex items-center justify-center shadow-lg`}>
+                    <CategoryIcon className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h2 className="font-display text-2xl font-bold text-white">{category.title}</h2>
+                    <p className="text-gray-400 text-sm">{category.description}</p>
+                  </div>
+                </motion.div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {category.guides.map((guide, index) => {
+                    const Icon = guide.icon;
+                    return (
+                      <motion.div key={index} variants={fadeInUp}>
+                        <Link href={guide.link}>
+                          <div className="group h-full bg-[#1C2230] border border-[#2E384D] rounded-xl p-5 hover:border-primary/50 transition-all cursor-pointer hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1">
+                            <div className={`w-12 h-12 bg-gradient-to-br ${guide.color} rounded-lg flex items-center justify-center mb-3 shadow-lg group-hover:scale-110 transition-transform`}>
+                              <Icon className="w-6 h-6 text-white" />
+                            </div>
+                            <h3 className="font-bold text-white mb-1 group-hover:text-primary transition-colors">
+                              {guide.title}
+                            </h3>
+                            <p className="text-gray-500 text-sm mb-3">
+                              {guide.description}
+                            </p>
+                            <div className="flex items-center text-primary text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                              Lire
+                              <ArrowRight className="w-3 h-3 ml-1" />
+                            </div>
+                          </div>
+                        </Link>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              </motion.div>
+            );
+          })}
+
+          {categories.filter(c => c.guides.length === 0).length > 0 && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+              className="mb-12"
+            >
+              <h2 className="font-display text-xl font-bold text-white mb-4">Prochainement</h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {categories.filter(c => c.guides.length === 0).map((category) => {
+                  const CategoryIcon = category.icon;
+                  return (
+                    <div key={category.id} className="bg-[#151924] border border-[#2E384D] rounded-xl p-5 opacity-60">
+                      <div className="flex items-center gap-3">
+                        <div className={`w-10 h-10 bg-gradient-to-br ${category.color} rounded-lg flex items-center justify-center opacity-50`}>
+                          <CategoryIcon className="w-5 h-5 text-white" />
+                        </div>
+                        <div>
+                          <h3 className="font-bold text-gray-400">{category.title}</h3>
+                          <p className="text-gray-600 text-xs">{category.description}</p>
+                        </div>
                       </div>
                     </div>
-                  </Link>
-                </motion.div>
-              );
-            })}
-          </motion.div>
+                  );
+                })}
+              </div>
+            </motion.div>
+          )}
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="bg-gradient-to-br from-red-900/20 to-red-950/20 border border-red-800/30 rounded-2xl p-8 mb-12"
+            className="bg-gradient-to-br from-red-900/20 to-red-950/20 border border-red-800/30 rounded-2xl p-8 mb-8"
           >
             <div className="flex flex-col md:flex-row items-center gap-6">
-              <div className="w-20 h-20 bg-red-600 rounded-2xl flex items-center justify-center flex-shrink-0">
-                <Play className="w-10 h-10 text-white" />
+              <div className="w-16 h-16 bg-red-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                <Play className="w-8 h-8 text-white" />
               </div>
               <div className="flex-1 text-center md:text-left">
-                <h2 className="font-display text-2xl font-bold text-white mb-2">
+                <h2 className="font-display text-xl font-bold text-white mb-2">
                   Tutoriels Vidéo
                 </h2>
-                <p className="text-gray-400 mb-4">
-                  Découvrez nos tutoriels vidéo sur YouTube pour apprendre visuellement les mécaniques du jeu
+                <p className="text-gray-400 text-sm mb-4">
+                  Découvrez nos tutoriels vidéo sur YouTube
                 </p>
                 <Button className="bg-red-600 hover:bg-red-700" asChild>
                   <a href="https://www.youtube.com/@7020Psykose" target="_blank" rel="noopener noreferrer">
                     <Play className="w-4 h-4 mr-2" />
-                    Voir la chaîne YouTube
+                    Chaîne YouTube
                     <ExternalLink className="w-4 h-4 ml-2" />
                   </a>
                 </Button>
@@ -168,15 +203,15 @@ export default function Tutorials() {
             transition={{ delay: 0.6 }}
             className="bg-gradient-to-r from-[#5865F2]/20 to-[#5865F2]/5 border border-[#5865F2]/30 rounded-2xl p-8 text-center"
           >
-            <h2 className="font-display text-2xl font-bold text-white mb-3">
-              Besoin d'aide personnalisée ?
+            <h2 className="font-display text-xl font-bold text-white mb-2">
+              Besoin d'aide ?
             </h2>
-            <p className="text-gray-400 mb-6 max-w-xl mx-auto">
-              Rejoignez notre communauté Discord de 180 membres pour poser vos questions et obtenir des conseils de joueurs expérimentés
+            <p className="text-gray-400 mb-4 text-sm">
+              Rejoignez notre Discord pour poser vos questions
             </p>
-            <Button className="bg-[#5865F2] hover:bg-[#4752C4]" size="lg" asChild>
+            <Button className="bg-[#5865F2] hover:bg-[#4752C4]" asChild>
               <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer">
-                Rejoindre le Discord Psykoverse
+                Rejoindre le Discord
                 <ExternalLink className="w-4 h-4 ml-2" />
               </a>
             </Button>
