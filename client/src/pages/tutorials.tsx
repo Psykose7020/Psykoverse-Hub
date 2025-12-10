@@ -352,6 +352,47 @@ export default function Tutorials() {
               filteredCategories.map((category) => {
                 const CategoryIcon = category.icon;
                 const isExpanded = expandedCategories.has(category.id);
+                
+                if (category.id === "regles") {
+                  return (
+                    <motion.div
+                      key={category.id}
+                      initial="hidden"
+                      animate="visible"
+                      variants={staggerContainer}
+                      className="mb-6"
+                      layout
+                    >
+                      <Link href="/regles">
+                        <motion.div
+                          variants={fadeInUp}
+                          className="w-full flex items-center justify-between p-4 bg-[#1C2230] border border-[#2E384D] rounded-xl hover:border-primary/30 transition-all cursor-pointer group"
+                          data-testid={`link-category-${category.id}`}
+                        >
+                          <div className="flex items-center gap-3">
+                            <div className={`w-10 h-10 bg-gradient-to-br ${category.color} rounded-lg flex items-center justify-center shadow-lg`}>
+                              <CategoryIcon className="w-5 h-5 text-white" />
+                            </div>
+                            <div className="text-left">
+                              <div className="flex items-center gap-2">
+                                <h2 className="font-display text-lg font-bold text-white group-hover:text-primary transition-colors">{category.title}</h2>
+                                <span className={`text-xs px-2 py-0.5 rounded-full border ${levelColors[category.level]}`}>
+                                  {category.level}
+                                </span>
+                              </div>
+                              <p className="text-gray-500 text-sm">{category.description}</p>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <span className="text-gray-500 text-sm">{category.guides.length} règles</span>
+                            <ChevronRight className="w-5 h-5 text-gray-500 group-hover:text-primary transition-colors" />
+                          </div>
+                        </motion.div>
+                      </Link>
+                    </motion.div>
+                  );
+                }
+                
                 return (
                   <motion.div
                     key={category.id}
