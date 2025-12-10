@@ -513,62 +513,148 @@ export default function Tutorials() {
             </div>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="bg-gradient-to-br from-red-900/20 to-red-950/20 border border-red-800/30 rounded-xl p-6"
-            >
-              <div className="flex items-center gap-4">
-                <div className="w-14 h-14 bg-red-600 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <Play className="w-7 h-7 text-white" />
-                </div>
-                <div className="flex-1">
-                  <h2 className="font-display text-lg font-bold text-white mb-1">
-                    Tutoriels Vidéo
-                  </h2>
-                  <p className="text-gray-400 text-sm mb-3">
-                    Apprenez visuellement sur YouTube
-                  </p>
-                  <Button className="bg-red-600 hover:bg-red-700" size="sm" asChild>
-                    <a href="https://www.youtube.com/@7020Psykose" target="_blank" rel="noopener noreferrer" data-testid="link-youtube">
-                      <Play className="w-4 h-4 mr-2" />
-                      Voir la chaîne
-                      <ExternalLink className="w-3 h-3 ml-2" />
-                    </a>
-                  </Button>
-                </div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="bg-[#0D1117] border border-[#2E384D] rounded-2xl p-8 mt-8"
+          >
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+              <div>
+                <h2 className="font-display text-2xl font-bold text-white mb-2">
+                  Aperçu des Tutoriels
+                </h2>
+                <p className="text-gray-400">
+                  Apprenez les stratégies avec <span className="text-primary">@7020Psykose</span>
+                </p>
               </div>
-            </motion.div>
+              <Button className="bg-red-600 hover:bg-red-700 mt-4 md:mt-0" asChild>
+                <a href="https://www.youtube.com/@7020Psykose" target="_blank" rel="noopener noreferrer" data-testid="link-youtube">
+                  Voir la chaîne
+                  <ExternalLink className="w-4 h-4 ml-2" />
+                </a>
+              </Button>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-              className="bg-gradient-to-r from-[#5865F2]/20 to-[#5865F2]/5 border border-[#5865F2]/30 rounded-xl p-6"
-            >
-              <div className="flex items-center gap-4">
-                <div className="w-14 h-14 bg-[#5865F2] rounded-xl flex items-center justify-center flex-shrink-0">
-                  <Users className="w-7 h-7 text-white" />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <a 
+                href="https://www.youtube.com/@7020Psykose" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="group cursor-pointer"
+              >
+                <div className="relative rounded-xl overflow-hidden mb-4">
+                  <img 
+                    src="https://images.unsplash.com/photo-1614732414444-096e5f1122d5?w=400&h=225&fit=crop" 
+                    alt="Tutoriel"
+                    className="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <span className="absolute bottom-3 left-3 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded">
+                    TUTORIEL
+                  </span>
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="w-14 h-14 bg-red-600/90 rounded-full flex items-center justify-center">
+                      <Play className="w-6 h-6 text-white ml-1" />
+                    </div>
+                  </div>
                 </div>
-                <div className="flex-1">
-                  <h2 className="font-display text-lg font-bold text-white mb-1">
-                    Aide personnalisée
-                  </h2>
-                  <p className="text-gray-400 text-sm mb-3">
-                    180 membres prêts à vous aider
-                  </p>
-                  <Button className="bg-[#5865F2] hover:bg-[#4752C4]" size="sm" asChild>
-                    <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer" data-testid="link-discord">
-                      Rejoindre Discord
-                      <ExternalLink className="w-3 h-3 ml-2" />
-                    </a>
-                  </Button>
+                <h3 className="font-bold text-white group-hover:text-red-400 transition-colors mb-1">
+                  Prise en retour d'attaque
+                </h3>
+                <p className="text-gray-500 text-sm">
+                  Calculez le retour de flotte ennemi à la seconde près.
+                </p>
+              </a>
+
+              <a 
+                href="https://www.youtube.com/@7020Psykose" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="group cursor-pointer"
+              >
+                <div className="relative rounded-xl overflow-hidden mb-4">
+                  <img 
+                    src="https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=400&h=225&fit=crop" 
+                    alt="Stratégie"
+                    className="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <span className="absolute bottom-3 left-3 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded">
+                    STRATÉGIE
+                  </span>
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="w-14 h-14 bg-red-600/90 rounded-full flex items-center justify-center">
+                      <Play className="w-6 h-6 text-white ml-1" />
+                    </div>
+                  </div>
                 </div>
+                <h3 className="font-bold text-white group-hover:text-red-400 transition-colors mb-1">
+                  Guide LifeForms
+                </h3>
+                <p className="text-gray-500 text-sm">
+                  Optimisez vos bonus raciaux et boostez votre économie.
+                </p>
+              </a>
+
+              <a 
+                href="https://www.youtube.com/@7020Psykose" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="group cursor-pointer"
+              >
+                <div className="relative rounded-xl overflow-hidden mb-4">
+                  <img 
+                    src="https://images.unsplash.com/photo-1581822261290-991b38693d1b?w=400&h=225&fit=crop" 
+                    alt="Combat"
+                    className="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <span className="absolute bottom-3 left-3 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded">
+                    COMBAT
+                  </span>
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="w-14 h-14 bg-red-600/90 rounded-full flex items-center justify-center">
+                      <Play className="w-6 h-6 text-white ml-1" />
+                    </div>
+                  </div>
+                </div>
+                <h3 className="font-bold text-white group-hover:text-red-400 transition-colors mb-1">
+                  Mécaniques de Combat
+                </h3>
+                <p className="text-gray-500 text-sm">
+                  RapidFire, ordre de tir et composition de flotte.
+                </p>
+              </a>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="bg-gradient-to-r from-[#5865F2]/20 to-[#5865F2]/5 border border-[#5865F2]/30 rounded-xl p-6 mt-6"
+          >
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 bg-[#5865F2] rounded-xl flex items-center justify-center flex-shrink-0">
+                <Users className="w-7 h-7 text-white" />
               </div>
-            </motion.div>
-          </div>
+              <div className="flex-1">
+                <h2 className="font-display text-lg font-bold text-white mb-1">
+                  Aide personnalisée
+                </h2>
+                <p className="text-gray-400 text-sm mb-3">
+                  180 membres prêts à vous aider sur Discord
+                </p>
+              </div>
+              <Button className="bg-[#5865F2] hover:bg-[#4752C4]" asChild>
+                <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer" data-testid="link-discord">
+                  Rejoindre Discord
+                  <ExternalLink className="w-3 h-3 ml-2" />
+                </a>
+              </Button>
+            </div>
+          </motion.div>
         </div>
       </section>
     </Layout>
