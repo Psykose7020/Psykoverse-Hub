@@ -104,26 +104,22 @@ export default function GuideExpeditions() {
               <div className="bg-[#1C2230] border border-[#2E384D] rounded-xl p-6">
                 <h2 className="font-display text-xl font-bold text-white mb-4">Durée des expéditions</h2>
                 <p className="text-gray-300 mb-4">
-                  Vous pouvez choisir la durée de votre expédition. Plus elle est longue, 
-                  plus les gains potentiels sont élevés.
+                  <strong className="text-primary">Gardez toujours la durée à 1h !</strong> Augmenter la durée n'est pas recommandé 
+                  car les <strong className="text-white">retards sont impactés par le temps passé en expédition</strong>. 
+                  Vous ne voulez pas vous retrouver bloqué à cause d'un retard.
                 </p>
-                <div className="grid grid-cols-4 gap-3">
-                  <div className="bg-[#151924] rounded-lg p-3 text-center">
-                    <div className="text-lg font-bold text-white">1h</div>
-                    <div className="text-xs text-gray-500">Minimum</div>
-                  </div>
-                  <div className="bg-[#151924] rounded-lg p-3 text-center">
-                    <div className="text-lg font-bold text-white">2h</div>
-                    <div className="text-xs text-gray-500">Standard</div>
-                  </div>
-                  <div className="bg-[#151924] rounded-lg p-3 text-center">
-                    <div className="text-lg font-bold text-primary">4h</div>
-                    <div className="text-xs text-gray-500">Optimal</div>
-                  </div>
-                  <div className="bg-[#151924] rounded-lg p-3 text-center">
-                    <div className="text-lg font-bold text-white">8h+</div>
-                    <div className="text-xs text-gray-500">Max gains</div>
-                  </div>
+                <div className="bg-green-900/20 border border-green-700/30 rounded-lg p-4 mb-4">
+                  <h3 className="font-bold text-green-400 mb-2">Durée recommandée : 1h</h3>
+                  <p className="text-gray-300 text-sm">
+                    C'est la durée optimale. Elle minimise les risques de retard tout en maximisant le nombre d'expéditions par jour.
+                  </p>
+                </div>
+                <div className="bg-amber-900/20 border border-amber-700/30 rounded-lg p-4">
+                  <h3 className="font-bold text-amber-400 mb-2">Besoin de ralentir ?</h3>
+                  <p className="text-gray-300 text-sm">
+                    Si vous voulez que vos expéditions reviennent plus tard, <strong className="text-white">diminuez la vitesse de la flotte</strong> 
+                    au lieu d'augmenter la durée. Cela n'impacte pas les retards potentiels.
+                  </p>
                 </div>
               </div>
 
