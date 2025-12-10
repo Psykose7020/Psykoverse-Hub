@@ -166,5 +166,81 @@ export async function registerRoutes(
     }
   });
 
+  app.post("/api/feedback", async (req, res) => {
+    try {
+      const { message, page } = req.body;
+      
+      if (!message || typeof message !== "string" || message.trim().length < 5) {
+        return res.status(400).json({ error: "Le message doit contenir au moins 5 caractères" });
+      }
+      
+      const userAgent = req.headers["user-agent"] || null;
+      const ip = req.headers["x-forwarded-for"]?.toString().split(",")[0] || req.ip || null;
+      
+      await storage.createFeedback({
+        message: message.trim(),
+        page: page || null,
+        userAgent,
+        ip,
+      });
+      
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Feedback error:", error);
+      res.status(500).json({ error: "Erreur lors de l'envoi du feedback" });
+    }
+  });
+
+  app.get("/api/admin/feedback", async (req, res) => {
+    try {
+      const authHeader = req.headers.authorization;
+      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+      
+      const token = authHeader.slice(7);
+      if (!validateToken(token)) {
+        return res.status(401).json({ error: "Invalid or expired token" });
+      }
+
+      const feedbackList = await storage.listFeedback();
+      res.json(feedbackList);
+    } catch (error) {
+      console.error("Feedback list error:", error);
+      res.status(500).json({ error: "Failed to get feedback" });
+    }
+  });
+
+  app.patch("/api/admin/feedback/:id", async (req, res) => {
+    try {
+      const authHeader = req.headers.authorization;
+      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+      
+      const token = authHeader.slice(7);
+      if (!validateToken(token)) {
+        return res.status(401).json({ error: "Invalid or expired token" });
+      }
+
+      const { id } = req.params;
+      const { status } = req.body;
+      
+      if (!status || !["nouveau", "lu", "archivé"].includes(status)) {
+        return res.status(400).json({ error: "Invalid status" });
+      }
+
+      const updated = await storage.updateFeedbackStatus(id, status);
+      if (!updated) {
+        return res.status(404).json({ error: "Feedback not found" });
+      }
+      
+      res.json(updated);
+    } catch (error) {
+      console.error("Feedback update error:", error);
+      res.status(500).json({ error: "Failed to update feedback" });
+    }
+  });
+
   return httpServer;
 }
