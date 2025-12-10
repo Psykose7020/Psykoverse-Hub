@@ -202,22 +202,27 @@ export default function Home() {
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8"
+            className="flex flex-col lg:flex-row items-center gap-8"
           >
-            {[
-              { value: "35", label: "Guides complets", icon: BookOpen },
-              { value: "180+", label: "Membres Discord", icon: Users },
-              { value: "3", label: "Univers actifs", icon: Globe },
-              { value: "340", label: "Abonnés YouTube", icon: Youtube }
-            ].map((stat, i) => (
-              <div key={i} className="flex items-center gap-3 justify-center">
-                <stat.icon className="w-6 h-6 text-primary/60" />
-                <div>
-                  <div className="text-2xl md:text-3xl font-bold text-white">{stat.value}</div>
-                  <div className="text-xs text-gray-500">{stat.label}</div>
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-2 gap-4 md:gap-6 flex-1">
+              {[
+                { value: "35", label: "Guides complets", icon: BookOpen },
+                { value: "180+", label: "Membres Discord", icon: Users },
+                { value: "3", label: "Univers actifs", icon: Globe },
+                { value: "340", label: "Abonnés YouTube", icon: Youtube }
+              ].map((stat, i) => (
+                <div key={i} className="flex items-center gap-3 justify-center lg:justify-start">
+                  <stat.icon className="w-5 h-5 text-primary/60" />
+                  <div>
+                    <div className="text-xl md:text-2xl font-bold text-white">{stat.value}</div>
+                    <div className="text-xs text-gray-500">{stat.label}</div>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+            <div className="w-full lg:w-[450px] lg:flex-shrink-0">
+              <SpaceGame />
+            </div>
           </motion.div>
         </div>
       </section>
@@ -456,18 +461,6 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-16 md:py-24 border-t border-[#2E384D]">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="max-w-2xl mx-auto"
-          >
-            <SpaceGame />
-          </motion.div>
-        </div>
-      </section>
     </Layout>
   );
 }

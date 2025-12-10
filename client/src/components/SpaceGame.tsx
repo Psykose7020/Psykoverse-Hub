@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Gamepad2, Trophy, X, Send } from "lucide-react";
+import { Gamepad2, Trophy, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface Asteroid {
@@ -23,16 +23,19 @@ export default function SpaceGame() {
   const [isGameOver, setIsGameOver] = useState(false);
   const [score, setScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
-  const [playerX, setPlayerX] = useState(50);
   const [asteroids, setAsteroids] = useState<Asteroid[]>([]);
   const [stars, setStars] = useState<Star[]>([]);
   const [pseudo, setPseudo] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  
   const gameRef = useRef<HTMLDivElement>(null);
+  const playerRef = useRef<HTMLDivElement>(null);
+  const playerXRef = useRef(50);
   const animationRef = useRef<number | null>(null);
   const lastTimeRef = useRef<number>(0);
   const asteroidIdRef = useRef(0);
+  const isPlayingRef = useRef(false);
 
   useEffect(() => {
     const saved = localStorage.getItem("psykoverse:highscore");
@@ -48,24 +51,38 @@ export default function SpaceGame() {
   }, []);
 
   const handleMove = useCallback((clientX: number) => {
-    if (!gameRef.current || !isPlaying) return;
+    if (!gameRef.current || !isPlayingRef.current) return;
     const rect = gameRef.current.getBoundingClientRect();
     const x = ((clientX - rect.left) / rect.width) * 100;
-    setPlayerX(Math.max(5, Math.min(95, x)));
-  }, [isPlaying]);
+    playerXRef.current = Math.max(5, Math.min(95, x));
+    if (playerRef.current) {
+      playerRef.current.style.left = `${playerXRef.current}%`;
+    }
+  }, []);
+
+  useEffect(() => {
+    const handleGlobalMouseMove = (e: MouseEvent) => {
+      if (isPlayingRef.current) {
+        handleMove(e.clientX);
+      }
+    };
+    
+    window.addEventListener("mousemove", handleGlobalMouseMove, { passive: true });
+    return () => window.removeEventListener("mousemove", handleGlobalMouseMove);
+  }, [handleMove]);
 
   const handleMouseMove = (e: React.MouseEvent) => handleMove(e.clientX);
-  const handleTouchMove = (e: React.TouchEvent) => {
-    e.preventDefault();
-    handleMove(e.touches[0].clientX);
-  };
 
   const startGame = () => {
     setIsPlaying(true);
+    isPlayingRef.current = true;
     setIsGameOver(false);
     setScore(0);
     setAsteroids([]);
-    setPlayerX(50);
+    playerXRef.current = 50;
+    if (playerRef.current) {
+      playerRef.current.style.left = "50%";
+    }
     setSubmitted(false);
     setPseudo("");
     lastTimeRef.current = performance.now();
@@ -73,15 +90,21 @@ export default function SpaceGame() {
 
   const endGame = useCallback(() => {
     setIsPlaying(false);
+    isPlayingRef.current = false;
     setIsGameOver(true);
-    if (score > highScore) {
-      setHighScore(score);
-      localStorage.setItem("psykoverse:highscore", score.toString());
-    }
+    setScore(prev => {
+      const finalScore = prev;
+      const currentHigh = parseInt(localStorage.getItem("psykoverse:highscore") || "0");
+      if (finalScore > currentHigh) {
+        setHighScore(finalScore);
+        localStorage.setItem("psykoverse:highscore", finalScore.toString());
+      }
+      return finalScore;
+    });
     if (animationRef.current) {
       cancelAnimationFrame(animationRef.current);
     }
-  }, [score, highScore]);
+  }, []);
 
   const submitScore = async () => {
     if (!pseudo.trim() || pseudo.length < 2) return;
@@ -134,7 +157,7 @@ export default function SpaceGame() {
           const playerY = 85;
           const playerSize = 8;
           for (const a of updated) {
-            const dx = Math.abs(a.x - playerX);
+            const dx = Math.abs(a.x - playerXRef.current);
             const dy = Math.abs(a.y - playerY);
             const minDist = (a.size / 2 + playerSize) * 0.4;
             if (dx < minDist && dy < minDist) {
@@ -154,39 +177,38 @@ export default function SpaceGame() {
     return () => {
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
     };
-  }, [isPlaying, playerX, endGame, score]);
+  }, [isPlaying, endGame, score]);
 
   return (
-    <div className="bg-gradient-to-br from-[#0B0E14] to-[#1C2230] border border-[#2E384D] rounded-2xl p-6 overflow-hidden">
-      <div className="flex items-center justify-between mb-4">
+    <div className="hidden lg:block">
+      <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
-            <Gamepad2 className="w-5 h-5 text-white" />
+          <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+            <Gamepad2 className="w-4 h-4 text-white" />
           </div>
           <div>
-            <h3 className="font-display font-bold text-white">Space Escape</h3>
-            <p className="text-xs text-gray-500">Évitez les astéroïdes !</p>
+            <h3 className="font-display font-bold text-white text-sm">Space Escape</h3>
+            <p className="text-xs text-gray-500">Évitez les astéroïdes</p>
           </div>
         </div>
         <div className="flex items-center gap-4">
           <div className="text-right">
             <div className="text-xs text-gray-500">Score</div>
-            <div className="font-bold text-primary text-lg">{score}</div>
+            <div className="font-bold text-primary">{score}</div>
           </div>
           <div className="text-right">
             <div className="text-xs text-gray-500 flex items-center gap-1">
-              <Trophy className="w-3 h-3 text-yellow-400" /> Record
+              <Trophy className="w-3 h-3 text-yellow-400" /> Best
             </div>
-            <div className="font-bold text-yellow-400">{highScore}</div>
+            <div className="font-bold text-yellow-400 text-sm">{highScore}</div>
           </div>
         </div>
       </div>
 
       <div
         ref={gameRef}
-        className="relative h-64 bg-[#050508] rounded-xl overflow-hidden cursor-none select-none"
+        className="relative h-48 bg-[#050508]/80 rounded-xl overflow-hidden cursor-none select-none backdrop-blur-sm border border-[#2E384D]/50"
         onMouseMove={handleMouseMove}
-        onTouchMove={handleTouchMove}
         onClick={() => !isPlaying && !isGameOver && startGame()}
       >
         {stars.map((star, i) => (
@@ -205,8 +227,9 @@ export default function SpaceGame() {
         {isPlaying && (
           <>
             <div
-              className="absolute transition-all duration-75 ease-out"
-              style={{ left: `${playerX}%`, top: "85%", transform: "translate(-50%, -50%)" }}
+              ref={playerRef}
+              className="absolute will-change-transform"
+              style={{ left: "50%", top: "85%", transform: "translate(-50%, -50%)" }}
             >
               <div className="relative">
                 <div className="w-0 h-0 border-l-[8px] border-r-[8px] border-b-[20px] border-l-transparent border-r-transparent border-b-primary drop-shadow-[0_0_10px_rgba(0,191,255,0.8)]" />
@@ -217,7 +240,7 @@ export default function SpaceGame() {
             {asteroids.map(asteroid => (
               <div
                 key={asteroid.id}
-                className="absolute bg-gradient-to-br from-gray-500 to-gray-700 rounded-full shadow-lg"
+                className="absolute bg-gradient-to-br from-gray-500 to-gray-700 rounded-full shadow-lg will-change-transform"
                 style={{
                   left: `${asteroid.x}%`,
                   top: `${asteroid.y}%`,
@@ -237,11 +260,11 @@ export default function SpaceGame() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute inset-0 flex flex-col items-center justify-center bg-black/50 backdrop-blur-sm"
+              className="absolute inset-0 flex flex-col items-center justify-center bg-black/40 backdrop-blur-sm"
             >
-              <Gamepad2 className="w-12 h-12 text-primary mb-4" />
-              <p className="text-white font-bold mb-2">Cliquez pour jouer</p>
-              <p className="text-gray-400 text-xs">Bougez la souris pour contrôler</p>
+              <Gamepad2 className="w-8 h-8 text-primary mb-2" />
+              <p className="text-white font-bold text-sm">Cliquez pour jouer</p>
+              <p className="text-gray-400 text-xs">Bougez la souris</p>
             </motion.div>
           )}
 
@@ -249,27 +272,20 @@ export default function SpaceGame() {
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="absolute inset-0 flex flex-col items-center justify-center bg-black/70 backdrop-blur-sm p-4"
+              className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm p-4"
             >
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ type: "spring", delay: 0.2 }}
-                className="text-4xl mb-2"
-              >
-                💥
-              </motion.div>
-              <h4 className="font-display text-xl font-bold text-white mb-1">Game Over</h4>
-              <p className="text-primary text-2xl font-bold mb-4">{score} points</p>
+              <div className="text-2xl mb-1">💥</div>
+              <h4 className="font-display text-lg font-bold text-white">Game Over</h4>
+              <p className="text-primary text-xl font-bold mb-3">{score} pts</p>
               
               {!submitted ? (
-                <div className="w-full max-w-xs space-y-3">
+                <div className="w-full max-w-xs space-y-2">
                   <input
                     type="text"
                     value={pseudo}
                     onChange={(e) => setPseudo(e.target.value.slice(0, 15))}
-                    placeholder="Votre pseudo..."
-                    className="w-full bg-[#1C2230] border border-[#2E384D] rounded-lg px-4 py-2 text-white text-center placeholder:text-gray-500 focus:outline-none focus:border-primary"
+                    placeholder="Pseudo..."
+                    className="w-full bg-[#1C2230] border border-[#2E384D] rounded-lg px-3 py-1.5 text-white text-center text-sm placeholder:text-gray-500 focus:outline-none focus:border-primary"
                     maxLength={15}
                   />
                   <div className="flex gap-2">
@@ -279,25 +295,18 @@ export default function SpaceGame() {
                       className="flex-1"
                       size="sm"
                     >
-                      <Send className="w-4 h-4 mr-2" />
-                      {isSubmitting ? "..." : "Enregistrer"}
+                      <Send className="w-3 h-3 mr-1" />
+                      {isSubmitting ? "..." : "Save"}
                     </Button>
-                    <Button
-                      onClick={startGame}
-                      variant="outline"
-                      size="sm"
-                      className="border-primary/50"
-                    >
+                    <Button onClick={startGame} variant="outline" size="sm" className="border-primary/50">
                       Rejouer
                     </Button>
                   </div>
                 </div>
               ) : (
-                <div className="space-y-3 text-center">
-                  <p className="text-green-400 text-sm">Score enregistré !</p>
-                  <Button onClick={startGame} size="sm">
-                    Rejouer
-                  </Button>
+                <div className="space-y-2 text-center">
+                  <p className="text-green-400 text-xs">Score enregistré !</p>
+                  <Button onClick={startGame} size="sm">Rejouer</Button>
                 </div>
               )}
             </motion.div>
