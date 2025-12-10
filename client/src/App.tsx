@@ -34,6 +34,7 @@ import GuideMoonbreak from "@/pages/guide-moonbreak";
 import GuideVolante from "@/pages/guide-volante";
 import GuideFDV from "@/pages/guide-fdv";
 import GuideUnivers from "@/pages/guide-univers";
+import GuideAllianceClasses from "@/pages/guide-alliance-classes";
 import Rules from "@/pages/rules";
 import RulesCompte from "@/pages/rules-compte";
 import RulesSitting from "@/pages/rules-sitting";
@@ -73,6 +74,7 @@ function Router() {
       <Route path="/guide/volante" component={GuideVolante} />
       <Route path="/guide/fdv" component={GuideFDV} />
       <Route path="/guide/univers" component={GuideUnivers} />
+      <Route path="/guide/alliance-classes" component={GuideAllianceClasses} />
       <Route path="/alliance" component={Alliance} />
       <Route path="/projets" component={Projects} />
       <Route path="/support" component={Support} />

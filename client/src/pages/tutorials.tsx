@@ -56,7 +56,8 @@ const categories = [
       { title: "Expéditions", description: "Explorer l'espace profond", icon: Compass, color: "from-indigo-500 to-blue-600", link: "/guide/expeditions" },
       { title: "Lune & CDR", description: "Champs de débris et lunes", icon: Moon, color: "from-gray-500 to-slate-700", link: "/guide/lune" },
       { title: "Développement", description: "Stratégie de compte", icon: TrendingUp, color: "from-emerald-500 to-green-600", link: "/guide/developpement" },
-      { title: "Volantes", description: "Flotte mobile défensive", icon: Plane, color: "from-cyan-500 to-blue-600", link: "/guide/volante" }
+      { title: "Volantes", description: "Flotte mobile défensive", icon: Plane, color: "from-cyan-500 to-blue-600", link: "/guide/volante" },
+      { title: "Classes Alliance", description: "Guerrier, Marchand, Chercheur", icon: Users, color: "from-violet-500 to-purple-600", link: "/guide/alliance-classes", featured: true }
     ]
   },
   {
