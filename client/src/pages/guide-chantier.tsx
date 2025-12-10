@@ -6,9 +6,30 @@ import { Link } from "wouter";
 import { useState } from "react";
 import RelatedGuides from "@/components/RelatedGuides";
 
-import spaceshipImg1 from "@assets/stock_images/spaceship_sci-fi_dar_87b4cbf2.jpg";
-import spaceshipImg2 from "@assets/stock_images/spaceship_sci-fi_dar_c30d0033.jpg";
-import spaceshipImg3 from "@assets/stock_images/spaceship_sci-fi_dar_951575f5.jpg";
+import imgPetitTransporteur from "@assets/ogame_ships/petit-transporteur.png";
+import imgGrandTransporteur from "@assets/ogame_ships/grand-transporteur.png";
+import imgVaisseauColonisation from "@assets/ogame_ships/vaisseau-colonisation.png";
+import imgRecycleur from "@assets/ogame_ships/recycleur.png";
+import imgSondeEspionnage from "@assets/ogame_ships/sonde-espionnage.png";
+import imgSatelliteSolaire from "@assets/ogame_ships/satellite-solaire.png";
+import imgChasseurLeger from "@assets/ogame_ships/chasseur-leger.png";
+import imgChasseurLourd from "@assets/ogame_ships/chasseur-lourd.png";
+import imgCroiseur from "@assets/ogame_ships/croiseur.png";
+import imgVaisseauBataille from "@assets/ogame_ships/vaisseau-bataille.png";
+import imgBombardier from "@assets/ogame_ships/bombardier.png";
+import imgDestructeur from "@assets/ogame_ships/destructeur.png";
+import imgTraqueur from "@assets/ogame_ships/traqueur.png";
+import imgEtoileMort from "@assets/ogame_ships/etoile-mort.png";
+import imgFaucheur from "@assets/ogame_ships/faucheur.png";
+import imgEclaireur from "@assets/ogame_ships/eclaireur.png";
+import imgLanceurMissiles from "@assets/ogame_ships/lanceur-missiles.png";
+import imgLaserLeger from "@assets/ogame_ships/laser-leger.png";
+import imgLaserLourd from "@assets/ogame_ships/laser-lourd.png";
+import imgCanonGauss from "@assets/ogame_ships/canon-gauss.png";
+import imgArtillerieIons from "@assets/ogame_ships/artillerie-ions.png";
+import imgLanceurPlasma from "@assets/ogame_ships/lanceur-plasma.png";
+import imgPetitBouclier from "@assets/ogame_ships/petit-bouclier.png";
+import imgGrandBouclier from "@assets/ogame_ships/grand-bouclier.png";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -26,7 +47,7 @@ const vaisseauxCivils = [
     description: "Idéal pour les petits pillages. Devient plus rapide que le GT au niveau 5 de Réacteur à impulsion.",
     rapidfire: "Aucun particulier",
     conseil: "Utilisez-les comme 'tampon' dans vos flottes de combat pour absorber les dégâts.",
-    image: spaceshipImg1
+    image: imgPetitTransporteur
   },
   { 
     nom: "Grand Transporteur", 
@@ -38,7 +59,7 @@ const vaisseauxCivils = [
     description: "5x plus de capacité que le PT. Plus rentable pour transporter de grandes quantités.",
     rapidfire: "Aucun particulier",
     conseil: "Privilégiez le GT pour les longs trajets - meilleur ratio fret/consommation.",
-    image: spaceshipImg2
+    image: imgGrandTransporteur
   },
   { 
     nom: "Vaisseau de Colonisation", 
@@ -50,7 +71,7 @@ const vaisseauxCivils = [
     description: "Permet de coloniser une nouvelle planète. Peut aussi transporter des ressources.",
     rapidfire: "Aucun particulier",
     conseil: "Envoyez-le avec des ressources pour développer rapidement votre nouvelle colonie.",
-    image: spaceshipImg3
+    image: imgVaisseauColonisation
   },
   { 
     nom: "Recycleur", 
@@ -62,7 +83,7 @@ const vaisseauxCivils = [
     description: "Récupère 30% du métal et cristal des vaisseaux détruits dans les CDR.",
     rapidfire: "Aucun particulier",
     conseil: "Essentiel pour rentabiliser vos combats. Toujours prévoir assez de recycleurs !",
-    image: spaceshipImg1
+    image: imgRecycleur
   },
   { 
     nom: "Sonde d'Espionnage", 
@@ -74,7 +95,7 @@ const vaisseauxCivils = [
     description: "Vitesse incommensurable. Efficacité dépend du niveau de technologie Espionnage.",
     rapidfire: "Vulnérable à presque tous les vaisseaux",
     conseil: "Envoyez plusieurs sondes pour obtenir plus de détails sur la cible.",
-    image: spaceshipImg2
+    image: imgSondeEspionnage
   },
   { 
     nom: "Satellite Solaire", 
@@ -86,7 +107,7 @@ const vaisseauxCivils = [
     description: "Produit de l'énergie selon la température de la planète. Ne peut pas se déplacer.",
     rapidfire: "Vulnérable à tous les vaisseaux",
     conseil: "Sur planètes chaudes, très rentables. Attention : détruits lors des attaques !",
-    image: spaceshipImg3
+    image: imgSatelliteSolaire
   }
 ];
 
@@ -101,7 +122,7 @@ const vaisseauxCombat = [
     description: "Très faible coût. Instable mais devient essentiel en fin d'univers.",
     rapidfire: "Vulnérable aux Croiseurs (x6)",
     conseil: "En masse, ils servent de 'bouclier' pour protéger vos vaisseaux lourds.",
-    image: spaceshipImg1
+    image: imgChasseurLeger
   },
   { 
     nom: "Chasseur Lourd", 
@@ -113,7 +134,7 @@ const vaisseauxCombat = [
     description: "Plus stable que le CL. Excellent en début d'univers pour passer les défenses légères.",
     rapidfire: "x3 contre Sondes, x2 contre Satellites",
     conseil: "Économe en deutérium. Bon choix pour débuter avant d'avoir des Croiseurs.",
-    image: spaceshipImg2
+    image: imgChasseurLourd
   },
   { 
     nom: "Croiseur", 
@@ -125,7 +146,7 @@ const vaisseauxCombat = [
     description: "Le vaisseau de combat le plus rapide. Armure 3x plus forte que le CLo.",
     rapidfire: "x6 contre CL, x10 contre Lance-missiles",
     conseil: "Incontournable dans toute flotte. Élimine 6x plus de vaisseaux qu'un VdB à coût égal !",
-    image: spaceshipImg3
+    image: imgCroiseur
   },
   { 
     nom: "Vaisseau de Bataille", 
@@ -137,7 +158,7 @@ const vaisseauxCombat = [
     description: "L'épine dorsale des flottes militaires. Excellent rapport qualité-prix.",
     rapidfire: "Aucun particulier",
     conseil: "150 VdB peuvent détruire une Étoile de la Mort. Polyvalent pour raid et défense.",
-    image: spaceshipImg1
+    image: imgVaisseauBataille
   },
   { 
     nom: "Bombardier", 
@@ -149,7 +170,7 @@ const vaisseauxCombat = [
     description: "Meilleur rapport coût/destruction contre les défenses lourdes.",
     rapidfire: "x20 contre LM, x20 contre LL, x10 contre LLo, x5 contre Ions, x5 contre Gauss",
     conseil: "Optimal pour détruire les défenses (sauf plasmas). Le 2e vaisseau le plus lent.",
-    image: spaceshipImg2
+    image: imgBombardier
   },
   { 
     nom: "Destructeur", 
@@ -161,7 +182,7 @@ const vaisseauxCombat = [
     description: "Le vaisseau le plus blindé. 2e plus puissant après l'EDLM.",
     rapidfire: "x2 contre Plasmas, x10 contre CLo, x5 contre LL",
     conseil: "100 destructeurs peuvent détruire une Étoile de la Mort. Essentiel contre les plasmas !",
-    image: spaceshipImg3
+    image: imgDestructeur
   },
   { 
     nom: "Traqueur", 
@@ -173,7 +194,7 @@ const vaisseauxCombat = [
     description: "Spécialisé dans la chasse aux vaisseaux. Rapidfire contre CR et VdB.",
     rapidfire: "x3 contre CR, x3 contre VdB, x4 contre BB, x7 contre DEST",
     conseil: "Parfait pour recycler les flottes adverses. Vitesse élevée pour les poursuites.",
-    image: spaceshipImg1
+    image: imgTraqueur
   },
   { 
     nom: "Étoile de la Mort", 
@@ -185,19 +206,43 @@ const vaisseauxCombat = [
     description: "Le vaisseau le plus puissant. Seul capable de détruire les lunes (MoonBreak).",
     rapidfire: "x1250 contre SE, x250 contre SAT, x30 contre CL, x10 contre CLo, x5 contre CR...",
     conseil: "Très lente mais passe les défenses sans pertes. Coût énorme, à réserver aux gros joueurs.",
-    image: spaceshipImg2
+    image: imgEtoileMort
+  },
+  { 
+    nom: "Faucheur", 
+    abbr: "FAUCH", 
+    role: "Recyclage automatique",
+    metal: 85000, cristal: 55000, deut: 20000,
+    bouclier: 700, attaque: 2800, fret: 10000,
+    vitesse: 7000, conso: 1100,
+    description: "Récupère automatiquement 30% des débris en combat. Très puissant.",
+    rapidfire: "x5 contre CL, x3 contre CLo, x3 contre CR",
+    conseil: "Parfait pour les raids longs - pas besoin d'envoyer des recycleurs après !",
+    image: imgFaucheur
+  },
+  { 
+    nom: "Éclaireur", 
+    abbr: "ECLAI", 
+    role: "Expéditions",
+    metal: 8000, cristal: 15000, deut: 8000,
+    bouclier: 100, attaque: 1, fret: 10000,
+    vitesse: 12000, conso: 300,
+    description: "Bonus massif en expédition pour la classe Explorateur. Très rapide.",
+    rapidfire: "Aucun particulier",
+    conseil: "Indispensable pour les Explorateurs. Augmente significativement les gains d'expédition.",
+    image: imgEclaireur
   }
 ];
 
 const defenses = [
-  { nom: "Lanceur de Missiles", abbr: "LM", metal: 2000, cristal: 0, bouclier: 20, attaque: 80 },
-  { nom: "Artillerie Laser Légère", abbr: "LL", metal: 1500, cristal: 500, bouclier: 25, attaque: 100 },
-  { nom: "Artillerie Laser Lourde", abbr: "LLo", metal: 6000, cristal: 2000, bouclier: 100, attaque: 250 },
-  { nom: "Canon de Gauss", abbr: "Gauss", metal: 20000, cristal: 15000, bouclier: 200, attaque: 1100 },
-  { nom: "Artillerie à Ions", abbr: "Ion", metal: 2000, cristal: 6000, bouclier: 500, attaque: 150 },
-  { nom: "Lanceur de Plasma", abbr: "Plasma", metal: 50000, cristal: 50000, bouclier: 300, attaque: 3000 },
-  { nom: "Petit Bouclier", abbr: "PB", metal: 10000, cristal: 10000, bouclier: 2000, attaque: 1 },
-  { nom: "Grand Bouclier", abbr: "GB", metal: 50000, cristal: 50000, bouclier: 10000, attaque: 1 }
+  { nom: "Lanceur de Missiles", abbr: "LM", metal: 2000, cristal: 0, bouclier: 20, attaque: 80, image: imgLanceurMissiles },
+  { nom: "Artillerie Laser Légère", abbr: "LL", metal: 1500, cristal: 500, bouclier: 25, attaque: 100, image: imgLaserLeger },
+  { nom: "Artillerie Laser Lourde", abbr: "LLo", metal: 6000, cristal: 2000, bouclier: 100, attaque: 250, image: imgLaserLourd },
+  { nom: "Canon de Gauss", abbr: "Gauss", metal: 20000, cristal: 15000, bouclier: 200, attaque: 1100, image: imgCanonGauss },
+  { nom: "Artillerie à Ions", abbr: "Ion", metal: 2000, cristal: 6000, bouclier: 500, attaque: 150, image: imgArtillerieIons },
+  { nom: "Lanceur de Plasma", abbr: "Plasma", metal: 50000, cristal: 50000, bouclier: 300, attaque: 3000, image: imgLanceurPlasma },
+  { nom: "Petit Bouclier", abbr: "PB", metal: 10000, cristal: 10000, bouclier: 2000, attaque: 1, image: imgPetitBouclier },
+  { nom: "Grand Bouclier", abbr: "GB", metal: 50000, cristal: 50000, bouclier: 10000, attaque: 1, image: imgGrandBouclier }
 ];
 
 export default function GuideChantier() {
