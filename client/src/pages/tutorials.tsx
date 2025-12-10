@@ -3,7 +3,7 @@ import { Link } from "wouter";
 import { 
   Play, BookOpen, Monitor, Users, Factory, FlaskConical, 
   Rocket, Globe, BookText, AlertTriangle, ExternalLink, ArrowRight,
-  TrendingUp, Sword, Shield, GraduationCap
+  GraduationCap, Compass, Trophy, Shield, Eye, Crosshair, Moon, Globe2
 } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
@@ -17,51 +17,62 @@ const staggerContainer = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.08 }
+    transition: { staggerChildren: 0.05 }
   }
 };
 
 const categories = [
   {
     id: "debutant",
-    title: "Débuter sur OGame",
-    description: "Les bases essentielles pour bien commencer votre aventure spatiale",
+    title: "Les Bases du Jeu",
+    description: "Tout ce qu'il faut savoir pour bien démarrer",
     icon: GraduationCap,
     color: "from-green-500 to-emerald-600",
     guides: [
-      { title: "L'Interface du Jeu", description: "Vue d'ensemble et navigation", icon: Monitor, color: "from-blue-500 to-cyan-600", link: "/guide/interface" },
-      { title: "Les Classes", description: "Collecteur, Général, Explorateur", icon: Users, color: "from-purple-500 to-pink-600", link: "/guide/classes" },
-      { title: "Production & Énergie", description: "Mines, hangars et énergie", icon: Factory, color: "from-green-500 to-emerald-600", link: "/guide/production" },
-      { title: "Installations & Recherches", description: "Bâtiments et technologies", icon: FlaskConical, color: "from-teal-500 to-cyan-600", link: "/guide/recherches" },
-      { title: "Chantier Spatial", description: "Vaisseaux et défenses", icon: Rocket, color: "from-slate-500 to-slate-700", link: "/guide/chantier" },
-      { title: "Galaxie & Alliance", description: "Exploration et coopération", icon: Globe, color: "from-indigo-500 to-purple-600", link: "/guide/galaxie" },
-      { title: "Jargon OGamien", description: "Termes et abréviations", icon: BookText, color: "from-amber-500 to-orange-600", link: "/guide/jargon" },
-      { title: "Triangle d'Activité", description: "Indicateur et sécurité", icon: AlertTriangle, color: "from-red-500 to-red-700", link: "/guide/activite" }
+      { title: "L'Interface", description: "Vue d'ensemble", icon: Monitor, color: "from-blue-500 to-cyan-600", link: "/guide/interface" },
+      { title: "Les Classes", description: "Choisir son style", icon: Users, color: "from-purple-500 to-pink-600", link: "/guide/classes" },
+      { title: "Production", description: "Mines et énergie", icon: Factory, color: "from-green-500 to-emerald-600", link: "/guide/production" },
+      { title: "Recherches", description: "Technologies", icon: FlaskConical, color: "from-teal-500 to-cyan-600", link: "/guide/recherches" },
+      { title: "Chantier", description: "Vaisseaux", icon: Rocket, color: "from-slate-500 to-slate-700", link: "/guide/chantier" },
+      { title: "Galaxie", description: "Navigation", icon: Globe, color: "from-indigo-500 to-purple-600", link: "/guide/galaxie" },
+      { title: "Jargon", description: "Vocabulaire", icon: BookText, color: "from-amber-500 to-orange-600", link: "/guide/jargon" }
     ]
   },
   {
-    id: "economie",
-    title: "Économie & Production",
-    description: "Maximisez vos ressources et votre croissance",
-    icon: TrendingUp,
-    color: "from-yellow-500 to-amber-600",
-    guides: []
+    id: "expansion",
+    title: "Expansion & Exploration",
+    description: "Développez votre empire galactique",
+    icon: Globe2,
+    color: "from-teal-500 to-cyan-600",
+    guides: [
+      { title: "Colonisation", description: "S'étendre", icon: Globe2, color: "from-green-500 to-teal-600", link: "/guide/colonisation" },
+      { title: "Expéditions", description: "Explorer", icon: Compass, color: "from-indigo-500 to-blue-600", link: "/guide/expeditions" },
+      { title: "Lune & CDR", description: "Débris et lunes", icon: Moon, color: "from-gray-500 to-slate-700", link: "/guide/lune" }
+    ]
   },
   {
     id: "combat",
     title: "Combat & Stratégie",
     description: "Maîtrisez l'art de la guerre spatiale",
-    icon: Sword,
+    icon: Crosshair,
     color: "from-red-500 to-rose-600",
-    guides: []
+    guides: [
+      { title: "Espionnage", description: "Renseignement", icon: Eye, color: "from-violet-500 to-purple-600", link: "/guide/espionnage" },
+      { title: "Attaque", description: "Raid et pillage", icon: Crosshair, color: "from-red-500 to-rose-600", link: "/guide/attaque" },
+      { title: "ACS", description: "Combat groupé", icon: Users, color: "from-orange-500 to-red-600", link: "/guide/acs" },
+      { title: "Classements", description: "Points d'honneur", icon: Trophy, color: "from-yellow-500 to-amber-600", link: "/guide/classements" }
+    ]
   },
   {
     id: "defense",
     title: "Défense & Sécurité",
-    description: "Protégez vos planètes et votre flotte",
+    description: "Protégez votre flotte et vos ressources",
     icon: Shield,
     color: "from-blue-600 to-indigo-700",
-    guides: []
+    guides: [
+      { title: "Fleetsave", description: "Sauver sa flotte", icon: Shield, color: "from-blue-600 to-indigo-700", link: "/guide/fleetsave" },
+      { title: "Activité", description: "Triangle d'activité", icon: AlertTriangle, color: "from-red-500 to-red-700", link: "/guide/activite" }
+    ]
   }
 ];
 
@@ -74,62 +85,56 @@ export default function Tutorials() {
             initial="hidden"
             animate="visible"
             variants={staggerContainer}
-            className="text-center mb-16"
+            className="text-center mb-12"
           >
             <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
               <BookOpen className="w-4 h-4" />
-              Centre d'apprentissage
+              16 guides disponibles
             </motion.div>
             <motion.h1 variants={fadeInUp} className="font-display text-4xl md:text-5xl font-bold text-white mb-4">
               Guides & Tutoriels
             </motion.h1>
             <motion.p variants={fadeInUp} className="text-gray-400 max-w-2xl mx-auto text-lg">
-              Des guides complets rédigés par la communauté pour vous accompagner dans votre conquête spatiale
+              Apprenez à maîtriser OGame avec nos guides complets rédigés par la communauté
             </motion.p>
           </motion.div>
 
-          {categories.map((category, catIndex) => {
+          {categories.map((category) => {
             const CategoryIcon = category.icon;
-            if (category.guides.length === 0) return null;
-            
             return (
               <motion.div
                 key={category.id}
                 initial="hidden"
                 animate="visible"
                 variants={staggerContainer}
-                className="mb-12"
+                className="mb-10"
               >
-                <motion.div variants={fadeInUp} className="flex items-center gap-4 mb-6">
-                  <div className={`w-12 h-12 bg-gradient-to-br ${category.color} rounded-xl flex items-center justify-center shadow-lg`}>
-                    <CategoryIcon className="w-6 h-6 text-white" />
+                <motion.div variants={fadeInUp} className="flex items-center gap-3 mb-4">
+                  <div className={`w-10 h-10 bg-gradient-to-br ${category.color} rounded-lg flex items-center justify-center shadow-lg`}>
+                    <CategoryIcon className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <h2 className="font-display text-2xl font-bold text-white">{category.title}</h2>
-                    <p className="text-gray-400 text-sm">{category.description}</p>
+                    <h2 className="font-display text-xl font-bold text-white">{category.title}</h2>
+                    <p className="text-gray-500 text-sm">{category.description}</p>
                   </div>
                 </motion.div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3">
                   {category.guides.map((guide, index) => {
                     const Icon = guide.icon;
                     return (
                       <motion.div key={index} variants={fadeInUp}>
                         <Link href={guide.link}>
-                          <div className="group h-full bg-[#1C2230] border border-[#2E384D] rounded-xl p-5 hover:border-primary/50 transition-all cursor-pointer hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1">
-                            <div className={`w-12 h-12 bg-gradient-to-br ${guide.color} rounded-lg flex items-center justify-center mb-3 shadow-lg group-hover:scale-110 transition-transform`}>
-                              <Icon className="w-6 h-6 text-white" />
+                          <div className="group h-full bg-[#1C2230] border border-[#2E384D] rounded-xl p-4 hover:border-primary/50 transition-all cursor-pointer hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1 text-center">
+                            <div className={`w-10 h-10 bg-gradient-to-br ${guide.color} rounded-lg flex items-center justify-center mx-auto mb-2 shadow-lg group-hover:scale-110 transition-transform`}>
+                              <Icon className="w-5 h-5 text-white" />
                             </div>
-                            <h3 className="font-bold text-white mb-1 group-hover:text-primary transition-colors">
+                            <h3 className="font-bold text-white text-sm mb-0.5 group-hover:text-primary transition-colors">
                               {guide.title}
                             </h3>
-                            <p className="text-gray-500 text-sm mb-3">
+                            <p className="text-gray-500 text-xs">
                               {guide.description}
                             </p>
-                            <div className="flex items-center text-primary text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-                              Lire
-                              <ArrowRight className="w-3 h-3 ml-1" />
-                            </div>
                           </div>
                         </Link>
                       </motion.div>
@@ -140,82 +145,62 @@ export default function Tutorials() {
             );
           })}
 
-          {categories.filter(c => c.guides.length === 0).length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="mb-12"
+              className="bg-gradient-to-br from-red-900/20 to-red-950/20 border border-red-800/30 rounded-xl p-6"
             >
-              <h2 className="font-display text-xl font-bold text-white mb-4">Prochainement</h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {categories.filter(c => c.guides.length === 0).map((category) => {
-                  const CategoryIcon = category.icon;
-                  return (
-                    <div key={category.id} className="bg-[#151924] border border-[#2E384D] rounded-xl p-5 opacity-60">
-                      <div className="flex items-center gap-3">
-                        <div className={`w-10 h-10 bg-gradient-to-br ${category.color} rounded-lg flex items-center justify-center opacity-50`}>
-                          <CategoryIcon className="w-5 h-5 text-white" />
-                        </div>
-                        <div>
-                          <h3 className="font-bold text-gray-400">{category.title}</h3>
-                          <p className="text-gray-600 text-xs">{category.description}</p>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 bg-red-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <Play className="w-7 h-7 text-white" />
+                </div>
+                <div className="flex-1">
+                  <h2 className="font-display text-lg font-bold text-white mb-1">
+                    Tutoriels Vidéo
+                  </h2>
+                  <p className="text-gray-400 text-sm mb-3">
+                    Apprenez visuellement sur YouTube
+                  </p>
+                  <Button className="bg-red-600 hover:bg-red-700" size="sm" asChild>
+                    <a href="https://www.youtube.com/@7020Psykose" target="_blank" rel="noopener noreferrer">
+                      <Play className="w-4 h-4 mr-2" />
+                      Voir la chaîne
+                      <ExternalLink className="w-3 h-3 ml-2" />
+                    </a>
+                  </Button>
+                </div>
               </div>
             </motion.div>
-          )}
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="bg-gradient-to-br from-red-900/20 to-red-950/20 border border-red-800/30 rounded-2xl p-8 mb-8"
-          >
-            <div className="flex flex-col md:flex-row items-center gap-6">
-              <div className="w-16 h-16 bg-red-600 rounded-xl flex items-center justify-center flex-shrink-0">
-                <Play className="w-8 h-8 text-white" />
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="bg-gradient-to-r from-[#5865F2]/20 to-[#5865F2]/5 border border-[#5865F2]/30 rounded-xl p-6"
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 bg-[#5865F2] rounded-xl flex items-center justify-center flex-shrink-0">
+                  <Users className="w-7 h-7 text-white" />
+                </div>
+                <div className="flex-1">
+                  <h2 className="font-display text-lg font-bold text-white mb-1">
+                    Aide personnalisée
+                  </h2>
+                  <p className="text-gray-400 text-sm mb-3">
+                    180 membres prêts à vous aider
+                  </p>
+                  <Button className="bg-[#5865F2] hover:bg-[#4752C4]" size="sm" asChild>
+                    <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer">
+                      Rejoindre Discord
+                      <ExternalLink className="w-3 h-3 ml-2" />
+                    </a>
+                  </Button>
+                </div>
               </div>
-              <div className="flex-1 text-center md:text-left">
-                <h2 className="font-display text-xl font-bold text-white mb-2">
-                  Tutoriels Vidéo
-                </h2>
-                <p className="text-gray-400 text-sm mb-4">
-                  Découvrez nos tutoriels vidéo sur YouTube
-                </p>
-                <Button className="bg-red-600 hover:bg-red-700" asChild>
-                  <a href="https://www.youtube.com/@7020Psykose" target="_blank" rel="noopener noreferrer">
-                    <Play className="w-4 h-4 mr-2" />
-                    Chaîne YouTube
-                    <ExternalLink className="w-4 h-4 ml-2" />
-                  </a>
-                </Button>
-              </div>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="bg-gradient-to-r from-[#5865F2]/20 to-[#5865F2]/5 border border-[#5865F2]/30 rounded-2xl p-8 text-center"
-          >
-            <h2 className="font-display text-xl font-bold text-white mb-2">
-              Besoin d'aide ?
-            </h2>
-            <p className="text-gray-400 mb-4 text-sm">
-              Rejoignez notre Discord pour poser vos questions
-            </p>
-            <Button className="bg-[#5865F2] hover:bg-[#4752C4]" asChild>
-              <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer">
-                Rejoindre le Discord
-                <ExternalLink className="w-4 h-4 ml-2" />
-              </a>
-            </Button>
-          </motion.div>
+            </motion.div>
+          </div>
         </div>
       </section>
     </Layout>
