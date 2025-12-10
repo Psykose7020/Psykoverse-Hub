@@ -5,7 +5,7 @@ import {
   Rocket, Globe, BookText, AlertTriangle, ExternalLink,
   GraduationCap, Compass, Trophy, Shield, Eye, Crosshair, Moon, Globe2,
   Target, TrendingUp, Ghost, Layers, Bomb, Plane, Sparkles, Scale,
-  ArrowLeftRight, Swords
+  ArrowLeftRight, Swords, Dna
 } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
@@ -79,6 +79,16 @@ const categories = [
     guides: [
       { title: "Ghost", description: "12 techniques", icon: Ghost, color: "from-blue-600 to-indigo-700", link: "/guide/fleetsave" },
       { title: "Activité", description: "Triangle d'activité", icon: AlertTriangle, color: "from-red-500 to-red-700", link: "/guide/activite" }
+    ]
+  },
+  {
+    id: "fdv",
+    title: "Formes de Vie",
+    description: "Les 4 races extraterrestres et leurs bonus",
+    icon: Dna,
+    color: "from-purple-500 to-pink-600",
+    guides: [
+      { title: "Guide FDV", description: "Complet & interactif", icon: Dna, color: "from-purple-500 to-pink-600", link: "/guide/fdv" }
     ]
   },
   {
