@@ -86,8 +86,7 @@ export default function GuideExpeditions() {
                       <li>• Éclaireurs (classe Explorateur)</li>
                       <li>• Grand Transporteurs pour le fret</li>
                       <li>• Vaisseaux de combat contre pirates</li>
-                      <li>• 1 Étoile de la Mort (anti trou noir)</li>
-                    </ul>
+                                          </ul>
                   </div>
                   <div className="bg-blue-900/20 border border-blue-700/30 rounded-lg p-4">
                     <h3 className="font-bold text-blue-400 mb-2">Bonus Explorateur</h3>
@@ -134,11 +133,7 @@ export default function GuideExpeditions() {
                     <span className="text-amber-400">•</span>
                     <span>Utilisez des Grands Transporteurs pour maximiser le fret récupérable</span>
                   </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-amber-400">•</span>
-                    <span>1 EDLM réduit drastiquement le risque de trou noir</span>
-                  </li>
-                </ul>
+                                  </ul>
               </div>
 
               <RelatedGuides currentGuide="expeditions" />
