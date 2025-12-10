@@ -32,12 +32,22 @@ import GuideDeveloppement from "@/pages/guide-developpement";
 import GuideSplit from "@/pages/guide-split";
 import GuideMoonbreak from "@/pages/guide-moonbreak";
 import GuideVolante from "@/pages/guide-volante";
+import Rules from "@/pages/rules";
+import RulesCompte from "@/pages/rules-compte";
+import RulesSitting from "@/pages/rules-sitting";
+import RulesPush from "@/pages/rules-push";
+import RulesBash from "@/pages/rules-bash";
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/tutoriels" component={Tutorials} />
+      <Route path="/regles" component={Rules} />
+      <Route path="/regles/compte" component={RulesCompte} />
+      <Route path="/regles/sitting" component={RulesSitting} />
+      <Route path="/regles/push" component={RulesPush} />
+      <Route path="/regles/bash" component={RulesBash} />
       <Route path="/guide/activite" component={GuideActivite} />
       <Route path="/guide/interface" component={GuideInterface} />
       <Route path="/guide/classes" component={GuideClasses} />
