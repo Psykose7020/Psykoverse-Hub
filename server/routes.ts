@@ -2,9 +2,52 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { randomBytes, createHmac } from "crypto";
+import { z } from "zod";
 
-const SESSION_SECRET = process.env.ADMIN_PASSWORD || randomBytes(32).toString("hex");
+const SESSION_SECRET = process.env.SESSION_SECRET || randomBytes(32).toString("hex");
 const activeSessions = new Map<string, { createdAt: number }>();
+
+const loginAttempts = new Map<string, { count: number; lastAttempt: number }>();
+const MAX_LOGIN_ATTEMPTS = 5;
+const LOCKOUT_DURATION = 15 * 60 * 1000;
+
+const visitSchema = z.object({
+  page: z.string().max(500).optional(),
+  referrer: z.string().max(2000).nullable().optional()
+});
+
+const feedbackSchema = z.object({
+  message: z.string().min(5, "Le message doit contenir au moins 5 caractères").max(30000),
+  page: z.string().max(500).nullable().optional()
+});
+
+const loginSchema = z.object({
+  password: z.string().min(1).max(200)
+});
+
+function isRateLimited(ip: string): boolean {
+  const attempt = loginAttempts.get(ip);
+  if (!attempt) return false;
+  
+  if (Date.now() - attempt.lastAttempt > LOCKOUT_DURATION) {
+    loginAttempts.delete(ip);
+    return false;
+  }
+  
+  return attempt.count >= MAX_LOGIN_ATTEMPTS;
+}
+
+function recordLoginAttempt(ip: string, success: boolean): void {
+  if (success) {
+    loginAttempts.delete(ip);
+    return;
+  }
+  
+  const attempt = loginAttempts.get(ip) || { count: 0, lastAttempt: 0 };
+  attempt.count++;
+  attempt.lastAttempt = Date.now();
+  loginAttempts.set(ip, attempt);
+}
 
 function generateSecureToken(): string {
   const sessionId = randomBytes(32).toString("hex");
@@ -49,7 +92,12 @@ export async function registerRoutes(
   
   app.post("/api/visit", async (req, res) => {
     try {
-      const { page, referrer } = req.body;
+      const parsed = visitSchema.safeParse(req.body);
+      if (!parsed.success) {
+        return res.status(400).json({ error: "Invalid request" });
+      }
+      
+      const { page, referrer } = parsed.data;
       const userAgent = req.headers["user-agent"] || null;
       const ip = req.headers["x-forwarded-for"]?.toString().split(",")[0] || req.ip || null;
       
@@ -79,7 +127,18 @@ export async function registerRoutes(
 
   app.post("/api/admin/login", async (req, res) => {
     try {
-      const { password } = req.body;
+      const ip = req.ip || req.socket?.remoteAddress || "unknown";
+      
+      if (isRateLimited(ip)) {
+        return res.status(429).json({ error: "Trop de tentatives. Réessayez dans 15 minutes." });
+      }
+      
+      const parsed = loginSchema.safeParse(req.body);
+      if (!parsed.success) {
+        return res.status(400).json({ error: "Invalid request" });
+      }
+      
+      const { password } = parsed.data;
       const adminPassword = process.env.ADMIN_PASSWORD;
       
       if (!adminPassword) {
@@ -87,11 +146,13 @@ export async function registerRoutes(
       }
       
       if (password === adminPassword) {
+        recordLoginAttempt(ip, true);
         const token = generateSecureToken();
         const sessionId = token.split(".")[0];
         activeSessions.set(sessionId, { createdAt: Date.now() });
         res.json({ success: true, token });
       } else {
+        recordLoginAttempt(ip, false);
         res.status(401).json({ error: "Invalid password" });
       }
     } catch (error) {
@@ -147,22 +208,23 @@ export async function registerRoutes(
       }
 
       const stats = await storage.getVisitStats();
-      const uniqueIPs = [...new Set(stats.recentVisits.map(v => v.ip).filter(Boolean))];
+      const ipSet = new Set(stats.recentVisits.map(v => v.ip).filter(Boolean));
+      const uniqueIPs = Array.from(ipSet) as string[];
       
       const geoData: Array<{ ip: string; lat: number; lon: number; city: string; country: string; count: number }> = [];
       
       for (const ip of uniqueIPs.slice(0, 20)) {
         try {
-          const response = await fetch(`http://ip-api.com/json/${ip}?fields=status,country,city,lat,lon`);
+          const response = await fetch(`https://ipapi.co/${ip}/json/`);
           const data = await response.json();
-          if (data.status === "success") {
+          if (data.latitude && data.longitude) {
             const count = stats.recentVisits.filter(v => v.ip === ip).length;
             geoData.push({
-              ip: ip as string,
-              lat: data.lat,
-              lon: data.lon,
+              ip: ip,
+              lat: data.latitude,
+              lon: data.longitude,
               city: data.city || "Inconnu",
-              country: data.country || "Inconnu",
+              country: data.country_name || "Inconnu",
               count
             });
           }
@@ -178,12 +240,13 @@ export async function registerRoutes(
 
   app.post("/api/feedback", async (req, res) => {
     try {
-      const { message, page } = req.body;
-      
-      if (!message || typeof message !== "string" || message.trim().length < 5) {
-        return res.status(400).json({ error: "Le message doit contenir au moins 5 caractères" });
+      const parsed = feedbackSchema.safeParse(req.body);
+      if (!parsed.success) {
+        const errorMessage = parsed.error.errors[0]?.message || "Invalid request";
+        return res.status(400).json({ error: errorMessage });
       }
       
+      const { message, page } = parsed.data;
       const userAgent = req.headers["user-agent"] || null;
       const ip = req.headers["x-forwarded-for"]?.toString().split(",")[0] || req.ip || null;
       
