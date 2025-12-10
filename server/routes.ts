@@ -242,5 +242,49 @@ export async function registerRoutes(
     }
   });
 
+  app.post("/api/suggestions", async (req, res) => {
+    try {
+      const { pseudo, content } = req.body;
+      
+      if (!content || typeof content !== "string" || content.trim().length < 10) {
+        return res.status(400).json({ error: "La suggestion doit contenir au moins 10 caractères" });
+      }
+      
+      if (content.length > 30000) {
+        return res.status(400).json({ error: "La suggestion ne peut pas dépasser 30 000 caractères" });
+      }
+      
+      await storage.createSuggestion({
+        pseudo: (pseudo && typeof pseudo === "string" ? pseudo.trim() : "Anonyme") || "Anonyme",
+        content: content.trim(),
+      });
+      
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Suggestion error:", error);
+      res.status(500).json({ error: "Erreur lors de l'envoi de la suggestion" });
+    }
+  });
+
+  app.get("/api/admin/suggestions", async (req, res) => {
+    try {
+      const authHeader = req.headers.authorization;
+      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+      
+      const token = authHeader.slice(7);
+      if (!validateToken(token)) {
+        return res.status(401).json({ error: "Invalid or expired token" });
+      }
+
+      const suggestionsList = await storage.listSuggestions();
+      res.json(suggestionsList);
+    } catch (error) {
+      console.error("Suggestions list error:", error);
+      res.status(500).json({ error: "Failed to get suggestions" });
+    }
+  });
+
   return httpServer;
 }

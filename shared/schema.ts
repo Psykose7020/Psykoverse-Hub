@@ -44,6 +44,23 @@ export const insertFeedbackSchema = createInsertSchema(feedback).omit({
   createdAt: true,
 });
 
+export const suggestions = pgTable("suggestions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  pseudo: text("pseudo").default("Anonyme").notNull(),
+  content: text("content").notNull(),
+  status: text("status").default("nouveau").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const insertSuggestionSchema = createInsertSchema(suggestions).omit({
+  id: true,
+  status: true,
+  createdAt: true,
+});
+
+export type InsertSuggestion = z.infer<typeof insertSuggestionSchema>;
+export type Suggestion = typeof suggestions.$inferSelect;
+
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
 export type InsertVisit = z.infer<typeof insertVisitSchema>;

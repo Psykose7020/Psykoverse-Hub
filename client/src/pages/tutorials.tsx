@@ -419,16 +419,12 @@ export default function Tutorials() {
               un endroit unique où retrouver tous les tutoriels OGame. Vous souhaitez participer ?
             </p>
             <div className="flex flex-wrap gap-3">
-              <button 
-                onClick={() => {
-                  const feedbackBtn = document.querySelector('[data-testid="btn-feedback"]') as HTMLButtonElement;
-                  if (feedbackBtn) feedbackBtn.click();
-                }}
-                className="inline-flex items-center gap-2 bg-primary/20 hover:bg-primary/30 text-primary px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-              >
-                <MessageSquare className="w-4 h-4" />
-                Proposer via suggestions
-              </button>
+              <Link href="/suggestion-tutoriel">
+                <span className="inline-flex items-center gap-2 bg-primary/20 hover:bg-primary/30 text-primary px-4 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer">
+                  <MessageSquare className="w-4 h-4" />
+                  Proposer via suggestions
+                </span>
+              </Link>
               <a 
                 href="https://discord.gg/3PWk4HmfNn" 
                 target="_blank" 
