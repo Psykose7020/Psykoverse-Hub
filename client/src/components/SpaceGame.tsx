@@ -32,16 +32,18 @@ const SHIP_VARIANTS = [
 ];
 
 const OBSTACLE_VARIANTS = [
-  { from: "#6B7280", to: "#374151", name: "asteroid" },
-  { from: "#EF4444", to: "#7F1D1D", name: "mars" },
-  { from: "#3B82F6", to: "#1E3A8A", name: "neptune" },
-  { from: "#F59E0B", to: "#78350F", name: "venus" },
-  { from: "#8B5CF6", to: "#4C1D95", name: "purple" },
-  { from: "#10B981", to: "#064E3B", name: "earth" },
-  { from: "#EC4899", to: "#831843", name: "pink" },
-  { from: "#6366F1", to: "#312E81", name: "indigo" },
-  { from: "#F97316", to: "#7C2D12", name: "orange" },
-  { from: "#14B8A6", to: "#134E4A", name: "teal" },
+  { from: "#8B7355", to: "#4A3728", ring: false, name: "asteroid" },
+  { from: "#CD5C5C", to: "#8B2323", ring: false, name: "mars" },
+  { from: "#4169E1", to: "#191970", ring: false, name: "neptune" },
+  { from: "#DEB887", to: "#8B7355", ring: false, name: "venus" },
+  { from: "#F4A460", to: "#8B4513", ring: true, name: "saturn" },
+  { from: "#4682B4", to: "#1E3A5F", ring: false, name: "earth" },
+  { from: "#FFE4B5", to: "#CD853F", ring: false, name: "mercury" },
+  { from: "#87CEEB", to: "#4682B4", ring: true, name: "uranus" },
+  { from: "#808080", to: "#2F2F2F", ring: false, name: "moon" },
+  { from: "#FFA500", to: "#8B4500", ring: false, name: "io" },
+  { from: "#D2691E", to: "#5C3317", ring: false, name: "titan" },
+  { from: "#B0C4DE", to: "#4A5568", ring: false, name: "europa" },
 ];
 
 export default function SpaceGame() {
@@ -80,29 +82,52 @@ export default function SpaceGame() {
     }
   }, []);
 
+  const endGame = useCallback(() => {
+    setIsPlaying(false);
+    isPlayingRef.current = false;
+    setIsGameOver(true);
+    document.exitPointerLock?.();
+    const finalScore = scoreRef.current;
+    setScore(finalScore);
+    const currentHigh = parseInt(localStorage.getItem("psykoverse:highscore") || "0");
+    if (finalScore > currentHigh) {
+      setHighScore(finalScore);
+      localStorage.setItem("psykoverse:highscore", finalScore.toString());
+    }
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current);
+    }
+  }, []);
+
   useEffect(() => {
-    const handlePointerMove = (e: PointerEvent) => {
-      if (!gameRef.current || !isPlayingRef.current) return;
-      const rect = gameRef.current.getBoundingClientRect();
-      const x = ((e.clientX - rect.left) / rect.width) * 100;
-      targetXRef.current = Math.max(5, Math.min(95, x));
-    };
-
     const handleMouseMove = (e: MouseEvent) => {
-      if (!gameRef.current || !isPlayingRef.current) return;
-      const rect = gameRef.current.getBoundingClientRect();
-      const x = ((e.clientX - rect.left) / rect.width) * 100;
-      targetXRef.current = Math.max(5, Math.min(95, x));
+      if (!isPlayingRef.current) return;
+      
+      if (document.pointerLockElement === gameRef.current) {
+        const sensitivity = 0.15;
+        const newX = targetXRef.current + e.movementX * sensitivity;
+        targetXRef.current = Math.max(5, Math.min(95, newX));
+      } else if (gameRef.current) {
+        const rect = gameRef.current.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        targetXRef.current = Math.max(5, Math.min(95, x));
+      }
     };
 
-    window.addEventListener("pointermove", handlePointerMove, { passive: true });
+    const handlePointerLockChange = () => {
+      if (document.pointerLockElement !== gameRef.current && isPlayingRef.current) {
+        endGame();
+      }
+    };
+
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    document.addEventListener("pointerlockchange", handlePointerLockChange);
     
     return () => {
-      window.removeEventListener("pointermove", handlePointerMove);
       window.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("pointerlockchange", handlePointerLockChange);
     };
-  }, []);
+  }, [endGame]);
 
   const startGame = () => {
     const randomShip = Math.floor(Math.random() * SHIP_VARIANTS.length);
@@ -123,22 +148,6 @@ export default function SpaceGame() {
     setUnivers("");
     lastTimeRef.current = performance.now();
   };
-
-  const endGame = useCallback(() => {
-    setIsPlaying(false);
-    isPlayingRef.current = false;
-    setIsGameOver(true);
-    const finalScore = scoreRef.current;
-    setScore(finalScore);
-    const currentHigh = parseInt(localStorage.getItem("psykoverse:highscore") || "0");
-    if (finalScore > currentHigh) {
-      setHighScore(finalScore);
-      localStorage.setItem("psykoverse:highscore", finalScore.toString());
-    }
-    if (animationRef.current) {
-      cancelAnimationFrame(animationRef.current);
-    }
-  }, []);
 
   const submitScore = async () => {
     if (!pseudo.trim() || pseudo.length < 2 || !univers.trim()) return;
@@ -238,15 +247,12 @@ export default function SpaceGame() {
 
       <div
         ref={gameRef}
-        className="relative h-[320px] rounded-2xl overflow-hidden cursor-none select-none border border-white/10"
-        style={{
-          background: "radial-gradient(ellipse at center, #0a0a1a 0%, #050510 100%)"
-        }}
-        onPointerDown={(e) => {
+        className="relative h-[320px] bg-black/20 rounded-2xl overflow-hidden cursor-none select-none border border-white/10 backdrop-blur-sm"
+        onClick={() => {
           if (!isPlaying && !isGameOver) {
             startGame();
+            gameRef.current?.requestPointerLock?.();
           }
-          (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
         }}
       >
         {isPlaying && (
@@ -278,17 +284,34 @@ export default function SpaceGame() {
               return (
                 <div
                   key={obstacle.id}
-                  className="absolute rounded-full will-change-transform pointer-events-none"
+                  className="absolute will-change-transform pointer-events-none"
                   style={{
                     left: `${obstacle.x}%`,
                     top: `${obstacle.y}%`,
                     width: obstacle.size,
                     height: obstacle.size,
                     transform: "translate(-50%, -50%)",
-                    background: `radial-gradient(circle at 30% 30%, ${v.from}, ${v.to})`,
-                    boxShadow: `inset -3px -3px 8px rgba(0,0,0,0.6), inset 2px 2px 4px rgba(255,255,255,0.15), 0 0 ${obstacle.size/3}px ${v.from}40`
                   }}
-                />
+                >
+                  <div
+                    className="w-full h-full rounded-full"
+                    style={{
+                      background: `radial-gradient(circle at 35% 25%, ${v.from}, ${v.to})`,
+                      boxShadow: `inset -2px -2px 6px rgba(0,0,0,0.7), inset 1px 1px 3px rgba(255,255,255,0.2)`
+                    }}
+                  />
+                  {v.ring && (
+                    <div
+                      className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 opacity-60"
+                      style={{
+                        width: obstacle.size * 1.6,
+                        height: obstacle.size * 0.4,
+                        borderColor: v.from,
+                        transform: "translate(-50%, -50%) rotateX(70deg)"
+                      }}
+                    />
+                  )}
+                </div>
               );
             })}
           </>
