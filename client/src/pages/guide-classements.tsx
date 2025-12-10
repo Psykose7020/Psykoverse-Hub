@@ -161,18 +161,6 @@ export default function GuideClassements() {
               </div>
 
               <RelatedGuides currentGuide="classements" />
-
-              <div className="bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/30 rounded-xl p-8 text-center">
-                <h3 className="font-display text-xl font-bold text-white mb-3">
-                  Questions sur les classements ?
-                </h3>
-                <Button size="lg" asChild>
-                  <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer">
-                    Rejoindre le Discord
-                    <ExternalLink className="w-4 h-4 ml-2" />
-                  </a>
-                </Button>
-              </div>
             </div>
           </motion.div>
         </div>

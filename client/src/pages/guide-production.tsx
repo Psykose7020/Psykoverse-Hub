@@ -166,21 +166,6 @@ export default function GuideProduction() {
               </div>
 
               <RelatedGuides currentGuide="production" />
-
-              <div className="bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/30 rounded-xl p-8 text-center">
-                <h3 className="font-display text-xl font-bold text-white mb-3">
-                  Questions sur l'optimisation de vos mines ?
-                </h3>
-                <p className="text-gray-400 mb-6">
-                  Nos joueurs expérimentés peuvent vous aider sur Discord !
-                </p>
-                <Button size="lg" asChild>
-                  <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer">
-                    Rejoindre le Discord
-                    <ExternalLink className="w-4 h-4 ml-2" />
-                  </a>
-                </Button>
-              </div>
             </div>
           </motion.div>
         </div>

@@ -80,8 +80,8 @@ const features = [
   },
   {
     icon: Users,
-    title: "Communauté Active",
-    description: "180 membres sur Discord prêts à vous aider et partager leurs expériences."
+    title: "Ouvert à Tous",
+    description: "Ressources accessibles à tous les joueurs francophones, quelle que soit votre alliance."
   },
   {
     icon: Trophy,
@@ -129,18 +129,18 @@ export default function Home() {
               <img src={allianceLogo} alt="" className="w-20 h-20 md:w-24 md:h-24 logo-float drop-shadow-[0_0_30px_rgba(0,191,255,0.4)]" />
               <div>
                 <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-none">
-                  Bienvenue sur
+                  Guides OGame
                 </h1>
                 <span className="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-primary leading-none text-glow">
-                  Psykoverse
+                  Francophones
                 </span>
               </div>
             </motion.div>
             
             <motion.p variants={fadeInUp} className="text-lg md:text-xl text-gray-300 mb-8 leading-relaxed max-w-2xl">
-              Le point de rencontre de la communauté OGame francophone. 
-              <span className="text-primary font-medium"> 28 guides complets</span>, entraide active et 
-              aventures spatiales sur <span className="text-primary font-medium">3 univers</span> !
+              La ressource complète pour tous les joueurs OGame francophones. 
+              <span className="text-primary font-medium"> 28 guides complets</span>, des bases aux stratégies avancées, 
+              accessibles à <span className="text-primary font-medium">tous</span> !
             </motion.p>
             
             <motion.div variants={fadeInUp} className="flex flex-wrap gap-4">
@@ -210,10 +210,10 @@ export default function Home() {
               Tout pour réussir sur OGame
             </motion.div>
             <motion.h2 variants={fadeInUp} className="font-display text-3xl md:text-4xl font-bold text-white mb-4">
-              Explorez Psykoverse
+              Explorez les ressources
             </motion.h2>
             <motion.p variants={fadeInUp} className="text-gray-400 max-w-xl mx-auto">
-              Découvrez tout ce que notre communauté a à offrir
+              Tout ce qu'il faut pour progresser sur OGame
             </motion.p>
           </motion.div>
 
@@ -261,7 +261,7 @@ export default function Home() {
             className="text-center mb-12"
           >
             <motion.h2 variants={fadeInUp} className="font-display text-3xl md:text-4xl font-bold text-white mb-4">
-              Pourquoi nous rejoindre ?
+              Pourquoi ce site ?
             </motion.h2>
           </motion.div>
 

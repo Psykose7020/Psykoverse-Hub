@@ -221,21 +221,6 @@ export default function GuideClasses() {
             </div>
 
             <RelatedGuides currentGuide="classes" />
-
-            <div className="bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/30 rounded-xl p-8 text-center">
-              <h3 className="font-display text-xl font-bold text-white mb-3">
-                Besoin de conseils sur votre choix de classe ?
-              </h3>
-              <p className="text-gray-400 mb-6">
-                Discutez avec des joueurs expérimentés sur Discord !
-              </p>
-              <Button size="lg" asChild>
-                <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer">
-                  Rejoindre le Discord
-                  <ExternalLink className="w-4 h-4 ml-2" />
-                </a>
-              </Button>
-            </div>
           </motion.div>
         </div>
       </section>

@@ -114,27 +114,6 @@ export default function GuideACS() {
               </div>
 
               <RelatedGuides currentGuide="acs" />
-
-              <div className="bg-gradient-to-r from-[#5865F2]/20 to-[#5865F2]/5 border border-[#5865F2]/30 rounded-xl p-6">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 bg-[#5865F2] rounded-lg flex items-center justify-center">
-                    <Users className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <h2 className="font-display text-xl font-bold text-white">Rejoignez Psykoverse</h2>
-                    <p className="text-gray-400 text-sm">180 membres prêts à vous défendre</p>
-                  </div>
-                </div>
-                <p className="text-gray-300 mb-4">
-                  Notre alliance organise régulièrement des ACS et offre une protection SAB à ses membres.
-                </p>
-                <Button className="bg-[#5865F2] hover:bg-[#4752C4]" asChild>
-                  <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer">
-                    Rejoindre le Discord
-                    <ExternalLink className="w-4 h-4 ml-2" />
-                  </a>
-                </Button>
-              </div>
             </div>
           </motion.div>
         </div>

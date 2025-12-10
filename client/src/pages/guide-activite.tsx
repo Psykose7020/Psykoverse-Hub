@@ -337,21 +337,6 @@ export default function GuideActivite() {
                 </div>
 
                 <RelatedGuides currentGuide="activite" />
-
-                <div className="mt-12 bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/30 rounded-xl p-8 text-center">
-                  <h3 className="font-display text-xl font-bold text-white mb-3">
-                    Des questions sur ce guide ?
-                  </h3>
-                  <p className="text-gray-400 mb-6">
-                    Rejoignez notre Discord pour discuter avec des joueurs expérimentés !
-                  </p>
-                  <Button size="lg" asChild>
-                    <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer">
-                      Rejoindre le Discord
-                      <ExternalLink className="w-4 h-4 ml-2" />
-                    </a>
-                  </Button>
-                </div>
               </motion.div>
             )}
           </motion.div>
