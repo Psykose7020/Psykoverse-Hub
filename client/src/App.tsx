@@ -35,6 +35,9 @@ import GuideVolante from "@/pages/guide-volante";
 import GuideFDV from "@/pages/guide-fdv";
 import GuideUnivers from "@/pages/guide-univers";
 import GuideAllianceClasses from "@/pages/guide-alliance-classes";
+import GuideRechercheCibles from "@/pages/guide-recherche-cibles";
+import GuideEviterInterception from "@/pages/guide-eviter-interception";
+import GuideTimingRaid from "@/pages/guide-timing-raid";
 import Rules from "@/pages/rules";
 import RulesCompte from "@/pages/rules-compte";
 import RulesSitting from "@/pages/rules-sitting";
@@ -75,6 +78,9 @@ function Router() {
       <Route path="/guide/fdv" component={GuideFDV} />
       <Route path="/guide/univers" component={GuideUnivers} />
       <Route path="/guide/alliance-classes" component={GuideAllianceClasses} />
+      <Route path="/guide/recherche-cibles" component={GuideRechercheCibles} />
+      <Route path="/guide/eviter-interception" component={GuideEviterInterception} />
+      <Route path="/guide/timing-raid" component={GuideTimingRaid} />
       <Route path="/alliance" component={Alliance} />
       <Route path="/projets" component={Projects} />
       <Route path="/support" component={Support} />
