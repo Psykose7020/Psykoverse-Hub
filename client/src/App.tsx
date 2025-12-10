@@ -51,6 +51,7 @@ import RulesCompte from "@/pages/rules-compte";
 import RulesSitting from "@/pages/rules-sitting";
 import RulesPush from "@/pages/rules-push";
 import RulesBash from "@/pages/rules-bash";
+import Classement from "@/pages/classement";
 
 function ScrollToTop() {
   const [location] = useLocation();
@@ -109,6 +110,7 @@ function Router() {
       <Route path="/support" component={Support} />
       <Route path="/mentions-legales" component={Legal} />
       <Route path="/admin" component={Admin} />
+      <Route path="/classement" component={Classement} />
       <Route component={NotFound} />
     </Switch>
   );

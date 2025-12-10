@@ -21,8 +21,9 @@ export interface IStorage {
   updateFeedbackStatus(id: string, status: string): Promise<Feedback | undefined>;
   createSuggestion(data: InsertSuggestion): Promise<Suggestion>;
   listSuggestions(): Promise<Suggestion[]>;
-  addLeaderboardEntry(data: InsertLeaderboard): Promise<Leaderboard>;
+  addLeaderboardEntry(data: InsertLeaderboard & { ip?: string | null }): Promise<Leaderboard>;
   getLeaderboard(limit?: number): Promise<Leaderboard[]>;
+  getPublicLeaderboard(limit?: number): Promise<Omit<Leaderboard, 'ip'>[]>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -129,13 +130,28 @@ export class DatabaseStorage implements IStorage {
     return await db.select().from(suggestions).orderBy(desc(suggestions.createdAt));
   }
 
-  async addLeaderboardEntry(data: InsertLeaderboard): Promise<Leaderboard> {
+  async addLeaderboardEntry(data: InsertLeaderboard & { ip?: string | null }): Promise<Leaderboard> {
     const [entry] = await db.insert(leaderboard).values(data).returning();
     return entry;
   }
 
   async getLeaderboard(limit: number = 20): Promise<Leaderboard[]> {
     return await db.select().from(leaderboard).orderBy(desc(leaderboard.score)).limit(limit);
+  }
+
+  async getPublicLeaderboard(limit: number = 20): Promise<Omit<Leaderboard, 'ip'>[]> {
+    const entries = await db
+      .select({
+        id: leaderboard.id,
+        pseudo: leaderboard.pseudo,
+        univers: leaderboard.univers,
+        score: leaderboard.score,
+        createdAt: leaderboard.createdAt,
+      })
+      .from(leaderboard)
+      .orderBy(desc(leaderboard.score))
+      .limit(limit);
+    return entries;
   }
 }
 

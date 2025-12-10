@@ -40,7 +40,9 @@ interface GeoData {
 interface LeaderboardEntry {
   id: string;
   pseudo: string;
+  univers: string;
   score: number;
+  ip: string | null;
   createdAt: string;
 }
 
@@ -774,14 +776,20 @@ export default function Admin() {
                     </div>
                     <div className="flex-1">
                       <p className="font-bold text-white">{entry.pseudo}</p>
-                      <p className="text-xs text-gray-500">
-                        {new Date(entry.createdAt).toLocaleDateString("fr-FR", {
-                          day: "numeric",
-                          month: "short",
-                          hour: "2-digit",
-                          minute: "2-digit"
-                        })}
-                      </p>
+                      <div className="flex items-center gap-3 text-xs text-gray-500">
+                        <span className="bg-primary/20 text-primary px-2 py-0.5 rounded">{entry.univers}</span>
+                        <span>
+                          {new Date(entry.createdAt).toLocaleDateString("fr-FR", {
+                            day: "numeric",
+                            month: "short",
+                            hour: "2-digit",
+                            minute: "2-digit"
+                          })}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="text-center min-w-[100px]">
+                      <p className="text-xs text-gray-600 font-mono">{entry.ip || "-"}</p>
                     </div>
                     <div className="text-right">
                       <p className={`font-bold text-lg ${

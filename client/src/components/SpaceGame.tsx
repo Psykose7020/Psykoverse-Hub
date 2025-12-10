@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Gamepad2, Trophy, Send } from "lucide-react";
+import { Gamepad2, Trophy, Send, List } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "wouter";
 
 interface Asteroid {
   id: number;
@@ -26,6 +27,7 @@ export default function SpaceGame() {
   const [asteroids, setAsteroids] = useState<Asteroid[]>([]);
   const [stars, setStars] = useState<Star[]>([]);
   const [pseudo, setPseudo] = useState("");
+  const [univers, setUnivers] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   
@@ -85,6 +87,7 @@ export default function SpaceGame() {
     }
     setSubmitted(false);
     setPseudo("");
+    setUnivers("");
     lastTimeRef.current = performance.now();
   };
 
@@ -107,13 +110,13 @@ export default function SpaceGame() {
   }, []);
 
   const submitScore = async () => {
-    if (!pseudo.trim() || pseudo.length < 2) return;
+    if (!pseudo.trim() || pseudo.length < 2 || !univers.trim()) return;
     setIsSubmitting(true);
     try {
       await fetch("/api/leaderboard", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ pseudo: pseudo.trim(), score })
+        body: JSON.stringify({ pseudo: pseudo.trim(), univers: univers.trim(), score })
       });
       setSubmitted(true);
     } catch (err) {
@@ -144,13 +147,13 @@ export default function SpaceGame() {
             .map(a => ({ ...a, y: a.y + a.speed }))
             .filter(a => a.y < 110);
           
-          if (Math.random() < 0.03 + Math.min(score / 5000, 0.05)) {
+          if (Math.random() < 0.015 + Math.min(score / 8000, 0.03)) {
             updated.push({
               id: asteroidIdRef.current++,
               x: Math.random() * 90 + 5,
               y: -10,
-              size: 15 + Math.random() * 20,
-              speed: 1.5 + Math.random() * 2 + Math.min(score / 1000, 2)
+              size: 12 + Math.random() * 15,
+              speed: 0.8 + Math.random() * 1.2 + Math.min(score / 2000, 1.5)
             });
           }
           
@@ -187,6 +190,9 @@ export default function SpaceGame() {
           <span className="font-display font-bold text-white/80 text-xs">Space Escape</span>
         </div>
         <div className="flex items-center gap-3 text-xs">
+          <Link href="/classement" className="text-gray-400 hover:text-primary transition-colors" title="Classement">
+            <List className="w-4 h-4" />
+          </Link>
           <span className="text-primary font-bold">{score}</span>
           <span className="text-yellow-400 flex items-center gap-1">
             <Trophy className="w-3 h-3" />{highScore}
@@ -277,10 +283,21 @@ export default function SpaceGame() {
                     className="w-full bg-[#1C2230] border border-[#2E384D] rounded-lg px-3 py-1.5 text-white text-center text-sm placeholder:text-gray-500 focus:outline-none focus:border-primary"
                     maxLength={15}
                   />
+                  <select
+                    value={univers}
+                    onChange={(e) => setUnivers(e.target.value)}
+                    className="w-full bg-[#1C2230] border border-[#2E384D] rounded-lg px-3 py-1.5 text-white text-center text-sm focus:outline-none focus:border-primary"
+                  >
+                    <option value="">Univers...</option>
+                    <option value="Hercules">Hercules</option>
+                    <option value="Scorpius">Scorpius</option>
+                    <option value="Saison">Serveur Saison</option>
+                    <option value="Autre">Autre</option>
+                  </select>
                   <div className="flex gap-2">
                     <Button
                       onClick={submitScore}
-                      disabled={isSubmitting || pseudo.trim().length < 2}
+                      disabled={isSubmitting || pseudo.trim().length < 2 || !univers}
                       className="flex-1"
                       size="sm"
                     >

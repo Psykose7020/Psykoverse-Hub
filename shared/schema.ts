@@ -64,12 +64,15 @@ export type Suggestion = typeof suggestions.$inferSelect;
 export const leaderboard = pgTable("leaderboard", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   pseudo: text("pseudo").notNull(),
+  univers: text("univers").notNull(),
   score: integer("score").notNull(),
+  ip: text("ip"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
 export const insertLeaderboardSchema = createInsertSchema(leaderboard).omit({
   id: true,
+  ip: true,
   createdAt: true,
 });
 

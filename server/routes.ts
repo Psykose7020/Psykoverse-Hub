@@ -361,25 +361,43 @@ export async function registerRoutes(
 
   app.post("/api/leaderboard", async (req, res) => {
     try {
-      const { pseudo, score } = req.body;
+      const { pseudo, univers, score } = req.body;
       
       if (!pseudo || typeof pseudo !== "string" || pseudo.trim().length < 2 || pseudo.length > 15) {
         return res.status(400).json({ error: "Pseudo invalide (2-15 caractères)" });
+      }
+      
+      if (!univers || typeof univers !== "string" || univers.trim().length < 2 || univers.length > 30) {
+        return res.status(400).json({ error: "Univers invalide" });
       }
       
       if (typeof score !== "number" || score < 0 || score > 1000000) {
         return res.status(400).json({ error: "Score invalide" });
       }
       
+      const ip = req.headers["x-forwarded-for"]?.toString().split(",")[0] || req.ip || null;
+      
       await storage.addLeaderboardEntry({
         pseudo: pseudo.trim(),
+        univers: univers.trim(),
         score,
+        ip,
       });
       
       res.json({ success: true });
     } catch (error) {
       console.error("Leaderboard error:", error);
       res.status(500).json({ error: "Erreur lors de l'enregistrement du score" });
+    }
+  });
+
+  app.get("/api/leaderboard", async (req, res) => {
+    try {
+      const entries = await storage.getPublicLeaderboard(50);
+      res.json(entries);
+    } catch (error) {
+      console.error("Public leaderboard error:", error);
+      res.status(500).json({ error: "Failed to get leaderboard" });
     }
   });
 
@@ -395,7 +413,7 @@ export async function registerRoutes(
         return res.status(401).json({ error: "Invalid or expired token" });
       }
 
-      const entries = await storage.getLeaderboard(50);
+      const entries = await storage.getLeaderboard(100);
       res.json(entries);
     } catch (error) {
       console.error("Leaderboard list error:", error);
