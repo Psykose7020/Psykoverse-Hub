@@ -129,30 +129,6 @@ export default function GuideVolante() {
               </div>
 
               <div className="bg-[#1C2230] border border-[#2E384D] rounded-xl p-6">
-                <h2 className="font-display text-xl font-bold text-white mb-4">Configuration idéale</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="bg-[#151924] rounded-lg p-4">
-                    <h3 className="font-bold text-white mb-2">La volante minimale</h3>
-                    <ul className="text-gray-300 text-sm space-y-1">
-                      <li>• Une lune (pour ghost et phalange)</li>
-                      <li>• Porte de Saut niveau max</li>
-                      <li>• Phalange niveau suffisant</li>
-                      <li>• Stockage pour le butin</li>
-                    </ul>
-                  </div>
-                  <div className="bg-[#151924] rounded-lg p-4">
-                    <h3 className="font-bold text-white mb-2">Bonus recommandés</h3>
-                    <ul className="text-gray-300 text-sm space-y-1">
-                      <li>• Défense légère (anti-pillage)</li>
-                      <li>• Chantier pour réparer sur place</li>
-                      <li>• Recycleurs stationnés</li>
-                      <li>• Doublon pour ghost alternatif</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-[#1C2230] border border-[#2E384D] rounded-xl p-6">
                 <h2 className="font-display text-xl font-bold text-white mb-4">Positionnement stratégique</h2>
                 <p className="text-gray-300 mb-4">
                   Placez vos volantes en fonction de vos objectifs :
