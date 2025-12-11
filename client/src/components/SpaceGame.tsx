@@ -365,7 +365,7 @@ export default function SpaceGame() {
   const shipScale = getShipScale(currentShip.structure);
 
   return (
-    <div ref={containerRef} className="hidden lg:block">
+    <div ref={containerRef} className="block">
       <div 
         className="transition-transform duration-75 ease-out"
         style={{ 
