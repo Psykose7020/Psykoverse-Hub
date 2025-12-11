@@ -286,32 +286,37 @@ export default function GuideSplit() {
                   <h2 className="font-display text-xl font-bold text-green-400">Gain de rentabilité avec le split</h2>
                 </div>
                 <p className="text-gray-300 mb-4">
-                  Voici un exemple concret de l'impact du dégroupage sur la rentabilité d'un raid :
+                  L'impact du split est particulièrement visible contre les flottes avec beaucoup de "tampon" (Chasseurs Légers, défenses légères).
                 </p>
                 
                 <div className="bg-[#151924] rounded-lg p-4 mb-4">
-                  <h3 className="font-bold text-white mb-3">Simulation : 500 Faucheurs + 2000 Chasseurs Légers vs 200 VdB</h3>
+                  <h3 className="font-bold text-white mb-3">Exemple simplifié :</h3>
+                  <p className="text-sm text-gray-300 mb-3">
+                    Vous attaquez avec <strong className="text-white">50 Destructeurs + 500 Chasseurs Légers</strong> contre une défense mixte.
+                  </p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="border-l-4 border-red-500 pl-4">
-                      <p className="font-bold text-red-400 mb-2">❌ Sans split (tout groupé)</p>
-                      <p className="text-sm text-gray-300">Pertes : 180 Faucheurs + 850 CL</p>
-                      <p className="text-sm text-gray-300">Coût des pertes : <span className="text-red-400 font-bold">~45M ressources</span></p>
+                      <p className="font-bold text-red-400 mb-2">❌ Sans split</p>
+                      <p className="text-sm text-gray-300">Les CL tirent en premier (50 attaque)</p>
+                      <p className="text-sm text-gray-300">Leurs tirs sont absorbés par les boucliers</p>
+                      <p className="text-sm text-gray-300">L'ennemi survit plus longtemps = plus de riposte</p>
                     </div>
                     <div className="border-l-4 border-green-500 pl-4">
-                      <p className="font-bold text-green-400 mb-2">✓ Avec split optimal</p>
-                      <p className="text-sm text-gray-300">Pertes : 120 Faucheurs + 600 CL</p>
-                      <p className="text-sm text-gray-300">Coût des pertes : <span className="text-green-400 font-bold">~30M ressources</span></p>
+                      <p className="font-bold text-green-400 mb-2">✓ Avec split</p>
+                      <p className="text-sm text-gray-300">Les Destructeurs tirent en premier (2 000 attaque)</p>
+                      <p className="text-sm text-gray-300">Ils détruisent les cibles avant qu'elles ripostent</p>
+                      <p className="text-sm text-gray-300">Les CL achèvent les unités affaiblies</p>
                     </div>
                   </div>
                 </div>
 
                 <div className="bg-primary/20 border border-primary/40 rounded-lg p-4 text-center">
-                  <p className="text-2xl font-bold text-primary mb-2">+33% de rentabilité</p>
+                  <p className="text-2xl font-bold text-primary mb-2">Jusqu'à 15-25% de pertes en moins</p>
                   <p className="text-gray-300 text-sm">
-                    En splitant correctement, vous économisez <strong className="text-white">~15M de ressources</strong> sur ce seul combat !
+                    L'efficacité dépend de la composition de l'ennemi. Plus il y a de tampon à détruire vite, plus le split est rentable.
                   </p>
                   <p className="text-gray-400 text-xs mt-2">
-                    Sur 10 raids par jour, c'est <strong className="text-primary">150M de ressources économisées</strong>.
+                    Testez toujours avec un <strong className="text-primary">simulateur</strong> (OSimulate, TrashSim) avant d'attaquer !
                   </p>
                 </div>
               </div>
