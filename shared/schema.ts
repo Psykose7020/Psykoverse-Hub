@@ -123,3 +123,35 @@ export const insertCustomGuideSchema = createInsertSchema(customGuides).omit({
 
 export type InsertCustomGuide = z.infer<typeof insertCustomGuideSchema>;
 export type CustomGuide = typeof customGuides.$inferSelect;
+
+export const fleetCompositions = pgTable("fleet_compositions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  composition: text("composition").notNull(),
+  strategy: text("strategy"),
+  universe: text("universe"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const insertFleetCompositionSchema = createInsertSchema(fleetCompositions).omit({
+  id: true,
+  createdAt: true,
+});
+
+export type InsertFleetComposition = z.infer<typeof insertFleetCompositionSchema>;
+export type FleetComposition = typeof fleetCompositions.$inferSelect;
+
+export const defenseCompositions = pgTable("defense_compositions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  composition: text("composition").notNull(),
+  strategy: text("strategy"),
+  universe: text("universe"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const insertDefenseCompositionSchema = createInsertSchema(defenseCompositions).omit({
+  id: true,
+  createdAt: true,
+});
+
+export type InsertDefenseComposition = z.infer<typeof insertDefenseCompositionSchema>;
+export type DefenseComposition = typeof defenseCompositions.$inferSelect;
