@@ -302,7 +302,10 @@ export default function SpaceGame() {
       const difficultyRamp = Math.min(Math.max(0, scoreRef.current - 300) / 700, 1);
       const lateGameRamp = Math.min(Math.max(0, scoreRef.current - 1000) / 4000, 1);
       const spawnRate = (0.018 + difficultyRamp * 0.02 + lateGameRamp * 0.025) * deltaFactor;
-      const baseSpeed = (0.45 + difficultyRamp * 0.35 + lateGameRamp * 0.4) * 1.125;
+      
+      // Facteur de réduction progressif: à 10000 points, vitesse = 50% de la violence originale
+      const progressiveFactor = 1.0 - Math.min(scoreRef.current / 10000, 1) * 0.5;
+      const baseSpeed = (0.45 + difficultyRamp * 0.35 + lateGameRamp * 0.4) * 1.125 * progressiveFactor;
       
       if (Math.random() < spawnRate) {
         const randomOffset = (Math.random() - 0.5) * 30;
