@@ -114,7 +114,7 @@ const guideRelations: Record<string, RelatedGuide[]> = {
   "reco-3h": [
     { title: "Recherche de cibles", link: "/guide/recherche-cibles" },
     { title: "Décalage à la Sonde", link: "/guide/decalage-sonde" },
-    { title: "Raid Avancé", link: "/guide/raid" }
+    { title: "Tips du Bon Raideur", link: "/guide/raid" }
   ],
   "decalage-sonde": [
     { title: "Reco de 3h00", link: "/guide/reco-3h" },
@@ -124,11 +124,11 @@ const guideRelations: Record<string, RelatedGuide[]> = {
   "timing-raid": [
     { title: "Recherche de cibles", link: "/guide/recherche-cibles" },
     { title: "Activité", link: "/guide/activite" },
-    { title: "Raid Avancé", link: "/guide/raid" }
+    { title: "Tips du Bon Raideur", link: "/guide/raid" }
   ],
   "attaque": [
     { title: "Espionnage", link: "/guide/espionnage" },
-    { title: "Raid Avancé", link: "/guide/raid" },
+    { title: "Tips du Bon Raideur", link: "/guide/raid" },
     { title: "Chantier spatial", link: "/guide/chantier" }
   ],
   "raid": [
@@ -137,7 +137,7 @@ const guideRelations: Record<string, RelatedGuide[]> = {
     { title: "Éviter Interception", link: "/guide/eviter-interception" }
   ],
   "split": [
-    { title: "Raid Avancé", link: "/guide/raid" },
+    { title: "Tips du Bon Raideur", link: "/guide/raid" },
     { title: "Rapid Fire", link: "/guide/rapid-fire" },
     { title: "Coûts Flotte & Défenses", link: "/guide/cout-flotte" }
   ],
@@ -162,7 +162,7 @@ const guideRelations: Record<string, RelatedGuide[]> = {
     { title: "Volantes", link: "/guide/volante" }
   ],
   "eviter-interception": [
-    { title: "Raid Avancé", link: "/guide/raid" },
+    { title: "Tips du Bon Raideur", link: "/guide/raid" },
     { title: "Décalage à la Sonde", link: "/guide/decalage-sonde" },
     { title: "Fleetsave", link: "/guide/fleetsave" }
   ],

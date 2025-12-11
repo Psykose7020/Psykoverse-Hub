@@ -115,7 +115,7 @@ const categories = [
     level: "Avancé",
     guides: [
       { title: "Attaque", description: "Bases du combat", icon: Crosshair, color: "from-red-500 to-rose-600", link: "/guide/attaque" },
-      { title: "Raid Avancé", description: "Techniques de pro", icon: Target, color: "from-orange-500 to-red-600", link: "/guide/raid", featured: true },
+      { title: "Tips du Bon Raideur", description: "Les bases pour réussir", icon: Target, color: "from-orange-500 to-red-600", link: "/guide/raid", featured: true },
       { title: "Split Flotte (Dégroupage)", description: "Optimiser l'ordre d'attaque", icon: Layers, color: "from-purple-500 to-violet-600", link: "/guide/split" },
       { title: "ACS", description: "Combat en groupe", icon: Users, color: "from-orange-500 to-amber-600", link: "/guide/acs" },
       { title: "Rapid Fire", description: "Tirs multiples en combat", icon: Zap, color: "from-yellow-500 to-orange-600", link: "/guide/rapid-fire", featured: true }

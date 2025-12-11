@@ -32,10 +32,10 @@ export default function GuideRaid() {
                 <Target className="w-10 h-10 text-white" />
               </div>
               <h1 className="font-display text-4xl md:text-5xl font-bold text-white mb-4">
-                Raid Avancé
+                Tips du Bon Raideur
               </h1>
               <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-                Techniques concrètes pour maximiser vos gains
+                Les bases pour réussir vos raids
               </p>
             </div>
 
