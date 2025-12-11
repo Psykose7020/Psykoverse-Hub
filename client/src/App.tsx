@@ -7,6 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import IntroAnimation from "@/components/IntroAnimation";
 import { EditModeProvider } from "./contexts/EditModeContext";
 import { AdminEditBar } from "./components/AdminEditBar";
+import { GlobalEditOverlay } from "./components/GlobalEditOverlay";
 
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
@@ -125,6 +126,7 @@ function App() {
         <EditModeProvider>
           <IntroAnimation>
             <AdminEditBar />
+            <GlobalEditOverlay />
             <ScrollToTop />
             <Toaster />
             <Router />

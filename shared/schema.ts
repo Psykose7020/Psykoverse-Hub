@@ -98,3 +98,27 @@ export type InsertVisit = z.infer<typeof insertVisitSchema>;
 export type Visit = typeof visits.$inferSelect;
 export type InsertFeedback = z.infer<typeof insertFeedbackSchema>;
 export type Feedback = typeof feedback.$inferSelect;
+
+export const customGuides = pgTable("custom_guides", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  categoryId: text("category_id").notNull(),
+  title: text("title").notNull(),
+  description: text("description").notNull(),
+  icon: text("icon").default("BookOpen").notNull(),
+  color: text("color").default("from-blue-500 to-cyan-600").notNull(),
+  link: text("link"),
+  externalLink: text("external_link"),
+  featured: integer("featured").default(0).notNull(),
+  sortOrder: integer("sort_order").default(0).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertCustomGuideSchema = createInsertSchema(customGuides).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export type InsertCustomGuide = z.infer<typeof insertCustomGuideSchema>;
+export type CustomGuide = typeof customGuides.$inferSelect;

@@ -1,4 +1,4 @@
-import { users, visits, feedback, suggestions, leaderboard, editableContent, type User, type InsertUser, type InsertVisit, type Visit, type InsertFeedback, type Feedback, type InsertSuggestion, type Suggestion, type InsertLeaderboard, type Leaderboard, type EditableContent, type InsertEditableContent } from "@shared/schema";
+import { users, visits, feedback, suggestions, leaderboard, editableContent, customGuides, type User, type InsertUser, type InsertVisit, type Visit, type InsertFeedback, type Feedback, type InsertSuggestion, type Suggestion, type InsertLeaderboard, type Leaderboard, type EditableContent, type InsertEditableContent, type CustomGuide, type InsertCustomGuide } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, sql, gte } from "drizzle-orm";
 
@@ -27,6 +27,11 @@ export interface IStorage {
   getEditableContent(id: string): Promise<EditableContent | undefined>;
   getAllEditableContent(): Promise<EditableContent[]>;
   upsertEditableContent(data: InsertEditableContent): Promise<EditableContent>;
+  getCustomGuides(): Promise<CustomGuide[]>;
+  getCustomGuidesByCategory(categoryId: string): Promise<CustomGuide[]>;
+  createCustomGuide(data: InsertCustomGuide): Promise<CustomGuide>;
+  updateCustomGuide(id: string, data: Partial<InsertCustomGuide>): Promise<CustomGuide | undefined>;
+  deleteCustomGuide(id: string): Promise<boolean>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -195,6 +200,34 @@ export class DatabaseStorage implements IStorage {
     }
     const [created] = await db.insert(editableContent).values(data).returning();
     return created;
+  }
+
+  async getCustomGuides(): Promise<CustomGuide[]> {
+    return await db.select().from(customGuides).orderBy(customGuides.sortOrder);
+  }
+
+  async getCustomGuidesByCategory(categoryId: string): Promise<CustomGuide[]> {
+    return await db.select().from(customGuides)
+      .where(eq(customGuides.categoryId, categoryId))
+      .orderBy(customGuides.sortOrder);
+  }
+
+  async createCustomGuide(data: InsertCustomGuide): Promise<CustomGuide> {
+    const [guide] = await db.insert(customGuides).values(data).returning();
+    return guide;
+  }
+
+  async updateCustomGuide(id: string, data: Partial<InsertCustomGuide>): Promise<CustomGuide | undefined> {
+    const [updated] = await db.update(customGuides)
+      .set({ ...data, updatedAt: new Date() })
+      .where(eq(customGuides.id, id))
+      .returning();
+    return updated;
+  }
+
+  async deleteCustomGuide(id: string): Promise<boolean> {
+    const result = await db.delete(customGuides).where(eq(customGuides.id, id));
+    return true;
   }
 }
 

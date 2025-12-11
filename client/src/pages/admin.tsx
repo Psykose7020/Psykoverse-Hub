@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
-import { Lock, Users, Eye, Calendar, TrendingUp, ExternalLink, LogOut, BarChart3, Globe, MessageCircle, Mail, Archive, CheckCircle, Clock, ChevronRight, X, Edit } from "lucide-react";
+import { Lock, Users, Eye, Calendar, TrendingUp, ExternalLink, LogOut, BarChart3, Globe, MessageCircle, Mail, Archive, CheckCircle, Clock, ChevronRight, X, Edit, BookOpen } from "lucide-react";
+import { AdminGuidesManager } from "../components/AdminGuidesManager";
 
 interface Feedback {
   id: string;
@@ -57,7 +58,7 @@ export default function Admin() {
   const [token, setToken] = useState("");
   const [feedbackList, setFeedbackList] = useState<Feedback[]>([]);
   const [selectedFeedback, setSelectedFeedback] = useState<Feedback | null>(null);
-  const [activeTab, setActiveTab] = useState<"stats" | "feedback" | "leaderboard">("stats");
+  const [activeTab, setActiveTab] = useState<"stats" | "feedback" | "leaderboard" | "guides">("stats");
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
 
   useEffect(() => {
@@ -372,6 +373,18 @@ export default function Admin() {
             <span className="text-xs bg-white/20 px-2 py-0.5 rounded-full">
               {leaderboard.length}
             </span>
+          </button>
+          <button
+            onClick={() => setActiveTab("guides")}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+              activeTab === "guides" 
+                ? "bg-gradient-to-r from-green-500 to-emerald-500 text-white" 
+                : "bg-[#1E2A3A] text-gray-400 hover:text-white"
+            }`}
+            data-testid="tab-guides"
+          >
+            <MessageCircle className="w-4 h-4" />
+            Guides
           </button>
         </div>
 
@@ -807,6 +820,21 @@ export default function Admin() {
                 ))}
               </div>
             )}
+          </div>
+        )}
+
+        {activeTab === "guides" && (
+          <div className="bg-[#12161F] border border-[#1E2A3A] rounded-xl p-6">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg flex items-center justify-center">
+                <BookOpen className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h2 className="text-xl font-bold text-white">Gestion des Guides</h2>
+                <p className="text-gray-500 text-sm">Ajoutez et modifiez les guides personnalisés</p>
+              </div>
+            </div>
+            <AdminGuidesManager token={token} />
           </div>
         )}
       </div>

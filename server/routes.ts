@@ -515,5 +515,100 @@ export async function registerRoutes(
     }
   });
 
+  app.get("/api/guides", async (_req, res) => {
+    try {
+      const guides = await storage.getCustomGuides();
+      res.json(guides);
+    } catch (error) {
+      console.error("Get guides error:", error);
+      res.status(500).json({ error: "Failed to get guides" });
+    }
+  });
+
+  app.post("/api/admin/guides", async (req, res) => {
+    try {
+      const authHeader = req.headers.authorization;
+      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+      
+      const token = authHeader.slice(7);
+      if (!validateToken(token)) {
+        return res.status(401).json({ error: "Invalid or expired token" });
+      }
+
+      const { categoryId, title, description, icon, color, link, externalLink, featured, sortOrder } = req.body;
+      
+      if (!categoryId || !title || !description) {
+        return res.status(400).json({ error: "Missing required fields" });
+      }
+
+      const guide = await storage.createCustomGuide({
+        categoryId,
+        title: title.substring(0, 200),
+        description: description.substring(0, 500),
+        icon: icon || "BookOpen",
+        color: color || "from-blue-500 to-cyan-600",
+        link: link || null,
+        externalLink: externalLink || null,
+        featured: featured ? 1 : 0,
+        sortOrder: sortOrder || 0,
+      });
+
+      res.json(guide);
+    } catch (error) {
+      console.error("Create guide error:", error);
+      res.status(500).json({ error: "Failed to create guide" });
+    }
+  });
+
+  app.put("/api/admin/guides/:id", async (req, res) => {
+    try {
+      const authHeader = req.headers.authorization;
+      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+      
+      const token = authHeader.slice(7);
+      if (!validateToken(token)) {
+        return res.status(401).json({ error: "Invalid or expired token" });
+      }
+
+      const { id } = req.params;
+      const updates = req.body;
+
+      const guide = await storage.updateCustomGuide(id, updates);
+      if (!guide) {
+        return res.status(404).json({ error: "Guide not found" });
+      }
+
+      res.json(guide);
+    } catch (error) {
+      console.error("Update guide error:", error);
+      res.status(500).json({ error: "Failed to update guide" });
+    }
+  });
+
+  app.delete("/api/admin/guides/:id", async (req, res) => {
+    try {
+      const authHeader = req.headers.authorization;
+      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+      
+      const token = authHeader.slice(7);
+      if (!validateToken(token)) {
+        return res.status(401).json({ error: "Invalid or expired token" });
+      }
+
+      const { id } = req.params;
+      await storage.deleteCustomGuide(id);
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Delete guide error:", error);
+      res.status(500).json({ error: "Failed to delete guide" });
+    }
+  });
+
   return httpServer;
 }
