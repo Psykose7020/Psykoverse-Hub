@@ -49,7 +49,7 @@ export default function Header() {
             </div>
           </Link>
           
-          <div className="hidden lg:flex items-center gap-1">
+          <div className="hidden xl:flex items-center gap-1">
             {navLinks.map((link) => {
               const isActive = location === link.href;
               return (
@@ -70,7 +70,7 @@ export default function Header() {
             })}
           </div>
 
-          <div className="hidden md:flex items-center gap-3">
+          <div className="hidden xl:flex items-center gap-3">
             <Link 
               href="/soutenir"
               className="group relative flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-black font-bold text-xs uppercase tracking-wide shadow-[0_0_15px_rgba(245,158,11,0.4)] hover:shadow-[0_0_25px_rgba(245,158,11,0.6)] transition-all hover:scale-105"
@@ -88,14 +88,14 @@ export default function Header() {
 
           <button 
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 text-gray-300 hover:text-white transition-colors"
+            className="xl:hidden p-2 text-gray-300 hover:text-white transition-colors"
             data-testid="mobile-menu-toggle"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
 
-        <div className={`md:hidden overflow-hidden transition-all duration-300 ${mobileMenuOpen ? 'max-h-[500px]' : 'max-h-0'}`}>
+        <div className={`xl:hidden overflow-hidden transition-all duration-300 ${mobileMenuOpen ? 'max-h-[500px]' : 'max-h-0'}`}>
           <div className="px-4 pb-4 space-y-2 border-t border-[#2E384D]">
             {navLinks.map((link) => {
               const isActive = location === link.href;
