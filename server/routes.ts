@@ -393,7 +393,7 @@ export async function registerRoutes(
 
   app.get("/api/leaderboard", async (req, res) => {
     try {
-      const entries = await storage.getPublicLeaderboard(50);
+      const entries = await storage.getPublicLeaderboard(25);
       res.json(entries);
     } catch (error) {
       console.error("Public leaderboard error:", error);

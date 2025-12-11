@@ -17,7 +17,7 @@ export default function Classement() {
   const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  const fetchLeaderboard = () => {
     fetch("/api/leaderboard")
       .then(res => res.json())
       .then(data => {
@@ -25,6 +25,14 @@ export default function Classement() {
         setLoading(false);
       })
       .catch(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    fetchLeaderboard();
+    
+    // Rafraîchissement automatique toutes les 10 secondes
+    const interval = setInterval(fetchLeaderboard, 10000);
+    return () => clearInterval(interval);
   }, []);
 
   const getMedalColor = (rank: number) => {
@@ -66,8 +74,11 @@ export default function Classement() {
                 Classement <span className="text-primary">Space Escape</span>
               </h1>
             </div>
-            <p className="text-gray-400 max-w-xl mx-auto">
+            <p className="text-gray-400 max-w-xl mx-auto mb-3">
               Les meilleurs pilotes de la communauté. Jouez au mini-jeu sur la page d'accueil pour apparaître ici !
+            </p>
+            <p className="text-gray-500 text-sm">
+              Seuls les <span className="text-primary font-medium">25 meilleurs scores</span> sont affichés. Mise à jour en temps réel.
             </p>
           </motion.div>
 
