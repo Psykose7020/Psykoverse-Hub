@@ -113,7 +113,7 @@ export default function GuideRaid() {
                   <div className="bg-[#151924] rounded-lg p-4">
                     <h3 className="font-bold text-white mb-2">2. Coût en deutérium</h3>
                     <p className="text-gray-300 text-sm mb-2">
-                      Le deut de vol compte ! Les Traqueurs et EdM sont économes, mais les <strong className="text-primary">Bombardiers et Destructeurs</strong> consomment énormément sur les longs trajets.
+                      Le deut de vol compte ! Les Traqueurs et EdM sont économes, mais le <strong className="text-primary">tampon (CL, CLo, Éclaireurs)</strong> et les Bombardiers/Destructeurs consomment énormément.
                     </p>
                     <p className="text-gray-500 text-xs">
                       Astuce : Privilégiez les Traqueurs pour les raids lointains, leur consommation est minimale.
