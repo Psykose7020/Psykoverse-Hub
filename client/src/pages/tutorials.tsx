@@ -253,7 +253,7 @@ export default function Tutorials() {
                   <p className="text-gray-300 text-sm mb-4">
                     Partagez votre composition de flotte ou défense idéale ! Vos réponses anonymes nous aideront à créer des guides basés sur les tendances de la communauté.
                   </p>
-                  <Link href="/compositions">
+                  <Link href="/sondage-compositions">
                     <Button className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700" data-testid="btn-survey-cta">
                       <MessageSquare className="w-4 h-4 mr-2" />
                       Répondre au sondage
