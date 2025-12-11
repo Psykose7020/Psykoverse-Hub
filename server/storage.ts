@@ -1,4 +1,4 @@
-import { users, visits, feedback, suggestions, leaderboard, editableContent, customGuides, type User, type InsertUser, type InsertVisit, type Visit, type InsertFeedback, type Feedback, type InsertSuggestion, type Suggestion, type InsertLeaderboard, type Leaderboard, type EditableContent, type InsertEditableContent, type CustomGuide, type InsertCustomGuide } from "@shared/schema";
+import { users, visits, feedback, suggestions, leaderboard, editableContent, customGuides, fleetCompositions, defenseCompositions, type User, type InsertUser, type InsertVisit, type Visit, type InsertFeedback, type Feedback, type InsertSuggestion, type Suggestion, type InsertLeaderboard, type Leaderboard, type EditableContent, type InsertEditableContent, type CustomGuide, type InsertCustomGuide, type FleetComposition, type InsertFleetComposition, type DefenseComposition, type InsertDefenseComposition } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, sql, gte } from "drizzle-orm";
 
@@ -33,6 +33,10 @@ export interface IStorage {
   createCustomGuide(data: InsertCustomGuide): Promise<CustomGuide>;
   updateCustomGuide(id: string, data: Partial<InsertCustomGuide>): Promise<CustomGuide | undefined>;
   deleteCustomGuide(id: string): Promise<boolean>;
+  createFleetComposition(data: InsertFleetComposition): Promise<FleetComposition>;
+  listFleetCompositions(): Promise<FleetComposition[]>;
+  createDefenseComposition(data: InsertDefenseComposition): Promise<DefenseComposition>;
+  listDefenseCompositions(): Promise<DefenseComposition[]>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -234,6 +238,24 @@ export class DatabaseStorage implements IStorage {
   async deleteCustomGuide(id: string): Promise<boolean> {
     const result = await db.delete(customGuides).where(eq(customGuides.id, id));
     return true;
+  }
+
+  async createFleetComposition(data: InsertFleetComposition): Promise<FleetComposition> {
+    const [composition] = await db.insert(fleetCompositions).values(data).returning();
+    return composition;
+  }
+
+  async listFleetCompositions(): Promise<FleetComposition[]> {
+    return await db.select().from(fleetCompositions).orderBy(desc(fleetCompositions.createdAt));
+  }
+
+  async createDefenseComposition(data: InsertDefenseComposition): Promise<DefenseComposition> {
+    const [composition] = await db.insert(defenseCompositions).values(data).returning();
+    return composition;
+  }
+
+  async listDefenseCompositions(): Promise<DefenseComposition[]> {
+    return await db.select().from(defenseCompositions).orderBy(desc(defenseCompositions.createdAt));
   }
 }
 
