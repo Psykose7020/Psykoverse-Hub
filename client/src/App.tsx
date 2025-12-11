@@ -36,6 +36,7 @@ import GuideACS from "@/pages/guide-acs";
 import GuideRaid from "@/pages/guide-raid";
 import GuideDeveloppement from "@/pages/guide-developpement";
 import GuideSplit from "@/pages/guide-split";
+import GuideRapidFire from "@/pages/guide-rapid-fire";
 import GuideMoonbreak from "@/pages/guide-moonbreak";
 import GuideVolante from "@/pages/guide-volante";
 import GuideFDV from "@/pages/guide-fdv";
@@ -102,6 +103,8 @@ function Router() {
       <Route path="/guide/raid" component={GuideRaid} />
       <Route path="/guide/developpement" component={GuideDeveloppement} />
       <Route path="/guide/split" component={GuideSplit} />
+      <Route path="/guide/rapid-fire" component={GuideRapidFire} />
+      <Route path="/tutoriels/rapid-fire" component={GuideRapidFire} />
       <Route path="/guide/moonbreak" component={GuideMoonbreak} />
       <Route path="/guide/volante" component={GuideVolante} />
       <Route path="/guide/fdv" component={GuideFDV} />

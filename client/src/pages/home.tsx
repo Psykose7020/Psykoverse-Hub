@@ -45,10 +45,10 @@ const sections = [
   {
     href: "/tutoriels",
     icon: BookOpen,
-    title: "39 Guides",
+    title: "40 Guides",
     description: "Du débutant à l'expert, tout pour progresser sur OGame.",
     color: "from-primary to-blue-600",
-    stats: "39 guides",
+    stats: "40 guides",
     featured: true
   },
   {
@@ -81,7 +81,7 @@ const features = [
   {
     icon: Star,
     title: "Guides Complets",
-    description: "39 tutoriels couvrant tous les aspects du jeu, des bases aux stratégies avancées."
+    description: "40 tutoriels couvrant tous les aspects du jeu, des bases aux stratégies avancées."
   },
   {
     icon: Users,
@@ -155,7 +155,7 @@ export default function Home() {
               <motion.div variants={fadeInUp} className="text-lg md:text-xl text-gray-300 mb-8 leading-relaxed max-w-2xl">
                 <EditableText 
                   id="home-description" 
-                  defaultValue="La ressource complète pour tous les joueurs OGame francophones. 39 guides complets, des bases aux stratégies avancées, accessibles à tous !" 
+                  defaultValue="La ressource complète pour tous les joueurs OGame francophones. 40 guides complets, des bases aux stratégies avancées, accessibles à tous !" 
                   as="p"
                   className="text-lg md:text-xl text-gray-300 leading-relaxed"
                   multiline
@@ -233,7 +233,7 @@ export default function Home() {
             className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8"
           >
             {[
-              { value: "39", label: "Guides complets", icon: BookOpen },
+              { value: "40", label: "Guides complets", icon: BookOpen },
               { value: discordMembers ? `${discordMembers}+` : "...", label: "Membres Discord", icon: Users },
               { value: "3", label: "Univers actifs", icon: Globe },
               { value: youtubeSubscribers ? String(youtubeSubscribers) : "...", label: "Abonnés YouTube", icon: Youtube }

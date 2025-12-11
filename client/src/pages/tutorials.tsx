@@ -97,7 +97,8 @@ const categories = [
       { title: "Timing & Connexions", description: "Exploiter les habitudes", icon: Clock, color: "from-amber-500 to-orange-600", link: "/guide/timing-raid" },
       { title: "Reco de 3h00", description: "Confirmer l'absence d'une cible", icon: Clock, color: "from-indigo-500 to-purple-600", link: "/guide/reco-3h" },
       { title: "Décalage à la Sonde", description: "Détecter les DG", icon: Eye, color: "from-cyan-500 to-blue-600", link: "/guide/decalage-sonde" },
-      { title: "Split Flotte", description: "Optimisation des raids", icon: Layers, color: "from-purple-500 to-violet-600", link: "/guide/split" },
+      { title: "Split Flotte", description: "Optimiser l'ordre d'attaque", icon: Layers, color: "from-purple-500 to-violet-600", link: "/guide/split" },
+      { title: "Rapid Fire", description: "Tirs multiples en combat", icon: Zap, color: "from-yellow-500 to-orange-600", link: "/guide/rapid-fire", featured: true },
       { title: "ACS", description: "Combat en groupe", icon: Users, color: "from-orange-500 to-amber-600", link: "/guide/acs" },
       { title: "MoonBreak", description: "Destruction de lune", icon: Bomb, color: "from-red-600 to-red-800", link: "/guide/moonbreak" },
       { title: "Classements", description: "Points d'honneur", icon: Trophy, color: "from-yellow-500 to-amber-600", link: "/guide/classements" }
