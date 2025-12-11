@@ -170,13 +170,13 @@ export default function Admin() {
 
   const fetchCompositions = async () => {
     try {
-      const res = await fetch("/api/admin/compositions", {
+      const res = await fetch("/api/admin/surveys/overview", {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (res.ok) {
         const data = await res.json();
-        setFleetCompositions(data.fleet || []);
-        setDefenseCompositions(data.defense || []);
+        setFleetCompositions(data.fleetCompositions || []);
+        setDefenseCompositions(data.defenseCompositions || []);
       }
     } catch (err) {
       console.error("Failed to fetch compositions:", err);
@@ -186,7 +186,7 @@ export default function Admin() {
   const exportCompositionsExcel = async () => {
     setExportingExcel(true);
     try {
-      const res = await fetch("/api/admin/compositions/export", {
+      const res = await fetch("/api/admin/surveys/export", {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (res.ok) {
@@ -199,6 +199,8 @@ export default function Admin() {
         a.click();
         document.body.removeChild(a);
         window.URL.revokeObjectURL(url);
+      } else {
+        console.error("Export failed:", res.status);
       }
     } catch (err) {
       console.error("Failed to export compositions:", err);
