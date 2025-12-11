@@ -19,6 +19,7 @@ import imgTraqueur from "@assets/ogame_ships/traqueur.png";
 import imgEtoileMort from "@assets/ogame_ships/etoile-mort.png";
 import imgFaucheur from "@assets/ogame_ships/faucheur.png";
 import imgEclaireur from "@assets/ogame_ships/eclaireur.png";
+import imgSondeEspionnage from "@assets/ogame_ships/sonde-espionnage.png";
 import imgLanceurMissiles from "@assets/ogame_ships/lanceur-missiles.png";
 import imgLaserLeger from "@assets/ogame_ships/laser-leger.png";
 import imgLaserLourd from "@assets/ogame_ships/laser-lourd.png";
@@ -37,6 +38,7 @@ const fleetShips = [
   { id: "pt", name: "Petit Transporteur", abbrev: "PT", image: imgPetitTransporteur, category: "civil" },
   { id: "gt", name: "Grand Transporteur", abbrev: "GT", image: imgGrandTransporteur, category: "civil" },
   { id: "rec", name: "Recycleur", abbrev: "REC", image: imgRecycleur, category: "civil" },
+  { id: "sonde", name: "Sonde d'Espionnage", abbrev: "SE", image: imgSondeEspionnage, category: "civil" },
   { id: "cl", name: "Chasseur Léger", abbrev: "CL", image: imgChasseurLeger, category: "combat" },
   { id: "clo", name: "Chasseur Lourd", abbrev: "CLo", image: imgChasseurLourd, category: "combat" },
   { id: "cr", name: "Croiseur", abbrev: "CR", image: imgCroiseur, category: "combat" },
@@ -46,7 +48,7 @@ const fleetShips = [
   { id: "traq", name: "Traqueur", abbrev: "TRAQ", image: imgTraqueur, category: "combat" },
   { id: "edm", name: "Étoile de la Mort", abbrev: "EDM", image: imgEtoileMort, category: "combat" },
   { id: "fauch", name: "Faucheur", abbrev: "FAUCH", image: imgFaucheur, category: "combat" },
-  { id: "ecl", name: "Éclaireur", abbrev: "ECL", image: imgEclaireur, category: "civil" },
+  { id: "ecl", name: "Éclaireur", abbrev: "ECL", image: imgEclaireur, category: "combat" },
 ];
 
 const defenseUnits = [

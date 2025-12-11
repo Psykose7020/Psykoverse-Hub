@@ -170,13 +170,13 @@ export default function Admin() {
 
   const fetchCompositions = async () => {
     try {
-      const res = await fetch("/api/admin/surveys/overview", {
+      const res = await fetch("/api/admin/compositions", {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (res.ok) {
         const data = await res.json();
-        setFleetCompositions(data.fleetCompositions || []);
-        setDefenseCompositions(data.defenseCompositions || []);
+        setFleetCompositions(data.fleet || []);
+        setDefenseCompositions(data.defense || []);
       }
     } catch (err) {
       console.error("Failed to fetch compositions:", err);
@@ -186,7 +186,7 @@ export default function Admin() {
   const exportCompositionsExcel = async () => {
     setExportingExcel(true);
     try {
-      const res = await fetch("/api/admin/surveys/export", {
+      const res = await fetch("/api/admin/compositions/export", {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (res.ok) {

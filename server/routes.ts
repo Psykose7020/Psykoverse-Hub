@@ -798,45 +798,71 @@ export async function registerRoutes(
       const fleetCompositions = await storage.listFleetCompositions();
       const defenseCompositions = await storage.listDefenseCompositions();
 
+      const fleetUnits = ["PT", "GT", "REC", "SE", "CL", "CLo", "CR", "VB", "BB", "DEST", "TRAQ", "EDM", "FAUCH", "ECL"];
+      const defenseUnits = ["LM", "LL", "LLo", "Gauss", "Ion", "Plasma", "PB", "GB"];
+
+      const parseComposition = (comp: string, units: string[]): Record<string, number> => {
+        const result: Record<string, number> = {};
+        units.forEach(u => result[u] = 0);
+        
+        const parts = comp.split("|").map(p => p.trim());
+        parts.forEach(part => {
+          const match = part.match(/^([A-Za-zÉé]+):\s*([\d\s.]+)$/);
+          if (match) {
+            const abbrev = match[1].toUpperCase();
+            const qty = parseInt(match[2].replace(/[\s.]/g, "")) || 0;
+            const unitKey = units.find(u => u.toUpperCase() === abbrev);
+            if (unitKey) {
+              result[unitKey] = qty;
+            }
+          }
+        });
+        return result;
+      };
+
       const workbook = new ExcelJS.Workbook();
       workbook.creator = "Psykoverse";
       workbook.created = new Date();
 
       const fleetSheet = workbook.addWorksheet("Compositions Flotte");
       fleetSheet.columns = [
-        { header: "ID", key: "id", width: 40 },
-        { header: "Composition", key: "composition", width: 60 },
-        { header: "Stratégie", key: "strategy", width: 40 },
-        { header: "Univers", key: "universe", width: 20 },
-        { header: "Date", key: "createdAt", width: 20 },
+        { header: "Date", key: "createdAt", width: 12 },
+        { header: "Univers", key: "universe", width: 12 },
+        ...fleetUnits.map(u => ({ header: u, key: u, width: 10 })),
+        { header: "Commentaire", key: "strategy", width: 30 },
       ];
       fleetSheet.getRow(1).font = { bold: true };
+      fleetSheet.getRow(1).fill = { type: "pattern" as const, pattern: "solid" as const, fgColor: { argb: "FF4A5568" } };
+      fleetSheet.getRow(1).font = { bold: true, color: { argb: "FFFFFFFF" } };
+      
       fleetCompositions.forEach(c => {
+        const parsed = parseComposition(c.composition, fleetUnits);
         fleetSheet.addRow({
-          id: c.id,
-          composition: c.composition,
-          strategy: c.strategy || "",
-          universe: c.universe || "",
           createdAt: c.createdAt.toISOString().split("T")[0],
+          universe: c.universe || "",
+          ...parsed,
+          strategy: c.strategy || "",
         });
       });
 
       const defenseSheet = workbook.addWorksheet("Compositions Défense");
       defenseSheet.columns = [
-        { header: "ID", key: "id", width: 40 },
-        { header: "Composition", key: "composition", width: 60 },
-        { header: "Stratégie", key: "strategy", width: 40 },
-        { header: "Univers", key: "universe", width: 20 },
-        { header: "Date", key: "createdAt", width: 20 },
+        { header: "Date", key: "createdAt", width: 12 },
+        { header: "Univers", key: "universe", width: 12 },
+        ...defenseUnits.map(u => ({ header: u, key: u, width: 10 })),
+        { header: "Commentaire", key: "strategy", width: 30 },
       ];
       defenseSheet.getRow(1).font = { bold: true };
+      defenseSheet.getRow(1).fill = { type: "pattern" as const, pattern: "solid" as const, fgColor: { argb: "FF4A5568" } };
+      defenseSheet.getRow(1).font = { bold: true, color: { argb: "FFFFFFFF" } };
+      
       defenseCompositions.forEach(c => {
+        const parsed = parseComposition(c.composition, defenseUnits);
         defenseSheet.addRow({
-          id: c.id,
-          composition: c.composition,
-          strategy: c.strategy || "",
-          universe: c.universe || "",
           createdAt: c.createdAt.toISOString().split("T")[0],
+          universe: c.universe || "",
+          ...parsed,
+          strategy: c.strategy || "",
         });
       });
 
