@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import FeedbackModal from "@/components/FeedbackModal";
-import allianceLogo from "@assets/Design_sans_titre_(5)_1765452209873.png";
+import allianceLogo from "@assets/Design_sans_titre_(2)_1765292527261.png";
 
 interface LayoutProps {
   children: React.ReactNode;

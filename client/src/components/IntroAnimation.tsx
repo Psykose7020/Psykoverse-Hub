@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import allianceLogo from "@assets/Design_sans_titre_(5)_1765452209873.png";
+import allianceLogo from "@assets/Design_sans_titre_(2)_1765292527261.png";
 
 const INTRO_VERSION = "psykoverse:intro:v2";
 const MIN_DURATION = 3000;
