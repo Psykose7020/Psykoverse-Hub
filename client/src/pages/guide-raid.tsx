@@ -87,7 +87,7 @@ export default function GuideRaid() {
                     </p>
                     <div className="flex items-center gap-4 text-sm">
                       <span className="flex items-center gap-1 text-green-400"><CheckCircle className="w-4 h-4" /> Butin 5M, pertes 500k</span>
-                      <span className="flex items-center gap-1 text-red-400"><XCircle className="w-4 h-4" /> Butin 1M, pertes 800k</span>
+                      <span className="flex items-center gap-1 text-red-400"><XCircle className="w-4 h-4" /> Butin 1M, pertes 1.3M</span>
                     </div>
                   </div>
 
