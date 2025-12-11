@@ -83,7 +83,7 @@ const caracteristiques = [
     icon: Hammer,
     color: "from-amber-500 to-orange-600",
     description: "Accélère la construction et la recherche",
-    valeurs: "x1 à x20 pour les constructions, x1 à x20 pour les technos",
+    valeurs: "x1 à x10 maximum",
     details: [
       { label: "Constructions", desc: "Bâtiments, défenses, vaisseaux" },
       { label: "Recherches", desc: "Technologies (souvent 2x la vitesse des bâtiments)" }
