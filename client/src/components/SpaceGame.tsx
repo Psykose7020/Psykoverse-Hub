@@ -245,84 +245,89 @@ export default function SpaceGame() {
     setShipVariant(prev => (prev + 1) % SHIP_VARIANTS.length);
   };
 
+  const obstaclesRef = useRef<Obstacle[]>([]);
+  const scoreUpdateRef = useRef(0);
+  const gameOffsetRef = useRef({ x: 0, y: 0 });
+  
   useEffect(() => {
     if (gameState !== "playing") return;
-
-    const targetFPS = 240;
-    const frameTime = 1000 / targetFPS;
+    
+    obstaclesRef.current = [];
     
     const gameLoop = (time: number) => {
-      const delta = time - lastTimeRef.current;
+      const deltaMs = time - lastTimeRef.current;
+      lastTimeRef.current = time;
       
-      if (delta >= frameTime) {
-        const frames = Math.floor(delta / frameTime);
-        lastTimeRef.current = time - (delta % frameTime);
-        
-        const multiplier = getScoreMultiplier(currentShip.structure);
-        scoreRef.current += Math.round(multiplier * frames * 0.25);
-        setScore(scoreRef.current);
-        
-        updatePlayerPosition();
+      const deltaFactor = deltaMs / 16.67;
+      
+      const multiplier = getScoreMultiplier(currentShip.structure);
+      scoreRef.current += multiplier * deltaFactor * 0.25;
+      
+      scoreUpdateRef.current += deltaMs;
+      if (scoreUpdateRef.current > 50) {
+        scoreUpdateRef.current = 0;
+        setScore(Math.floor(scoreRef.current));
+      }
+      
+      updatePlayerPosition();
 
-        if (scoreRef.current >= 5000) {
-          const shakeDelta = time - lastShakeTimeRef.current;
-          const progress = Math.min((scoreRef.current - 5000) / 35000, 1);
-          const maxOffset = 200 + progress * 150;
-          const changeInterval = Math.max(80, 600 - progress * 500);
-          
-          if (shakeDelta > changeInterval) {
-            lastShakeTimeRef.current = time;
-            const angle = Math.random() * Math.PI * 2;
-            const distance = (0.5 + Math.random() * 0.5) * maxOffset;
-            shakeTargetRef.current = {
-              x: Math.cos(angle) * distance,
-              y: Math.sin(angle) * distance * 0.7
-            };
-          }
-          
-          setGameOffset(prev => ({
-            x: prev.x + (shakeTargetRef.current.x - prev.x) * 0.06,
-            y: prev.y + (shakeTargetRef.current.y - prev.y) * 0.06
-          }));
+      if (scoreRef.current >= 5000) {
+        const shakeDelta = time - lastShakeTimeRef.current;
+        const progress = Math.min((scoreRef.current - 5000) / 35000, 1);
+        const maxOffset = 200 + progress * 150;
+        const changeInterval = Math.max(80, 600 - progress * 500);
+        
+        if (shakeDelta > changeInterval) {
+          lastShakeTimeRef.current = time;
+          const angle = Math.random() * Math.PI * 2;
+          const distance = (0.5 + Math.random() * 0.5) * maxOffset;
+          shakeTargetRef.current = {
+            x: Math.cos(angle) * distance,
+            y: Math.sin(angle) * distance * 0.7
+          };
         }
+        
+        gameOffsetRef.current = {
+          x: gameOffsetRef.current.x + (shakeTargetRef.current.x - gameOffsetRef.current.x) * 0.06,
+          y: gameOffsetRef.current.y + (shakeTargetRef.current.y - gameOffsetRef.current.y) * 0.06
+        };
+        setGameOffset({ ...gameOffsetRef.current });
+      }
 
-        const speedMultiplier = frames * 0.25;
-        setObstacles(prev => {
-          const updated = prev
-            .map(o => ({ ...o, y: o.y + o.speed * speedMultiplier }))
-            .filter(o => o.y < 110);
-          
-          const difficultyRamp = Math.min(scoreRef.current / 1000, 1);
-          const spawnRate = (0.008 + difficultyRamp * 0.01 + Math.min(Math.max(0, scoreRef.current - 1000) / 10000, 0.025)) * speedMultiplier;
-          const baseSpeed = 0.4 + difficultyRamp * 0.3;
-          const speedBonus = Math.min(Math.max(0, scoreRef.current - 1000) / 2500, 1.2);
-          
-          if (Math.random() < spawnRate) {
-            updated.push({
-              id: obstacleIdRef.current++,
-              x: Math.random() * 85 + 7.5,
-              y: -10,
-              size: 14 + Math.random() * 18,
-              speed: baseSpeed + Math.random() * (0.6 + difficultyRamp * 0.4) + speedBonus,
-              variant: Math.floor(Math.random() * PLANET_VARIANTS.length)
-            });
-          }
-          
-          const basePlayerSize = 8;
-          const scaledPlayerSize = basePlayerSize * getShipScale(SHIP_VARIANTS[shipVariant].structure);
-          for (const o of updated) {
-            const dx = Math.abs(o.x - playerXRef.current);
-            const dy = Math.abs(o.y - playerYRef.current);
-            const minDist = (o.size / 2 + scaledPlayerSize) * 0.35;
-            if (dx < minDist && dy < minDist) {
-              endGame();
-              return [];
-            }
-          }
-          
-          return updated;
+      for (const o of obstaclesRef.current) {
+        o.y += o.speed * deltaFactor;
+      }
+      obstaclesRef.current = obstaclesRef.current.filter(o => o.y < 110);
+      
+      const difficultyRamp = Math.min(scoreRef.current / 1000, 1);
+      const spawnRate = (0.008 + difficultyRamp * 0.01 + Math.min(Math.max(0, scoreRef.current - 1000) / 10000, 0.025)) * deltaFactor;
+      const baseSpeed = 0.4 + difficultyRamp * 0.3;
+      const speedBonus = Math.min(Math.max(0, scoreRef.current - 1000) / 2500, 1.2);
+      
+      if (Math.random() < spawnRate) {
+        obstaclesRef.current.push({
+          id: obstacleIdRef.current++,
+          x: Math.random() * 85 + 7.5,
+          y: -10,
+          size: 14 + Math.random() * 18,
+          speed: baseSpeed + Math.random() * (0.6 + difficultyRamp * 0.4) + speedBonus,
+          variant: Math.floor(Math.random() * PLANET_VARIANTS.length)
         });
       }
+      
+      const basePlayerSize = 8;
+      const scaledPlayerSize = basePlayerSize * getShipScale(SHIP_VARIANTS[shipVariant].structure);
+      for (const o of obstaclesRef.current) {
+        const dx = Math.abs(o.x - playerXRef.current);
+        const dy = Math.abs(o.y - playerYRef.current);
+        const minDist = (o.size / 2 + scaledPlayerSize) * 0.35;
+        if (dx < minDist && dy < minDist) {
+          endGame();
+          return;
+        }
+      }
+      
+      setObstacles([...obstaclesRef.current]);
       
       animationRef.current = requestAnimationFrame(gameLoop);
     };
@@ -414,13 +419,14 @@ export default function SpaceGame() {
               return (
                 <div
                   key={obstacle.id}
-                  className="absolute will-change-transform pointer-events-none"
+                  className="absolute pointer-events-none"
                   style={{
-                    left: `${obstacle.x}%`,
-                    top: `${obstacle.y}%`,
                     width: obstacle.size,
                     height: obstacle.size,
-                    transform: "translate(-50%, -50%)",
+                    left: `${obstacle.x}%`,
+                    top: `${obstacle.y}%`,
+                    transform: 'translate3d(-50%, -50%, 0)',
+                    willChange: 'transform',
                   }}
                 >
                   <div
