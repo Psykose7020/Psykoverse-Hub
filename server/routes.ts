@@ -367,8 +367,8 @@ export async function registerRoutes(
         return res.status(400).json({ error: "Pseudo invalide (2-15 caractères)" });
       }
       
-      if (!univers || typeof univers !== "string" || univers.trim().length < 2 || univers.length > 30) {
-        return res.status(400).json({ error: "Univers invalide" });
+      if (univers && typeof univers === "string" && univers.length > 30) {
+        return res.status(400).json({ error: "Univers trop long (max 30 caractères)" });
       }
       
       if (typeof score !== "number" || score < 0 || score > 1000000) {
@@ -379,7 +379,7 @@ export async function registerRoutes(
       
       await storage.addLeaderboardEntry({
         pseudo: pseudo.trim(),
-        univers: univers.trim(),
+        univers: univers?.trim() || "-",
         score,
         ip,
       });
