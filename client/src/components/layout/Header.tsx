@@ -1,21 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Shield, Menu, X, BookOpen, Globe, Rocket } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import allianceLogo from "@assets/Design_sans_titre_(2)_1765292527261.png";
-
-function useYoutubeStats() {
-  const [subscribers, setSubscribers] = useState<number | null>(null);
-  
-  useEffect(() => {
-    fetch("/api/youtube/stats")
-      .then(res => res.json())
-      .then(data => setSubscribers(data.subscribers))
-      .catch(() => setSubscribers(340));
-  }, []);
-  
-  return subscribers;
-}
+import { useYoutubeStats } from "@/hooks/useYoutubeStats";
 
 const navLinks = [
   { href: "/", label: "Accueil" },

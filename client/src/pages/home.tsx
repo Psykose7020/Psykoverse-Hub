@@ -22,6 +22,7 @@ import { Button } from "@/components/ui/button";
 import Layout from "@/components/layout/Layout";
 import SpaceGame from "@/components/SpaceGame";
 import { EditableText } from "@/components/EditableText";
+import { useYoutubeStats } from "@/hooks/useYoutubeStats";
 
 import heroBg from "@assets/generated_videos/specific_ogame_destroyer_fleet_formation.mp4";
 import allianceLogo from "@assets/Design_sans_titre_(2)_1765292527261.png";
@@ -104,6 +105,8 @@ const universes = [
 ];
 
 export default function Home() {
+  const youtubeSubscribers = useYoutubeStats();
+  
   return (
     <Layout>
       <header className="relative py-24 md:py-36 lg:py-44 overflow-hidden flex items-center border-b border-[#2E384D]">
@@ -230,7 +233,7 @@ export default function Home() {
               { value: "35", label: "Guides complets", icon: BookOpen },
               { value: "180+", label: "Membres Discord", icon: Users },
               { value: "3", label: "Univers actifs", icon: Globe },
-              { value: "340", label: "Abonnés YouTube", icon: Youtube }
+              { value: youtubeSubscribers ? String(youtubeSubscribers) : "...", label: "Abonnés YouTube", icon: Youtube }
             ].map((stat, i) => (
               <div key={i} className="flex items-center gap-3 justify-center">
                 <stat.icon className="w-6 h-6 text-primary/60" />
@@ -465,7 +468,7 @@ export default function Home() {
                 <Youtube className="w-10 h-10 text-white" />
               </div>
               <h3 className="text-2xl font-bold text-white mb-2">@7020Psykose</h3>
-              <p className="text-gray-400 mb-6">340 abonnés • Tutoriels OGame en français</p>
+              <p className="text-gray-400 mb-6">{youtubeSubscribers ?? "..."} abonnés • Tutoriels OGame en français</p>
               <Button className="bg-red-600 hover:bg-red-700 shadow-lg shadow-red-500/20" size="lg" asChild>
                 <a href="https://www.youtube.com/@7020Psykose" target="_blank" rel="noopener noreferrer" data-testid="btn-youtube">
                   <Youtube className="w-5 h-5 mr-2" />

@@ -3,6 +3,7 @@ import { Rocket, Calendar, CheckCircle, Clock, Target, Users, Tv, Globe } from "
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { EditableText } from "@/components/EditableText";
+import { useYoutubeStats } from "@/hooks/useYoutubeStats";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -17,50 +18,52 @@ const staggerContainer = {
   }
 };
 
-const roadmapItems = [
-  {
-    status: "completed",
-    date: "2024",
-    title: "Lancement du site web",
-    description: "Création du site communautaire avec 35 guides et ressources pour tous les joueurs OGame francophones.",
-    icon: Globe
-  },
-  {
-    status: "completed",
-    date: "2024",
-    title: "Chaîne YouTube",
-    description: "340 abonnés sur la chaîne YouTube avec des tutoriels vidéo pour la communauté.",
-    icon: Tv
-  },
-  {
-    status: "in-progress",
-    date: "19 Décembre 2025",
-    title: "Serveur Saison",
-    description: "Lancement sur le nouveau serveur saison. Rejoignez-nous pour cette nouvelle aventure !",
-    icon: Rocket
-  },
-  {
-    status: "planned",
-    date: "En continu",
-    title: "Présence sur les Saisons",
-    description: "Participation à chaque nouveau serveur saison OGame pour vivre l'expérience avec la communauté.",
-    icon: Target
-  },
-  {
-    status: "planned",
-    date: "En continu",
-    title: "Mise à jour des guides",
-    description: "Amélioration et actualisation régulière des tutoriels selon les évolutions du jeu.",
-    icon: Calendar
-  },
-  {
-    status: "planned",
-    date: "Occasionnel",
-    title: "Vidéos tutoriels",
-    description: "Nouvelles vidéos explicatives sur YouTube quand le temps le permet.",
-    icon: Tv
-  }
-];
+function getRoadmapItems(youtubeSubscribers: number | null) {
+  return [
+    {
+      status: "completed",
+      date: "2024",
+      title: "Lancement du site web",
+      description: "Création du site communautaire avec 35 guides et ressources pour tous les joueurs OGame francophones.",
+      icon: Globe
+    },
+    {
+      status: "completed",
+      date: "2024",
+      title: "Chaîne YouTube",
+      description: `${youtubeSubscribers ?? "..."} abonnés sur la chaîne YouTube avec des tutoriels vidéo pour la communauté.`,
+      icon: Tv
+    },
+    {
+      status: "in-progress",
+      date: "19 Décembre 2025",
+      title: "Serveur Saison",
+      description: "Lancement sur le nouveau serveur saison. Rejoignez-nous pour cette nouvelle aventure !",
+      icon: Rocket
+    },
+    {
+      status: "planned",
+      date: "En continu",
+      title: "Présence sur les Saisons",
+      description: "Participation à chaque nouveau serveur saison OGame pour vivre l'expérience avec la communauté.",
+      icon: Target
+    },
+    {
+      status: "planned",
+      date: "En continu",
+      title: "Mise à jour des guides",
+      description: "Amélioration et actualisation régulière des tutoriels selon les évolutions du jeu.",
+      icon: Calendar
+    },
+    {
+      status: "planned",
+      date: "Occasionnel",
+      title: "Vidéos tutoriels",
+      description: "Nouvelles vidéos explicatives sur YouTube quand le temps le permet.",
+      icon: Tv
+    }
+  ];
+}
 
 const upcomingEvents = [
   {
@@ -84,6 +87,8 @@ const upcomingEvents = [
 ];
 
 export default function Projects() {
+  const youtubeSubscribers = useYoutubeStats();
+  
   return (
     <Layout>
       <section className="py-16 md:py-24 border-b border-[#2E384D]">
@@ -124,7 +129,7 @@ export default function Projects() {
                 <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-[#2E384D]"></div>
                 
                 <div className="space-y-8">
-                  {roadmapItems.map((item, index) => {
+                  {getRoadmapItems(youtubeSubscribers).map((item, index) => {
                     const Icon = item.icon;
                     return (
                       <motion.div
