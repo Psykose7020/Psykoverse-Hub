@@ -4,14 +4,10 @@ interface EditModeContextType {
   isEditMode: boolean;
   isAdmin: boolean;
   content: Record<string, string>;
-  pendingChanges: Record<string, string>;
   enableEditMode: () => void;
   disableEditMode: () => void;
   getContent: (id: string, defaultValue: string) => string;
-  updateContent: (id: string, value: string) => void;
-  saveAllChanges: () => Promise<void>;
-  hasPendingChanges: boolean;
-  isSaving: boolean;
+  saveContent: (id: string, value: string) => Promise<boolean>;
 }
 
 const EditModeContext = createContext<EditModeContextType | null>(null);
@@ -23,14 +19,10 @@ export function useEditMode() {
       isEditMode: false,
       isAdmin: false,
       content: {},
-      pendingChanges: {},
       enableEditMode: () => {},
       disableEditMode: () => {},
       getContent: (_id: string, defaultValue: string) => defaultValue,
-      updateContent: () => {},
-      saveAllChanges: async () => {},
-      hasPendingChanges: false,
-      isSaving: false,
+      saveContent: async () => false,
     };
   }
   return context;
@@ -40,8 +32,6 @@ export function EditModeProvider({ children }: { children: ReactNode }) {
   const [isEditMode, setIsEditMode] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [content, setContent] = useState<Record<string, string>>({});
-  const [pendingChanges, setPendingChanges] = useState<Record<string, string>>({});
-  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("adminToken");
@@ -93,49 +83,40 @@ export function EditModeProvider({ children }: { children: ReactNode }) {
   const disableEditMode = useCallback(() => {
     setIsEditMode(false);
     localStorage.removeItem("editModeActive");
-    setPendingChanges({});
   }, []);
 
   const getContent = useCallback(
     (id: string, defaultValue: string) => {
-      if (pendingChanges[id] !== undefined) return pendingChanges[id];
       if (content[id] !== undefined) return content[id];
       return defaultValue;
     },
-    [content, pendingChanges]
+    [content]
   );
 
-  const updateContent = useCallback((id: string, value: string) => {
-    setPendingChanges((prev) => ({ ...prev, [id]: value }));
-  }, []);
-
-  const saveAllChanges = useCallback(async () => {
+  const saveContent = useCallback(async (id: string, value: string): Promise<boolean> => {
     const token = localStorage.getItem("adminToken");
-    if (!token || Object.keys(pendingChanges).length === 0) return;
+    if (!token) return false;
 
-    setIsSaving(true);
     try {
-      const res = await fetch("/api/admin/content/bulk", {
+      const res = await fetch("/api/admin/content", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ contents: pendingChanges }),
+        body: JSON.stringify({ id, content: value }),
       });
 
       if (res.ok) {
-        setContent((prev) => ({ ...prev, ...pendingChanges }));
-        setPendingChanges({});
+        setContent((prev) => ({ ...prev, [id]: value }));
+        return true;
       }
+      return false;
     } catch (error) {
-      console.error("Failed to save changes:", error);
-    } finally {
-      setIsSaving(false);
+      console.error("Failed to save content:", error);
+      return false;
     }
-  }, [pendingChanges]);
-
-  const hasPendingChanges = Object.keys(pendingChanges).length > 0;
+  }, []);
 
   return (
     <EditModeContext.Provider
@@ -143,14 +124,10 @@ export function EditModeProvider({ children }: { children: ReactNode }) {
         isEditMode,
         isAdmin,
         content,
-        pendingChanges,
         enableEditMode,
         disableEditMode,
         getContent,
-        updateContent,
-        saveAllChanges,
-        hasPendingChanges,
-        isSaving,
+        saveContent,
       }}
     >
       {children}

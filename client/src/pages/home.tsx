@@ -146,11 +146,15 @@ export default function Home() {
                 </div>
               </motion.div>
               
-              <motion.p variants={fadeInUp} className="text-lg md:text-xl text-gray-300 mb-8 leading-relaxed max-w-2xl">
-                La ressource complète pour tous les joueurs OGame francophones. 
-                <span className="text-primary font-medium"> 35 guides complets</span>, des bases aux stratégies avancées, 
-                accessibles à <span className="text-primary font-medium">tous</span> !
-              </motion.p>
+              <motion.div variants={fadeInUp} className="text-lg md:text-xl text-gray-300 mb-8 leading-relaxed max-w-2xl">
+                <EditableText 
+                  id="home-description" 
+                  defaultValue="La ressource complète pour tous les joueurs OGame francophones. 35 guides complets, des bases aux stratégies avancées, accessibles à tous !" 
+                  as="p"
+                  className="text-lg md:text-xl text-gray-300 leading-relaxed"
+                  multiline
+                />
+              </motion.div>
               
               <motion.div variants={fadeInUp} className="flex flex-wrap gap-4">
                 <Button size="lg" className="bg-[#5865F2] hover:bg-[#4752C4] text-white font-bold uppercase tracking-wide shadow-lg shadow-[#5865F2]/20 hover:shadow-[#5865F2]/40 transition-all" asChild>
