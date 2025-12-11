@@ -19,21 +19,21 @@ const staggerContainer = {
 
 const universes = [
   {
-    name: "Hercules",
+    name: "Scorpius",
     status: "active",
     type: "Univers Principal",
     players: "Alliance établie",
-    description: "Notre univers historique. Alliance mature avec une communauté soudée et des joueurs expérimentés.",
-    features: ["Top alliance", "Joueurs actifs", "Entraide quotidienne"],
+    description: "Notre univers principal avec une communauté active et des joueurs expérimentés. Rejoignez-nous !",
+    features: ["Joueurs actifs", "Entraide quotidienne", "Progression ensemble"],
     joinable: true
   },
   {
-    name: "Scorpius",
+    name: "Hercules",
     status: "active",
-    type: "Univers Secondaire",
-    players: "En développement",
-    description: "Expansion de la Psykoverse sur un nouvel univers. Rejoignez-nous pour construire ensemble !",
-    features: ["Nouvelles opportunités", "Recrutement actif", "Progression rapide"],
+    type: "Nouvelle Alliance",
+    players: "Recrutement ouvert",
+    description: "Nous venons d'ouvrir l'alliance sur cet univers. Rejoignez-nous pour construire ensemble !",
+    features: ["Nouvelle alliance", "Recrutement actif", "Nouvelles opportunités"],
     joinable: true
   },
   {
