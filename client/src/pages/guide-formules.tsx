@@ -855,10 +855,13 @@ function ConstructionTimeCalculator() {
       <div className="bg-primary/10 border border-primary/30 rounded-lg p-4">
         <div className="flex items-center gap-2 mb-2">
           <Info className="w-4 h-4 text-primary" />
-          <span className="font-bold text-white">Formule de temps de construction</span>
+          <span className="font-bold text-white">Formule de temps de construction (tous bâtiments)</span>
         </div>
         <p className="text-sm text-gray-400">
           Temps (h) = <code className="bg-black/30 px-1 rounded">(métal + cristal) / (2500 × (1 + robots) × 2^nanite × vitesse éco)</code>
+        </p>
+        <p className="text-xs text-gray-500 mt-1">
+          Cette formule s'applique à tous les bâtiments du jeu.
         </p>
       </div>
 
@@ -934,10 +937,10 @@ function ConstructionTimeCalculator() {
                 {hours > 0 && `${hours}h `}{minutes > 0 && `${minutes}m `}{seconds}s
               </p>
             </div>
-            <div className="bg-purple-900/20 border border-purple-700/30 rounded-lg p-3">
+            <div className="bg-blue-900/20 border border-blue-700/30 rounded-lg p-3">
               <div className="flex items-center gap-2">
-                <AlertTriangle className="w-4 h-4 text-purple-400" />
-                <span className="text-xs text-purple-300">Les bonus Formes de Vie peuvent réduire ce temps (non inclus dans ce calcul)</span>
+                <Info className="w-4 h-4 text-blue-400" />
+                <span className="text-xs text-blue-300">Les Formes de Vie n'affectent pas le temps de construction des bâtiments</span>
               </div>
             </div>
           </div>
