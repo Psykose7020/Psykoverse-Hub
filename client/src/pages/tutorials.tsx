@@ -8,7 +8,7 @@ import {
   GraduationCap, Compass, Trophy, Shield, Eye, Crosshair, Moon, Globe2,
   Target, TrendingUp, Ghost, Layers, Bomb, Plane, Sparkles, Scale,
   ArrowLeftRight, Swords, Dna, Settings, Search, Filter, ChevronRight,
-  Star, Clock, Zap, MessageSquare, ChevronDown, Network, Mountain
+  Star, Clock, Zap, MessageSquare, ChevronDown, Network, Mountain, Calculator
 } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
@@ -60,7 +60,8 @@ const categories = [
       { title: "Chantier spatial et défense", description: "Vaisseaux et défenses", icon: Rocket, color: "from-slate-500 to-slate-700", link: "/guide/chantier" },
       { title: "Galaxie", description: "Navigation et exploration", icon: Globe, color: "from-indigo-500 to-purple-600", link: "/guide/galaxie" },
       { title: "Jargon", description: "Vocabulaire de la communauté", icon: BookText, color: "from-amber-500 to-orange-600", link: "/guide/jargon" },
-      { title: "Univers", description: "Caractéristiques et paramètres", icon: Settings, color: "from-indigo-500 to-purple-600", link: "/guide/univers" }
+      { title: "Univers", description: "Caractéristiques et paramètres", icon: Settings, color: "from-indigo-500 to-purple-600", link: "/guide/univers" },
+      { title: "Formules & Calculateurs", description: "Outils de calcul interactifs", icon: Calculator, color: "from-emerald-500 to-teal-600", link: "/guide/formules", featured: true }
     ]
   },
   {
