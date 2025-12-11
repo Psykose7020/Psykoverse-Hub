@@ -511,8 +511,8 @@ export default function SpaceGame() {
                 </button>
                 
                 <div className="flex flex-col items-center">
-                  <div className="w-16 h-20 flex items-center justify-center">
-                    <ShipPreview variant={currentShip} size={50} />
+                  <div className="w-20 h-24 flex items-center justify-center">
+                    <ShipPreview variant={currentShip} size={40 * shipScale} />
                   </div>
                   <p className="text-primary text-xs font-medium mt-1">{currentShip.name}</p>
                   <p className="text-gray-500 text-[10px]">{shipVariant + 1}/{SHIP_VARIANTS.length}</p>
