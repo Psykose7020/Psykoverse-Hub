@@ -349,10 +349,23 @@ export default function SpaceGame() {
 
         <div
           ref={gameRef}
-          className={`relative h-[320px] bg-black/20 rounded-2xl overflow-hidden select-none border border-white/10 backdrop-blur-sm ${gameState === "playing" ? "cursor-none" : "cursor-default"}`}
+          className={`relative h-[320px] bg-black/10 rounded-2xl overflow-hidden select-none border border-white/5 ${gameState === "playing" ? "cursor-none" : "cursor-default"}`}
         >
         {gameState === "playing" && (
           <>
+            {Array.from({ length: 30 }).map((_, i) => (
+              <div
+                key={`star-${i}`}
+                className="absolute pointer-events-none rounded-full bg-white"
+                style={{
+                  left: `${(i * 37 + score * 0.1) % 100}%`,
+                  top: `${((i * 53 + score * (0.5 + (i % 3) * 0.3)) % 120) - 10}%`,
+                  width: 1 + (i % 3),
+                  height: 4 + (i % 3) * 3,
+                  opacity: 0.2 + (i % 3) * 0.1,
+                }}
+              />
+            ))}
             <div
               ref={playerRef}
               className="absolute will-change-transform pointer-events-none"
