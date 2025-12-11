@@ -74,6 +74,25 @@ export default function GuideRaid() {
                   <Zap className="w-6 h-6 text-amber-400" />
                   <h2 className="font-display text-xl font-bold text-white">Calculer la rentabilité d'un raid</h2>
                 </div>
+                
+                <div className="bg-amber-900/20 border border-amber-700/30 rounded-lg p-4 mb-4">
+                  <h3 className="font-bold text-amber-400 mb-2">Butin ≠ Rentabilité</h3>
+                  <p className="text-gray-300 text-sm mb-3">
+                    Le <strong className="text-white">butin</strong> c'est ce que vous récupérez. La <strong className="text-white">rentabilité</strong> c'est butin - pertes - consommation deut.
+                  </p>
+                  <div className="bg-[#151924] rounded-lg p-3 text-sm">
+                    <p className="text-gray-400 mb-2">Exemple :</p>
+                    <div className="space-y-1 text-gray-300">
+                      <p>Butin pillé : <span className="text-green-400">2.000.000</span></p>
+                      <p>Pertes flotte : <span className="text-red-400">-800.000</span></p>
+                      <p>Consommation deut : <span className="text-red-400">-150.000</span></p>
+                      <p className="border-t border-gray-700 pt-1 mt-2">
+                        Rentabilité réelle : <span className="text-primary font-bold">1.050.000</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
                 <p className="text-gray-300 mb-4">
                   Avant de lancer une attaque, posez-vous ces questions :
                 </p>
