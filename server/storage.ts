@@ -131,6 +131,24 @@ export class DatabaseStorage implements IStorage {
   }
 
   async addLeaderboardEntry(data: InsertLeaderboard & { ip?: string | null }): Promise<Leaderboard> {
+    if (data.ip) {
+      const [existing] = await db.select().from(leaderboard).where(eq(leaderboard.ip, data.ip));
+      if (existing) {
+        if (data.score > existing.score) {
+          const [updated] = await db.update(leaderboard)
+            .set({ 
+              pseudo: data.pseudo, 
+              univers: data.univers, 
+              score: data.score,
+              createdAt: new Date()
+            })
+            .where(eq(leaderboard.id, existing.id))
+            .returning();
+          return updated;
+        }
+        return existing;
+      }
+    }
     const [entry] = await db.insert(leaderboard).values(data).returning();
     return entry;
   }
