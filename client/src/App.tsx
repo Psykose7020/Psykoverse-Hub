@@ -50,6 +50,7 @@ import GuideRRI from "@/pages/guide-rri";
 import GuideReductionFDV from "@/pages/guide-reduction-fdv";
 import GuideTechnosPrioritaires from "@/pages/guide-technos-prioritaires";
 import GuideReco3h from "@/pages/guide-reco-3h";
+import GuideRocktal from "@/pages/guide-rocktal";
 import Rules from "@/pages/rules";
 import RulesCompte from "@/pages/rules-compte";
 import RulesSitting from "@/pages/rules-sitting";
@@ -112,6 +113,7 @@ function Router() {
       <Route path="/guide/reduction-fdv" component={GuideReductionFDV} />
       <Route path="/guide/technos-prioritaires" component={GuideTechnosPrioritaires} />
       <Route path="/guide/reco-3h" component={GuideReco3h} />
+      <Route path="/guide/rocktal" component={GuideRocktal} />
       <Route path="/alliance" component={Alliance} />
       <Route path="/projets" component={Projects} />
       <Route path="/support" component={Support} />
