@@ -110,7 +110,9 @@ export default function SpaceGame() {
   const containerRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<HTMLDivElement>(null);
   const playerXRef = useRef(50);
+  const playerYRef = useRef(85);
   const targetXRef = useRef(50);
+  const targetYRef = useRef(85);
   const animationRef = useRef<number | null>(null);
   const lastTimeRef = useRef<number>(0);
   const obstacleIdRef = useRef(0);
@@ -128,10 +130,13 @@ export default function SpaceGame() {
 
   const updatePlayerPosition = useCallback(() => {
     if (!isPlayingRef.current) return;
-    const diff = targetXRef.current - playerXRef.current;
-    playerXRef.current += diff * 0.5;
+    const diffX = targetXRef.current - playerXRef.current;
+    const diffY = targetYRef.current - playerYRef.current;
+    playerXRef.current += diffX * 0.5;
+    playerYRef.current += diffY * 0.5;
     if (playerRef.current) {
       playerRef.current.style.left = `${playerXRef.current}%`;
+      playerRef.current.style.top = `${playerYRef.current}%`;
     }
   }, []);
 
@@ -159,11 +164,15 @@ export default function SpaceGame() {
       if (document.pointerLockElement === gameRef.current) {
         const sensitivity = 0.15;
         const newX = targetXRef.current + e.movementX * sensitivity;
+        const newY = targetYRef.current + e.movementY * sensitivity;
         targetXRef.current = Math.max(5, Math.min(95, newX));
+        targetYRef.current = Math.max(20, Math.min(95, newY));
       } else if (gameRef.current) {
         const rect = gameRef.current.getBoundingClientRect();
         const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
         targetXRef.current = Math.max(5, Math.min(95, x));
+        targetYRef.current = Math.max(20, Math.min(95, y));
       }
     };
 
@@ -192,9 +201,12 @@ export default function SpaceGame() {
     setGameOffset({ x: 0, y: 0 });
     shakeTargetRef.current = { x: 0, y: 0 };
     playerXRef.current = 50;
+    playerYRef.current = 85;
     targetXRef.current = 50;
+    targetYRef.current = 85;
     if (playerRef.current) {
       playerRef.current.style.left = "50%";
+      playerRef.current.style.top = "85%";
     }
     setSubmitted(false);
     setPseudo("");
@@ -251,22 +263,22 @@ export default function SpaceGame() {
         if (scoreRef.current >= 5000) {
           const shakeDelta = time - lastShakeTimeRef.current;
           const progress = Math.min((scoreRef.current - 5000) / 35000, 1);
-          const maxOffset = 150 * progress;
-          const changeInterval = Math.max(100, 800 - progress * 700);
+          const maxOffset = 200 + progress * 150;
+          const changeInterval = Math.max(80, 600 - progress * 500);
           
           if (shakeDelta > changeInterval) {
             lastShakeTimeRef.current = time;
             const angle = Math.random() * Math.PI * 2;
-            const distance = Math.random() * maxOffset;
+            const distance = (0.5 + Math.random() * 0.5) * maxOffset;
             shakeTargetRef.current = {
               x: Math.cos(angle) * distance,
-              y: Math.sin(angle) * distance * 0.6
+              y: Math.sin(angle) * distance * 0.7
             };
           }
           
           setGameOffset(prev => ({
-            x: prev.x + (shakeTargetRef.current.x - prev.x) * 0.08,
-            y: prev.y + (shakeTargetRef.current.y - prev.y) * 0.08
+            x: prev.x + (shakeTargetRef.current.x - prev.x) * 0.06,
+            y: prev.y + (shakeTargetRef.current.y - prev.y) * 0.06
           }));
         }
 
@@ -275,10 +287,10 @@ export default function SpaceGame() {
             .map(o => ({ ...o, y: o.y + o.speed }))
             .filter(o => o.y < 110);
           
-          const difficultyRamp = Math.min(scoreRef.current / 3500, 1);
-          const spawnRate = 0.008 + difficultyRamp * 0.01 + Math.min(Math.max(0, scoreRef.current - 3500) / 10000, 0.025);
+          const difficultyRamp = Math.min(scoreRef.current / 1000, 1);
+          const spawnRate = 0.008 + difficultyRamp * 0.01 + Math.min(Math.max(0, scoreRef.current - 1000) / 10000, 0.025);
           const baseSpeed = 0.4 + difficultyRamp * 0.3;
-          const speedBonus = Math.min(Math.max(0, scoreRef.current - 3500) / 2500, 1.2);
+          const speedBonus = Math.min(Math.max(0, scoreRef.current - 1000) / 2500, 1.2);
           
           if (Math.random() < spawnRate) {
             updated.push({
@@ -291,12 +303,11 @@ export default function SpaceGame() {
             });
           }
           
-          const playerY = 85;
           const basePlayerSize = 8;
           const scaledPlayerSize = basePlayerSize * getShipScale(SHIP_VARIANTS[shipVariant].structure);
           for (const o of updated) {
             const dx = Math.abs(o.x - playerXRef.current);
-            const dy = Math.abs(o.y - playerY);
+            const dy = Math.abs(o.y - playerYRef.current);
             const minDist = (o.size / 2 + scaledPlayerSize) * 0.35;
             if (dx < minDist && dy < minDist) {
               endGame();
