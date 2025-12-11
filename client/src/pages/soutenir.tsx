@@ -31,8 +31,8 @@ const reasons = [
   },
   {
     icon: Clock,
-    title: "Des centaines d'heures",
-    description: "Chaque guide, chaque fonctionnalité, chaque ligne de code représente du temps investi bénévolement pour vous offrir la meilleure expérience possible."
+    title: "100% indépendant",
+    description: "Aucun soutien de Gameforge, aucune publicité. Ce projet est entièrement autofinancé et développé sur mon temps libre, par passion pour le jeu."
   },
   {
     icon: Target,
