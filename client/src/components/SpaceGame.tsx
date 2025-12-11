@@ -405,13 +405,13 @@ export default function SpaceGame() {
             {Array.from({ length: 20 }).map((_, i) => (
               <div
                 key={`star-${i}`}
-                className="absolute pointer-events-none rounded-full bg-white/30"
+                className="absolute pointer-events-none rounded-full bg-white/40"
                 style={{
                   left: `${(i * 41 + score * 0.08) % 100}%`,
                   top: `${((i * 47 + score * (0.4 + (i % 3) * 0.2)) % 120) - 10}%`,
-                  width: 1,
-                  height: 2 + (i % 2),
-                  opacity: 0.1 + (i % 3) * 0.05,
+                  width: 2 + (i % 2),
+                  height: 6 + (i % 3) * 3,
+                  opacity: 0.15 + (i % 3) * 0.08,
                 }}
               />
             ))}
