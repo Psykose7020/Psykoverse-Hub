@@ -271,9 +271,9 @@ export default function SpaceGame() {
       
       updatePlayerPosition();
 
-      if (scoreRef.current >= 5000) {
+      if (scoreRef.current >= 2500) {
         const shakeDelta = time - lastShakeTimeRef.current;
-        const progress = Math.min((scoreRef.current - 5000) / 35000, 1);
+        const progress = Math.min((scoreRef.current - 2500) / 17500, 1);
         const maxOffset = 200 + progress * 150;
         const changeInterval = Math.max(80, 600 - progress * 500);
         
@@ -301,7 +301,7 @@ export default function SpaceGame() {
       
       const difficultyRamp = Math.min(Math.max(0, scoreRef.current - 300) / 700, 1);
       const lateGameRamp = Math.min(Math.max(0, scoreRef.current - 1000) / 4000, 1);
-      const spawnRate = (0.01 + difficultyRamp * 0.015 + lateGameRamp * 0.02) * deltaFactor;
+      const spawnRate = (0.018 + difficultyRamp * 0.02 + lateGameRamp * 0.025) * deltaFactor;
       const baseSpeed = (0.45 + difficultyRamp * 0.35 + lateGameRamp * 0.4) * 1.25;
       
       if (Math.random() < spawnRate) {
@@ -359,7 +359,7 @@ export default function SpaceGame() {
           <div className="flex items-center gap-2">
             <Gamepad2 className="w-4 h-4 text-primary/70" />
             <span className="font-display font-bold text-white/80 text-xs">Space Escape</span>
-            {score >= 5000 && (
+            {score >= 2500 && (
               <span className="text-orange-400 text-[10px] animate-pulse">MODE CHAOS</span>
             )}
           </div>
