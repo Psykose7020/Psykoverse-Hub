@@ -21,13 +21,12 @@ const SHIP_VARIANTS = [
   { name: "Traqueur", body: "#F59E0B", accent: "#D97706", glow: "rgba(245,158,11,0.8)", wings: "sleek", structure: 7000 },
   { name: "Bombardier", body: "#6B7280", accent: "#374151", glow: "rgba(107,114,128,0.8)", wings: "bomber", structure: 7500 },
   { name: "Destructeur", body: "#DC2626", accent: "#7F1D1D", glow: "rgba(220,38,38,0.8)", wings: "massive", structure: 11000 },
-  { name: "Étoile Mort", body: "#1F2937", accent: "#111827", glow: "rgba(31,41,55,0.8)", wings: "sphere", structure: 900000 },
+  { name: "Étoile Mort", body: "#4A5568", accent: "#22C55E", glow: "rgba(34,197,94,0.9)", wings: "sphere", structure: 900000 },
   { name: "Petit Transport", body: "#14B8A6", accent: "#0D9488", glow: "rgba(20,184,166,0.8)", wings: "cargo", structure: 400 },
   { name: "Grand Transport", body: "#0EA5E9", accent: "#0369A1", glow: "rgba(14,165,233,0.8)", wings: "freighter", structure: 1200 },
   { name: "Colonisateur", body: "#84CC16", accent: "#65A30D", glow: "rgba(132,204,22,0.8)", wings: "colony", structure: 3000 },
   { name: "Recycleur", body: "#A3A3A3", accent: "#525252", glow: "rgba(163,163,163,0.8)", wings: "recycler", structure: 1600 },
   { name: "Sonde", body: "#E879F9", accent: "#D946EF", glow: "rgba(232,121,249,0.8)", wings: "probe", structure: 100 },
-  { name: "Satellite", body: "#FBBF24", accent: "#F59E0B", glow: "rgba(251,191,36,0.8)", wings: "solar", structure: 200 },
   { name: "Faucheur", body: "#EC4899", accent: "#DB2777", glow: "rgba(236,72,153,0.8)", wings: "reaper", structure: 14000 },
 ];
 
@@ -49,16 +48,16 @@ function getScoreMultiplier(structure: number): number {
 }
 
 const PLANET_VARIANTS = [
-  { from: "#8B7355", to: "#4A3728", hasRing: false },
-  { from: "#CD5C5C", to: "#8B2323", hasRing: false },
-  { from: "#4169E1", to: "#191970", hasRing: false },
-  { from: "#DEB887", to: "#8B7355", hasRing: false },
-  { from: "#F4A460", to: "#8B4513", hasRing: true, ringColor: "#D4A574" },
-  { from: "#4682B4", to: "#1E3A5F", hasRing: false },
-  { from: "#FFE4B5", to: "#CD853F", hasRing: false },
-  { from: "#87CEEB", to: "#4682B4", hasRing: true, ringColor: "#A8D8EA" },
-  { from: "#808080", to: "#2F2F2F", hasRing: false },
-  { from: "#FFA500", to: "#8B4500", hasRing: false },
+  { from: "#8B7355", to: "#4A3728", hasRing: false, texture: "radial-gradient(ellipse at 30% 20%, #A08060 0%, transparent 40%), radial-gradient(ellipse at 70% 60%, #5A4030 0%, transparent 30%)" },
+  { from: "#CD5C5C", to: "#8B2323", hasRing: false, texture: "radial-gradient(ellipse at 25% 30%, #E07070 0%, transparent 35%), radial-gradient(ellipse at 60% 70%, #702020 0%, transparent 25%)" },
+  { from: "#4169E1", to: "#191970", hasRing: false, texture: "radial-gradient(ellipse at 40% 25%, #6090FF 0%, transparent 30%), radial-gradient(ellipse at 20% 60%, #1A2080 0%, transparent 40%)" },
+  { from: "#DEB887", to: "#8B7355", hasRing: false, texture: "radial-gradient(ellipse at 35% 35%, #F0D0A0 0%, transparent 30%), radial-gradient(ellipse at 65% 55%, #6A5030 0%, transparent 35%)" },
+  { from: "#F4A460", to: "#8B4513", hasRing: true, ringColor: "#D4A574", texture: "radial-gradient(ellipse at 30% 40%, #FFB870 0%, transparent 35%)" },
+  { from: "#4682B4", to: "#1E3A5F", hasRing: false, texture: "radial-gradient(ellipse at 45% 30%, #5A9AC8 0%, transparent 40%), radial-gradient(ellipse at 25% 65%, #152A45 0%, transparent 30%)" },
+  { from: "#FFE4B5", to: "#CD853F", hasRing: false, texture: "radial-gradient(ellipse at 40% 25%, #FFF0D0 0%, transparent 35%), radial-gradient(ellipse at 55% 70%, #A06020 0%, transparent 25%)" },
+  { from: "#87CEEB", to: "#4682B4", hasRing: true, ringColor: "#A8D8EA", texture: "radial-gradient(ellipse at 35% 30%, #A0E0FF 0%, transparent 30%)" },
+  { from: "#808080", to: "#2F2F2F", hasRing: false, texture: "radial-gradient(ellipse at 30% 25%, #A0A0A0 0%, transparent 30%), radial-gradient(ellipse at 60% 55%, #404040 0%, transparent 35%), radial-gradient(ellipse at 45% 75%, #252525 0%, transparent 20%)" },
+  { from: "#FFA500", to: "#8B4500", hasRing: false, texture: "radial-gradient(ellipse at 25% 35%, #FFB830 0%, transparent 40%), radial-gradient(ellipse at 70% 50%, #703000 0%, transparent 30%)" },
 ];
 
 function ShipPreview({ variant, size = 40 }: { variant: typeof SHIP_VARIANTS[0]; size?: number }) {
@@ -421,25 +420,41 @@ export default function SpaceGame() {
                   <div
                     className="w-full h-full rounded-full relative"
                     style={{
-                      background: `radial-gradient(circle at 35% 25%, ${v.from}, ${v.to})`,
-                      boxShadow: `inset -2px -2px 6px rgba(0,0,0,0.7), inset 1px 1px 3px rgba(255,255,255,0.2)`
+                      background: `radial-gradient(circle at 30% 25%, ${v.from}, ${v.to} 70%, #000 100%)`,
+                      boxShadow: `inset -4px -4px 12px rgba(0,0,0,0.8), inset 2px 2px 6px rgba(255,255,255,0.15), 0 0 ${obstacle.size * 0.3}px rgba(0,0,0,0.5)`
                     }}
                   >
+                    <div 
+                      className="absolute inset-0 rounded-full"
+                      style={{ background: v.texture, opacity: 0.7 }}
+                    />
+                    <div 
+                      className="absolute inset-0 rounded-full"
+                      style={{ 
+                        background: 'radial-gradient(circle at 25% 20%, rgba(255,255,255,0.3) 0%, transparent 40%)',
+                      }}
+                    />
                     {v.hasRing && (
                       <svg 
                         className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
-                        style={{ width: obstacle.size * 2, height: obstacle.size * 0.8 }}
-                        viewBox="0 0 100 40"
+                        style={{ width: obstacle.size * 2.2, height: obstacle.size * 0.9 }}
+                        viewBox="0 0 110 45"
                       >
+                        <defs>
+                          <linearGradient id={`ring-${obstacle.id}`} x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stopColor={v.ringColor || v.from} stopOpacity="0.2" />
+                            <stop offset="50%" stopColor={v.ringColor || v.from} stopOpacity="0.7" />
+                            <stop offset="100%" stopColor={v.ringColor || v.from} stopOpacity="0.2" />
+                          </linearGradient>
+                        </defs>
                         <ellipse 
-                          cx="50" cy="20" rx="48" ry="8" 
+                          cx="55" cy="22" rx="52" ry="10" 
                           fill="none" 
-                          stroke={v.ringColor || v.from}
-                          strokeWidth="3"
-                          opacity="0.6"
+                          stroke={`url(#ring-${obstacle.id})`}
+                          strokeWidth="4"
                         />
                         <ellipse 
-                          cx="50" cy="20" rx="40" ry="6" 
+                          cx="55" cy="22" rx="44" ry="7" 
                           fill="none" 
                           stroke={v.ringColor || v.from}
                           strokeWidth="2"
