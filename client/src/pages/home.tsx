@@ -166,7 +166,7 @@ export default function Home() {
                   <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer" data-testid="btn-discord-hero">
                     <MessageSquare className="w-5 h-5 mr-2" />
                     Rejoindre Discord
-                    <span className="ml-2 text-xs opacity-80 bg-white/10 px-2 py-0.5 rounded">180</span>
+                    <span className="ml-2 text-xs opacity-80 bg-white/10 px-2 py-0.5 rounded">{discordMembers ?? "..."}</span>
                   </a>
                 </Button>
                 <Button size="lg" variant="outline" className="border-primary/50 text-primary hover:bg-primary/10 hover:border-primary" asChild>
