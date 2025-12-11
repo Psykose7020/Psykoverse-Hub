@@ -1,4 +1,4 @@
-import { MessageSquare, ShieldAlert } from "lucide-react";
+import { MessageSquare, ShieldAlert, Heart, Coffee } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Layout from "@/components/layout/Layout";
 import { EditableText } from "@/components/EditableText";
@@ -58,6 +58,49 @@ export default function Support() {
                 </a>
               </Button>
 
+            </div>
+          </div>
+
+          <div className="bg-[#13171F] border border-[#2A3241] p-1 rounded-lg shadow-2xl mt-8">
+            <div className="bg-gradient-to-br from-[#0B0E14] to-[#1a1f2e] border border-[#2A3241]/50 p-8 rounded text-center relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/5 rounded-full blur-3xl"></div>
+              <div className="absolute bottom-0 left-0 w-24 h-24 bg-primary/5 rounded-full blur-2xl"></div>
+              
+              <div className="relative z-10">
+                <div className="w-16 h-16 bg-gradient-to-br from-yellow-500/20 to-orange-500/20 rounded-full flex items-center justify-center mx-auto mb-6 border border-yellow-500/30">
+                  <Heart className="w-8 h-8 text-yellow-500" />
+                </div>
+
+                <h2 className="font-display text-2xl font-bold text-white mb-3">
+                  Soutenir le projet
+                </h2>
+                
+                <p className="text-gray-400 text-sm mb-6 max-w-md mx-auto leading-relaxed">
+                  Ce site est un projet 100% bénévole, créé avec passion pour la communauté OGame francophone. 
+                  Chaque guide, chaque fonctionnalité représente des heures de travail offertes à tous les joueurs.
+                </p>
+
+                <p className="text-gray-500 text-xs mb-6 italic">
+                  Si ce projet vous est utile et que vous souhaitez m'encourager à continuer, 
+                  un petit café fait toujours plaisir ! Aucune obligation bien sûr, 
+                  votre présence dans la communauté est déjà un soutien précieux.
+                </p>
+
+                <Button 
+                  size="lg" 
+                  className="bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-500 hover:to-orange-500 text-white font-display font-bold uppercase tracking-widest h-12 px-8 rounded shadow-lg transition-all hover:shadow-yellow-500/20 hover:shadow-xl" 
+                  asChild
+                >
+                  <a href="https://buymeacoffee.com/psykose" target="_blank" rel="noopener noreferrer">
+                    <Coffee className="mr-3 w-5 h-5" />
+                    Offrir un café
+                  </a>
+                </Button>
+
+                <p className="text-gray-600 text-xs mt-4">
+                  Merci pour votre soutien ! 💙
+                </p>
+              </div>
             </div>
           </div>
         </div>
