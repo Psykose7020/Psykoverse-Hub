@@ -402,20 +402,25 @@ export default function SpaceGame() {
         >
         {gameState === "playing" && (
           <>
-            {Array.from({ length: 50 }).map((_, i) => (
-              <div
-                key={`star-${i}`}
-                className="absolute pointer-events-none rounded-full bg-white"
-                style={{
-                  left: `${(i * 19 + score * 0.02) % 100}%`,
-                  top: `${((i * 23 + score * (3 + (i % 5) * 1.2)) % 140) - 20}%`,
-                  width: 1 + (i % 3),
-                  height: 1 + (i % 3),
-                  opacity: 0.4 + (i % 4) * 0.15,
-                  boxShadow: i % 5 === 0 ? '0 0 3px rgba(255,255,255,0.5)' : 'none',
-                }}
-              />
-            ))}
+            {Array.from({ length: 60 }).map((_, i) => {
+              const seed = Math.sin(i * 9999) * 10000;
+              const randomX = Math.abs(seed % 100);
+              const speed = 2.5 + (Math.abs(Math.sin(i * 1234) * 10000) % 3);
+              const size = 1 + (i % 2);
+              return (
+                <div
+                  key={`star-${i}`}
+                  className="absolute pointer-events-none rounded-full bg-white"
+                  style={{
+                    left: `${randomX}%`,
+                    top: `${((Math.abs(Math.sin(i * 5678) * 10000) % 100 + score * speed) % 140) - 20}%`,
+                    width: size,
+                    height: size,
+                    opacity: 0.5 + (i % 3) * 0.15,
+                  }}
+                />
+              );
+            })}
             <div
               ref={playerRef}
               className="absolute will-change-transform pointer-events-none"
