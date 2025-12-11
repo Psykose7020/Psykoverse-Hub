@@ -105,6 +105,24 @@ export default function SpaceGame() {
   const [submitted, setSubmitted] = useState(false);
   const [submitMessage, setSubmitMessage] = useState<{ type: 'success' | 'info'; text: string } | null>(null);
   const [gameOffset, setGameOffset] = useState({ x: 0, y: 0 });
+  const [currentSpeed, setCurrentSpeed] = useState(0.5);
+  
+  const playGameOverSound = useCallback(() => {
+    try {
+      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const osc = audioContext.createOscillator();
+      const gain = audioContext.createGain();
+      osc.connect(gain);
+      gain.connect(audioContext.destination);
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(400, audioContext.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(60, audioContext.currentTime + 0.6);
+      gain.gain.setValueAtTime(0.25, audioContext.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.6);
+      osc.start();
+      osc.stop(audioContext.currentTime + 0.6);
+    } catch (e) {}
+  }, []);
   
   const gameRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -145,6 +163,7 @@ export default function SpaceGame() {
     isPlayingRef.current = false;
     document.exitPointerLock?.();
     setGameOffset({ x: 0, y: 0 });
+    playGameOverSound();
     const finalScore = scoreRef.current;
     setScore(finalScore);
     const currentHigh = parseInt(localStorage.getItem("psykoverse:highscore") || "0");
@@ -155,7 +174,7 @@ export default function SpaceGame() {
     if (animationRef.current) {
       cancelAnimationFrame(animationRef.current);
     }
-  }, []);
+  }, [playGameOverSound]);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -320,6 +339,7 @@ export default function SpaceGame() {
       // Facteur de réduction progressif: à 10000 points, vitesse = 50% de la violence originale
       const progressiveFactor = 1.0 - Math.min(scoreRef.current / 10000, 1) * 0.5;
       const baseSpeed = (0.45 + difficultyRamp * 0.35 + lateGameRamp * 0.4) * 1.125 * progressiveFactor;
+      setCurrentSpeed(baseSpeed);
       
       if (Math.random() < spawnRate) {
         const randomOffset = (Math.random() - 0.5) * 30;
@@ -427,10 +447,10 @@ export default function SpaceGame() {
             {Array.from({ length: 60 }).map((_, i) => {
               const seed = Math.sin(i * 9999) * 10000;
               const randomX = Math.abs(seed % 100);
-              const speed = 2.5 + (Math.abs(Math.sin(i * 1234) * 10000) % 3);
+              const speedMultiplier = 0.8 + (Math.abs(Math.sin(i * 1234) * 10000) % 5) / 10;
               const size = 1 + (i % 2);
               const startY = Math.abs(Math.sin(i * 5678) * 10000) % 400;
-              const yPos = ((startY + score * speed) % 440) - 60;
+              const yPos = ((startY + score * currentSpeed * speedMultiplier * 3) % 440) - 60;
               return (
                 <div
                   key={`star-${i}`}
