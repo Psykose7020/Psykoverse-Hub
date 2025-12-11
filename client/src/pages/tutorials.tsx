@@ -44,89 +44,109 @@ const categories = [
     ]
   },
   {
-    id: "debutant",
-    title: "Les Bases du Jeu",
-    description: "Tout ce qu'il faut savoir pour bien démarrer",
+    id: "bases",
+    title: "Bases du Commandant",
+    description: "Comprendre l'univers OGame et ses mécaniques fondamentales",
     icon: GraduationCap,
     color: "from-green-500 to-emerald-600",
     level: "Débutant",
     guides: [
       { title: "L'Interface", description: "Vue d'ensemble du jeu", icon: Monitor, color: "from-blue-500 to-cyan-600", link: "/guide/interface", featured: true },
-      { title: "Les Classes", description: "Collecteur, Général, Explorateur", icon: Users, color: "from-purple-500 to-pink-600", link: "/guide/classes", featured: true },
-      { title: "Classes Alliance", description: "Guerrier, Marchand, Chercheur", icon: Users, color: "from-violet-500 to-purple-600", link: "/guide/alliance-classes", featured: true },
-      { title: "Production", description: "Mines et gestion de l'énergie", icon: Factory, color: "from-green-500 to-emerald-600", link: "/guide/production" },
-      { title: "Recherches", description: "Arbre des technologies", icon: FlaskConical, color: "from-teal-500 to-cyan-600", link: "/guide/recherches" },
-      { title: "Technos Prioritaires", description: "Les 10 étapes clés", icon: FlaskConical, color: "from-teal-500 to-emerald-600", link: "/guide/technos-prioritaires", featured: true },
-      { title: "Chantier spatial et défense", description: "Vaisseaux et défenses", icon: Rocket, color: "from-slate-500 to-slate-700", link: "/guide/chantier" },
-      { title: "Galaxie", description: "Navigation et exploration", icon: Globe, color: "from-indigo-500 to-purple-600", link: "/guide/galaxie" },
       { title: "Jargon", description: "Vocabulaire de la communauté", icon: BookText, color: "from-amber-500 to-orange-600", link: "/guide/jargon" },
       { title: "Univers", description: "Caractéristiques et paramètres", icon: Settings, color: "from-indigo-500 to-purple-600", link: "/guide/univers" },
-      { title: "Formules & Calculateurs", description: "Outils de calcul interactifs", icon: Calculator, color: "from-emerald-500 to-teal-600", link: "/guide/formules", featured: true },
-      { title: "Coûts Flotte & Défenses", description: "Calculateur de ressources", icon: Rocket, color: "from-orange-500 to-red-600", link: "/guide/cout-flotte", featured: true }
+      { title: "Les Classes", description: "Collecteur, Général, Explorateur", icon: Users, color: "from-purple-500 to-pink-600", link: "/guide/classes", featured: true },
+      { title: "Classes Alliance", description: "Guerrier, Marchand, Chercheur", icon: Users, color: "from-violet-500 to-purple-600", link: "/guide/alliance-classes" }
+    ]
+  },
+  {
+    id: "economie",
+    title: "Économie & Infrastructure",
+    description: "Construire une base économique solide",
+    icon: Factory,
+    color: "from-emerald-500 to-teal-600",
+    level: "Débutant",
+    guides: [
+      { title: "Production", description: "Mines et gestion de l'énergie", icon: Factory, color: "from-green-500 to-emerald-600", link: "/guide/production", featured: true },
+      { title: "Technos Prioritaires", description: "Les 10 étapes clés", icon: FlaskConical, color: "from-teal-500 to-emerald-600", link: "/guide/technos-prioritaires", featured: true },
+      { title: "Recherches", description: "Arbre des technologies", icon: FlaskConical, color: "from-teal-500 to-cyan-600", link: "/guide/recherches" },
+      { title: "Chantier spatial et défense", description: "Vaisseaux et défenses", icon: Rocket, color: "from-slate-500 to-slate-700", link: "/guide/chantier" },
+      { title: "Coûts Flotte & Défenses", description: "Calculateur de ressources", icon: Rocket, color: "from-orange-500 to-red-600", link: "/guide/cout-flotte", featured: true },
+      { title: "Formules & Calculateurs", description: "Outils de calcul interactifs", icon: Calculator, color: "from-emerald-500 to-teal-600", link: "/guide/formules" },
+      { title: "Développement", description: "Stratégie de compte", icon: TrendingUp, color: "from-emerald-500 to-green-600", link: "/guide/developpement" }
     ]
   },
   {
     id: "expansion",
-    title: "Expansion & Développement",
-    description: "Développez votre empire galactique",
+    title: "Expansion Galactique",
+    description: "Étendre et consolider son empire",
     icon: Globe2,
     color: "from-teal-500 to-cyan-600",
     level: "Intermédiaire",
     guides: [
-      { title: "Colonisation", description: "Étendre son empire", icon: Globe2, color: "from-green-500 to-teal-600", link: "/guide/colonisation" },
+      { title: "Colonisation", description: "Étendre son empire", icon: Globe2, color: "from-green-500 to-teal-600", link: "/guide/colonisation", featured: true },
+      { title: "Galaxie", description: "Navigation et exploration", icon: Globe, color: "from-indigo-500 to-purple-600", link: "/guide/galaxie" },
       { title: "Expéditions", description: "Explorer l'espace profond", icon: Compass, color: "from-indigo-500 to-blue-600", link: "/guide/expeditions" },
-      { title: "Lune & CDR", description: "Champs de débris et lunes", icon: Moon, color: "from-gray-500 to-slate-700", link: "/guide/lune" },
-      { title: "Développement", description: "Stratégie de compte", icon: TrendingUp, color: "from-emerald-500 to-green-600", link: "/guide/developpement" },
       { title: "Volantes", description: "Flotte mobile défensive", icon: Plane, color: "from-cyan-500 to-blue-600", link: "/guide/volante" },
       { title: "Optimisation RRI", description: "Réseau de Recherche Intergalactique", icon: Network, color: "from-purple-500 to-indigo-600", link: "/guide/rri" }
     ]
   },
   {
-    id: "combat",
-    title: "Combat & Stratégie",
-    description: "Maîtrisez l'art de la guerre spatiale",
+    id: "renseignement",
+    title: "Renseignement & Préparation",
+    description: "Préparer ses raids avec précision",
+    icon: Eye,
+    color: "from-violet-500 to-purple-600",
+    level: "Intermédiaire",
+    guides: [
+      { title: "Espionnage", description: "Renseignement et infiltration", icon: Eye, color: "from-violet-500 to-purple-600", link: "/guide/espionnage", featured: true },
+      { title: "Activité", description: "Triangle d'activité", icon: AlertTriangle, color: "from-red-500 to-red-700", link: "/guide/activite" },
+      { title: "Recherche Cibles", description: "Trouver les meilleures proies", icon: Search, color: "from-violet-500 to-purple-600", link: "/guide/recherche-cibles", featured: true },
+      { title: "Reco de 3h00", description: "Confirmer l'absence d'une cible", icon: Clock, color: "from-indigo-500 to-purple-600", link: "/guide/reco-3h" },
+      { title: "Décalage à la Sonde", description: "Détecter les DG", icon: Eye, color: "from-cyan-500 to-blue-600", link: "/guide/decalage-sonde" },
+      { title: "Timing & Connexions", description: "Exploiter les habitudes", icon: Clock, color: "from-amber-500 to-orange-600", link: "/guide/timing-raid" }
+    ]
+  },
+  {
+    id: "offensive",
+    title: "Offensive & Coordination",
+    description: "Maîtriser l'art de l'attaque",
     icon: Crosshair,
     color: "from-red-500 to-rose-600",
     level: "Avancé",
     guides: [
-      { title: "Espionnage", description: "Renseignement et infiltration", icon: Eye, color: "from-violet-500 to-purple-600", link: "/guide/espionnage" },
       { title: "Attaque", description: "Bases du combat", icon: Crosshair, color: "from-red-500 to-rose-600", link: "/guide/attaque" },
       { title: "Raid Avancé", description: "Techniques de pro", icon: Target, color: "from-orange-500 to-red-600", link: "/guide/raid", featured: true },
-      { title: "Recherche Cibles", description: "Trouver les meilleures proies", icon: Eye, color: "from-violet-500 to-purple-600", link: "/guide/recherche-cibles" },
-      { title: "Éviter Interception", description: "Raider en sécurité", icon: Shield, color: "from-blue-500 to-cyan-600", link: "/guide/eviter-interception" },
-      { title: "Timing & Connexions", description: "Exploiter les habitudes", icon: Clock, color: "from-amber-500 to-orange-600", link: "/guide/timing-raid" },
-      { title: "Reco de 3h00", description: "Confirmer l'absence d'une cible", icon: Clock, color: "from-indigo-500 to-purple-600", link: "/guide/reco-3h" },
-      { title: "Décalage à la Sonde", description: "Détecter les DG", icon: Eye, color: "from-cyan-500 to-blue-600", link: "/guide/decalage-sonde" },
-      { title: "Split Flotte", description: "Optimiser l'ordre d'attaque", icon: Layers, color: "from-purple-500 to-violet-600", link: "/guide/split" },
-      { title: "Rapid Fire", description: "Tirs multiples en combat", icon: Zap, color: "from-yellow-500 to-orange-600", link: "/guide/rapid-fire", featured: true },
-      { title: "RF : Formules", description: "Calculs détaillés du RF", icon: Calculator, color: "from-purple-500 to-pink-600", link: "/guide/rapid-fire-formules" },
+      { title: "Split Flotte (Dégroupage)", description: "Optimiser l'ordre d'attaque", icon: Layers, color: "from-purple-500 to-violet-600", link: "/guide/split" },
       { title: "ACS", description: "Combat en groupe", icon: Users, color: "from-orange-500 to-amber-600", link: "/guide/acs" },
-      { title: "MoonBreak", description: "Destruction de lune", icon: Bomb, color: "from-red-600 to-red-800", link: "/guide/moonbreak" },
-      { title: "Classements", description: "Points d'honneur", icon: Trophy, color: "from-yellow-500 to-amber-600", link: "/guide/classements" }
+      { title: "Rapid Fire", description: "Tirs multiples en combat", icon: Zap, color: "from-yellow-500 to-orange-600", link: "/guide/rapid-fire", featured: true },
+      { title: "RF : Formules", description: "Calculs détaillés du RF", icon: Calculator, color: "from-purple-500 to-pink-600", link: "/guide/rapid-fire-formules" }
     ]
   },
   {
-    id: "defense",
-    title: "Défense & Sécurité",
-    description: "Protégez votre flotte et vos ressources",
+    id: "protection",
+    title: "Protection & Contre-mesures",
+    description: "Protéger sa flotte et contrer les attaques",
     icon: Shield,
     color: "from-blue-600 to-indigo-700",
     level: "Avancé",
     guides: [
       { title: "Ghost (Fleetsave)", description: "12 techniques de protection", icon: Ghost, color: "from-blue-600 to-indigo-700", link: "/guide/fleetsave", featured: true },
-      { title: "Activité", description: "Triangle d'activité", icon: AlertTriangle, color: "from-red-500 to-red-700", link: "/guide/activite" }
+      { title: "Éviter Interception", description: "Raider en sécurité", icon: Shield, color: "from-blue-500 to-cyan-600", link: "/guide/eviter-interception" },
+      { title: "MoonBreak", description: "Destruction de lune", icon: Bomb, color: "from-red-600 to-red-800", link: "/guide/moonbreak" },
+      { title: "Classements", description: "Points d'honneur et gestion PH", icon: Trophy, color: "from-yellow-500 to-amber-600", link: "/guide/classements" }
     ]
   },
   {
-    id: "fdv",
-    title: "Formes de Vie",
-    description: "Les 4 races extraterrestres et leurs bonus",
+    id: "expert",
+    title: "Spécialisations Expert",
+    description: "Mécaniques avancées et formes de vie",
     icon: Dna,
     color: "from-purple-500 to-pink-600",
     level: "Expert",
     guides: [
+      { title: "Lune & CDR", description: "Champs de débris et lunes", icon: Moon, color: "from-gray-500 to-slate-700", link: "/guide/lune", featured: true },
       { title: "Guide Complet FDV", description: "Races, recherches, artéfacts", icon: Dna, color: "from-purple-500 to-pink-600", link: "/guide/fdv", featured: true },
-      { title: "Rock'tal & Mineur", description: "Développer les FDV pour mineurs", icon: Mountain, color: "from-amber-500 to-orange-600", link: "/guide/rocktal", featured: true },
+      { title: "Rock'tal & Mineur", description: "Développer les FDV pour mineurs", icon: Mountain, color: "from-amber-500 to-orange-600", link: "/guide/rocktal" },
       { title: "Réduction Temps FDV", description: "Cap -99% et optimisation", icon: Clock, color: "from-purple-500 to-pink-600", link: "/guide/reduction-fdv" }
     ]
   }
