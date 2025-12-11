@@ -47,12 +47,12 @@ export default function GuideReco3h() {
                 </h2>
                 <p className="text-gray-300 mb-4">
                   Chaque nuit à <strong className="text-primary text-xl">03h00 du matin</strong> (heure serveur), 
-                  tous les comptes OGame sont <strong className="text-white">automatiquement reconnectés à leur Planète Mère (PM)</strong>.
+                  les joueurs qui se reconnectent à OGame atterrissent <strong className="text-white">automatiquement sur leur Planète Mère (PM)</strong>.
                 </p>
                 <div className="bg-primary/10 border border-primary/30 rounded-lg p-4">
                   <p className="text-sm text-primary">
-                    <strong>Conséquence :</strong> Un triangle d'activité apparaît systématiquement sur la PM de TOUS les joueurs à 03h00, 
-                    qu'ils soient connectés ou non.
+                    <strong>Conséquence :</strong> Seuls les joueurs qui se reconnectent après 03h00 allument un triangle d'activité sur leur PM. 
+                    Ceux qui ne se connectent pas n'ont aucune activité.
                   </p>
                 </div>
               </div>
@@ -64,7 +64,7 @@ export default function GuideReco3h() {
                 </h2>
                 <div className="space-y-4">
                   <p className="text-gray-300">
-                    Cette reconnexion automatique est une <strong className="text-white">mine d'or</strong> pour confirmer l'inactivité d'une cible :
+                    Ce mécanisme de reconnexion sur la PM est une <strong className="text-white">mine d'or</strong> pour confirmer l'inactivité d'une cible :
                   </p>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -74,8 +74,8 @@ export default function GuideReco3h() {
                         Cible inactive
                       </h3>
                       <p className="text-gray-300 text-sm">
-                        Si à <strong>03h15</strong> la PM de votre cible affiche un triangle "15", 
-                        cela signifie que l'activité vient de la reco automatique et <strong className="text-green-400">le joueur n'est PAS connecté</strong>.
+                        Si après <strong>03h00</strong> la PM de votre cible n'affiche <strong className="text-green-400">aucune activité</strong>, 
+                        le joueur ne s'est pas reconnecté et n'est probablement pas là.
                       </p>
                     </div>
                     <div className="bg-red-900/20 border border-red-700/30 rounded-lg p-4">
@@ -84,8 +84,8 @@ export default function GuideReco3h() {
                         Cible active
                       </h3>
                       <p className="text-gray-300 text-sm">
-                        Si le triangle montre une activité plus récente (ex: triangle plein à 03h10), 
-                        <strong className="text-red-400"> le joueur est réellement connecté</strong> et peut réagir.
+                        Si la PM affiche un triangle d'activité après 03h00, 
+                        <strong className="text-red-400"> le joueur s'est reconnecté</strong> et peut réagir à une attaque.
                       </p>
                     </div>
                   </div>
@@ -117,10 +117,10 @@ export default function GuideReco3h() {
                   <div className="flex items-start gap-4 p-4 bg-[#151924] rounded-lg">
                     <span className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">3</span>
                     <div>
-                      <h3 className="font-bold text-white">Analysez le triangle</h3>
+                      <h3 className="font-bold text-white">Analysez l'activité</h3>
                       <p className="text-gray-400 text-sm">
-                        <strong className="text-green-400">Triangle "15" ou "30"</strong> = Activité de la reco, joueur absent<br/>
-                        <strong className="text-red-400">Triangle plein</strong> = Joueur connecté, danger !
+                        <strong className="text-green-400">Aucune activité</strong> = Joueur ne s'est pas reconnecté, probablement absent<br/>
+                        <strong className="text-red-400">Triangle visible</strong> = Joueur s'est reconnecté après 03h00, danger !
                       </p>
                     </div>
                   </div>
@@ -145,7 +145,7 @@ export default function GuideReco3h() {
                     <div className="flex items-center gap-4">
                       <div className="text-gray-500 font-mono text-sm w-16">03:00</div>
                       <div className="flex-1 h-px bg-gradient-to-r from-indigo-500 to-transparent"></div>
-                      <div className="text-indigo-400 text-sm">Reco automatique sur toutes les PM</div>
+                      <div className="text-indigo-400 text-sm">Les reconnexions atterrissent sur la PM</div>
                     </div>
                     <div className="flex items-center gap-4">
                       <div className="text-gray-500 font-mono text-sm w-16">03:15</div>
@@ -157,12 +157,12 @@ export default function GuideReco3h() {
                       <div className="flex-1">
                         <div className="grid grid-cols-2 gap-4 text-sm">
                           <div className="bg-green-900/20 p-3 rounded">
-                            <span className="text-green-400">PM cible A : Triangle "15"</span>
-                            <div className="text-gray-500 text-xs mt-1">→ Inactif depuis 03:00</div>
+                            <span className="text-green-400">PM cible A : Aucune activité</span>
+                            <div className="text-gray-500 text-xs mt-1">→ Ne s'est pas reconnecté</div>
                           </div>
                           <div className="bg-red-900/20 p-3 rounded">
-                            <span className="text-red-400">PM cible B : Triangle plein</span>
-                            <div className="text-gray-500 text-xs mt-1">→ Connecté après 03:00</div>
+                            <span className="text-red-400">PM cible B : Triangle visible</span>
+                            <div className="text-gray-500 text-xs mt-1">→ S'est reconnecté après 03:00</div>
                           </div>
                         </div>
                       </div>
@@ -184,7 +184,7 @@ export default function GuideReco3h() {
                 <ul className="space-y-3 text-gray-300">
                   <li className="flex items-start gap-3">
                     <span className="text-amber-400 font-bold">•</span>
-                    <span>La reco de 03h00 ne génère de l'activité que sur la <strong className="text-white">Planète Mère</strong>, pas sur les colonies ou lunes.</span>
+                    <span>Les joueurs qui se reconnectent après 03h00 atterrissent sur leur <strong className="text-white">Planète Mère</strong> uniquement.</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-amber-400 font-bold">•</span>
