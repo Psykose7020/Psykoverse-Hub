@@ -31,13 +31,13 @@ const SHIP_VARIANTS = [
   { name: "Faucheur", body: "#EC4899", accent: "#DB2777", glow: "rgba(236,72,153,0.8)", wings: "reaper", structure: 14000 },
 ];
 
-const MIN_STRUCTURE = 100;
-const MAX_STRUCTURE = 14000;
+const MIN_STRUCTURE = Math.min(...SHIP_VARIANTS.map(s => s.structure));
+const AVG_STRUCTURE = SHIP_VARIANTS.reduce((sum, s) => sum + s.structure, 0) / SHIP_VARIANTS.length;
 
 function getShipScale(structure: number): number {
-  const normalized = Math.min(Math.max(structure, MIN_STRUCTURE), MAX_STRUCTURE);
+  const normalized = Math.min(Math.max(structure, MIN_STRUCTURE), AVG_STRUCTURE);
   const logMin = Math.log(MIN_STRUCTURE);
-  const logMax = Math.log(MAX_STRUCTURE);
+  const logMax = Math.log(AVG_STRUCTURE);
   const logValue = Math.log(normalized);
   const ratio = (logValue - logMin) / (logMax - logMin);
   return 0.75 + ratio * 0.5;
