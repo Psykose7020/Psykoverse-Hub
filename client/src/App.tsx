@@ -5,6 +5,8 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import IntroAnimation from "@/components/IntroAnimation";
+import { EditModeProvider } from "./contexts/EditModeContext";
+import { AdminEditBar } from "./components/AdminEditBar";
 
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
@@ -120,11 +122,14 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <IntroAnimation>
-          <ScrollToTop />
-          <Toaster />
-          <Router />
-        </IntroAnimation>
+        <EditModeProvider>
+          <IntroAnimation>
+            <AdminEditBar />
+            <ScrollToTop />
+            <Toaster />
+            <Router />
+          </IntroAnimation>
+        </EditModeProvider>
       </TooltipProvider>
     </QueryClientProvider>
   );
