@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Shield, Menu, X, BookOpen, Globe, Rocket } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import allianceLogo from "@assets/Design_sans_titre_(2)_1765292527261.png";
+import allianceLogo from "@assets/Design_sans_titre_(5)_1765452209873.png";
 import { useYoutubeStats } from "@/hooks/useYoutubeStats";
 
 const navLinks = [

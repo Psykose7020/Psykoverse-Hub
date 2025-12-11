@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import allianceLogo from "@assets/Design_sans_titre_(2)_1765292527261.png";
+import allianceLogo from "@assets/Design_sans_titre_(5)_1765452209873.png";
 
 export default function Footer() {
   return (

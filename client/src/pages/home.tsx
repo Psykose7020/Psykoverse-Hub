@@ -26,7 +26,7 @@ import { useYoutubeStats } from "@/hooks/useYoutubeStats";
 import { useDiscordStats } from "@/hooks/useDiscordStats";
 
 import heroBg from "@assets/generated_videos/specific_ogame_destroyer_fleet_formation.mp4";
-import allianceLogo from "@assets/Design_sans_titre_(2)_1765292527261.png";
+import allianceLogo from "@assets/Design_sans_titre_(5)_1765452209873.png";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
