@@ -45,10 +45,11 @@ const sections = [
   {
     href: "/tutoriels",
     icon: BookOpen,
-    title: "35 Guides",
+    title: "39 Guides",
     description: "Du débutant à l'expert, tout pour progresser sur OGame.",
     color: "from-primary to-blue-600",
-    stats: "35 guides"
+    stats: "39 guides",
+    featured: true
   },
   {
     href: "/alliance",
@@ -80,7 +81,7 @@ const features = [
   {
     icon: Star,
     title: "Guides Complets",
-    description: "35 tutoriels couvrant tous les aspects du jeu, des bases aux stratégies avancées."
+    description: "39 tutoriels couvrant tous les aspects du jeu, des bases aux stratégies avancées."
   },
   {
     icon: Users,
@@ -154,7 +155,7 @@ export default function Home() {
               <motion.div variants={fadeInUp} className="text-lg md:text-xl text-gray-300 mb-8 leading-relaxed max-w-2xl">
                 <EditableText 
                   id="home-description" 
-                  defaultValue="La ressource complète pour tous les joueurs OGame francophones. 35 guides complets, des bases aux stratégies avancées, accessibles à tous !" 
+                  defaultValue="La ressource complète pour tous les joueurs OGame francophones. 39 guides complets, des bases aux stratégies avancées, accessibles à tous !" 
                   as="p"
                   className="text-lg md:text-xl text-gray-300 leading-relaxed"
                   multiline
@@ -232,7 +233,7 @@ export default function Home() {
             className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8"
           >
             {[
-              { value: "35", label: "Guides complets", icon: BookOpen },
+              { value: "39", label: "Guides complets", icon: BookOpen },
               { value: discordMembers ? `${discordMembers}+` : "...", label: "Membres Discord", icon: Users },
               { value: "3", label: "Univers actifs", icon: Globe },
               { value: youtubeSubscribers ? String(youtubeSubscribers) : "...", label: "Abonnés YouTube", icon: Youtube }
@@ -273,6 +274,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {sections.map((section, index) => {
               const Icon = section.icon;
+              const isFeatured = 'featured' in section && section.featured;
               return (
                 <motion.div
                   key={section.href}
@@ -280,14 +282,28 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
+                  className={isFeatured ? "md:col-span-2 lg:col-span-1" : ""}
                 >
                   <Link href={section.href}>
-                    <div className="group h-full bg-[#1C2230] border border-[#2E384D] rounded-xl p-6 hover:border-primary/50 transition-all cursor-pointer hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1">
+                    <div className={`group h-full bg-[#1C2230] border rounded-xl p-6 transition-all cursor-pointer hover:-translate-y-1 relative ${
+                      isFeatured 
+                        ? "border-primary/50 shadow-lg shadow-primary/20 ring-2 ring-primary/30 hover:shadow-xl hover:shadow-primary/30" 
+                        : "border-[#2E384D] hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10"
+                    }`}>
+                      {isFeatured && (
+                        <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-primary to-blue-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+                          Populaire
+                        </div>
+                      )}
                       <div className="flex items-center justify-between mb-4">
-                        <div className={`w-14 h-14 bg-gradient-to-br ${section.color} rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg`}>
+                        <div className={`w-14 h-14 bg-gradient-to-br ${section.color} rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg ${isFeatured ? "ring-2 ring-white/20" : ""}`}>
                           <Icon className="w-7 h-7 text-white" />
                         </div>
-                        <span className="text-xs text-primary bg-primary/10 px-2 py-1 rounded-full font-medium">
+                        <span className={`text-xs px-2 py-1 rounded-full font-medium ${
+                          isFeatured 
+                            ? "text-white bg-gradient-to-r from-primary to-blue-500" 
+                            : "text-primary bg-primary/10"
+                        }`}>
                           {section.stats}
                         </span>
                       </div>
