@@ -537,7 +537,7 @@ export async function registerRoutes(
         return res.status(401).json({ error: "Invalid or expired token" });
       }
 
-      const { categoryId, title, description, icon, color, link, externalLink, featured, sortOrder } = req.body;
+      const { categoryId, title, description, content, icon, color, link, externalLink, featured, sortOrder } = req.body;
       
       if (!categoryId || !title || !description) {
         return res.status(400).json({ error: "Missing required fields" });
@@ -547,6 +547,7 @@ export async function registerRoutes(
         categoryId,
         title: title.substring(0, 200),
         description: description.substring(0, 500),
+        content: content ? content.substring(0, 10000) : null,
         icon: icon || "BookOpen",
         color: color || "from-blue-500 to-cyan-600",
         link: link || null,

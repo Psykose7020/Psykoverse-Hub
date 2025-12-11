@@ -104,6 +104,7 @@ export const customGuides = pgTable("custom_guides", {
   categoryId: text("category_id").notNull(),
   title: text("title").notNull(),
   description: text("description").notNull(),
+  content: text("content"),
   icon: text("icon").default("BookOpen").notNull(),
   color: text("color").default("from-blue-500 to-cyan-600").notNull(),
   link: text("link"),
