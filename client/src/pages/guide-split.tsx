@@ -101,10 +101,10 @@ export default function GuideSplit() {
                   <div className="bg-[#151924] rounded-lg p-4">
                     <h3 className="font-bold text-white mb-3">Exemple concret :</h3>
                     <div className="space-y-2 text-sm">
-                      <p>Un <strong className="text-white">Croiseur de Bataille</strong> a <strong className="text-cyan-400">400 de bouclier</strong>.</p>
-                      <p>→ Pour l'endommager, il faut un tir d'au moins <strong className="text-primary">4 d'attaque</strong> (1% de 400).</p>
-                      <p className="mt-3">Un <strong className="text-white">Destroyer</strong> a <strong className="text-cyan-400">500 de bouclier</strong>.</p>
-                      <p>→ Pour l'endommager, il faut un tir d'au moins <strong className="text-primary">5 d'attaque</strong> (1% de 500).</p>
+                      <p>Un <strong className="text-white">Croiseur</strong> a <strong className="text-cyan-400">50 de bouclier</strong>.</p>
+                      <p>→ Pour l'endommager, il faut un tir d'au moins <strong className="text-primary">1 d'attaque</strong> (1% de 50).</p>
+                      <p className="mt-3">Un <strong className="text-white">Vaisseau de Bataille</strong> a <strong className="text-cyan-400">200 de bouclier</strong>.</p>
+                      <p>→ Pour l'endommager, il faut un tir d'au moins <strong className="text-primary">2 d'attaque</strong> (1% de 200).</p>
                     </div>
                   </div>
 
@@ -141,15 +141,15 @@ export default function GuideSplit() {
                   <h2 className="font-display text-xl font-bold text-white">Exemple : Pourquoi les chasseurs doivent tirer en dernier</h2>
                 </div>
                 <div className="space-y-4 text-gray-300">
-                  <p>Imaginons que vous attaquez une flotte avec des <strong className="text-white">Croiseurs de Bataille</strong> (400 bouclier).</p>
+                  <p>Imaginons que vous attaquez une flotte avec des <strong className="text-white">Vaisseaux de Bataille</strong> (200 bouclier, 6000 coque).</p>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                     <div className="bg-red-900/20 border border-red-700/30 rounded-lg p-4">
                       <h3 className="font-bold text-red-400 mb-3">❌ Mauvais split</h3>
                       <p className="text-sm mb-3">Chasseurs Légers tirent en premier</p>
                       <div className="space-y-2 text-sm">
-                        <p>1. <strong className="text-white">Chasseur Léger</strong> (50 attaque) tire sur CB (400 bouclier)</p>
-                        <p className="text-red-400">→ 50 &gt; 4 (1% de 400) donc passe, mais ne fait que 50 - bouclier = dégâts limités</p>
+                        <p>1. <strong className="text-white">Chasseur Léger</strong> (50 attaque) tire sur VB (200 bouclier)</p>
+                        <p className="text-red-400">→ 50 &gt; 2 (1% de 200) donc passe, mais dégâts limités</p>
                         <p>2. Le bouclier se régénère entre les rounds</p>
                         <p className="text-red-400">→ Vos chasseurs "gaspillent" leurs tirs sur des boucliers pleins</p>
                       </div>
@@ -158,10 +158,10 @@ export default function GuideSplit() {
                       <h3 className="font-bold text-green-400 mb-3">✓ Bon split</h3>
                       <p className="text-sm mb-3">Gros vaisseaux tirent en premier</p>
                       <div className="space-y-2 text-sm">
-                        <p>1. <strong className="text-white">Faucheur</strong> (14 000 attaque) tire sur CB</p>
+                        <p>1. <strong className="text-white">Faucheur</strong> (14 000 attaque) tire sur VB</p>
                         <p className="text-green-400">→ Détruit le bouclier ET fait d'énormes dégâts à la coque</p>
                         <p>2. <strong className="text-white">Chasseur Léger</strong> tire ensuite</p>
-                        <p className="text-green-400">→ Le CB a moins de bouclier, le chasseur peut maintenant faire des dégâts efficaces</p>
+                        <p className="text-green-400">→ Le VB a moins de bouclier, le chasseur peut maintenant faire des dégâts efficaces</p>
                       </div>
                     </div>
                   </div>
@@ -224,36 +224,29 @@ export default function GuideSplit() {
                       <div className="text-green-400 text-sm">1 000 d'attaque</div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-teal-900/30 to-transparent border border-teal-700/30 rounded-lg">
-                    <span className="w-8 h-8 bg-teal-600 rounded-full flex items-center justify-center text-white text-sm font-bold">8</span>
-                    <div className="flex-1">
-                      <div className="font-bold text-white">Croiseur de Bataille</div>
-                      <div className="text-teal-400 text-sm">700 d'attaque</div>
-                    </div>
-                  </div>
                   <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-lime-900/30 to-transparent border border-lime-700/30 rounded-lg">
-                    <span className="w-8 h-8 bg-lime-600 rounded-full flex items-center justify-center text-white text-sm font-bold">9</span>
+                    <span className="w-8 h-8 bg-lime-600 rounded-full flex items-center justify-center text-white text-sm font-bold">8</span>
                     <div className="flex-1">
                       <div className="font-bold text-white">Éclaireur</div>
                       <div className="text-lime-400 text-sm">400 d'attaque</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-amber-900/30 to-transparent border border-amber-700/30 rounded-lg">
-                    <span className="w-8 h-8 bg-amber-600 rounded-full flex items-center justify-center text-white text-sm font-bold">10</span>
+                    <span className="w-8 h-8 bg-amber-600 rounded-full flex items-center justify-center text-white text-sm font-bold">9</span>
                     <div className="flex-1">
                       <div className="font-bold text-white">Croiseur</div>
                       <div className="text-amber-400 text-sm">400 d'attaque</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-slate-700/30 to-transparent border border-slate-600/30 rounded-lg">
-                    <span className="w-8 h-8 bg-slate-600 rounded-full flex items-center justify-center text-white text-sm font-bold">11</span>
+                    <span className="w-8 h-8 bg-slate-600 rounded-full flex items-center justify-center text-white text-sm font-bold">10</span>
                     <div className="flex-1">
                       <div className="font-bold text-white">Chasseur Lourd</div>
                       <div className="text-slate-400 text-sm">150 d'attaque</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-gray-700/30 to-transparent border border-gray-600/30 rounded-lg">
-                    <span className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center text-white text-sm font-bold">12</span>
+                    <span className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center text-white text-sm font-bold">11</span>
                     <div className="flex-1">
                       <div className="font-bold text-white">Chasseur Léger</div>
                       <div className="text-gray-400 text-sm">50 d'attaque</div>
@@ -265,7 +258,7 @@ export default function GuideSplit() {
               <div className="bg-[#1C2230] border border-[#2E384D] rounded-xl p-6">
                 <h2 className="font-display text-xl font-bold text-white mb-4">Exemple de combat complet</h2>
                 <p className="text-gray-300 mb-4">
-                  Vous attaquez avec 100 Faucheurs et 1000 Chasseurs Légers contre 50 Croiseurs de Bataille ennemis.
+                  Vous attaquez avec 100 Faucheurs et 1000 Chasseurs Légers contre 50 Vaisseaux de Bataille ennemis.
                 </p>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -274,9 +267,9 @@ export default function GuideSplit() {
                     <div className="space-y-2 text-sm text-gray-300">
                       <p><strong className="text-white">Round 1 :</strong></p>
                       <p>• 1000 Chasseurs tirent (50 attaque chacun)</p>
-                      <p>• Chaque CB a 400 bouclier + 7000 coque</p>
-                      <p>• Les tirs passent le seuil de 1% (4) mais font peu de dégâts car le bouclier absorbe beaucoup</p>
-                      <p>• Ensuite les Faucheurs tirent mais les CB restants ont déjà tiré sur vous</p>
+                      <p>• Chaque VB a 200 bouclier + 6000 coque</p>
+                      <p>• Les tirs passent le seuil de 1% mais font peu de dégâts car le bouclier absorbe beaucoup</p>
+                      <p>• Ensuite les Faucheurs tirent mais les VB restants ont déjà tiré sur vous</p>
                       <p className="text-red-400 font-bold mt-3">Résultat : Plus de pertes de votre côté</p>
                     </div>
                   </div>
@@ -285,9 +278,9 @@ export default function GuideSplit() {
                     <div className="space-y-2 text-sm text-gray-300">
                       <p><strong className="text-white">Round 1 :</strong></p>
                       <p>• 100 Faucheurs tirent en premier (14 000 attaque chacun)</p>
-                      <p>• Ils détruisent ou endommagent gravement les CB</p>
-                      <p>• Moins de CB survivent pour riposter</p>
-                      <p>• Les 1000 Chasseurs tirent ensuite sur les CB affaiblis</p>
+                      <p>• Ils détruisent ou endommagent gravement les VB</p>
+                      <p>• Moins de VB survivent pour riposter</p>
+                      <p>• Les 1000 Chasseurs tirent ensuite sur les VB affaiblis</p>
                       <p className="text-green-400 font-bold mt-3">Résultat : Moins de tirs ennemis = moins de pertes</p>
                     </div>
                   </div>
