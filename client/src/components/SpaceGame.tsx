@@ -275,13 +275,18 @@ export default function SpaceGame() {
             .map(o => ({ ...o, y: o.y + o.speed }))
             .filter(o => o.y < 110);
           
-          if (Math.random() < 0.018 + Math.min(scoreRef.current / 10000, 0.025)) {
+          const difficultyRamp = Math.min(scoreRef.current / 3500, 1);
+          const spawnRate = 0.008 + difficultyRamp * 0.01 + Math.min(Math.max(0, scoreRef.current - 3500) / 10000, 0.025);
+          const baseSpeed = 0.4 + difficultyRamp * 0.3;
+          const speedBonus = Math.min(Math.max(0, scoreRef.current - 3500) / 2500, 1.2);
+          
+          if (Math.random() < spawnRate) {
             updated.push({
               id: obstacleIdRef.current++,
               x: Math.random() * 85 + 7.5,
               y: -10,
               size: 14 + Math.random() * 18,
-              speed: 0.7 + Math.random() * 1.0 + Math.min(scoreRef.current / 2500, 1.2),
+              speed: baseSpeed + Math.random() * (0.6 + difficultyRamp * 0.4) + speedBonus,
               variant: Math.floor(Math.random() * PLANET_VARIANTS.length)
             });
           }
@@ -353,16 +358,16 @@ export default function SpaceGame() {
         >
         {gameState === "playing" && (
           <>
-            {Array.from({ length: 30 }).map((_, i) => (
+            {Array.from({ length: 20 }).map((_, i) => (
               <div
                 key={`star-${i}`}
-                className="absolute pointer-events-none rounded-full bg-white"
+                className="absolute pointer-events-none rounded-full bg-white/30"
                 style={{
-                  left: `${(i * 37 + score * 0.1) % 100}%`,
-                  top: `${((i * 53 + score * (0.5 + (i % 3) * 0.3)) % 120) - 10}%`,
-                  width: 1 + (i % 3),
-                  height: 4 + (i % 3) * 3,
-                  opacity: 0.2 + (i % 3) * 0.1,
+                  left: `${(i * 41 + score * 0.08) % 100}%`,
+                  top: `${((i * 47 + score * (0.4 + (i % 3) * 0.2)) % 120) - 10}%`,
+                  width: 1,
+                  height: 2 + (i % 2),
+                  opacity: 0.1 + (i % 3) * 0.05,
                 }}
               />
             ))}
