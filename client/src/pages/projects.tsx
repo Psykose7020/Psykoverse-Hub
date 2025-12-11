@@ -1,9 +1,8 @@
 import { motion } from "framer-motion";
-import { Rocket, Calendar, CheckCircle, Clock, Target, Users, Tv, Globe } from "lucide-react";
+import { Rocket, Calendar, Clock, Target, Wrench, Zap, ArrowRight } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
-import { EditableText } from "@/components/EditableText";
-import { useYoutubeStats } from "@/hooks/useYoutubeStats";
+import { Link } from "wouter";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -18,87 +17,66 @@ const staggerContainer = {
   }
 };
 
-function getRoadmapItems(youtubeSubscribers: number | null) {
-  return [
-    {
-      status: "completed",
-      date: "2024",
-      title: "Lancement du site web",
-      description: "Création du site communautaire avec 35 guides et ressources pour tous les joueurs OGame francophones.",
-      icon: Globe
-    },
-    {
-      status: "completed",
-      date: "2024",
-      title: "Chaîne YouTube",
-      description: `${youtubeSubscribers ?? "..."} abonnés sur la chaîne YouTube avec des tutoriels vidéo pour la communauté.`,
-      icon: Tv
-    },
-    {
-      status: "in-progress",
-      date: "19 Décembre 2025",
-      title: "Serveur Saison",
-      description: "Lancement sur le nouveau serveur saison. Rejoignez-nous pour cette nouvelle aventure !",
-      icon: Rocket
-    },
-    {
-      status: "planned",
-      date: "Fin Décembre 2025",
-      title: "Version 2.1 - Intégration Outils OGame",
-      description: "Intégration des outils communautaires : OGame Infinity, OGlight, PTRE, OGame Tracker et autres extensions essentielles pour optimiser votre gameplay.",
-      icon: Target
-    },
-    {
-      status: "planned",
-      date: "En continu",
-      title: "Présence sur les Saisons",
-      description: "Participation à chaque nouveau serveur saison OGame pour vivre l'expérience avec la communauté.",
-      icon: Target
-    },
-    {
-      status: "planned",
-      date: "En continu",
-      title: "Mise à jour des guides",
-      description: "Amélioration et actualisation régulière des tutoriels selon les évolutions du jeu.",
-      icon: Calendar
-    },
-    {
-      status: "planned",
-      date: "Occasionnel",
-      title: "Vidéos tutoriels",
-      description: "Nouvelles vidéos explicatives sur YouTube quand le temps le permet.",
-      icon: Tv
-    }
-  ];
-}
+const currentProjects = [
+  {
+    status: "in-progress",
+    date: "19 Décembre 2025",
+    title: "Serveur Saison",
+    description: "Lancement sur le nouveau serveur saison. Rejoignez-nous pour cette nouvelle aventure !",
+    icon: Rocket,
+    color: "from-orange-500 to-amber-500",
+    highlight: true
+  },
+  {
+    status: "planned",
+    date: "Fin Décembre 2025",
+    title: "Version 2.1 - Outils OGame",
+    description: "Intégration des outils communautaires : OGame Infinity, OGlight, PTRE, OGame Tracker et autres extensions.",
+    icon: Wrench,
+    color: "from-purple-500 to-indigo-500"
+  }
+];
+
+const continuousProjects = [
+  {
+    icon: Target,
+    title: "Présence sur les Saisons",
+    description: "Participation à chaque nouveau serveur saison OGame."
+  },
+  {
+    icon: Calendar,
+    title: "Mise à jour des guides",
+    description: "Amélioration régulière des tutoriels selon les évolutions du jeu."
+  },
+  {
+    icon: Zap,
+    title: "Nouvelles fonctionnalités",
+    description: "Améliorations continues du site selon vos retours."
+  }
+];
 
 const upcomingEvents = [
   {
     date: "19 Déc",
     title: "Lancement Serveur Saison",
-    type: "event",
-    description: "Rendez-vous sur Discord pour coordonner le départ !"
+    type: "event"
   },
   {
-    date: "En continu",
-    title: "Maintenance du site",
-    type: "content",
-    description: "Ajout de nouveaux guides et corrections selon vos retours."
+    date: "Fin Déc",
+    title: "Version 2.1 du site",
+    type: "update"
   },
   {
-    date: "En continu",
-    title: "Recrutement ouvert",
-    type: "recruitment",
-    description: "Nous accueillons tous les joueurs motivés, débutants ou confirmés."
+    date: "2026",
+    title: "Nouvelles intégrations",
+    type: "future"
   }
 ];
 
 export default function Projects() {
-  const youtubeSubscribers = useYoutubeStats();
-  
   return (
     <Layout>
-      <section className="py-16 md:py-24 border-b border-[#2E384D]">
+      <section className="py-16 md:py-20">
         <div className="container mx-auto px-4">
           <motion.div
             initial="hidden"
@@ -107,85 +85,84 @@ export default function Projects() {
             className="text-center mb-12"
           >
             <motion.div variants={fadeInUp} className="flex items-center justify-center gap-3 mb-4">
-              <Rocket className="w-8 h-8 text-primary" />
-              <EditableText
-                id="projects-hero-title"
-                defaultValue="Projets à venir"
-                as="h1"
-                className="font-display text-3xl md:text-5xl font-bold text-white"
-              />
+              <Rocket className="w-8 h-8 text-secondary" />
+              <h1 className="font-display text-3xl md:text-5xl font-bold text-white">
+                Projets & Roadmap
+              </h1>
             </motion.div>
             <motion.p variants={fadeInUp} className="text-gray-400 max-w-2xl mx-auto">
-              <EditableText
-                id="projects-hero-description"
-                defaultValue="Découvrez notre feuille de route et les événements à ne pas manquer !"
-                as="span"
-                multiline
-              />
+              Ce qui nous occupe actuellement et ce qui arrive bientôt !
             </motion.p>
           </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
-            <div className="lg:col-span-2">
-              <h2 className="font-display text-2xl font-bold text-white mb-8 flex items-center gap-3">
-                <Calendar className="w-6 h-6 text-primary" />
-                Roadmap 2025
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2 space-y-6">
+              <h2 className="font-display text-xl font-bold text-white mb-4 flex items-center gap-2">
+                <Clock className="w-5 h-5 text-secondary" />
+                En cours & À venir
               </h2>
+              
+              {currentProjects.map((project, index) => {
+                const Icon = project.icon;
+                return (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className={`relative bg-[#1C2230] rounded-xl overflow-hidden border ${
+                      project.highlight 
+                        ? "border-secondary/50 shadow-[0_0_30px_rgba(255,150,0,0.15)]" 
+                        : "border-[#2E384D]"
+                    }`}
+                  >
+                    {project.highlight && (
+                      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-secondary to-orange-500"></div>
+                    )}
+                    <div className="p-6">
+                      <div className="flex items-start gap-4">
+                        <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${project.color} flex items-center justify-center flex-shrink-0`}>
+                          <Icon className="w-6 h-6 text-white" />
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-2">
+                            <h3 className="font-display text-lg font-bold text-white">{project.title}</h3>
+                            <span className={`px-2 py-0.5 rounded text-xs font-bold uppercase ${
+                              project.status === "in-progress" 
+                                ? "bg-secondary/20 text-secondary" 
+                                : "bg-primary/20 text-primary"
+                            }`}>
+                              {project.status === "in-progress" ? "En cours" : "Prévu"}
+                            </span>
+                          </div>
+                          <p className="text-gray-400 text-sm mb-2">{project.description}</p>
+                          <span className="text-xs font-mono text-gray-500">{project.date}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
 
-              <div className="relative">
-                <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-[#2E384D]"></div>
-                
-                <div className="space-y-8">
-                  {getRoadmapItems(youtubeSubscribers).map((item, index) => {
-                    const Icon = item.icon;
+              <div className="mt-8">
+                <h2 className="font-display text-xl font-bold text-white mb-4 flex items-center gap-2">
+                  <Target className="w-5 h-5 text-primary" />
+                  En continu
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {continuousProjects.map((project, index) => {
+                    const Icon = project.icon;
                     return (
                       <motion.div
                         key={index}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className="relative pl-16"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 + index * 0.1 }}
+                        className="bg-[#1C2230] border border-[#2E384D] rounded-lg p-5 text-center"
                       >
-                        <div className={`absolute left-0 w-12 h-12 rounded-full flex items-center justify-center border-2 ${
-                          item.status === "completed" 
-                            ? "bg-green-900/50 border-green-500" 
-                            : item.status === "in-progress"
-                            ? "bg-secondary/20 border-secondary animate-pulse"
-                            : "bg-[#1C2230] border-[#2E384D]"
-                        }`}>
-                          {item.status === "completed" ? (
-                            <CheckCircle className="w-5 h-5 text-green-400" />
-                          ) : item.status === "in-progress" ? (
-                            <Clock className="w-5 h-5 text-secondary" />
-                          ) : (
-                            <Icon className="w-5 h-5 text-gray-400" />
-                          )}
-                        </div>
-                        
-                        <div className={`bg-[#1C2230] border rounded-lg p-5 ${
-                          item.status === "in-progress" 
-                            ? "border-secondary/50 shadow-[0_0_15px_rgba(255,150,0,0.1)]" 
-                            : "border-[#2E384D]"
-                        }`}>
-                          <div className="flex items-center justify-between mb-2">
-                            <span className={`text-xs font-mono uppercase tracking-wider ${
-                              item.status === "completed" ? "text-green-400" :
-                              item.status === "in-progress" ? "text-secondary" : "text-gray-500"
-                            }`}>
-                              {item.date}
-                            </span>
-                            <span className={`px-2 py-1 rounded text-xs font-bold uppercase ${
-                              item.status === "completed" ? "bg-green-900/50 text-green-400" :
-                              item.status === "in-progress" ? "bg-secondary/20 text-secondary" :
-                              "bg-gray-800 text-gray-400"
-                            }`}>
-                              {item.status === "completed" ? "Terminé" :
-                               item.status === "in-progress" ? "En cours" : "Planifié"}
-                            </span>
-                          </div>
-                          <h3 className="font-bold text-white text-lg mb-2">{item.title}</h3>
-                          <p className="text-gray-400 text-sm">{item.description}</p>
-                        </div>
+                        <Icon className="w-8 h-8 text-primary mx-auto mb-3" />
+                        <h3 className="font-display text-sm font-bold text-white mb-2">{project.title}</h3>
+                        <p className="text-gray-500 text-xs">{project.description}</p>
                       </motion.div>
                     );
                   })}
@@ -194,43 +171,36 @@ export default function Projects() {
             </div>
 
             <div>
-              <h2 className="font-display text-2xl font-bold text-white mb-8 flex items-center gap-3">
-                <Clock className="w-6 h-6 text-secondary" />
-                À ne pas manquer
-              </h2>
-
-              <div className="space-y-4">
-                {upcomingEvents.map((event, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.5 + index * 0.1 }}
-                    className="bg-[#1C2230] border border-[#2E384D] rounded-lg p-4 hover:border-primary/30 transition-all"
-                  >
-                    <div className="flex items-start gap-4">
-                      <div className="bg-primary/20 text-primary font-bold text-xs px-3 py-2 rounded text-center min-w-[60px]">
+              <div className="bg-[#1C2230] border border-[#2E384D] rounded-xl p-6 sticky top-24">
+                <h3 className="font-display text-lg font-bold text-white mb-4 flex items-center gap-2">
+                  <Calendar className="w-5 h-5 text-primary" />
+                  Calendrier
+                </h3>
+                <div className="space-y-4">
+                  {upcomingEvents.map((event, index) => (
+                    <div key={index} className="flex items-center gap-3">
+                      <div className={`w-12 h-12 rounded-lg flex items-center justify-center text-xs font-bold ${
+                        event.type === "event" 
+                          ? "bg-secondary/20 text-secondary" 
+                          : event.type === "update"
+                          ? "bg-primary/20 text-primary"
+                          : "bg-gray-800 text-gray-400"
+                      }`}>
                         {event.date}
                       </div>
-                      <div>
-                        <h4 className="font-bold text-white mb-1">{event.title}</h4>
-                        <p className="text-gray-400 text-sm">{event.description}</p>
-                      </div>
+                      <span className="text-gray-300 text-sm">{event.title}</span>
                     </div>
-                  </motion.div>
-                ))}
-              </div>
+                  ))}
+                </div>
 
-              <div className="mt-8 p-6 bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/30 rounded-lg">
-                <h3 className="font-bold text-white mb-3">Participez au projet !</h3>
-                <p className="text-gray-400 text-sm mb-4">
-                  Vous avez des idées ? Rejoignez-nous sur Discord pour proposer vos suggestions.
-                </p>
-                <Button className="w-full" asChild>
-                  <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer">
-                    Rejoindre le Discord
-                  </a>
-                </Button>
+                <div className="mt-6 pt-6 border-t border-[#2E384D]">
+                  <Link href="/notre-histoire">
+                    <Button variant="ghost" className="w-full text-gray-400 hover:text-white justify-between">
+                      Voir notre histoire
+                      <ArrowRight className="w-4 h-4" />
+                    </Button>
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
