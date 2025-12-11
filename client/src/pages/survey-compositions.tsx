@@ -1,10 +1,32 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Rocket, Shield, Send, CheckCircle, Info, ChevronDown, ChevronUp, BarChart3, ArrowLeft, HelpCircle } from "lucide-react";
+import { Rocket, Shield, Send, CheckCircle, Info, BarChart3, ArrowLeft } from "lucide-react";
 import { Link } from "wouter";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { useMutation } from "@tanstack/react-query";
+
+import imgPetitTransporteur from "@assets/ogame_ships/petit-transporteur.png";
+import imgGrandTransporteur from "@assets/ogame_ships/grand-transporteur.png";
+import imgRecycleur from "@assets/ogame_ships/recycleur.png";
+import imgChasseurLeger from "@assets/ogame_ships/chasseur-leger.png";
+import imgChasseurLourd from "@assets/ogame_ships/chasseur-lourd.png";
+import imgCroiseur from "@assets/ogame_ships/croiseur.png";
+import imgVaisseauBataille from "@assets/ogame_ships/vaisseau-bataille.png";
+import imgBombardier from "@assets/ogame_ships/bombardier.png";
+import imgDestructeur from "@assets/ogame_ships/destructeur.png";
+import imgTraqueur from "@assets/ogame_ships/traqueur.png";
+import imgEtoileMort from "@assets/ogame_ships/etoile-mort.png";
+import imgFaucheur from "@assets/ogame_ships/faucheur.png";
+import imgEclaireur from "@assets/ogame_ships/eclaireur.png";
+import imgLanceurMissiles from "@assets/ogame_ships/lanceur-missiles.png";
+import imgLaserLeger from "@assets/ogame_ships/laser-leger.png";
+import imgLaserLourd from "@assets/ogame_ships/laser-lourd.png";
+import imgCanonGauss from "@assets/ogame_ships/canon-gauss.png";
+import imgArtillerieIons from "@assets/ogame_ships/artillerie-ions.png";
+import imgLanceurPlasma from "@assets/ogame_ships/lanceur-plasma.png";
+import imgPetitBouclier from "@assets/ogame_ships/petit-bouclier.png";
+import imgGrandBouclier from "@assets/ogame_ships/grand-bouclier.png";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -12,39 +34,37 @@ const fadeInUp = {
 };
 
 const fleetShips = [
-  { name: "Petit Transporteur (PT)", abbrev: "PT" },
-  { name: "Grand Transporteur (GT)", abbrev: "GT" },
-  { name: "Chasseur Léger (CL)", abbrev: "CL" },
-  { name: "Chasseur Lourd (CLo)", abbrev: "CLo" },
-  { name: "Croiseur (CR)", abbrev: "CR" },
-  { name: "Vaisseau de Bataille (VB)", abbrev: "VB" },
-  { name: "Vaisseau de Colonisation", abbrev: "Colo" },
-  { name: "Recycleur", abbrev: "Rec" },
-  { name: "Sonde d'Espionnage", abbrev: "Sonde" },
-  { name: "Bombardier (BB)", abbrev: "BB" },
-  { name: "Destructeur (Dest)", abbrev: "Dest" },
-  { name: "Étoile de la Mort (EdM)", abbrev: "EdM" },
-  { name: "Traqueur", abbrev: "Traq" },
-  { name: "Faucheur", abbrev: "Fauch" },
-  { name: "Éclaireur", abbrev: "Ecl" },
+  { id: "pt", name: "Petit Transporteur", abbrev: "PT", image: imgPetitTransporteur, category: "civil" },
+  { id: "gt", name: "Grand Transporteur", abbrev: "GT", image: imgGrandTransporteur, category: "civil" },
+  { id: "rec", name: "Recycleur", abbrev: "REC", image: imgRecycleur, category: "civil" },
+  { id: "cl", name: "Chasseur Léger", abbrev: "CL", image: imgChasseurLeger, category: "combat" },
+  { id: "clo", name: "Chasseur Lourd", abbrev: "CLo", image: imgChasseurLourd, category: "combat" },
+  { id: "cr", name: "Croiseur", abbrev: "CR", image: imgCroiseur, category: "combat" },
+  { id: "vb", name: "Vaisseau de Bataille", abbrev: "VB", image: imgVaisseauBataille, category: "combat" },
+  { id: "bb", name: "Bombardier", abbrev: "BB", image: imgBombardier, category: "combat" },
+  { id: "dest", name: "Destructeur", abbrev: "DEST", image: imgDestructeur, category: "combat" },
+  { id: "traq", name: "Traqueur", abbrev: "TRAQ", image: imgTraqueur, category: "combat" },
+  { id: "edm", name: "Étoile de la Mort", abbrev: "EDM", image: imgEtoileMort, category: "combat" },
+  { id: "fauch", name: "Faucheur", abbrev: "FAUCH", image: imgFaucheur, category: "combat" },
+  { id: "ecl", name: "Éclaireur", abbrev: "ECL", image: imgEclaireur, category: "civil" },
 ];
 
 const defenseUnits = [
-  { name: "Lanceur de Missiles (LM)", abbrev: "LM" },
-  { name: "Artillerie Laser Légère (LL)", abbrev: "LL" },
-  { name: "Artillerie Laser Lourde (LLo)", abbrev: "LLo" },
-  { name: "Canon de Gauss", abbrev: "Gauss" },
-  { name: "Artillerie à Ions", abbrev: "Ions" },
-  { name: "Lanceur de Plasma", abbrev: "Plasma" },
-  { name: "Petit Bouclier", abbrev: "PB" },
-  { name: "Grand Bouclier", abbrev: "GB" },
+  { id: "lm", name: "Lanceur de Missiles", abbrev: "LM", image: imgLanceurMissiles },
+  { id: "ll", name: "Artillerie Laser Légère", abbrev: "LL", image: imgLaserLeger },
+  { id: "llo", name: "Artillerie Laser Lourde", abbrev: "LLo", image: imgLaserLourd },
+  { id: "gauss", name: "Canon de Gauss", abbrev: "Gauss", image: imgCanonGauss },
+  { id: "ion", name: "Artillerie à Ions", abbrev: "Ion", image: imgArtillerieIons },
+  { id: "plasma", name: "Lanceur de Plasma", abbrev: "Plasma", image: imgLanceurPlasma },
+  { id: "pb", name: "Petit Bouclier", abbrev: "PB", image: imgPetitBouclier },
+  { id: "gb", name: "Grand Bouclier", abbrev: "GB", image: imgGrandBouclier },
 ];
 
 export default function SurveyCompositionsPage() {
   return (
     <Layout>
       <div className="min-h-screen py-12 px-4">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <motion.div
             initial="hidden"
             animate="visible"
@@ -96,10 +116,9 @@ export default function SurveyCompositionsPage() {
                 </p>
                 <h4 className="font-semibold text-cyan-300 text-sm mb-2">Comment participer ?</h4>
                 <ul className="text-cyan-200/80 text-sm space-y-1 list-disc list-inside">
-                  <li>Décrivez votre composition de flotte ou défense idéale avec les quantités</li>
-                  <li>Vous pouvez utiliser les abréviations (PT, GT, CR, VB, etc.)</li>
-                  <li>Expliquez votre stratégie si vous le souhaitez</li>
-                  <li>Indiquez le type d'univers pour plus de contexte</li>
+                  <li>Entrez les quantités souhaitées pour chaque unité</li>
+                  <li>Vous pouvez laisser les cases à 0 si vous n'utilisez pas certaines unités</li>
+                  <li>Ajoutez un commentaire si vous le souhaitez</li>
                 </ul>
               </div>
             </div>
@@ -116,12 +135,10 @@ export default function SurveyCompositionsPage() {
 }
 
 function FleetSurveyCard() {
-  const [composition, setComposition] = useState("");
-  const [strategy, setStrategy] = useState("");
+  const [quantities, setQuantities] = useState<Record<string, number>>({});
+  const [comment, setComment] = useState("");
   const [universe, setUniverse] = useState("");
-  const [isExpanded, setIsExpanded] = useState(true);
   const [submitted, setSubmitted] = useState(false);
-  const [showHelp, setShowHelp] = useState(false);
 
   const mutation = useMutation({
     mutationFn: async (data: { composition: string; strategy: string; universe: string }) => {
@@ -138,17 +155,38 @@ function FleetSurveyCard() {
     },
     onSuccess: () => {
       setSubmitted(true);
-      setComposition("");
-      setStrategy("");
+      setQuantities({});
+      setComment("");
       setUniverse("");
     },
   });
 
+  const handleQuantityChange = (id: string, value: string) => {
+    const num = parseInt(value) || 0;
+    setQuantities(prev => ({ ...prev, [id]: num }));
+  };
+
+  const formatComposition = () => {
+    const parts: string[] = [];
+    fleetShips.forEach(ship => {
+      const qty = quantities[ship.id] || 0;
+      if (qty > 0) {
+        parts.push(`${ship.abbrev}: ${qty.toLocaleString("fr-FR")}`);
+      }
+    });
+    return parts.join(" | ");
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (composition.length < 10) return;
-    mutation.mutate({ composition, strategy, universe });
+    const composition = formatComposition();
+    if (composition.length < 5) return;
+    mutation.mutate({ composition, strategy: comment, universe });
   };
+
+  const hasAnyQuantity = Object.values(quantities).some(q => q > 0);
+  const combatShips = fleetShips.filter(s => s.category === "combat");
+  const civilShips = fleetShips.filter(s => s.category === "civil");
 
   return (
     <motion.div
@@ -158,94 +196,82 @@ function FleetSurveyCard() {
       transition={{ duration: 0.5, delay: 0.2 }}
       className="bg-[#1C2230] border border-[#2E384D] rounded-xl overflow-hidden"
     >
-      <button
-        onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full flex items-center justify-between p-6 hover:bg-[#252D3D] transition-colors"
-        data-testid="toggle-fleet-survey"
-      >
+      <div className="p-6 border-b border-[#2E384D]">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center">
             <Rocket className="w-6 h-6 text-white" />
           </div>
-          <div className="text-left">
+          <div>
             <h2 className="text-xl font-bold text-white">Composition de Flotte Idéale</h2>
             <p className="text-gray-400 text-sm">Pour ceux qui font de la flotte</p>
           </div>
         </div>
-        {isExpanded ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
-      </button>
+      </div>
 
-      {isExpanded && (
-        <div className="px-6 pb-6">
-          {submitted ? (
-            <div className="bg-green-900/20 border border-green-700/30 rounded-lg p-6 text-center">
-              <CheckCircle className="w-12 h-12 text-green-400 mx-auto mb-3" />
-              <h3 className="text-lg font-bold text-green-300 mb-2">Merci pour votre participation !</h3>
-              <p className="text-green-200/80 text-sm">Votre composition de flotte a été enregistrée.</p>
-              <Button
-                onClick={() => setSubmitted(false)}
-                variant="outline"
-                className="mt-4"
-                data-testid="button-submit-another-fleet"
-              >
-                Soumettre une autre composition
-              </Button>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <label className="block text-sm font-medium text-gray-300">
-                    Décrivez votre composition de flotte idéale *
-                  </label>
-                  <button
-                    type="button"
-                    onClick={() => setShowHelp(!showHelp)}
-                    className="text-gray-500 hover:text-primary transition-colors"
-                    data-testid="btn-fleet-help"
-                  >
-                    <HelpCircle className="w-4 h-4" />
-                  </button>
-                </div>
-                
-                {showHelp && (
-                  <div className="mb-3 p-3 bg-[#0B0E14] border border-[#2E384D] rounded-lg">
-                    <p className="text-xs text-gray-400 mb-2">Vaisseaux disponibles (utilisez les abréviations) :</p>
-                    <div className="flex flex-wrap gap-1">
-                      {fleetShips.map(ship => (
-                        <span key={ship.abbrev} className="text-xs bg-[#1C2230] text-gray-300 px-2 py-1 rounded">
-                          {ship.abbrev}
-                        </span>
-                      ))}
+      <div className="p-6">
+        {submitted ? (
+          <div className="bg-green-900/20 border border-green-700/30 rounded-lg p-6 text-center">
+            <CheckCircle className="w-12 h-12 text-green-400 mx-auto mb-3" />
+            <h3 className="text-lg font-bold text-green-300 mb-2">Merci pour votre participation !</h3>
+            <p className="text-green-200/80 text-sm">Votre composition de flotte a été enregistrée.</p>
+            <Button
+              onClick={() => setSubmitted(false)}
+              variant="outline"
+              className="mt-4"
+              data-testid="button-submit-another-fleet"
+            >
+              Soumettre une autre composition
+            </Button>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <h3 className="text-sm font-medium text-orange-400 mb-3">Vaisseaux de combat</h3>
+              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3">
+                {combatShips.map(ship => (
+                  <div key={ship.id} className="bg-[#0B0E14] border border-[#2E384D] rounded-lg p-2 hover:border-orange-500/50 transition-colors">
+                    <div className="aspect-square mb-2 rounded overflow-hidden">
+                      <img src={ship.image} alt={ship.name} className="w-full h-full object-cover" />
                     </div>
+                    <p className="text-[10px] text-gray-400 text-center mb-1 truncate" title={ship.name}>{ship.abbrev}</p>
+                    <input
+                      type="number"
+                      min="0"
+                      value={quantities[ship.id] || ""}
+                      onChange={(e) => handleQuantityChange(ship.id, e.target.value)}
+                      placeholder="0"
+                      className="w-full bg-[#1C2230] border border-[#2E384D] rounded px-2 py-1 text-center text-sm text-orange-400 focus:border-orange-500 focus:outline-none"
+                      data-testid={`input-fleet-${ship.id}`}
+                    />
                   </div>
-                )}
-
-                <textarea
-                  value={composition}
-                  onChange={(e) => setComposition(e.target.value)}
-                  placeholder="Ex: 100k GT, 50k VB, 20k Croiseurs, 5k Destroyers... ou décrivez vos ratios préférés"
-                  className="w-full h-32 bg-[#0B0E14] border border-[#2E384D] rounded-lg px-4 py-3 text-white placeholder-gray-500 resize-none focus:border-primary focus:outline-none"
-                  required
-                  minLength={10}
-                  data-testid="input-fleet-composition"
-                />
-                <p className="text-xs text-gray-500 mt-1">Minimum 10 caractères</p>
+                ))}
               </div>
+            </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Stratégie ou explications (optionnel)
-                </label>
-                <textarea
-                  value={strategy}
-                  onChange={(e) => setStrategy(e.target.value)}
-                  placeholder="Expliquez pourquoi vous préférez cette composition, pour quel type d'attaque, etc."
-                  className="w-full h-24 bg-[#0B0E14] border border-[#2E384D] rounded-lg px-4 py-3 text-white placeholder-gray-500 resize-none focus:border-primary focus:outline-none"
-                  data-testid="input-fleet-strategy"
-                />
+            <div>
+              <h3 className="text-sm font-medium text-cyan-400 mb-3">Vaisseaux civils</h3>
+              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3">
+                {civilShips.map(ship => (
+                  <div key={ship.id} className="bg-[#0B0E14] border border-[#2E384D] rounded-lg p-2 hover:border-cyan-500/50 transition-colors">
+                    <div className="aspect-square mb-2 rounded overflow-hidden">
+                      <img src={ship.image} alt={ship.name} className="w-full h-full object-cover" />
+                    </div>
+                    <p className="text-[10px] text-gray-400 text-center mb-1 truncate" title={ship.name}>{ship.abbrev}</p>
+                    <input
+                      type="number"
+                      min="0"
+                      value={quantities[ship.id] || ""}
+                      onChange={(e) => handleQuantityChange(ship.id, e.target.value)}
+                      placeholder="0"
+                      className="w-full bg-[#1C2230] border border-[#2E384D] rounded px-2 py-1 text-center text-sm text-cyan-400 focus:border-cyan-500 focus:outline-none"
+                      data-testid={`input-fleet-${ship.id}`}
+                    />
+                  </div>
+                ))}
               </div>
+            </div>
 
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
                   Type d'univers (optionnel)
@@ -264,44 +290,55 @@ function FleetSurveyCard() {
                   <option value="speed">Univers Speed/War</option>
                 </select>
               </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Commentaire (optionnel)
+                </label>
+                <input
+                  type="text"
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                  placeholder="Ex: Raider agressif, expé..."
+                  className="w-full bg-[#0B0E14] border border-[#2E384D] rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:border-primary focus:outline-none"
+                  data-testid="input-fleet-comment"
+                />
+              </div>
+            </div>
 
-              <Button
-                type="submit"
-                disabled={mutation.isPending || composition.length < 10}
-                className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
-                data-testid="button-submit-fleet"
-              >
-                {mutation.isPending ? (
-                  <span className="flex items-center gap-2">
-                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    Envoi en cours...
-                  </span>
-                ) : (
-                  <span className="flex items-center gap-2">
-                    <Send className="w-4 h-4" />
-                    Envoyer ma réponse
-                  </span>
-                )}
-              </Button>
-
-              {mutation.isError && (
-                <p className="text-red-400 text-sm text-center">{mutation.error.message}</p>
+            <Button
+              type="submit"
+              disabled={mutation.isPending || !hasAnyQuantity}
+              className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
+              data-testid="button-submit-fleet"
+            >
+              {mutation.isPending ? (
+                <span className="flex items-center gap-2">
+                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  Envoi en cours...
+                </span>
+              ) : (
+                <span className="flex items-center gap-2">
+                  <Send className="w-4 h-4" />
+                  Envoyer ma composition de flotte
+                </span>
               )}
-            </form>
-          )}
-        </div>
-      )}
+            </Button>
+
+            {mutation.isError && (
+              <p className="text-red-400 text-sm text-center">{mutation.error.message}</p>
+            )}
+          </form>
+        )}
+      </div>
     </motion.div>
   );
 }
 
 function DefenseSurveyCard() {
-  const [composition, setComposition] = useState("");
-  const [strategy, setStrategy] = useState("");
+  const [quantities, setQuantities] = useState<Record<string, number>>({});
+  const [comment, setComment] = useState("");
   const [universe, setUniverse] = useState("");
-  const [isExpanded, setIsExpanded] = useState(true);
   const [submitted, setSubmitted] = useState(false);
-  const [showHelp, setShowHelp] = useState(false);
 
   const mutation = useMutation({
     mutationFn: async (data: { composition: string; strategy: string; universe: string }) => {
@@ -318,17 +355,36 @@ function DefenseSurveyCard() {
     },
     onSuccess: () => {
       setSubmitted(true);
-      setComposition("");
-      setStrategy("");
+      setQuantities({});
+      setComment("");
       setUniverse("");
     },
   });
 
+  const handleQuantityChange = (id: string, value: string) => {
+    const num = parseInt(value) || 0;
+    setQuantities(prev => ({ ...prev, [id]: num }));
+  };
+
+  const formatComposition = () => {
+    const parts: string[] = [];
+    defenseUnits.forEach(unit => {
+      const qty = quantities[unit.id] || 0;
+      if (qty > 0) {
+        parts.push(`${unit.abbrev}: ${qty.toLocaleString("fr-FR")}`);
+      }
+    });
+    return parts.join(" | ");
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (composition.length < 10) return;
-    mutation.mutate({ composition, strategy, universe });
+    const composition = formatComposition();
+    if (composition.length < 5) return;
+    mutation.mutate({ composition, strategy: comment, universe });
   };
+
+  const hasAnyQuantity = Object.values(quantities).some(q => q > 0);
 
   return (
     <motion.div
@@ -338,95 +394,59 @@ function DefenseSurveyCard() {
       transition={{ duration: 0.5, delay: 0.3 }}
       className="bg-[#1C2230] border border-[#2E384D] rounded-xl overflow-hidden"
     >
-      <button
-        onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full flex items-center justify-between p-6 hover:bg-[#252D3D] transition-colors"
-        data-testid="toggle-defense-survey"
-      >
+      <div className="p-6 border-b border-[#2E384D]">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center">
             <Shield className="w-6 h-6 text-white" />
           </div>
-          <div className="text-left">
+          <div>
             <h2 className="text-xl font-bold text-white">Composition de Défense Idéale</h2>
             <p className="text-gray-400 text-sm">Pour ceux qui font de la défense</p>
           </div>
         </div>
-        {isExpanded ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
-      </button>
+      </div>
 
-      {isExpanded && (
-        <div className="px-6 pb-6">
-          {submitted ? (
-            <div className="bg-green-900/20 border border-green-700/30 rounded-lg p-6 text-center">
-              <CheckCircle className="w-12 h-12 text-green-400 mx-auto mb-3" />
-              <h3 className="text-lg font-bold text-green-300 mb-2">Merci pour votre participation !</h3>
-              <p className="text-green-200/80 text-sm">Votre composition de défense a été enregistrée.</p>
-              <Button
-                onClick={() => setSubmitted(false)}
-                variant="outline"
-                className="mt-4"
-                data-testid="button-submit-another-defense"
-              >
-                Soumettre une autre composition
-              </Button>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <label className="block text-sm font-medium text-gray-300">
-                    Décrivez votre composition de défense idéale *
-                  </label>
-                  <button
-                    type="button"
-                    onClick={() => setShowHelp(!showHelp)}
-                    className="text-gray-500 hover:text-primary transition-colors"
-                    data-testid="btn-defense-help"
-                  >
-                    <HelpCircle className="w-4 h-4" />
-                  </button>
-                </div>
-
-                {showHelp && (
-                  <div className="mb-3 p-3 bg-[#0B0E14] border border-[#2E384D] rounded-lg">
-                    <p className="text-xs text-gray-400 mb-2">Défenses disponibles (utilisez les abréviations) :</p>
-                    <div className="flex flex-wrap gap-1">
-                      {defenseUnits.map(unit => (
-                        <span key={unit.abbrev} className="text-xs bg-[#1C2230] text-gray-300 px-2 py-1 rounded">
-                          {unit.abbrev}
-                        </span>
-                      ))}
+      <div className="p-6">
+        {submitted ? (
+          <div className="bg-green-900/20 border border-green-700/30 rounded-lg p-6 text-center">
+            <CheckCircle className="w-12 h-12 text-green-400 mx-auto mb-3" />
+            <h3 className="text-lg font-bold text-green-300 mb-2">Merci pour votre participation !</h3>
+            <p className="text-green-200/80 text-sm">Votre composition de défense a été enregistrée.</p>
+            <Button
+              onClick={() => setSubmitted(false)}
+              variant="outline"
+              className="mt-4"
+              data-testid="button-submit-another-defense"
+            >
+              Soumettre une autre composition
+            </Button>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <h3 className="text-sm font-medium text-cyan-400 mb-3">Installations de défense</h3>
+              <div className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-8 gap-3">
+                {defenseUnits.map(unit => (
+                  <div key={unit.id} className="bg-[#0B0E14] border border-[#2E384D] rounded-lg p-2 hover:border-cyan-500/50 transition-colors">
+                    <div className="aspect-square mb-2 rounded overflow-hidden">
+                      <img src={unit.image} alt={unit.name} className="w-full h-full object-cover" />
                     </div>
-                    <p className="text-xs text-gray-500 mt-2 italic">Note: Les satellites solaires et foreuses ne sont pas inclus car leur utilité varie selon le contexte.</p>
+                    <p className="text-[10px] text-gray-400 text-center mb-1 truncate" title={unit.name}>{unit.abbrev}</p>
+                    <input
+                      type="number"
+                      min="0"
+                      value={quantities[unit.id] || ""}
+                      onChange={(e) => handleQuantityChange(unit.id, e.target.value)}
+                      placeholder="0"
+                      className="w-full bg-[#1C2230] border border-[#2E384D] rounded px-2 py-1 text-center text-sm text-cyan-400 focus:border-cyan-500 focus:outline-none"
+                      data-testid={`input-defense-${unit.id}`}
+                    />
                   </div>
-                )}
-
-                <textarea
-                  value={composition}
-                  onChange={(e) => setComposition(e.target.value)}
-                  placeholder="Ex: 10k LM, 5k LL, 2k LLo, 500 Gauss, 200 Ions, 100 Plasma... ou décrivez vos ratios préférés"
-                  className="w-full h-32 bg-[#0B0E14] border border-[#2E384D] rounded-lg px-4 py-3 text-white placeholder-gray-500 resize-none focus:border-primary focus:outline-none"
-                  required
-                  minLength={10}
-                  data-testid="input-defense-composition"
-                />
-                <p className="text-xs text-gray-500 mt-1">Minimum 10 caractères</p>
+                ))}
               </div>
+            </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Stratégie ou explications (optionnel)
-                </label>
-                <textarea
-                  value={strategy}
-                  onChange={(e) => setStrategy(e.target.value)}
-                  placeholder="Expliquez pourquoi vous préférez cette composition, pour quel type de protection, etc."
-                  className="w-full h-24 bg-[#0B0E14] border border-[#2E384D] rounded-lg px-4 py-3 text-white placeholder-gray-500 resize-none focus:border-primary focus:outline-none"
-                  data-testid="input-defense-strategy"
-                />
-              </div>
-
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
                   Type d'univers (optionnel)
@@ -445,33 +465,46 @@ function DefenseSurveyCard() {
                   <option value="speed">Univers Speed/War</option>
                 </select>
               </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Commentaire (optionnel)
+                </label>
+                <input
+                  type="text"
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                  placeholder="Ex: Défense passive, anti-raid..."
+                  className="w-full bg-[#0B0E14] border border-[#2E384D] rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:border-primary focus:outline-none"
+                  data-testid="input-defense-comment"
+                />
+              </div>
+            </div>
 
-              <Button
-                type="submit"
-                disabled={mutation.isPending || composition.length < 10}
-                className="w-full bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700"
-                data-testid="button-submit-defense"
-              >
-                {mutation.isPending ? (
-                  <span className="flex items-center gap-2">
-                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    Envoi en cours...
-                  </span>
-                ) : (
-                  <span className="flex items-center gap-2">
-                    <Send className="w-4 h-4" />
-                    Envoyer ma réponse
-                  </span>
-                )}
-              </Button>
-
-              {mutation.isError && (
-                <p className="text-red-400 text-sm text-center">{mutation.error.message}</p>
+            <Button
+              type="submit"
+              disabled={mutation.isPending || !hasAnyQuantity}
+              className="w-full bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700"
+              data-testid="button-submit-defense"
+            >
+              {mutation.isPending ? (
+                <span className="flex items-center gap-2">
+                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  Envoi en cours...
+                </span>
+              ) : (
+                <span className="flex items-center gap-2">
+                  <Send className="w-4 h-4" />
+                  Envoyer ma composition de défense
+                </span>
               )}
-            </form>
-          )}
-        </div>
-      )}
+            </Button>
+
+            {mutation.isError && (
+              <p className="text-red-400 text-sm text-center">{mutation.error.message}</p>
+            )}
+          </form>
+        )}
+      </div>
     </motion.div>
   );
 }
