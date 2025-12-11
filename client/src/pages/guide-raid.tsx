@@ -122,7 +122,7 @@ export default function GuideRaid() {
                   <div className="bg-green-900/20 border border-green-700/30 rounded-lg p-4">
                     <h3 className="font-bold text-green-400 mb-2">Le matin (6h-9h)</h3>
                     <p className="text-gray-300 text-sm mb-2">
-                      Les ressources de nuit se sont accumulées. Les joueurs n'ont pas encore FS.
+                      Les ressources de nuit se sont accumulées. Les joueurs n'ont pas encore ghost.
                     </p>
                     <p className="text-green-300 text-xs font-bold">
                       Meilleur moment pour les inactifs et les planètes banques.
@@ -132,7 +132,7 @@ export default function GuideRaid() {
                   <div className="bg-amber-900/20 border border-amber-700/30 rounded-lg p-4">
                     <h3 className="font-bold text-amber-400 mb-2">Midi (12h-14h)</h3>
                     <p className="text-gray-300 text-sm mb-2">
-                      Pause déjeuner. Beaucoup de joueurs sont AFK sans avoir FS.
+                      Pause déjeuner. Beaucoup de joueurs sont AFK sans avoir ghost.
                     </p>
                     <p className="text-amber-300 text-xs font-bold">
                       Bon pour les joueurs actifs qui travaillent.
@@ -145,7 +145,7 @@ export default function GuideRaid() {
                       Raids longs sans surveillance. La cible dort.
                     </p>
                     <p className="text-blue-300 text-xs font-bold">
-                      Idéal pour les MB et raids sur flottes en FS court.
+                      Idéal pour les MB et raids sur flottes en ghost court.
                     </p>
                   </div>
                 </div>
@@ -182,18 +182,18 @@ export default function GuideRaid() {
 
                   <div className="bg-[#151924] rounded-lg p-4">
                     <div className="flex items-center justify-between mb-2">
-                      <h3 className="font-bold text-white">Banque / Gros inactif</h3>
+                      <h3 className="font-bold text-white">Bunker</h3>
                       <span className="text-xs bg-orange-500/20 text-orange-400 px-2 py-1 rounded">Avancé</span>
                     </div>
                     <p className="text-gray-300 text-sm mb-2">
-                      <strong className="text-primary">Traqueurs + GT</strong> - Puissance de feu et grande capacité de fret.
+                      <strong className="text-primary">Flotte lourde BB/DD/GT</strong> - Puissance de feu et grande capacité de fret.
                     </p>
                     <p className="text-gray-500 text-xs">Envoyez en waves pour éviter les DG.</p>
                   </div>
 
                   <div className="bg-[#151924] rounded-lg p-4">
                     <div className="flex items-center justify-between mb-2">
-                      <h3 className="font-bold text-white">Flotte en FS (interception)</h3>
+                      <h3 className="font-bold text-white">Flotte en Ghost / Opé (interception)</h3>
                       <span className="text-xs bg-red-500/20 text-red-400 px-2 py-1 rounded">Expert</span>
                     </div>
                     <p className="text-gray-300 text-sm mb-2">
