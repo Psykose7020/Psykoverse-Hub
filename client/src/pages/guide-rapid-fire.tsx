@@ -93,80 +93,29 @@ export default function GuideRapidFire() {
                 </div>
               </div>
 
-              <div className="bg-[#1C2230] border border-[#2E384D] rounded-xl p-6">
+              <div className="bg-green-900/20 border border-green-700/30 rounded-xl p-6">
                 <div className="flex items-center gap-3 mb-4">
-                  <Calculator className="w-6 h-6 text-green-400" />
-                  <h2 className="font-display text-xl font-bold text-white">La formule de probabilité</h2>
+                  <Zap className="w-6 h-6 text-green-400" />
+                  <h2 className="font-display text-xl font-bold text-green-400">L'essentiel à retenir</h2>
                 </div>
-                <div className="space-y-4 text-gray-300">
-                  <p>Si un vaisseau a un Rapid Fire de <strong className="text-primary">X</strong> contre un type d'unité :</p>
-                  
-                  <div className="bg-[#151924] rounded-lg p-4 text-center">
-                    <p className="text-2xl font-mono text-primary mb-2">
-                      Probabilité de tirer à nouveau = 1 - (1/X)
-                    </p>
-                    <p className="text-sm text-gray-500">Ou plus simplement : (X - 1) / X</p>
-                  </div>
-
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-sm">
-                      <thead>
-                        <tr className="border-b border-[#2E384D]">
-                          <th className="text-left py-3 px-4 text-gray-400">Rapid Fire</th>
-                          <th className="text-left py-3 px-4 text-gray-400">Calcul</th>
-                          <th className="text-left py-3 px-4 text-gray-400">Probabilité de continuer</th>
-                          <th className="text-left py-3 px-4 text-gray-400">Probabilité d'arrêt</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr className="border-b border-[#2E384D]/50">
-                          <td className="py-3 px-4 text-white font-bold">RF 3</td>
-                          <td className="py-3 px-4 text-gray-400">1 - (1/3)</td>
-                          <td className="py-3 px-4 text-green-400 font-bold">66.67%</td>
-                          <td className="py-3 px-4 text-red-400">33.33%</td>
-                        </tr>
-                        <tr className="border-b border-[#2E384D]/50">
-                          <td className="py-3 px-4 text-white font-bold">RF 5</td>
-                          <td className="py-3 px-4 text-gray-400">1 - (1/5)</td>
-                          <td className="py-3 px-4 text-green-400 font-bold">80%</td>
-                          <td className="py-3 px-4 text-red-400">20%</td>
-                        </tr>
-                        <tr className="border-b border-[#2E384D]/50">
-                          <td className="py-3 px-4 text-white font-bold">RF 10</td>
-                          <td className="py-3 px-4 text-gray-400">1 - (1/10)</td>
-                          <td className="py-3 px-4 text-green-400 font-bold">90%</td>
-                          <td className="py-3 px-4 text-red-400">10%</td>
-                        </tr>
-                        <tr className="border-b border-[#2E384D]/50">
-                          <td className="py-3 px-4 text-white font-bold">RF 20</td>
-                          <td className="py-3 px-4 text-gray-400">1 - (1/20)</td>
-                          <td className="py-3 px-4 text-green-400 font-bold">95%</td>
-                          <td className="py-3 px-4 text-red-400">5%</td>
-                        </tr>
-                        <tr>
-                          <td className="py-3 px-4 text-white font-bold">RF 250</td>
-                          <td className="py-3 px-4 text-gray-400">1 - (1/250)</td>
-                          <td className="py-3 px-4 text-green-400 font-bold">99.6%</td>
-                          <td className="py-3 px-4 text-red-400">0.4%</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-
-                  <div className="bg-green-900/20 border border-green-700/30 rounded-lg p-4">
-                    <p className="text-sm text-green-300">
-                      <strong>Point clé :</strong> En moyenne, un vaisseau avec RF = X tirera <strong>X fois</strong> sur des cibles 
-                      contre lesquelles il a du Rapid Fire. Par exemple, un Croiseur avec RF 10 contre les Lance-Missiles 
-                      tirera en moyenne 10 fois s'il ne rencontre que des Lance-Missiles.
-                    </p>
-                  </div>
+                <div className="space-y-3 text-gray-300">
+                  <p>
+                    <strong className="text-white">Plus le RF est élevé, plus le vaisseau tire de fois.</strong>
+                  </p>
+                  <p>
+                    En moyenne, un vaisseau avec <strong className="text-primary">RF 10</strong> tirera <strong className="text-white">10 fois</strong> sur 
+                    les cibles concernées. C'est pour ça qu'un seul Bombardier peut détruire 20 Lance-Missiles en un round !
+                  </p>
+                  <p className="text-sm text-gray-400">
+                    Pour les formules détaillées, consultez le <Link href="/guide/formules" className="text-primary hover:underline">guide des formules</Link>.
+                  </p>
                 </div>
               </div>
 
               <div className="bg-[#1C2230] border border-[#2E384D] rounded-xl p-6">
                 <div className="flex items-center gap-3 mb-4">
                   <Percent className="w-6 h-6 text-yellow-400" />
-                  <h2 className="font-display text-xl font-bold text-white">Exemple concret pas à pas</h2>
+                  <h2 className="font-display text-xl font-bold text-white">Exemple concret</h2>
                 </div>
                 <div className="space-y-4 text-gray-300">
                   <p>Imaginons un <strong className="text-white">Croiseur</strong> qui attaque une planète défendue par :</p>
