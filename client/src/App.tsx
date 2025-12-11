@@ -61,6 +61,7 @@ import Soutenir from "@/pages/soutenir";
 import NotreHistoire from "@/pages/notre-histoire";
 import RulesBash from "@/pages/rules-bash";
 import Classement from "@/pages/classement";
+import SurveyCompositions from "@/pages/survey-compositions";
 
 function ScrollToTop() {
   const [location] = useLocation();
@@ -126,6 +127,7 @@ function Router() {
       <Route path="/classement" component={Classement} />
       <Route path="/soutenir" component={Soutenir} />
       <Route path="/notre-histoire" component={NotreHistoire} />
+      <Route path="/sondage-compositions" component={SurveyCompositions} />
       <Route component={NotFound} />
     </Switch>
   );

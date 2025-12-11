@@ -1,7 +1,23 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
-import { Lock, Users, Eye, Calendar, TrendingUp, ExternalLink, LogOut, BarChart3, Globe, MessageCircle, Mail, Archive, CheckCircle, Clock, ChevronRight, X, Edit, BookOpen, Trash2 } from "lucide-react";
+import { Lock, Users, Eye, Calendar, TrendingUp, ExternalLink, LogOut, BarChart3, Globe, MessageCircle, Mail, Archive, CheckCircle, Clock, ChevronRight, X, Edit, BookOpen, Trash2, Rocket, Shield, Download } from "lucide-react";
 import { AdminGuidesManager } from "../components/AdminGuidesManager";
+
+interface FleetComposition {
+  id: string;
+  composition: string;
+  strategy: string | null;
+  universe: string | null;
+  createdAt: string;
+}
+
+interface DefenseComposition {
+  id: string;
+  composition: string;
+  strategy: string | null;
+  universe: string | null;
+  createdAt: string;
+}
 
 interface Feedback {
   id: string;
@@ -58,8 +74,11 @@ export default function Admin() {
   const [token, setToken] = useState("");
   const [feedbackList, setFeedbackList] = useState<Feedback[]>([]);
   const [selectedFeedback, setSelectedFeedback] = useState<Feedback | null>(null);
-  const [activeTab, setActiveTab] = useState<"stats" | "feedback" | "leaderboard" | "guides">("stats");
+  const [activeTab, setActiveTab] = useState<"stats" | "feedback" | "leaderboard" | "guides" | "compositions">("stats");
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
+  const [fleetCompositions, setFleetCompositions] = useState<FleetComposition[]>([]);
+  const [defenseCompositions, setDefenseCompositions] = useState<DefenseComposition[]>([]);
+  const [exportingExcel, setExportingExcel] = useState(false);
 
   useEffect(() => {
     const savedToken = localStorage.getItem("adminToken");
@@ -75,15 +94,18 @@ export default function Admin() {
       fetchGeoData();
       fetchFeedback();
       fetchLeaderboard();
+      fetchCompositions();
       const interval = setInterval(fetchStats, 30000);
       const geoInterval = setInterval(fetchGeoData, 60000);
       const feedbackInterval = setInterval(fetchFeedback, 30000);
       const leaderboardInterval = setInterval(fetchLeaderboard, 60000);
+      const compositionsInterval = setInterval(fetchCompositions, 60000);
       return () => {
         clearInterval(interval);
         clearInterval(geoInterval);
         clearInterval(feedbackInterval);
         clearInterval(leaderboardInterval);
+        clearInterval(compositionsInterval);
       };
     }
   }, [isLoggedIn, token]);
@@ -143,6 +165,45 @@ export default function Admin() {
       }
     } catch (err) {
       console.error("Failed to fetch leaderboard:", err);
+    }
+  };
+
+  const fetchCompositions = async () => {
+    try {
+      const res = await fetch("/api/admin/compositions", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setFleetCompositions(data.fleet || []);
+        setDefenseCompositions(data.defense || []);
+      }
+    } catch (err) {
+      console.error("Failed to fetch compositions:", err);
+    }
+  };
+
+  const exportCompositionsExcel = async () => {
+    setExportingExcel(true);
+    try {
+      const res = await fetch("/api/admin/compositions/export", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.ok) {
+        const blob = await res.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "compositions_psykoverse.xlsx";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      }
+    } catch (err) {
+      console.error("Failed to export compositions:", err);
+    } finally {
+      setExportingExcel(false);
     }
   };
 
@@ -400,6 +461,21 @@ export default function Admin() {
           >
             <MessageCircle className="w-4 h-4" />
             Guides
+          </button>
+          <button
+            onClick={() => setActiveTab("compositions")}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+              activeTab === "compositions" 
+                ? "bg-gradient-to-r from-orange-500 to-red-500 text-white" 
+                : "bg-[#1E2A3A] text-gray-400 hover:text-white"
+            }`}
+            data-testid="tab-compositions"
+          >
+            <Rocket className="w-4 h-4" />
+            Compositions
+            <span className="text-xs bg-white/20 px-2 py-0.5 rounded-full">
+              {fleetCompositions.length + defenseCompositions.length}
+            </span>
           </button>
         </div>
 
@@ -858,6 +934,118 @@ export default function Admin() {
               </div>
             </div>
             <AdminGuidesManager token={token} />
+          </div>
+        )}
+
+        {activeTab === "compositions" && (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg flex items-center justify-center">
+                  <BarChart3 className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold text-white">Sondage Compositions</h2>
+                  <p className="text-gray-500 text-sm">Réponses collectées auprès de la communauté</p>
+                </div>
+              </div>
+              <button
+                onClick={exportCompositionsExcel}
+                disabled={exportingExcel}
+                className="flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white px-4 py-2 rounded-lg transition-colors disabled:opacity-50"
+                data-testid="button-export-excel"
+              >
+                {exportingExcel ? (
+                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                ) : (
+                  <Download className="w-4 h-4" />
+                )}
+                Télécharger Excel
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              <div className="bg-[#12161F] border border-[#1E2A3A] rounded-lg p-6">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg flex items-center justify-center text-white">
+                    <Rocket className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <p className="text-gray-400 text-sm">Compositions Flotte</p>
+                    <p className="text-2xl font-bold text-white">{fleetCompositions.length}</p>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-[#12161F] border border-[#1E2A3A] rounded-lg p-6">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center text-white">
+                    <Shield className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <p className="text-gray-400 text-sm">Compositions Défense</p>
+                    <p className="text-2xl font-bold text-white">{defenseCompositions.length}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-[#12161F] border border-[#1E2A3A] rounded-xl p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <Rocket className="w-5 h-5 text-orange-400" />
+                <h3 className="text-lg font-bold text-white">Compositions de Flotte</h3>
+              </div>
+              {fleetCompositions.length === 0 ? (
+                <p className="text-gray-500 text-center py-8">Aucune composition de flotte soumise</p>
+              ) : (
+                <div className="space-y-3 max-h-[400px] overflow-y-auto">
+                  {fleetCompositions.map((comp) => (
+                    <div key={comp.id} className="bg-[#1E2A3A] rounded-lg p-4">
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex-1">
+                          <p className="text-white whitespace-pre-wrap">{comp.composition}</p>
+                          {comp.strategy && (
+                            <p className="text-gray-400 text-sm mt-2 italic">Stratégie: {comp.strategy}</p>
+                          )}
+                        </div>
+                        <div className="text-right text-xs text-gray-500 flex-shrink-0">
+                          {comp.universe && <p className="bg-primary/20 text-primary px-2 py-0.5 rounded mb-1">{comp.universe}</p>}
+                          <p>{new Date(comp.createdAt).toLocaleDateString("fr-FR")}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="bg-[#12161F] border border-[#1E2A3A] rounded-xl p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <Shield className="w-5 h-5 text-cyan-400" />
+                <h3 className="text-lg font-bold text-white">Compositions de Défense</h3>
+              </div>
+              {defenseCompositions.length === 0 ? (
+                <p className="text-gray-500 text-center py-8">Aucune composition de défense soumise</p>
+              ) : (
+                <div className="space-y-3 max-h-[400px] overflow-y-auto">
+                  {defenseCompositions.map((comp) => (
+                    <div key={comp.id} className="bg-[#1E2A3A] rounded-lg p-4">
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex-1">
+                          <p className="text-white whitespace-pre-wrap">{comp.composition}</p>
+                          {comp.strategy && (
+                            <p className="text-gray-400 text-sm mt-2 italic">Stratégie: {comp.strategy}</p>
+                          )}
+                        </div>
+                        <div className="text-right text-xs text-gray-500 flex-shrink-0">
+                          {comp.universe && <p className="bg-primary/20 text-primary px-2 py-0.5 rounded mb-1">{comp.universe}</p>}
+                          <p>{new Date(comp.createdAt).toLocaleDateString("fr-FR")}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         )}
       </div>
