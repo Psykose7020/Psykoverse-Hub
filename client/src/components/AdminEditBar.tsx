@@ -86,7 +86,7 @@ export function AdminEditBar() {
     return (
       <button
         onClick={toggleEditMode}
-        className="fixed bottom-4 right-4 z-[9999] bg-cyan-600 hover:bg-cyan-500 text-white px-4 py-3 rounded-full shadow-lg shadow-cyan-500/30 flex items-center gap-2 font-medium transition-all hover:scale-105"
+        className="fixed bottom-24 right-6 z-[9999] bg-cyan-600 hover:bg-cyan-500 text-white px-4 py-3 rounded-full shadow-lg shadow-cyan-500/30 flex items-center gap-2 font-medium transition-all hover:scale-105"
         data-testid="button-enable-edit-mode"
       >
         <Pencil className="w-5 h-5" />
@@ -99,7 +99,7 @@ export function AdminEditBar() {
     return (
       <button
         onClick={handleExpand}
-        className="fixed bottom-4 right-4 z-[9999] bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white w-14 h-14 rounded-full shadow-lg shadow-cyan-500/40 flex items-center justify-center transition-all hover:scale-110 animate-pulse"
+        className="fixed bottom-24 right-6 z-[9999] bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white w-14 h-14 rounded-full shadow-lg shadow-cyan-500/40 flex items-center justify-center transition-all hover:scale-110 animate-pulse"
         title="Mode Édition actif - Cliquez pour développer"
         data-testid="button-expand-edit-bar"
       >
