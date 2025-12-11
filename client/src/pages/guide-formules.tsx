@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Calculator, Factory, Rocket, Shield, FlaskConical, Zap, Clock, Fuel, ChevronRight, Info, RefreshCw } from "lucide-react";
+import { Calculator, Factory, Rocket, Shield, FlaskConical, Zap, Clock, Fuel, ChevronRight, Info, RefreshCw, ChevronDown, ChevronUp, Sparkles } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
@@ -38,11 +38,19 @@ function ProductionCalculator() {
   const [fusionLevel, setFusionLevel] = useState(0);
   const [ecoSpeed, setEcoSpeed] = useState(1);
   const [tempMax, setTempMax] = useState(40);
+  const [showBonuses, setShowBonuses] = useState(false);
+  const [playerClass, setPlayerClass] = useState("none");
+  const [allianceClass, setAllianceClass] = useState("none");
+  const [lifeformBonus, setLifeformBonus] = useState(0);
 
-  const metalProd = Math.round(30 * metalLevel * Math.pow(1.1, metalLevel) * ecoSpeed);
-  const crystalProd = Math.round(20 * crystalLevel * Math.pow(1.1, crystalLevel) * ecoSpeed);
+  const playerClassBonus = playerClass === "collector" ? 0.25 : 0;
+  const allianceClassBonus = allianceClass === "trader" ? 0.05 : 0;
+  const totalBonus = 1 + playerClassBonus + allianceClassBonus + (lifeformBonus / 100);
+
+  const metalProd = Math.round(30 * metalLevel * Math.pow(1.1, metalLevel) * ecoSpeed * totalBonus);
+  const crystalProd = Math.round(20 * crystalLevel * Math.pow(1.1, crystalLevel) * ecoSpeed * totalBonus);
   const tempFactor = 1.36 - 0.004 * tempMax;
-  const deutProd = Math.round(10 * deutLevel * Math.pow(1.1, deutLevel) * tempFactor * ecoSpeed);
+  const deutProd = Math.round(10 * deutLevel * Math.pow(1.1, deutLevel) * tempFactor * ecoSpeed * totalBonus);
   
   const metalConso = Math.round(10 * metalLevel * Math.pow(1.1, metalLevel));
   const crystalConso = Math.round(10 * crystalLevel * Math.pow(1.1, crystalLevel));
@@ -93,6 +101,69 @@ function ProductionCalculator() {
                 className="bg-[#0B0E14] border border-[#2E384D] rounded px-3 py-1 text-white w-20 text-right"
               />
             </div>
+            
+            <button
+              onClick={() => setShowBonuses(!showBonuses)}
+              className="w-full flex items-center justify-between p-3 bg-purple-900/20 border border-purple-700/30 rounded-lg hover:bg-purple-900/30 transition-colors"
+            >
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-purple-400" />
+                <span className="text-purple-300 font-medium">Bonus (Classes & FdV)</span>
+                {totalBonus > 1 && (
+                  <span className="text-xs bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded-full">
+                    +{Math.round((totalBonus - 1) * 100)}%
+                  </span>
+                )}
+              </div>
+              {showBonuses ? <ChevronUp className="w-4 h-4 text-purple-400" /> : <ChevronDown className="w-4 h-4 text-purple-400" />}
+            </button>
+            
+            {showBonuses && (
+              <div className="space-y-3 p-4 bg-purple-900/10 border border-purple-700/20 rounded-lg">
+                <div className="flex items-center justify-between">
+                  <label className="text-purple-300 text-sm">Classe Joueur</label>
+                  <select 
+                    value={playerClass} 
+                    onChange={(e) => setPlayerClass(e.target.value)}
+                    className="bg-[#0B0E14] border border-purple-700/30 rounded px-3 py-1 text-white text-sm"
+                  >
+                    <option value="none">Aucune</option>
+                    <option value="collector">Collecteur (+25%)</option>
+                    <option value="general">Général (0%)</option>
+                    <option value="explorer">Explorateur (0%)</option>
+                  </select>
+                </div>
+                <div className="flex items-center justify-between">
+                  <label className="text-purple-300 text-sm">Classe Alliance</label>
+                  <select 
+                    value={allianceClass} 
+                    onChange={(e) => setAllianceClass(e.target.value)}
+                    className="bg-[#0B0E14] border border-purple-700/30 rounded px-3 py-1 text-white text-sm"
+                  >
+                    <option value="none">Aucune</option>
+                    <option value="trader">Marchand (+5%)</option>
+                    <option value="warrior">Guerrier (0%)</option>
+                    <option value="researcher">Chercheur (0%)</option>
+                  </select>
+                </div>
+                <div className="flex items-center justify-between">
+                  <label className="text-purple-300 text-sm">Bonus Formes de Vie (%)</label>
+                  <input 
+                    type="number" 
+                    value={lifeformBonus} 
+                    onChange={(e) => setLifeformBonus(Math.max(0, Math.min(100, Number(e.target.value))))}
+                    className="bg-[#0B0E14] border border-purple-700/30 rounded px-3 py-1 text-white w-20 text-right text-sm"
+                    min="0"
+                    max="100"
+                    placeholder="0"
+                  />
+                </div>
+                <p className="text-xs text-gray-500 italic">
+                  Le bonus FdV varie selon vos bâtiments et recherches de formes de vie.
+                </p>
+              </div>
+            )}
+            
             <hr className="border-[#2E384D]" />
             {[
               { label: "Mine de Métal", value: metalLevel, setter: setMetalLevel, color: "text-gray-400" },
