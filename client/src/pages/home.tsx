@@ -255,13 +255,13 @@ export default function Home() {
           >
             <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-4">
               <Sparkles className="w-4 h-4" />
-              Votre aventure commence ici
+              <EditableText id="home-sections-badge" defaultValue="Votre aventure commence ici" as="span" className="" />
             </motion.div>
             <motion.h2 variants={fadeInUp} className="font-display text-3xl md:text-4xl font-bold text-white mb-4">
-              Découvrez nos sections
+              <EditableText id="home-sections-title" defaultValue="Découvrez nos sections" as="span" className="font-display text-3xl md:text-4xl font-bold text-white" />
             </motion.h2>
             <motion.p variants={fadeInUp} className="text-gray-400 max-w-xl mx-auto">
-              Guides, communauté et ressources pour dominer l'univers
+              <EditableText id="home-sections-desc" defaultValue="Guides, communauté et ressources pour dominer l'univers" as="span" className="text-gray-400" />
             </motion.p>
           </motion.div>
 
@@ -309,7 +309,7 @@ export default function Home() {
             className="text-center mb-12"
           >
             <motion.h2 variants={fadeInUp} className="font-display text-3xl md:text-4xl font-bold text-white mb-4">
-              Pourquoi ce site ?
+              <EditableText id="home-why-title" defaultValue="Pourquoi ce site ?" as="span" className="font-display text-3xl md:text-4xl font-bold text-white" />
             </motion.h2>
           </motion.div>
 
@@ -352,11 +352,10 @@ export default function Home() {
                 Nos univers
               </div>
               <h2 className="font-display text-3xl md:text-4xl font-bold text-white mb-4">
-                Où nous trouver ?
+                <EditableText id="home-universes-title" defaultValue="Où nous trouver ?" as="span" className="font-display text-3xl md:text-4xl font-bold text-white" />
               </h2>
               <p className="text-gray-400 mb-8">
-                Psykoverse est présent sur plusieurs univers OGame.fr. Rejoignez-nous sur l'un d'entre eux 
-                ou attendez le nouveau serveur Saison du 19 décembre !
+                <EditableText id="home-universes-desc" defaultValue="Psykoverse est présent sur plusieurs univers OGame.fr. Rejoignez-nous sur l'un d'entre eux ou attendez le nouveau serveur Saison du 19 décembre !" as="span" className="text-gray-400" multiline />
               </p>
               <Button asChild>
                 <Link href="/alliance" data-testid="btn-alliance">

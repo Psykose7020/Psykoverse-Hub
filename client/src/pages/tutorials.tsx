@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
+import { EditableText } from "@/components/EditableText";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -216,11 +217,21 @@ export default function Tutorials() {
               <BookOpen className="w-4 h-4" />
               {totalGuides} guides disponibles
             </motion.div>
-            <motion.h1 variants={fadeInUp} className="font-display text-4xl md:text-5xl font-bold text-white mb-4">
-              Guides & Tutoriels
-            </motion.h1>
+            <motion.div variants={fadeInUp} className="mb-4">
+              <EditableText
+                id="tutorials-hero-title"
+                defaultValue="Guides & Tutoriels"
+                as="h1"
+                className="font-display text-4xl md:text-5xl font-bold text-white"
+              />
+            </motion.div>
             <motion.p variants={fadeInUp} className="text-gray-400 max-w-2xl mx-auto text-lg mb-8">
-              Apprenez à maîtriser OGame avec nos guides complets rédigés par la communauté
+              <EditableText
+                id="tutorials-hero-description"
+                defaultValue="Apprenez à maîtriser OGame avec nos guides complets rédigés par la communauté"
+                as="span"
+                multiline
+              />
             </motion.p>
 
             <motion.div variants={fadeInUp} className="max-w-xl mx-auto mb-8">

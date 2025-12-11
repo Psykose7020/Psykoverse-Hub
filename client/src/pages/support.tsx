@@ -1,6 +1,7 @@
 import { MessageSquare, ShieldAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Layout from "@/components/layout/Layout";
+import { EditableText } from "@/components/EditableText";
 
 export default function Support() {
   return (
@@ -14,8 +15,19 @@ export default function Support() {
                 <ShieldAlert className="w-10 h-10 text-primary animate-pulse" />
               </div>
 
-              <h1 className="font-display text-3xl font-bold text-white mb-2">CENTRE DE SUPPORT</h1>
-              <p className="text-primary font-mono text-sm uppercase tracking-widest mb-8">Psykoverse Alliance</p>
+              <EditableText
+                id="support-hero-title"
+                defaultValue="CENTRE DE SUPPORT"
+                as="h1"
+                className="font-display text-3xl font-bold text-white mb-2"
+              />
+              <p className="text-primary font-mono text-sm uppercase tracking-widest mb-8">
+                <EditableText
+                  id="support-subtitle"
+                  defaultValue="Psykoverse Alliance"
+                  as="span"
+                />
+              </p>
 
               <div className="bg-[#1F2532] p-6 rounded border border-[#2A3241] mb-8 text-left">
                 <h3 className="text-white font-bold mb-4 flex items-center gap-2">
@@ -31,7 +43,12 @@ export default function Support() {
               </div>
 
               <p className="text-gray-500 text-sm mb-8">
-                Notre équipe de modération est disponible pour répondre à vos questions sur OGame, régler les conflits ou gérer les demandes de recrutement.
+                <EditableText
+                  id="support-description"
+                  defaultValue="Notre équipe de modération est disponible pour répondre à vos questions sur OGame, régler les conflits ou gérer les demandes de recrutement."
+                  as="span"
+                  multiline
+                />
               </p>
 
               <Button size="lg" className="w-full bg-[#5865F2] hover:bg-[#4752C4] text-white font-display font-bold uppercase tracking-widest h-14 rounded shadow-lg transition-all" asChild>

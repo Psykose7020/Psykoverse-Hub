@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Rocket, Calendar, CheckCircle, Clock, Target, Users, Tv, Globe } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
+import { EditableText } from "@/components/EditableText";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -95,12 +96,20 @@ export default function Projects() {
           >
             <motion.div variants={fadeInUp} className="flex items-center justify-center gap-3 mb-4">
               <Rocket className="w-8 h-8 text-primary" />
-              <h1 className="font-display text-3xl md:text-5xl font-bold text-white">
-                Projets à venir
-              </h1>
+              <EditableText
+                id="projects-hero-title"
+                defaultValue="Projets à venir"
+                as="h1"
+                className="font-display text-3xl md:text-5xl font-bold text-white"
+              />
             </motion.div>
             <motion.p variants={fadeInUp} className="text-gray-400 max-w-2xl mx-auto">
-              Découvrez notre feuille de route et les événements à ne pas manquer !
+              <EditableText
+                id="projects-hero-description"
+                defaultValue="Découvrez notre feuille de route et les événements à ne pas manquer !"
+                as="span"
+                multiline
+              />
             </motion.p>
           </motion.div>
 

@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Globe, Star, Calendar, Users, Zap, ExternalLink } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
+import { EditableText } from "@/components/EditableText";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -70,12 +71,20 @@ export default function Alliance() {
           >
             <motion.div variants={fadeInUp} className="flex items-center justify-center gap-3 mb-4">
               <Globe className="w-8 h-8 text-primary" />
-              <h1 className="font-display text-3xl md:text-5xl font-bold text-white">
-                Où nous trouver
-              </h1>
+              <EditableText
+                id="alliance-hero-title"
+                defaultValue="Où nous trouver"
+                as="h1"
+                className="font-display text-3xl md:text-5xl font-bold text-white"
+              />
             </motion.div>
             <motion.p variants={fadeInUp} className="text-gray-400 max-w-2xl mx-auto">
-              La Psykoverse est présente sur plusieurs univers OGame. Rejoignez-nous là où vous jouez !
+              <EditableText
+                id="alliance-hero-description"
+                defaultValue="La Psykoverse est présente sur plusieurs univers OGame. Rejoignez-nous là où vous jouez !"
+                as="span"
+                multiline
+              />
             </motion.p>
           </motion.div>
 
