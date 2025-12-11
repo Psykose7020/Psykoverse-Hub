@@ -43,6 +43,13 @@ function getRoadmapItems(youtubeSubscribers: number | null) {
     },
     {
       status: "planned",
+      date: "Fin Décembre 2025",
+      title: "Version 2.1 - Intégration Outils OGame",
+      description: "Intégration des outils communautaires : OGame Infinity, OGlight, PTRE, OGame Tracker et autres extensions essentielles pour optimiser votre gameplay.",
+      icon: Target
+    },
+    {
+      status: "planned",
       date: "En continu",
       title: "Présence sur les Saisons",
       description: "Participation à chaque nouveau serveur saison OGame pour vivre l'expérience avec la communauté.",
