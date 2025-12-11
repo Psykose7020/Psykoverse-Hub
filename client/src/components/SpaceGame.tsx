@@ -40,12 +40,12 @@ function getShipScale(structure: number): number {
   const logMax = Math.log(MAX_STRUCTURE);
   const logValue = Math.log(normalized);
   const ratio = (logValue - logMin) / (logMax - logMin);
-  return 0.875 + ratio * 0.25;
+  return 0.75 + ratio * 0.5;
 }
 
 function getScoreMultiplier(structure: number): number {
   const scale = getShipScale(structure);
-  return 0.8 + (scale - 0.875) * 1.6;
+  return 0.6 + (scale - 0.75) * 1.6;
 }
 
 const PLANET_VARIANTS = [
