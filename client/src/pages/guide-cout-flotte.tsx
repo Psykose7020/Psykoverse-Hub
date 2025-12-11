@@ -1,10 +1,38 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Rocket, Shield, Calculator, Info, ChevronDown, ChevronUp } from "lucide-react";
+import { Rocket, Shield, Calculator, RotateCcw } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import RelatedGuides from "@/components/RelatedGuides";
+
+import imgPetitTransporteur from "@assets/ogame_ships/petit-transporteur.png";
+import imgGrandTransporteur from "@assets/ogame_ships/grand-transporteur.png";
+import imgRecycleur from "@assets/ogame_ships/recycleur.png";
+import imgChasseurLeger from "@assets/ogame_ships/chasseur-leger.png";
+import imgChasseurLourd from "@assets/ogame_ships/chasseur-lourd.png";
+import imgCroiseur from "@assets/ogame_ships/croiseur.png";
+import imgVaisseauBataille from "@assets/ogame_ships/vaisseau-bataille.png";
+import imgVaisseauColonisation from "@assets/ogame_ships/vaisseau-colonisation.png";
+import imgBombardier from "@assets/ogame_ships/bombardier.png";
+import imgDestructeur from "@assets/ogame_ships/destructeur.png";
+import imgTraqueur from "@assets/ogame_ships/traqueur.png";
+import imgEtoileMort from "@assets/ogame_ships/etoile-mort.png";
+import imgFaucheur from "@assets/ogame_ships/faucheur.png";
+import imgEclaireur from "@assets/ogame_ships/eclaireur.png";
+import imgSondeEspionnage from "@assets/ogame_ships/sonde-espionnage.png";
+import imgForeuse from "@assets/ogame_ships/foreuse.png";
+import imgSatelliteSolaire from "@assets/ogame_ships/satellite-solaire.png";
+import imgLanceurMissiles from "@assets/ogame_ships/lanceur-missiles.png";
+import imgLaserLeger from "@assets/ogame_ships/laser-leger.png";
+import imgLaserLourd from "@assets/ogame_ships/laser-lourd.png";
+import imgCanonGauss from "@assets/ogame_ships/canon-gauss.png";
+import imgArtillerieIons from "@assets/ogame_ships/artillerie-ions.png";
+import imgLanceurPlasma from "@assets/ogame_ships/lanceur-plasma.png";
+import imgPetitBouclier from "@assets/ogame_ships/petit-bouclier.png";
+import imgGrandBouclier from "@assets/ogame_ships/grand-bouclier.png";
+import imgMissileInterception from "@assets/ogame_ships/missile-interception.png";
+import imgMissileInterplanetaire from "@assets/ogame_ships/missile-interplanetaire.png";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -22,15 +50,18 @@ function formatNumber(num: number): string {
 type ShipData = {
   id: string;
   name: string;
+  abbrev: string;
   image: string;
   metal: number;
   crystal: number;
   deut: number;
+  category: "combat" | "civil";
 };
 
 type DefenseData = {
   id: string;
   name: string;
+  abbrev: string;
   image: string;
   metal: number;
   crystal: number;
@@ -38,43 +69,41 @@ type DefenseData = {
 };
 
 const ships: ShipData[] = [
-  { id: "pt", name: "Petit Transporteur", image: "/attached_assets/ogame_ships/petit-transporteur.png", metal: 2000, crystal: 2000, deut: 0 },
-  { id: "gt", name: "Grand Transporteur", image: "/attached_assets/ogame_ships/grand-transporteur.png", metal: 6000, crystal: 6000, deut: 0 },
-  { id: "cl", name: "Chasseur Léger", image: "/attached_assets/ogame_ships/chasseur-leger.png", metal: 3000, crystal: 1000, deut: 0 },
-  { id: "ch", name: "Chasseur Lourd", image: "/attached_assets/ogame_ships/chasseur-lourd.png", metal: 6000, crystal: 4000, deut: 0 },
-  { id: "croiseur", name: "Croiseur", image: "/attached_assets/ogame_ships/croiseur.png", metal: 20000, crystal: 7000, deut: 2000 },
-  { id: "vb", name: "Vaisseau de Bataille", image: "/attached_assets/ogame_ships/vaisseau-bataille.png", metal: 45000, crystal: 15000, deut: 0 },
-  { id: "colo", name: "Vaisseau Colonisation", image: "/attached_assets/ogame_ships/vaisseau-colonisation.png", metal: 10000, crystal: 20000, deut: 10000 },
-  { id: "recycleur", name: "Recycleur", image: "/attached_assets/ogame_ships/recycleur.png", metal: 10000, crystal: 6000, deut: 2000 },
-  { id: "sonde", name: "Sonde Espionnage", image: "/attached_assets/ogame_ships/sonde-espionnage.png", metal: 0, crystal: 1000, deut: 0 },
-  { id: "bombardier", name: "Bombardier", image: "/attached_assets/ogame_ships/bombardier.png", metal: 50000, crystal: 25000, deut: 15000 },
-  { id: "destructeur", name: "Destructeur", image: "/attached_assets/ogame_ships/destructeur.png", metal: 60000, crystal: 50000, deut: 15000 },
-  { id: "traqueur", name: "Traqueur", image: "/attached_assets/ogame_ships/traqueur.png", metal: 30000, crystal: 40000, deut: 15000 },
-  { id: "edlm", name: "Étoile de la Mort", image: "/attached_assets/ogame_ships/etoile-mort.png", metal: 5000000, crystal: 4000000, deut: 1000000 },
-  { id: "eclaireur", name: "Éclaireur", image: "/attached_assets/ogame_ships/eclaireur.png", metal: 8000, crystal: 15000, deut: 8000 },
-  { id: "faucheur", name: "Faucheur", image: "/attached_assets/ogame_ships/faucheur.png", metal: 85000, crystal: 55000, deut: 20000 },
-  { id: "foreuse", name: "Foreuse", image: "/attached_assets/ogame_ships/foreuse.png", metal: 2000, crystal: 2000, deut: 1000 },
-  { id: "satellite", name: "Satellite Solaire", image: "/attached_assets/ogame_ships/satellite-solaire.png", metal: 0, crystal: 2000, deut: 500 },
+  { id: "cl", name: "Chasseur Léger", abbrev: "CL", image: imgChasseurLeger, metal: 3000, crystal: 1000, deut: 0, category: "combat" },
+  { id: "ch", name: "Chasseur Lourd", abbrev: "CLo", image: imgChasseurLourd, metal: 6000, crystal: 4000, deut: 0, category: "combat" },
+  { id: "croiseur", name: "Croiseur", abbrev: "CR", image: imgCroiseur, metal: 20000, crystal: 7000, deut: 2000, category: "combat" },
+  { id: "vb", name: "Vaisseau de Bataille", abbrev: "VB", image: imgVaisseauBataille, metal: 45000, crystal: 15000, deut: 0, category: "combat" },
+  { id: "bombardier", name: "Bombardier", abbrev: "BB", image: imgBombardier, metal: 50000, crystal: 25000, deut: 15000, category: "combat" },
+  { id: "destructeur", name: "Destructeur", abbrev: "DEST", image: imgDestructeur, metal: 60000, crystal: 50000, deut: 15000, category: "combat" },
+  { id: "traqueur", name: "Traqueur", abbrev: "TRAQ", image: imgTraqueur, metal: 30000, crystal: 40000, deut: 15000, category: "combat" },
+  { id: "edlm", name: "Étoile de la Mort", abbrev: "EDM", image: imgEtoileMort, metal: 5000000, crystal: 4000000, deut: 1000000, category: "combat" },
+  { id: "faucheur", name: "Faucheur", abbrev: "FAUCH", image: imgFaucheur, metal: 85000, crystal: 55000, deut: 20000, category: "combat" },
+  { id: "eclaireur", name: "Éclaireur", abbrev: "ECL", image: imgEclaireur, metal: 8000, crystal: 15000, deut: 8000, category: "combat" },
+  { id: "pt", name: "Petit Transporteur", abbrev: "PT", image: imgPetitTransporteur, metal: 2000, crystal: 2000, deut: 0, category: "civil" },
+  { id: "gt", name: "Grand Transporteur", abbrev: "GT", image: imgGrandTransporteur, metal: 6000, crystal: 6000, deut: 0, category: "civil" },
+  { id: "recycleur", name: "Recycleur", abbrev: "REC", image: imgRecycleur, metal: 10000, crystal: 6000, deut: 2000, category: "civil" },
+  { id: "sonde", name: "Sonde Espionnage", abbrev: "SE", image: imgSondeEspionnage, metal: 0, crystal: 1000, deut: 0, category: "civil" },
+  { id: "colo", name: "Vaisseau Colonisation", abbrev: "COLO", image: imgVaisseauColonisation, metal: 10000, crystal: 20000, deut: 10000, category: "civil" },
+  { id: "foreuse", name: "Foreuse", abbrev: "FOR", image: imgForeuse, metal: 2000, crystal: 2000, deut: 1000, category: "civil" },
+  { id: "satellite", name: "Satellite Solaire", abbrev: "SAT", image: imgSatelliteSolaire, metal: 0, crystal: 2000, deut: 500, category: "civil" },
 ];
 
 const defenses: DefenseData[] = [
-  { id: "lm", name: "Lanceur de Missiles", image: "/attached_assets/ogame_ships/lanceur-missiles.png", metal: 2000, crystal: 0, deut: 0 },
-  { id: "ll", name: "Artillerie Laser Légère", image: "/attached_assets/ogame_ships/laser-leger.png", metal: 1500, crystal: 500, deut: 0 },
-  { id: "lh", name: "Artillerie Laser Lourde", image: "/attached_assets/ogame_ships/laser-lourd.png", metal: 6000, crystal: 2000, deut: 0 },
-  { id: "gauss", name: "Canon de Gauss", image: "/attached_assets/ogame_ships/canon-gauss.png", metal: 20000, crystal: 15000, deut: 2000 },
-  { id: "ions", name: "Artillerie à Ions", image: "/attached_assets/ogame_ships/artillerie-ions.png", metal: 5000, crystal: 3000, deut: 0 },
-  { id: "plasma", name: "Lanceur de Plasma", image: "/attached_assets/ogame_ships/lanceur-plasma.png", metal: 50000, crystal: 50000, deut: 30000 },
-  { id: "pb", name: "Petit Bouclier", image: "/attached_assets/ogame_ships/petit-bouclier.png", metal: 10000, crystal: 10000, deut: 0 },
-  { id: "gb", name: "Grand Bouclier", image: "/attached_assets/ogame_ships/grand-bouclier.png", metal: 50000, crystal: 50000, deut: 0 },
-  { id: "mi", name: "Missile Interception", image: "/attached_assets/ogame_ships/missile-interception.png", metal: 8000, crystal: 0, deut: 2000 },
-  { id: "mip", name: "Missile Interplanétaire", image: "/attached_assets/ogame_ships/missile-interplanetaire.png", metal: 12500, crystal: 2500, deut: 10000 },
+  { id: "lm", name: "Lanceur de Missiles", abbrev: "LM", image: imgLanceurMissiles, metal: 2000, crystal: 0, deut: 0 },
+  { id: "ll", name: "Artillerie Laser Légère", abbrev: "LL", image: imgLaserLeger, metal: 1500, crystal: 500, deut: 0 },
+  { id: "lh", name: "Artillerie Laser Lourde", abbrev: "LLo", image: imgLaserLourd, metal: 6000, crystal: 2000, deut: 0 },
+  { id: "gauss", name: "Canon de Gauss", abbrev: "Gauss", image: imgCanonGauss, metal: 20000, crystal: 15000, deut: 2000 },
+  { id: "ions", name: "Artillerie à Ions", abbrev: "Ion", image: imgArtillerieIons, metal: 5000, crystal: 3000, deut: 0 },
+  { id: "plasma", name: "Lanceur de Plasma", abbrev: "Plasma", image: imgLanceurPlasma, metal: 50000, crystal: 50000, deut: 30000 },
+  { id: "pb", name: "Petit Bouclier", abbrev: "PB", image: imgPetitBouclier, metal: 10000, crystal: 10000, deut: 0 },
+  { id: "gb", name: "Grand Bouclier", abbrev: "GB", image: imgGrandBouclier, metal: 50000, crystal: 50000, deut: 0 },
+  { id: "mi", name: "Missile Interception", abbrev: "MI", image: imgMissileInterception, metal: 8000, crystal: 0, deut: 2000 },
+  { id: "mip", name: "Missile Interplanétaire", abbrev: "MIP", image: imgMissileInterplanetaire, metal: 12500, crystal: 2500, deut: 10000 },
 ];
 
 export default function GuideCoutFlotte() {
   const [activeTab, setActiveTab] = useState<"fleet" | "defense">("fleet");
   const [quantities, setQuantities] = useState<Record<string, number>>({});
-  const [showAllShips, setShowAllShips] = useState(false);
-  const [showAllDefenses, setShowAllDefenses] = useState(false);
 
   const updateQuantity = (id: string, value: number) => {
     setQuantities(prev => ({ ...prev, [id]: Math.max(0, value) }));
@@ -97,8 +126,8 @@ export default function GuideCoutFlotte() {
 
   const resetAll = () => setQuantities({});
 
-  const displayedShips = showAllShips ? ships : ships.slice(0, 8);
-  const displayedDefenses = showAllDefenses ? defenses : defenses.slice(0, 6);
+  const combatShips = ships.filter(s => s.category === "combat");
+  const civilShips = ships.filter(s => s.category === "civil");
 
   return (
     <Layout>
@@ -136,6 +165,7 @@ export default function GuideCoutFlotte() {
                     ? "bg-gradient-to-r from-blue-600 to-cyan-600 text-white shadow-lg shadow-blue-500/20"
                     : "bg-[#1C2230] text-gray-400 hover:text-white border border-[#2E384D]"
                 }`}
+                data-testid="tab-fleet"
               >
                 <Rocket className="w-5 h-5" />
                 Flotte
@@ -147,6 +177,7 @@ export default function GuideCoutFlotte() {
                     ? "bg-gradient-to-r from-orange-600 to-red-600 text-white shadow-lg shadow-orange-500/20"
                     : "bg-[#1C2230] text-gray-400 hover:text-white border border-[#2E384D]"
                 }`}
+                data-testid="tab-defense"
               >
                 <Shield className="w-5 h-5" />
                 Défenses
@@ -172,234 +203,154 @@ export default function GuideCoutFlotte() {
                     </h2>
                     <button
                       onClick={resetAll}
-                      className="text-sm text-gray-400 hover:text-white transition-colors"
+                      className="flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors"
+                      data-testid="button-reset"
                     >
+                      <RotateCcw className="w-4 h-4" />
                       Réinitialiser
                     </button>
                   </div>
 
                   {activeTab === "fleet" ? (
-                    <>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        {displayedShips.map(ship => (
-                          <div
-                            key={ship.id}
-                            className="flex items-center gap-3 p-3 bg-[#151924] rounded-lg hover:bg-[#1a1f2e] transition-colors"
-                          >
-                            <img
-                              src={ship.image}
-                              alt={ship.name}
-                              className="w-12 h-12 object-contain"
-                              onError={(e) => {
-                                (e.target as HTMLImageElement).style.display = 'none';
-                              }}
-                            />
-                            <div className="flex-1 min-w-0">
-                              <p className="text-white text-sm font-medium truncate">{ship.name}</p>
-                              <p className="text-gray-500 text-xs">
-                                {formatNumber(ship.metal + ship.crystal + ship.deut)} total
-                              </p>
+                    <div className="space-y-6">
+                      <div>
+                        <h3 className="text-sm font-medium text-orange-400 mb-3">Vaisseaux de combat</h3>
+                        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">
+                          {combatShips.map(ship => (
+                            <div key={ship.id} className="bg-[#0B0E14] border border-[#2E384D] rounded-lg p-2 hover:border-orange-500/50 transition-colors">
+                              <div className="aspect-square mb-2 rounded overflow-hidden bg-[#151924]">
+                                <img src={ship.image} alt={ship.name} className="w-full h-full object-cover" />
+                              </div>
+                              <p className="text-[10px] text-gray-400 text-center mb-1 truncate" title={ship.name}>{ship.abbrev}</p>
+                              <input
+                                type="number"
+                                min="0"
+                                value={quantities[ship.id] || ""}
+                                onChange={(e) => updateQuantity(ship.id, parseInt(e.target.value) || 0)}
+                                placeholder="0"
+                                className="w-full bg-[#1C2230] border border-[#2E384D] rounded px-2 py-1 text-center text-sm text-orange-400 focus:border-orange-500 focus:outline-none"
+                                data-testid={`input-ship-${ship.id}`}
+                              />
                             </div>
-                            <input
-                              type="number"
-                              value={quantities[ship.id] || ""}
-                              onChange={(e) => updateQuantity(ship.id, parseInt(e.target.value) || 0)}
-                              placeholder="0"
-                              className="w-20 bg-[#0B0E14] border border-[#2E384D] rounded px-2 py-1 text-white text-right text-sm"
-                            />
-                          </div>
-                        ))}
+                          ))}
+                        </div>
                       </div>
-                      {ships.length > 8 && (
-                        <button
-                          onClick={() => setShowAllShips(!showAllShips)}
-                          className="w-full mt-4 flex items-center justify-center gap-2 p-2 text-gray-400 hover:text-white transition-colors"
-                        >
-                          {showAllShips ? (
-                            <>
-                              <ChevronUp className="w-4 h-4" />
-                              Voir moins
-                            </>
-                          ) : (
-                            <>
-                              <ChevronDown className="w-4 h-4" />
-                              Voir tous les vaisseaux ({ships.length})
-                            </>
-                          )}
-                        </button>
-                      )}
-                    </>
-                  ) : (
-                    <>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        {displayedDefenses.map(def => (
-                          <div
-                            key={def.id}
-                            className="flex items-center gap-3 p-3 bg-[#151924] rounded-lg hover:bg-[#1a1f2e] transition-colors"
-                          >
-                            <img
-                              src={def.image}
-                              alt={def.name}
-                              className="w-12 h-12 object-contain"
-                              onError={(e) => {
-                                (e.target as HTMLImageElement).style.display = 'none';
-                              }}
-                            />
-                            <div className="flex-1 min-w-0">
-                              <p className="text-white text-sm font-medium truncate">{def.name}</p>
-                              <p className="text-gray-500 text-xs">
-                                {formatNumber(def.metal + def.crystal + def.deut)} total
-                              </p>
+
+                      <div>
+                        <h3 className="text-sm font-medium text-cyan-400 mb-3">Vaisseaux civils</h3>
+                        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">
+                          {civilShips.map(ship => (
+                            <div key={ship.id} className="bg-[#0B0E14] border border-[#2E384D] rounded-lg p-2 hover:border-cyan-500/50 transition-colors">
+                              <div className="aspect-square mb-2 rounded overflow-hidden bg-[#151924]">
+                                <img src={ship.image} alt={ship.name} className="w-full h-full object-cover" />
+                              </div>
+                              <p className="text-[10px] text-gray-400 text-center mb-1 truncate" title={ship.name}>{ship.abbrev}</p>
+                              <input
+                                type="number"
+                                min="0"
+                                value={quantities[ship.id] || ""}
+                                onChange={(e) => updateQuantity(ship.id, parseInt(e.target.value) || 0)}
+                                placeholder="0"
+                                className="w-full bg-[#1C2230] border border-[#2E384D] rounded px-2 py-1 text-center text-sm text-cyan-400 focus:border-cyan-500 focus:outline-none"
+                                data-testid={`input-ship-${ship.id}`}
+                              />
                             </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div>
+                      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">
+                        {defenses.map(def => (
+                          <div key={def.id} className="bg-[#0B0E14] border border-[#2E384D] rounded-lg p-2 hover:border-red-500/50 transition-colors">
+                            <div className="aspect-square mb-2 rounded overflow-hidden bg-[#151924]">
+                              <img src={def.image} alt={def.name} className="w-full h-full object-cover" />
+                            </div>
+                            <p className="text-[10px] text-gray-400 text-center mb-1 truncate" title={def.name}>{def.abbrev}</p>
                             <input
                               type="number"
+                              min="0"
                               value={quantities[def.id] || ""}
                               onChange={(e) => updateQuantity(def.id, parseInt(e.target.value) || 0)}
                               placeholder="0"
-                              className="w-20 bg-[#0B0E14] border border-[#2E384D] rounded px-2 py-1 text-white text-right text-sm"
+                              className="w-full bg-[#1C2230] border border-[#2E384D] rounded px-2 py-1 text-center text-sm text-red-400 focus:border-red-500 focus:outline-none"
+                              data-testid={`input-defense-${def.id}`}
                             />
                           </div>
                         ))}
                       </div>
-                      {defenses.length > 6 && (
-                        <button
-                          onClick={() => setShowAllDefenses(!showAllDefenses)}
-                          className="w-full mt-4 flex items-center justify-center gap-2 p-2 text-gray-400 hover:text-white transition-colors"
-                        >
-                          {showAllDefenses ? (
-                            <>
-                              <ChevronUp className="w-4 h-4" />
-                              Voir moins
-                            </>
-                          ) : (
-                            <>
-                              <ChevronDown className="w-4 h-4" />
-                              Voir toutes les défenses ({defenses.length})
-                            </>
-                          )}
-                        </button>
-                      )}
-                    </>
+                    </div>
                   )}
                 </div>
               </div>
 
-              <div className="space-y-6">
+              <div className="lg:col-span-1">
                 <div className="bg-[#1C2230] border border-[#2E384D] rounded-xl p-6 sticky top-6">
-                  <h3 className="font-bold text-white mb-4 flex items-center gap-2">
-                    <Calculator className="w-5 h-5 text-primary" />
-                    Coût Total
-                  </h3>
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center p-3 bg-[#151924] rounded-lg">
-                      <span className="text-gray-400">Métal</span>
-                      <span className="font-mono text-lg text-gray-300">{formatNumber(currentTotal.metal)}</span>
-                    </div>
-                    <div className="flex justify-between items-center p-3 bg-[#151924] rounded-lg">
-                      <span className="text-cyan-400">Cristal</span>
-                      <span className="font-mono text-lg text-cyan-300">{formatNumber(currentTotal.crystal)}</span>
-                    </div>
-                    <div className="flex justify-between items-center p-3 bg-[#151924] rounded-lg">
-                      <span className="text-teal-400">Deutérium</span>
-                      <span className="font-mono text-lg text-teal-300">{formatNumber(currentTotal.deut)}</span>
-                    </div>
-                    <hr className="border-[#2E384D]" />
-                    <div className="flex justify-between items-center p-4 bg-gradient-to-r from-primary/20 to-cyan-900/20 border border-primary/30 rounded-lg">
-                      <span className="text-primary font-bold">Total</span>
-                      <span className="font-mono text-xl text-white">{formatNumber(currentTotal.total)}</span>
-                    </div>
-                  </div>
+                  <h2 className="font-display text-xl font-bold text-white mb-6 flex items-center gap-3">
+                    <Calculator className="w-6 h-6 text-primary" />
+                    Total
+                  </h2>
 
-                  <div className="mt-6 p-4 bg-primary/10 border border-primary/30 rounded-lg">
-                    <div className="flex items-start gap-2">
-                      <Info className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                      <div className="text-sm text-gray-400">
-                        <p>Les coûts affichés sont les coûts unitaires de base.</p>
-                        <p className="mt-1">Multipliés par la quantité saisie.</p>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between p-3 bg-[#151924] rounded-lg">
+                      <div className="flex items-center gap-2">
+                        <div className="w-4 h-4 rounded bg-gradient-to-br from-gray-400 to-gray-600"></div>
+                        <span className="text-gray-300">Métal</span>
+                      </div>
+                      <span className="text-white font-bold" data-testid="text-total-metal">{formatNumber(currentTotal.metal)}</span>
+                    </div>
+
+                    <div className="flex items-center justify-between p-3 bg-[#151924] rounded-lg">
+                      <div className="flex items-center gap-2">
+                        <div className="w-4 h-4 rounded bg-gradient-to-br from-cyan-400 to-blue-600"></div>
+                        <span className="text-gray-300">Cristal</span>
+                      </div>
+                      <span className="text-white font-bold" data-testid="text-total-crystal">{formatNumber(currentTotal.crystal)}</span>
+                    </div>
+
+                    <div className="flex items-center justify-between p-3 bg-[#151924] rounded-lg">
+                      <div className="flex items-center gap-2">
+                        <div className="w-4 h-4 rounded bg-gradient-to-br from-green-400 to-emerald-600"></div>
+                        <span className="text-gray-300">Deutérium</span>
+                      </div>
+                      <span className="text-white font-bold" data-testid="text-total-deut">{formatNumber(currentTotal.deut)}</span>
+                    </div>
+
+                    <div className="border-t border-[#2E384D] pt-4">
+                      <div className="flex items-center justify-between p-3 bg-gradient-to-r from-primary/20 to-cyan-900/20 rounded-lg border border-primary/30">
+                        <span className="text-primary font-medium">Total ressources</span>
+                        <span className="text-white font-bold text-lg" data-testid="text-total-all">{formatNumber(currentTotal.total)}</span>
                       </div>
                     </div>
                   </div>
+
+                  <div className="mt-6 p-4 bg-[#151924] rounded-lg">
+                    <h3 className="text-sm font-medium text-gray-400 mb-3">Détail par unité</h3>
+                    <div className="space-y-2 max-h-48 overflow-y-auto">
+                      {(activeTab === "fleet" ? ships : defenses)
+                        .filter(item => (quantities[item.id] || 0) > 0)
+                        .map(item => {
+                          const qty = quantities[item.id] || 0;
+                          const itemTotal = item.metal + item.crystal + item.deut;
+                          return (
+                            <div key={item.id} className="flex items-center justify-between text-sm">
+                              <span className="text-gray-300">{qty.toLocaleString("fr-FR")}× {item.abbrev}</span>
+                              <span className="text-gray-500">{formatNumber(itemTotal * qty)}</span>
+                            </div>
+                          );
+                        })}
+                      {Object.values(quantities).every(q => !q || q === 0) && (
+                        <p className="text-gray-500 text-sm text-center py-2">Aucune unité sélectionnée</p>
+                      )}
+                    </div>
+                  </div>
                 </div>
-
-                {activeTab === "fleet" && fleetTotal.total > 0 && (
-                  <div className="bg-blue-900/20 border border-blue-700/30 rounded-xl p-4">
-                    <h4 className="font-bold text-blue-300 mb-2 text-sm">Points de flotte</h4>
-                    <p className="font-mono text-xl text-blue-200">
-                      {formatNumber(fleetTotal.total / 1000)} pts
-                    </p>
-                  </div>
-                )}
-
-                {activeTab === "defense" && defenseTotal.total > 0 && (
-                  <div className="bg-orange-900/20 border border-orange-700/30 rounded-xl p-4">
-                    <h4 className="font-bold text-orange-300 mb-2 text-sm">Points de défense</h4>
-                    <p className="font-mono text-xl text-orange-200">
-                      {formatNumber(defenseTotal.total / 1000)} pts
-                    </p>
-                  </div>
-                )}
               </div>
             </div>
 
             <div className="mt-8">
-              <div className="bg-[#1C2230] border border-[#2E384D] rounded-xl p-6">
-                <h3 className="font-bold text-white mb-4">Tableau des coûts unitaires</h3>
-                <div className="overflow-x-auto">
-                  {activeTab === "fleet" ? (
-                    <table className="w-full text-sm">
-                      <thead>
-                        <tr className="border-b border-[#2E384D]">
-                          <th className="text-left py-2 px-3 text-gray-400 font-medium">Vaisseau</th>
-                          <th className="text-right py-2 px-3 text-gray-400 font-medium">Métal</th>
-                          <th className="text-right py-2 px-3 text-cyan-400 font-medium">Cristal</th>
-                          <th className="text-right py-2 px-3 text-teal-400 font-medium">Deut</th>
-                          <th className="text-right py-2 px-3 text-white font-medium">Total</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {ships.map(ship => (
-                          <tr key={ship.id} className="border-b border-[#2E384D]/50 hover:bg-[#151924]">
-                            <td className="py-2 px-3 text-white">{ship.name}</td>
-                            <td className="text-right py-2 px-3 text-gray-300 font-mono">{formatNumber(ship.metal)}</td>
-                            <td className="text-right py-2 px-3 text-cyan-300 font-mono">{formatNumber(ship.crystal)}</td>
-                            <td className="text-right py-2 px-3 text-teal-300 font-mono">{formatNumber(ship.deut)}</td>
-                            <td className="text-right py-2 px-3 text-white font-mono font-bold">{formatNumber(ship.metal + ship.crystal + ship.deut)}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  ) : (
-                    <table className="w-full text-sm">
-                      <thead>
-                        <tr className="border-b border-[#2E384D]">
-                          <th className="text-left py-2 px-3 text-gray-400 font-medium">Défense</th>
-                          <th className="text-right py-2 px-3 text-gray-400 font-medium">Métal</th>
-                          <th className="text-right py-2 px-3 text-cyan-400 font-medium">Cristal</th>
-                          <th className="text-right py-2 px-3 text-teal-400 font-medium">Deut</th>
-                          <th className="text-right py-2 px-3 text-white font-medium">Total</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {defenses.map(def => (
-                          <tr key={def.id} className="border-b border-[#2E384D]/50 hover:bg-[#151924]">
-                            <td className="py-2 px-3 text-white">{def.name}</td>
-                            <td className="text-right py-2 px-3 text-gray-300 font-mono">{formatNumber(def.metal)}</td>
-                            <td className="text-right py-2 px-3 text-cyan-300 font-mono">{formatNumber(def.crystal)}</td>
-                            <td className="text-right py-2 px-3 text-teal-300 font-mono">{formatNumber(def.deut)}</td>
-                            <td className="text-right py-2 px-3 text-white font-mono font-bold">{formatNumber(def.metal + def.crystal + def.deut)}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-12">
-              <RelatedGuides 
-                currentGuide="cout-flotte"
-              />
+              <RelatedGuides currentGuide="cout-flotte" />
             </div>
           </motion.div>
         </div>
