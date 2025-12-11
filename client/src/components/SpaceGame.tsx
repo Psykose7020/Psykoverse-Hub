@@ -227,7 +227,7 @@ export default function SpaceGame() {
       await fetch("/api/leaderboard", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ pseudo: pseudo.trim(), univers: univers.trim() || "-", score })
+        body: JSON.stringify({ pseudo: pseudo.trim(), univers: univers.trim() || "-", score: Math.floor(score) })
       });
       setSubmitted(true);
     } catch (err) {
