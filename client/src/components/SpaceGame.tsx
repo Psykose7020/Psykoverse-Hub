@@ -366,38 +366,33 @@ export default function SpaceGame() {
 
   return (
     <div ref={containerRef} className="block">
-      <div className="relative mb-3 p-3 bg-gradient-to-r from-purple-900/40 via-primary/20 to-cyan-900/40 rounded-xl border border-primary/30 overflow-hidden">
-        <div className="absolute inset-0 opacity-30" style={{ backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
-        <div className="relative flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="relative">
-              <div className="w-12 h-12 bg-gradient-to-br from-primary via-purple-500 to-pink-500 rounded-xl flex items-center justify-center animate-pulse shadow-lg shadow-primary/30">
-                <Gamepad2 className="w-6 h-6 text-white" />
-              </div>
-              <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full flex items-center justify-center animate-bounce">
-                <span className="text-[8px] text-white font-bold">!</span>
-              </div>
+      <div className="relative mb-4 p-4 bg-gradient-to-br from-[#0a1628] to-[#1a1a2e] rounded-2xl border border-primary/20 shadow-xl shadow-primary/5">
+        <div className="flex items-center gap-4">
+          <div className="relative shrink-0">
+            <div className="w-14 h-14 bg-gradient-to-br from-primary/80 to-purple-600/80 rounded-xl flex items-center justify-center shadow-lg">
+              <Gamepad2 className="w-7 h-7 text-white" />
             </div>
-            <div>
-              <h3 className="font-display font-bold text-white text-lg flex items-center gap-2">
-                🚀 Space Escape
-                <span className="text-[10px] bg-gradient-to-r from-yellow-400 to-orange-500 text-black px-2 py-0.5 rounded-full font-bold animate-pulse">
-                  MINI-JEU
-                </span>
-              </h3>
-              <p className="text-gray-400 text-xs">Évite les planètes et bats ton record !</p>
+            <div className="absolute -top-1 -right-1 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center border-2 border-[#0a1628]">
+              <span className="text-[9px] text-white font-bold">▶</span>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <Link 
-              href="/classement" 
-              className="bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors flex items-center gap-1 border border-yellow-500/30"
-              data-testid="link-leaderboard"
-            >
-              <Trophy className="w-4 h-4" />
-              Classement
-            </Link>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 mb-1">
+              <h3 className="font-display font-bold text-white text-base sm:text-lg">Space Escape</h3>
+              <span className="text-[9px] bg-primary/30 text-primary px-2 py-0.5 rounded font-semibold uppercase tracking-wide">
+                Mini-jeu
+              </span>
+            </div>
+            <p className="text-gray-500 text-xs">Évite les planètes et bats ton record</p>
           </div>
+          <Link 
+            href="/classement" 
+            className="shrink-0 group flex items-center gap-2 bg-[#1E2A3A] hover:bg-[#2A3A4A] px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 border border-white/5 hover:border-primary/30"
+            data-testid="link-leaderboard"
+          >
+            <Trophy className="w-4 h-4 text-yellow-500" />
+            <span className="text-white/80 group-hover:text-white hidden sm:inline">Classement</span>
+          </Link>
         </div>
       </div>
 
