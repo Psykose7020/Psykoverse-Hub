@@ -79,7 +79,7 @@ function ProductionCalculator() {
                 onChange={(e) => setEcoSpeed(Number(e.target.value))}
                 className="bg-[#0B0E14] border border-[#2E384D] rounded px-3 py-1 text-white"
               >
-                {[1,2,3,4,5,6,7,8].map(s => <option key={s} value={s}>x{s}</option>)}
+                {[1,2,3,4,5,6,7,8,9,10].map(s => <option key={s} value={s}>x{s}</option>)}
               </select>
             </div>
             <div className="flex items-center justify-between">
@@ -301,7 +301,7 @@ function BuildingCostCalculator() {
                 <input 
                   type="range" 
                   min="1" 
-                  max="50" 
+                  max="55" 
                   value={level} 
                   onChange={(e) => setLevel(Number(e.target.value))}
                   className="flex-1"
@@ -583,7 +583,7 @@ function SpeedCalculator() {
                 onChange={(e) => setFleetSpeed(Number(e.target.value))}
                 className="bg-[#0B0E14] border border-[#2E384D] rounded px-3 py-1 text-white"
               >
-                {[1,2,3,4,5,6,7,8].map(s => <option key={s} value={s}>x{s}</option>)}
+                {[1,2,3,4,5,6,7,8,9,10].map(s => <option key={s} value={s}>x{s}</option>)}
               </select>
             </div>
             
@@ -873,7 +873,7 @@ function ConstructionTimeCalculator() {
                 onChange={(e) => setEcoSpeed(Number(e.target.value))}
                 className="bg-[#0B0E14] border border-[#2E384D] rounded px-3 py-1 text-white"
               >
-                {[1,2,3,4,5,6,7,8].map(s => <option key={s} value={s}>x{s}</option>)}
+                {[1,2,3,4,5,6,7,8,9,10].map(s => <option key={s} value={s}>x{s}</option>)}
               </select>
             </div>
             <hr className="border-[#2E384D]" />
