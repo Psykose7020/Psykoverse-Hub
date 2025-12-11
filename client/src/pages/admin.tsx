@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { Lock, Users, Eye, Calendar, TrendingUp, ExternalLink, LogOut, BarChart3, Globe, MessageCircle, Mail, Archive, CheckCircle, Clock, ChevronRight, X, Edit } from "lucide-react";
-import { useEditMode } from "../contexts/EditModeContext";
 
 interface Feedback {
   id: string;
@@ -817,10 +816,10 @@ export default function Admin() {
 
 function EditModeButton() {
   const [, setLocation] = useLocation();
-  const { enableEditMode } = useEditMode();
   
   const handleClick = () => {
-    enableEditMode();
+    localStorage.setItem("editModeActive", "true");
+    window.dispatchEvent(new Event("editModeChanged"));
     setLocation("/");
   };
   
