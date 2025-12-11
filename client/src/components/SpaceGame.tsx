@@ -405,18 +405,21 @@ export default function SpaceGame() {
             {Array.from({ length: 60 }).map((_, i) => {
               const seed = Math.sin(i * 9999) * 10000;
               const randomX = Math.abs(seed % 100);
-              const speed = 2.5 + (Math.abs(Math.sin(i * 1234) * 10000) % 3);
+              const speed = 0.8 + (Math.abs(Math.sin(i * 1234) * 10000) % 10) / 10;
               const size = 1 + (i % 2);
+              const startY = Math.abs(Math.sin(i * 5678) * 10000) % 360;
+              const yPos = ((startY + score * speed) % 380) - 30;
               return (
                 <div
                   key={`star-${i}`}
                   className="absolute pointer-events-none rounded-full bg-white"
                   style={{
                     left: `${randomX}%`,
-                    top: `${((Math.abs(Math.sin(i * 5678) * 10000) % 100 + score * speed) % 140) - 20}%`,
+                    transform: `translate3d(0, ${yPos}px, 0)`,
                     width: size,
                     height: size,
                     opacity: 0.5 + (i % 3) * 0.15,
+                    willChange: 'transform',
                   }}
                 />
               );
