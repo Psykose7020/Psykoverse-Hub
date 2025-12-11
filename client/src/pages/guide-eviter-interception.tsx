@@ -108,7 +108,7 @@ export default function GuideEviterInterception() {
 
                   <div className="bg-primary/10 border border-primary/30 rounded-lg p-4">
                     <p className="text-primary text-sm">
-                      <strong>Limite :</strong> Le décalage ne peut se faire que s'il est inférieur à 10% de la durée restante du vol.
+                      <strong>Limite :</strong> Le décalage ne peut se faire que s'il est inférieur à 30% de la durée restante du vol.
                     </p>
                   </div>
                 </div>
