@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { Bomb, ExternalLink, AlertTriangle, Target, Shield } from "lucide-react";
+import { Bomb, ExternalLink, AlertTriangle, Target, Shield, Calculator, Sparkles } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
@@ -11,6 +12,11 @@ const fadeInUp = {
 };
 
 export default function GuideMoonbreak() {
+  const [moonSize, setMoonSize] = useState(8944);
+  const [ripCount, setRipCount] = useState(10);
+  
+  const destructionChance = Math.max(0, Math.min(100, (100 - Math.sqrt(moonSize)) * Math.sqrt(ripCount)));
+  const ripLossChance = Math.sqrt(moonSize) / 2;
   return (
     <Layout>
       <section className="py-12 md:py-20">
@@ -142,13 +148,132 @@ export default function GuideMoonbreak() {
                         <td className="py-2 px-3 text-red-400">~45%</td>
                       </tr>
                       <tr className="border-b border-[#2E384D]/50">
-                        <td className="py-2 px-3 text-white">~8 944 km (max)</td>
+                        <td className="py-2 px-3 text-white">~8 944 km (max standard)</td>
                         <td className="py-2 px-3 text-gray-300">10+ RIP</td>
                         <td className="py-2 px-3 text-green-400">~40%</td>
                         <td className="py-2 px-3 text-red-400">~47%</td>
                       </tr>
+                      <tr className="border-b border-[#2E384D]/50">
+                        <td className="py-2 px-3 text-purple-400">~9 400+ km (Kaelesh)</td>
+                        <td className="py-2 px-3 text-gray-300">15+ RIP</td>
+                        <td className="py-2 px-3 text-green-400">~33%</td>
+                        <td className="py-2 px-3 text-red-400">~48%</td>
+                      </tr>
                     </tbody>
                   </table>
+                </div>
+              </div>
+
+              <div className="bg-[#1C2230] border border-[#2E384D] rounded-xl p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <Calculator className="w-6 h-6 text-primary" />
+                  <h2 className="font-display text-xl font-bold text-white">Calculateur MoonBreak</h2>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                  <div>
+                    <label className="block text-gray-400 text-sm mb-2">Taille de la lune (km)</label>
+                    <input
+                      type="number"
+                      value={moonSize}
+                      onChange={(e) => setMoonSize(Math.max(1, parseInt(e.target.value) || 0))}
+                      className="w-full bg-[#151924] border border-[#2E384D] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary"
+                      min="1"
+                      max="15000"
+                      data-testid="input-moon-size"
+                    />
+                    <input
+                      type="range"
+                      value={moonSize}
+                      onChange={(e) => setMoonSize(parseInt(e.target.value))}
+                      min="1000"
+                      max="12000"
+                      className="w-full mt-2 accent-primary"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-gray-400 text-sm mb-2">Nombre de RIP</label>
+                    <input
+                      type="number"
+                      value={ripCount}
+                      onChange={(e) => setRipCount(Math.max(1, parseInt(e.target.value) || 0))}
+                      className="w-full bg-[#151924] border border-[#2E384D] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary"
+                      min="1"
+                      max="1000"
+                      data-testid="input-rip-count"
+                    />
+                    <input
+                      type="range"
+                      value={ripCount}
+                      onChange={(e) => setRipCount(parseInt(e.target.value))}
+                      min="1"
+                      max="50"
+                      className="w-full mt-2 accent-primary"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-green-900/20 border border-green-700/30 rounded-lg p-4 text-center">
+                    <p className="text-gray-400 text-sm mb-1">Chance de destruction</p>
+                    <p className="text-4xl font-bold text-green-400" data-testid="text-destruction-chance">
+                      {destructionChance.toFixed(1)}%
+                    </p>
+                  </div>
+                  <div className="bg-red-900/20 border border-red-700/30 rounded-lg p-4 text-center">
+                    <p className="text-gray-400 text-sm mb-1">Chance de perte des RIP</p>
+                    <p className="text-4xl font-bold text-red-400" data-testid="text-rip-loss-chance">
+                      {ripLossChance.toFixed(1)}%
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-4 text-center text-gray-500 text-sm">
+                  {destructionChance > ripLossChance ? (
+                    <span className="text-green-400">Le MB est favorable (destruction &gt; perte RIP)</span>
+                  ) : destructionChance < ripLossChance ? (
+                    <span className="text-red-400">Le MB est risqué (perte RIP &gt; destruction)</span>
+                  ) : (
+                    <span className="text-amber-400">Risque équilibré</span>
+                  )}
+                </div>
+              </div>
+
+              <div className="bg-purple-900/20 border border-purple-700/30 rounded-xl p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <Sparkles className="w-6 h-6 text-purple-400" />
+                  <h2 className="font-display text-xl font-bold text-purple-400">Tip : Les Kaelesh et leurs lunes géantes</h2>
+                </div>
+                <p className="text-gray-300 mb-4">
+                  Les <strong className="text-purple-400">Kaelesh</strong> (Forme de Vie) possèdent un bâtiment spécial qui 
+                  <strong className="text-white"> augmente les chances d'obtenir une lune</strong> et surtout 
+                  <strong className="text-white"> la taille de celle-ci</strong>.
+                </p>
+                <div className="bg-[#151924] rounded-lg p-4 mb-4">
+                  <p className="text-gray-300 text-sm">
+                    Grâce à ce bonus, il est possible d'avoir des lunes de <strong className="text-purple-400">plus de 9 400 km</strong>, 
+                    voire au-delà ! Cela change radicalement les probabilités de MoonBreak :
+                  </p>
+                  <ul className="text-gray-300 text-sm mt-3 space-y-2">
+                    <li className="flex items-start gap-2">
+                      <span className="text-purple-400">•</span>
+                      <span>Lune 8 944 km : <strong className="text-red-400">~47%</strong> de perte RIP</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-purple-400">•</span>
+                      <span>Lune 9 400 km : <strong className="text-red-400">~48%</strong> de perte RIP, mais destruction <strong className="text-green-400">réduite à ~33%</strong></span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-purple-400">•</span>
+                      <span>Lune 10 000+ km : La destruction devient <strong className="text-white">extrêmement difficile</strong></span>
+                    </li>
+                  </ul>
+                </div>
+                <div className="bg-purple-800/20 border border-purple-600/30 rounded-lg p-4">
+                  <p className="text-purple-300 text-sm font-bold">
+                    C'est un véritable game-changer défensif ! Les joueurs Kaelesh avec des lunes géantes sont 
+                    beaucoup plus difficiles à MB, rendant leur fleetsave bien plus sûr.
+                  </p>
                 </div>
               </div>
 
