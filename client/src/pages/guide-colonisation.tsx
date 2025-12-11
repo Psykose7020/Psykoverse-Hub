@@ -134,9 +134,14 @@ export default function GuideColonisation() {
                     </tbody>
                   </table>
                 </div>
-                <p className="text-xs text-gray-500 mt-4">
-                  * Classe Explorateur : +10% de cases. Les bonus d'alliance peuvent aussi augmenter la taille.
-                </p>
+                <div className="bg-[#0B0E14] rounded-lg p-4 mt-4">
+                  <p className="text-sm text-gray-300 mb-2">
+                    <span className="text-primary font-medium">Classe Explorateur :</span> +10% de cases sur toutes les planètes
+                  </p>
+                  <p className="text-sm text-gray-300">
+                    <span className="text-amber-400 font-medium">Classe d'alliance Chercheur :</span> +5% de cases supplémentaires
+                  </p>
+                </div>
               </div>
 
               <div className="bg-[#1C2230] border border-[#2E384D] rounded-xl p-6">
