@@ -61,7 +61,8 @@ const categories = [
       { title: "Galaxie", description: "Navigation et exploration", icon: Globe, color: "from-indigo-500 to-purple-600", link: "/guide/galaxie" },
       { title: "Jargon", description: "Vocabulaire de la communauté", icon: BookText, color: "from-amber-500 to-orange-600", link: "/guide/jargon" },
       { title: "Univers", description: "Caractéristiques et paramètres", icon: Settings, color: "from-indigo-500 to-purple-600", link: "/guide/univers" },
-      { title: "Formules & Calculateurs", description: "Outils de calcul interactifs", icon: Calculator, color: "from-emerald-500 to-teal-600", link: "/guide/formules", featured: true }
+      { title: "Formules & Calculateurs", description: "Outils de calcul interactifs", icon: Calculator, color: "from-emerald-500 to-teal-600", link: "/guide/formules", featured: true },
+      { title: "Coûts Flotte & Défenses", description: "Calculateur de ressources", icon: Rocket, color: "from-orange-500 to-red-600", link: "/guide/cout-flotte", featured: true }
     ]
   },
   {

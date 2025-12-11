@@ -41,16 +41,20 @@ function ProductionCalculator() {
   const [showBonuses, setShowBonuses] = useState(false);
   const [playerClass, setPlayerClass] = useState("none");
   const [allianceClass, setAllianceClass] = useState("none");
-  const [lifeformBonus, setLifeformBonus] = useState(0);
+  const [lifeformBonusMetal, setLifeformBonusMetal] = useState(0);
+  const [lifeformBonusCrystal, setLifeformBonusCrystal] = useState(0);
+  const [lifeformBonusDeut, setLifeformBonusDeut] = useState(0);
 
   const playerClassBonus = playerClass === "collector" ? 0.25 : 0;
   const allianceClassBonus = allianceClass === "trader" ? 0.05 : 0;
-  const totalBonus = 1 + playerClassBonus + allianceClassBonus + (lifeformBonus / 100);
+  const totalBonusMetal = 1 + playerClassBonus + allianceClassBonus + (lifeformBonusMetal / 100);
+  const totalBonusCrystal = 1 + playerClassBonus + allianceClassBonus + (lifeformBonusCrystal / 100);
+  const totalBonusDeut = 1 + playerClassBonus + allianceClassBonus + (lifeformBonusDeut / 100);
 
-  const metalProd = Math.round(30 * metalLevel * Math.pow(1.1, metalLevel) * ecoSpeed * totalBonus);
-  const crystalProd = Math.round(20 * crystalLevel * Math.pow(1.1, crystalLevel) * ecoSpeed * totalBonus);
+  const metalProd = Math.round(30 * metalLevel * Math.pow(1.1, metalLevel) * ecoSpeed * totalBonusMetal);
+  const crystalProd = Math.round(20 * crystalLevel * Math.pow(1.1, crystalLevel) * ecoSpeed * totalBonusCrystal);
   const tempFactor = 1.36 - 0.004 * tempMax;
-  const deutProd = Math.round(10 * deutLevel * Math.pow(1.1, deutLevel) * tempFactor * ecoSpeed * totalBonus);
+  const deutProd = Math.round(10 * deutLevel * Math.pow(1.1, deutLevel) * tempFactor * ecoSpeed * totalBonusDeut);
   
   const metalConso = Math.round(10 * metalLevel * Math.pow(1.1, metalLevel));
   const crystalConso = Math.round(10 * crystalLevel * Math.pow(1.1, crystalLevel));
@@ -109,9 +113,9 @@ function ProductionCalculator() {
               <div className="flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-purple-400" />
                 <span className="text-purple-300 font-medium">Bonus (Classes & FdV)</span>
-                {totalBonus > 1 && (
+                {(totalBonusMetal > 1 || totalBonusCrystal > 1 || totalBonusDeut > 1) && (
                   <span className="text-xs bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded-full">
-                    +{Math.round((totalBonus - 1) * 100)}%
+                    Actif
                   </span>
                 )}
               </div>
@@ -146,20 +150,46 @@ function ProductionCalculator() {
                     <option value="researcher">Chercheur (0%)</option>
                   </select>
                 </div>
-                <div className="flex items-center justify-between">
-                  <label className="text-purple-300 text-sm">Bonus Formes de Vie (%)</label>
-                  <input 
-                    type="number" 
-                    value={lifeformBonus} 
-                    onChange={(e) => setLifeformBonus(Math.max(0, Math.min(100, Number(e.target.value))))}
-                    className="bg-[#0B0E14] border border-purple-700/30 rounded px-3 py-1 text-white w-20 text-right text-sm"
-                    min="0"
-                    max="100"
-                    placeholder="0"
-                  />
+                <div className="space-y-2">
+                  <label className="text-purple-300 text-sm block">Bonus Formes de Vie (%)</label>
+                  <div className="grid grid-cols-3 gap-2">
+                    <div className="text-center">
+                      <span className="text-gray-400 text-xs block mb-1">Métal</span>
+                      <input 
+                        type="number" 
+                        value={lifeformBonusMetal} 
+                        onChange={(e) => setLifeformBonusMetal(Math.max(0, Math.min(100, Number(e.target.value))))}
+                        className="bg-[#0B0E14] border border-gray-600/50 rounded px-2 py-1 text-gray-300 w-full text-center text-sm"
+                        min="0"
+                        max="100"
+                      />
+                    </div>
+                    <div className="text-center">
+                      <span className="text-cyan-400 text-xs block mb-1">Cristal</span>
+                      <input 
+                        type="number" 
+                        value={lifeformBonusCrystal} 
+                        onChange={(e) => setLifeformBonusCrystal(Math.max(0, Math.min(100, Number(e.target.value))))}
+                        className="bg-[#0B0E14] border border-cyan-600/50 rounded px-2 py-1 text-cyan-300 w-full text-center text-sm"
+                        min="0"
+                        max="100"
+                      />
+                    </div>
+                    <div className="text-center">
+                      <span className="text-teal-400 text-xs block mb-1">Deut</span>
+                      <input 
+                        type="number" 
+                        value={lifeformBonusDeut} 
+                        onChange={(e) => setLifeformBonusDeut(Math.max(0, Math.min(100, Number(e.target.value))))}
+                        className="bg-[#0B0E14] border border-teal-600/50 rounded px-2 py-1 text-teal-300 w-full text-center text-sm"
+                        min="0"
+                        max="100"
+                      />
+                    </div>
+                  </div>
                 </div>
                 <p className="text-xs text-gray-500 italic">
-                  Le bonus FdV varie selon vos bâtiments et recherches de formes de vie.
+                  Les bonus FdV varient selon vos bâtiments et recherches de formes de vie.
                 </p>
               </div>
             )}
@@ -624,6 +654,7 @@ function ConsumptionCalculator() {
   const [quantity, setQuantity] = useState(100);
   const [distance, setDistance] = useState(1000);
   const [speedPercent, setSpeedPercent] = useState(100);
+  const [fleetSpeed, setFleetSpeed] = useState(1);
 
   const ships: Record<string, { name: string; baseConso: number }> = {
     pt: { name: "Petit Transporteur", baseConso: 10 },
@@ -642,6 +673,8 @@ function ConsumptionCalculator() {
     eclaireur: { name: "Éclaireur", baseConso: 300 },
     faucheur: { name: "Faucheur", baseConso: 1100 },
   };
+
+  const speedOptions = [10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100];
 
   const selected = ships[shipType];
   const speedFactor = speedPercent / 100;
@@ -693,20 +726,25 @@ function ConsumptionCalculator() {
                 className="bg-[#0B0E14] border border-[#2E384D] rounded px-2 py-1 text-white w-24 text-right"
               />
             </div>
+            <div className="flex items-center justify-between">
+              <label className="text-gray-400">Vitesse flotte serveur</label>
+              <select 
+                value={fleetSpeed} 
+                onChange={(e) => setFleetSpeed(Number(e.target.value))}
+                className="bg-[#0B0E14] border border-[#2E384D] rounded px-3 py-1 text-white"
+              >
+                {[1, 2, 3, 4, 5, 6, 7, 8].map(s => <option key={s} value={s}>x{s}</option>)}
+              </select>
+            </div>
             <div>
-              <label className="text-gray-400 text-sm mb-2 block">Vitesse de vol</label>
-              <div className="flex items-center gap-2">
-                <input 
-                  type="range" 
-                  min="10" 
-                  max="100" 
-                  step="10"
-                  value={speedPercent} 
-                  onChange={(e) => setSpeedPercent(Number(e.target.value))}
-                  className="flex-1"
-                />
-                <span className="text-primary font-mono w-12 text-right">{speedPercent}%</span>
-              </div>
+              <label className="text-gray-400 text-sm mb-2 block">Vitesse de vol (%)</label>
+              <select 
+                value={speedPercent} 
+                onChange={(e) => setSpeedPercent(Number(e.target.value))}
+                className="w-full bg-[#0B0E14] border border-[#2E384D] rounded px-3 py-2 text-white"
+              >
+                {speedOptions.map(s => <option key={s} value={s}>{s}%</option>)}
+              </select>
             </div>
           </div>
         </div>
