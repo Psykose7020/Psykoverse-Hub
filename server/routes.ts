@@ -515,6 +515,41 @@ export async function registerRoutes(
     }
   });
 
+  let youtubeCache: { subscribers: number; updatedAt: number } | null = null;
+  const YOUTUBE_CACHE_DURATION = 3600000;
+
+  app.get("/api/youtube/stats", async (_req, res) => {
+    try {
+      if (youtubeCache && Date.now() - youtubeCache.updatedAt < YOUTUBE_CACHE_DURATION) {
+        return res.json({ subscribers: youtubeCache.subscribers, cached: true });
+      }
+
+      const apiKey = process.env.YOUTUBE_API_KEY;
+      const channelId = process.env.YOUTUBE_CHANNEL_ID || "UC7020Psykose";
+      
+      if (!apiKey) {
+        return res.json({ subscribers: 340, cached: false, error: "No API key" });
+      }
+
+      const response = await fetch(
+        `https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${channelId}&key=${apiKey}`
+      );
+      
+      if (!response.ok) {
+        return res.json({ subscribers: youtubeCache?.subscribers || 340, cached: false });
+      }
+
+      const data = await response.json();
+      const subscribers = parseInt(data.items?.[0]?.statistics?.subscriberCount || "340", 10);
+      
+      youtubeCache = { subscribers, updatedAt: Date.now() };
+      res.json({ subscribers, cached: false });
+    } catch (error) {
+      console.error("YouTube API error:", error);
+      res.json({ subscribers: youtubeCache?.subscribers || 340, cached: false });
+    }
+  });
+
   app.get("/api/guides", async (_req, res) => {
     try {
       const guides = await storage.getCustomGuides();

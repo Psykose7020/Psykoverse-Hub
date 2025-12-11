@@ -1,8 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { Shield, Menu, X, BookOpen, Globe, Rocket } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import allianceLogo from "@assets/Design_sans_titre_(2)_1765292527261.png";
+
+function useYoutubeStats() {
+  const [subscribers, setSubscribers] = useState<number | null>(null);
+  
+  useEffect(() => {
+    fetch("/api/youtube/stats")
+      .then(res => res.json())
+      .then(data => setSubscribers(data.subscribers))
+      .catch(() => setSubscribers(340));
+  }, []);
+  
+  return subscribers;
+}
 
 const navLinks = [
   { href: "/", label: "Accueil" },
@@ -15,6 +28,7 @@ const navLinks = [
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [location] = useLocation();
+  const youtubeSubscribers = useYoutubeStats();
 
   return (
     <>
@@ -24,7 +38,7 @@ export default function Header() {
             <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.5)]"></div>
             En ligne
           </span>
-          <span className="hidden sm:inline">340 Abonnés YouTube</span>
+          <span className="hidden sm:inline">{youtubeSubscribers ?? "..."} Abonnés YouTube</span>
         </div>
         <div className="flex items-center gap-6">
           <span className="text-gray-600">V2.0</span>
