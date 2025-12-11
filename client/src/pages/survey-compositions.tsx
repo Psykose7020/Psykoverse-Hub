@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Rocket, Shield, Send, CheckCircle, Info, ChevronDown, ChevronUp, BarChart3 } from "lucide-react";
+import { Rocket, Shield, Send, CheckCircle, Info, ChevronDown, ChevronUp, BarChart3, ArrowLeft, HelpCircle } from "lucide-react";
+import { Link } from "wouter";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { useMutation } from "@tanstack/react-query";
@@ -10,11 +11,55 @@ const fadeInUp = {
   visible: { opacity: 1, y: 0 }
 };
 
+const fleetShips = [
+  { name: "Petit Transporteur (PT)", abbrev: "PT" },
+  { name: "Grand Transporteur (GT)", abbrev: "GT" },
+  { name: "Chasseur Léger (CL)", abbrev: "CL" },
+  { name: "Chasseur Lourd (CLo)", abbrev: "CLo" },
+  { name: "Croiseur (CR)", abbrev: "CR" },
+  { name: "Vaisseau de Bataille (VB)", abbrev: "VB" },
+  { name: "Vaisseau de Colonisation", abbrev: "Colo" },
+  { name: "Recycleur", abbrev: "Rec" },
+  { name: "Sonde d'Espionnage", abbrev: "Sonde" },
+  { name: "Bombardier (BB)", abbrev: "BB" },
+  { name: "Destructeur (Dest)", abbrev: "Dest" },
+  { name: "Étoile de la Mort (EdM)", abbrev: "EdM" },
+  { name: "Traqueur", abbrev: "Traq" },
+  { name: "Faucheur", abbrev: "Fauch" },
+  { name: "Éclaireur", abbrev: "Ecl" },
+];
+
+const defenseUnits = [
+  { name: "Lanceur de Missiles (LM)", abbrev: "LM" },
+  { name: "Artillerie Laser Légère (LL)", abbrev: "LL" },
+  { name: "Artillerie Laser Lourde (LLo)", abbrev: "LLo" },
+  { name: "Canon de Gauss", abbrev: "Gauss" },
+  { name: "Artillerie à Ions", abbrev: "Ions" },
+  { name: "Lanceur de Plasma", abbrev: "Plasma" },
+  { name: "Petit Bouclier", abbrev: "PB" },
+  { name: "Grand Bouclier", abbrev: "GB" },
+];
+
 export default function SurveyCompositionsPage() {
   return (
     <Layout>
       <div className="min-h-screen py-12 px-4">
         <div className="max-w-4xl mx-auto">
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={fadeInUp}
+            transition={{ duration: 0.5 }}
+            className="mb-6"
+          >
+            <Link href="/tutoriels">
+              <Button variant="ghost" className="text-gray-400 hover:text-white mb-4" data-testid="btn-back-tutorials">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Retour aux tutoriels
+              </Button>
+            </Link>
+          </motion.div>
+
           <motion.div
             initial="hidden"
             animate="visible"
@@ -45,10 +90,17 @@ export default function SurveyCompositionsPage() {
               <Info className="w-5 h-5 text-cyan-400 mt-0.5 flex-shrink-0" />
               <div>
                 <h3 className="font-bold text-cyan-300 mb-2">Pourquoi ce sondage ?</h3>
-                <p className="text-cyan-200/80 text-sm">
+                <p className="text-cyan-200/80 text-sm mb-3">
                   Les résultats collectés permettront de réaliser un compte rendu détaillé et de créer des guides sur les tendances de la communauté. 
                   Vos réponses sont <strong>100% anonymes</strong> - aucune information personnelle n'est collectée.
                 </p>
+                <h4 className="font-semibold text-cyan-300 text-sm mb-2">Comment participer ?</h4>
+                <ul className="text-cyan-200/80 text-sm space-y-1 list-disc list-inside">
+                  <li>Décrivez votre composition de flotte ou défense idéale avec les quantités</li>
+                  <li>Vous pouvez utiliser les abréviations (PT, GT, CR, VB, etc.)</li>
+                  <li>Expliquez votre stratégie si vous le souhaitez</li>
+                  <li>Indiquez le type d'univers pour plus de contexte</li>
+                </ul>
               </div>
             </div>
           </motion.div>
@@ -69,6 +121,7 @@ function FleetSurveyCard() {
   const [universe, setUniverse] = useState("");
   const [isExpanded, setIsExpanded] = useState(true);
   const [submitted, setSubmitted] = useState(false);
+  const [showHelp, setShowHelp] = useState(false);
 
   const mutation = useMutation({
     mutationFn: async (data: { composition: string; strategy: string; universe: string }) => {
@@ -141,9 +194,33 @@ function FleetSurveyCard() {
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Décrivez votre composition de flotte idéale *
-                </label>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-sm font-medium text-gray-300">
+                    Décrivez votre composition de flotte idéale *
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => setShowHelp(!showHelp)}
+                    className="text-gray-500 hover:text-primary transition-colors"
+                    data-testid="btn-fleet-help"
+                  >
+                    <HelpCircle className="w-4 h-4" />
+                  </button>
+                </div>
+                
+                {showHelp && (
+                  <div className="mb-3 p-3 bg-[#0B0E14] border border-[#2E384D] rounded-lg">
+                    <p className="text-xs text-gray-400 mb-2">Vaisseaux disponibles (utilisez les abréviations) :</p>
+                    <div className="flex flex-wrap gap-1">
+                      {fleetShips.map(ship => (
+                        <span key={ship.abbrev} className="text-xs bg-[#1C2230] text-gray-300 px-2 py-1 rounded">
+                          {ship.abbrev}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 <textarea
                   value={composition}
                   onChange={(e) => setComposition(e.target.value)}
@@ -224,6 +301,7 @@ function DefenseSurveyCard() {
   const [universe, setUniverse] = useState("");
   const [isExpanded, setIsExpanded] = useState(true);
   const [submitted, setSubmitted] = useState(false);
+  const [showHelp, setShowHelp] = useState(false);
 
   const mutation = useMutation({
     mutationFn: async (data: { composition: string; strategy: string; universe: string }) => {
@@ -296,13 +374,38 @@ function DefenseSurveyCard() {
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Décrivez votre composition de défense idéale *
-                </label>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-sm font-medium text-gray-300">
+                    Décrivez votre composition de défense idéale *
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => setShowHelp(!showHelp)}
+                    className="text-gray-500 hover:text-primary transition-colors"
+                    data-testid="btn-defense-help"
+                  >
+                    <HelpCircle className="w-4 h-4" />
+                  </button>
+                </div>
+
+                {showHelp && (
+                  <div className="mb-3 p-3 bg-[#0B0E14] border border-[#2E384D] rounded-lg">
+                    <p className="text-xs text-gray-400 mb-2">Défenses disponibles (utilisez les abréviations) :</p>
+                    <div className="flex flex-wrap gap-1">
+                      {defenseUnits.map(unit => (
+                        <span key={unit.abbrev} className="text-xs bg-[#1C2230] text-gray-300 px-2 py-1 rounded">
+                          {unit.abbrev}
+                        </span>
+                      ))}
+                    </div>
+                    <p className="text-xs text-gray-500 mt-2 italic">Note: Les satellites solaires et foreuses ne sont pas inclus car leur utilité varie selon le contexte.</p>
+                  </div>
+                )}
+
                 <textarea
                   value={composition}
                   onChange={(e) => setComposition(e.target.value)}
-                  placeholder="Ex: 10k LM, 5k LL, 2k GL, 500 Gauss, 200 Ions, 100 Plasma... ou décrivez vos ratios préférés"
+                  placeholder="Ex: 10k LM, 5k LL, 2k LLo, 500 Gauss, 200 Ions, 100 Plasma... ou décrivez vos ratios préférés"
                   className="w-full h-32 bg-[#0B0E14] border border-[#2E384D] rounded-lg px-4 py-3 text-white placeholder-gray-500 resize-none focus:border-primary focus:outline-none"
                   required
                   minLength={10}

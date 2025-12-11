@@ -8,7 +8,7 @@ import {
   GraduationCap, Compass, Trophy, Shield, Eye, Crosshair, Moon, Globe2,
   Target, TrendingUp, Ghost, Layers, Bomb, Plane, Sparkles, Scale,
   ArrowLeftRight, Swords, Dna, Settings, Search, Filter, ChevronRight,
-  Star, Clock, Zap, MessageSquare, ChevronDown, Network, Mountain, Calculator
+  Star, Clock, Zap, MessageSquare, ChevronDown, Network, Mountain, Calculator, BarChart3
 } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
@@ -239,6 +239,29 @@ export default function Tutorials() {
                 multiline
               />
             </motion.p>
+
+            <motion.div 
+              variants={fadeInUp} 
+              className="mb-10 bg-gradient-to-r from-orange-900/30 via-red-900/20 to-purple-900/30 border border-orange-500/30 rounded-2xl p-6 md:p-8"
+            >
+              <div className="flex flex-col md:flex-row items-center gap-6">
+                <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl flex items-center justify-center flex-shrink-0">
+                  <BarChart3 className="w-8 h-8 text-white" />
+                </div>
+                <div className="text-center md:text-left flex-1">
+                  <h3 className="text-xl font-bold text-white mb-2">Participez au Sondage Communautaire</h3>
+                  <p className="text-gray-300 text-sm mb-4">
+                    Partagez votre composition de flotte ou défense idéale ! Vos réponses anonymes nous aideront à créer des guides basés sur les tendances de la communauté.
+                  </p>
+                  <Link href="/compositions">
+                    <Button className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700" data-testid="btn-survey-cta">
+                      <MessageSquare className="w-4 h-4 mr-2" />
+                      Répondre au sondage
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
 
             <motion.div variants={fadeInUp} className="max-w-xl mx-auto mb-8">
               <div className="relative">
