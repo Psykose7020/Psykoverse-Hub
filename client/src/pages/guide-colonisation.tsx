@@ -159,7 +159,7 @@ export default function GuideColonisation() {
                 <div className="bg-red-900/20 border border-red-700/30 rounded-lg p-4">
                   <p className="text-sm text-red-300">
                     <strong>Attention :</strong> Tous les bâtiments, défenses, flottes, ressources ET la lune attachée seront détruits !
-                    L'emplacement redevient libre après 24h.
+                    L'emplacement redevient libre à <strong>03h00 du matin suivant + 24h</strong> (soit 27 à 51h selon l'heure de destruction).
                   </p>
                 </div>
               </div>
