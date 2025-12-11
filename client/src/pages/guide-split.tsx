@@ -127,42 +127,56 @@ export default function GuideSplit() {
               <div className="bg-[#1C2230] border border-[#2E384D] rounded-xl p-6">
                 <div className="flex items-center gap-3 mb-4">
                   <Shield className="w-6 h-6 text-red-400" />
-                  <h2 className="font-display text-xl font-bold text-white">Cas 2 : Combat serré</h2>
+                  <h2 className="font-display text-xl font-bold text-white">Cas 2 : Combat serré - Optimiser les dégâts</h2>
                 </div>
                 <p className="text-gray-300 mb-4">
-                  Quand le combat est serré, l'objectif est de <strong className="text-white">maximiser vos dégâts</strong> 
-                  tout en protégeant vos gros vaisseaux.
+                  Quand le combat est serré, l'objectif est de <strong className="text-white">maximiser vos dégâts à la coque</strong>.
+                  Un tir endommage la coque uniquement s'il dépasse <strong className="text-primary">1% de la valeur du bouclier</strong> de la cible.
                 </p>
+
+                <div className="bg-primary/10 border border-primary/30 rounded-lg p-4 mb-4">
+                  <p className="text-sm text-primary">
+                    <strong>Principe clé :</strong> Les vaisseaux avec la plus <strong>grosse valeur d'attaque</strong> doivent tirer en premier 
+                    pour percer les boucliers et infliger des dégâts à la coque. Les petits vaisseaux tirent après.
+                  </p>
+                </div>
                 
                 <div className="space-y-3 mb-4">
                   <div className="flex items-center gap-3 p-3 bg-red-900/20 border border-red-700/30 rounded-lg">
                     <span className="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center text-white text-sm font-bold">1</span>
                     <div>
-                      <div className="font-bold text-white">Battleships, Destroyers, Faucheurs</div>
-                      <div className="text-gray-400 text-sm">Gros dégâts + résistance en première ligne</div>
+                      <div className="font-bold text-white">Étoile de la Mort, Faucheurs, Destructeurs</div>
+                      <div className="text-gray-400 text-sm">Valeurs d'attaque max (200k / 14k / 11k) - Percent les boucliers</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-3 p-3 bg-red-900/20 border border-red-700/30 rounded-lg">
                     <span className="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center text-white text-sm font-bold">2</span>
                     <div>
-                      <div className="font-bold text-white">Traqueurs, Vaisseaux de Bataille, Croiseurs</div>
-                      <div className="text-gray-400 text-sm">Puissance de feu intermédiaire</div>
+                      <div className="font-bold text-white">Traqueurs, Bombardiers, Croiseurs de Bataille</div>
+                      <div className="text-gray-400 text-sm">Attaque élevée (7k / 1k / 700) - Continuent les dégâts</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-3 p-3 bg-red-900/20 border border-red-700/30 rounded-lg">
                     <span className="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center text-white text-sm font-bold">3</span>
                     <div>
-                      <div className="font-bold text-white">Chasseurs Légers, Chasseurs Lourds</div>
-                      <div className="text-gray-400 text-sm">Chair à canon pour absorber les derniers tirs</div>
+                      <div className="font-bold text-white">Destroyers, Vaisseaux de Bataille, Croiseurs</div>
+                      <div className="text-gray-400 text-sm">Attaque moyenne (2k / 1k / 400)</div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 p-3 bg-red-900/20 border border-red-700/30 rounded-lg">
+                    <span className="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center text-white text-sm font-bold">4</span>
+                    <div>
+                      <div className="font-bold text-white">Chasseurs Lourds, Chasseurs Légers</div>
+                      <div className="text-gray-400 text-sm">Faible attaque (150 / 50) - Finissent le travail</div>
                     </div>
                   </div>
                 </div>
 
                 <div className="bg-[#151924] rounded-lg p-4">
                   <p className="text-gray-400 text-sm">
-                    <strong className="text-white">Pourquoi ?</strong> Dans un combat serré, les petits vaisseaux 
-                    à l'arrière absorbent les tirs qui passeraient sinon sur vos gros vaisseaux. 
-                    Mieux vaut perdre des chasseurs que des Traqueurs !
+                    <strong className="text-white">Pourquoi ?</strong> Pour endommager la coque, le tir doit dépasser 1% du bouclier adverse. 
+                    Un Chasseur Léger (50 d'attaque) ne peut pas endommager un vaisseau avec 5 000+ de bouclier. 
+                    En envoyant les gros d'abord, ils percent les boucliers et les petits peuvent ensuite infliger des dégâts.
                   </p>
                 </div>
               </div>
