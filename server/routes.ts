@@ -783,6 +783,46 @@ export async function registerRoutes(
     }
   });
 
+  app.delete("/api/admin/compositions/fleet/:id", async (req, res) => {
+    try {
+      const authHeader = req.headers.authorization;
+      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+      
+      const token = authHeader.slice(7);
+      if (!validateToken(token)) {
+        return res.status(401).json({ error: "Invalid or expired token" });
+      }
+
+      await storage.deleteFleetComposition(req.params.id);
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error deleting fleet composition:", error);
+      res.status(500).json({ error: "Failed to delete composition" });
+    }
+  });
+
+  app.delete("/api/admin/compositions/defense/:id", async (req, res) => {
+    try {
+      const authHeader = req.headers.authorization;
+      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+      
+      const token = authHeader.slice(7);
+      if (!validateToken(token)) {
+        return res.status(401).json({ error: "Invalid or expired token" });
+      }
+
+      await storage.deleteDefenseComposition(req.params.id);
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error deleting defense composition:", error);
+      res.status(500).json({ error: "Failed to delete composition" });
+    }
+  });
+
   app.get("/api/admin/compositions/export", async (req, res) => {
     try {
       const authHeader = req.headers.authorization;

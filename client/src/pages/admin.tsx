@@ -209,6 +209,36 @@ export default function Admin() {
     }
   };
 
+  const deleteFleetComposition = async (id: string) => {
+    if (!confirm("Supprimer cette composition de flotte ?")) return;
+    try {
+      const res = await fetch(`/api/admin/compositions/fleet/${id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.ok) {
+        setFleetCompositions(prev => prev.filter(c => c.id !== id));
+      }
+    } catch (err) {
+      console.error("Failed to delete fleet composition:", err);
+    }
+  };
+
+  const deleteDefenseComposition = async (id: string) => {
+    if (!confirm("Supprimer cette composition de défense ?")) return;
+    try {
+      const res = await fetch(`/api/admin/compositions/defense/${id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.ok) {
+        setDefenseCompositions(prev => prev.filter(c => c.id !== id));
+      }
+    } catch (err) {
+      console.error("Failed to delete defense composition:", err);
+    }
+  };
+
   const deleteLeaderboardEntry = async (id: string) => {
     if (!confirm("Supprimer cette entrée du classement ?")) return;
     try {
@@ -1006,12 +1036,22 @@ export default function Admin() {
                         <div className="flex-1">
                           <p className="text-white whitespace-pre-wrap">{comp.composition}</p>
                           {comp.strategy && (
-                            <p className="text-gray-400 text-sm mt-2 italic">Stratégie: {comp.strategy}</p>
+                            <p className="text-gray-400 text-sm mt-2 italic">Commentaire: {comp.strategy}</p>
                           )}
                         </div>
-                        <div className="text-right text-xs text-gray-500 flex-shrink-0">
-                          {comp.universe && <p className="bg-primary/20 text-primary px-2 py-0.5 rounded mb-1">{comp.universe}</p>}
-                          <p>{new Date(comp.createdAt).toLocaleDateString("fr-FR")}</p>
+                        <div className="flex items-start gap-3">
+                          <div className="text-right text-xs text-gray-500 flex-shrink-0">
+                            {comp.universe && <p className="bg-primary/20 text-primary px-2 py-0.5 rounded mb-1">{comp.universe}</p>}
+                            <p>{new Date(comp.createdAt).toLocaleDateString("fr-FR")}</p>
+                          </div>
+                          <button
+                            onClick={() => deleteFleetComposition(comp.id)}
+                            className="p-2 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 hover:text-red-300 transition-colors"
+                            title="Supprimer cette composition"
+                            data-testid={`delete-fleet-${comp.id}`}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -1035,12 +1075,22 @@ export default function Admin() {
                         <div className="flex-1">
                           <p className="text-white whitespace-pre-wrap">{comp.composition}</p>
                           {comp.strategy && (
-                            <p className="text-gray-400 text-sm mt-2 italic">Stratégie: {comp.strategy}</p>
+                            <p className="text-gray-400 text-sm mt-2 italic">Commentaire: {comp.strategy}</p>
                           )}
                         </div>
-                        <div className="text-right text-xs text-gray-500 flex-shrink-0">
-                          {comp.universe && <p className="bg-primary/20 text-primary px-2 py-0.5 rounded mb-1">{comp.universe}</p>}
-                          <p>{new Date(comp.createdAt).toLocaleDateString("fr-FR")}</p>
+                        <div className="flex items-start gap-3">
+                          <div className="text-right text-xs text-gray-500 flex-shrink-0">
+                            {comp.universe && <p className="bg-primary/20 text-primary px-2 py-0.5 rounded mb-1">{comp.universe}</p>}
+                            <p>{new Date(comp.createdAt).toLocaleDateString("fr-FR")}</p>
+                          </div>
+                          <button
+                            onClick={() => deleteDefenseComposition(comp.id)}
+                            className="p-2 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 hover:text-red-300 transition-colors"
+                            title="Supprimer cette composition"
+                            data-testid={`delete-defense-${comp.id}`}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
                         </div>
                       </div>
                     </div>

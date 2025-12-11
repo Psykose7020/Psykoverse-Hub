@@ -35,8 +35,10 @@ export interface IStorage {
   deleteCustomGuide(id: string): Promise<boolean>;
   createFleetComposition(data: InsertFleetComposition): Promise<FleetComposition>;
   listFleetCompositions(): Promise<FleetComposition[]>;
+  deleteFleetComposition(id: string): Promise<boolean>;
   createDefenseComposition(data: InsertDefenseComposition): Promise<DefenseComposition>;
   listDefenseCompositions(): Promise<DefenseComposition[]>;
+  deleteDefenseComposition(id: string): Promise<boolean>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -256,6 +258,16 @@ export class DatabaseStorage implements IStorage {
 
   async listDefenseCompositions(): Promise<DefenseComposition[]> {
     return await db.select().from(defenseCompositions).orderBy(desc(defenseCompositions.createdAt));
+  }
+
+  async deleteFleetComposition(id: string): Promise<boolean> {
+    await db.delete(fleetCompositions).where(eq(fleetCompositions.id, id));
+    return true;
+  }
+
+  async deleteDefenseComposition(id: string): Promise<boolean> {
+    await db.delete(defenseCompositions).where(eq(defenseCompositions.id, id));
+    return true;
   }
 }
 
