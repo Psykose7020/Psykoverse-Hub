@@ -304,11 +304,15 @@ export default function SpaceGame() {
       
       updatePlayerPosition();
 
+      // Mode chaos: commence à 2500, intensité augmente de 2% tous les 200 points
       if (scoreRef.current >= 2500) {
         const shakeDelta = time - lastShakeTimeRef.current;
-        const progress = Math.min((scoreRef.current - 2500) / 17500, 1);
-        const maxOffset = 200 + progress * 150;
-        const changeInterval = Math.max(80, 600 - progress * 500);
+        // Intensité évolutive: 2% à 2500, +2% tous les 200 points
+        const chaosSteps = Math.floor((scoreRef.current - 2500) / 200);
+        const chaosIntensity = Math.min(0.02 + chaosSteps * 0.02, 1);
+        
+        const maxOffset = chaosIntensity * 200;
+        const changeInterval = Math.max(80, 600 - chaosIntensity * 520);
         
         if (shakeDelta > changeInterval) {
           lastShakeTimeRef.current = time;
@@ -332,13 +336,12 @@ export default function SpaceGame() {
       }
       obstaclesRef.current = obstaclesRef.current.filter(o => o.y < 110);
       
-      const difficultyRamp = Math.min(Math.max(0, scoreRef.current - 300) / 700, 1);
-      const lateGameRamp = Math.min(Math.max(0, scoreRef.current - 1000) / 4000, 1);
-      const spawnRate = (0.018 + difficultyRamp * 0.02 + lateGameRamp * 0.025) * deltaFactor;
+      // Difficulté répartie de 0 à 10000 (max atteint à 10000)
+      const difficultyRamp = Math.min(scoreRef.current / 10000, 1);
+      const spawnRate = (0.018 + difficultyRamp * 0.045) * deltaFactor;
       
-      // Facteur de réduction progressif: à 10000 points, vitesse = 50% de la violence originale
-      const progressiveFactor = 1.0 - Math.min(scoreRef.current / 10000, 1) * 0.5;
-      const baseSpeed = (0.45 + difficultyRamp * 0.35 + lateGameRamp * 0.4) * 1.125 * progressiveFactor;
+      // Vitesse max (équivalente à l'ancienne difficulté à 2000) atteinte à 10000
+      const baseSpeed = 0.45 + difficultyRamp * 0.75;
       setCurrentSpeed(baseSpeed);
       
       if (Math.random() < spawnRate) {
@@ -346,7 +349,7 @@ export default function SpaceGame() {
         const xPos = 7.5 + Math.random() * 85 + randomOffset * (Math.random() > 0.5 ? 1 : -1) * 0.3;
         const clampedX = Math.max(5, Math.min(95, xPos));
         
-        const speedVariation = 0.3 + Math.random() * 0.9 + difficultyRamp * 0.5;
+        const speedVariation = 0.2 + Math.random() * 0.5 + difficultyRamp * 0.3;
         
         obstaclesRef.current.push({
           id: obstacleIdRef.current++,
@@ -384,44 +387,47 @@ export default function SpaceGame() {
   const currentShip = SHIP_VARIANTS[shipVariant];
   const shipScale = getShipScale(currentShip.structure);
 
+  const isInChaos = score >= 2500 && gameState === "playing";
+
   return (
     <div ref={containerRef} className="block">
-      <div className="relative mb-4 overflow-hidden rounded-xl border border-cyan-500/20 bg-[#080c14]/80 backdrop-blur-sm">
-        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-transparent to-purple-500/5" />
-        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent" />
-        
-        <div className="relative px-4 py-3 flex items-center gap-4">
-          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500/20 to-purple-500/20 border border-cyan-500/30 flex items-center justify-center">
-            <Gamepad2 className="w-5 h-5 text-cyan-400" />
-          </div>
-          
-          <div className="flex-1">
-            <div className="flex items-center gap-2">
-              <span className="font-display text-white font-semibold text-sm tracking-wide">SPACE ESCAPE</span>
-              <span className="text-[10px] text-cyan-400/80 border border-cyan-500/30 px-1.5 py-0.5 rounded">
-                JOUER
-              </span>
-            </div>
-            <p className="text-gray-500 text-[11px] mt-0.5">Esquive les planètes • Bats ton record</p>
-          </div>
-          
-          <Link 
-            href="/classement" 
-            className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-cyan-400 transition-colors"
-            data-testid="link-leaderboard"
-          >
-            <Trophy className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Classement</span>
-          </Link>
-        </div>
-      </div>
-
       <div 
         className="transition-transform duration-75 ease-out"
         style={{ 
           transform: `translate(${gameOffset.x}px, ${gameOffset.y}px)`,
         }}
       >
+        {!isInChaos && (
+          <div className="relative mb-4 overflow-hidden rounded-xl border border-cyan-500/20 bg-[#080c14]/80 backdrop-blur-sm">
+            <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-transparent to-purple-500/5" />
+            <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent" />
+            
+            <div className="relative px-4 py-3 flex items-center gap-4">
+              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500/20 to-purple-500/20 border border-cyan-500/30 flex items-center justify-center">
+                <Gamepad2 className="w-5 h-5 text-cyan-400" />
+              </div>
+              
+              <div className="flex-1">
+                <div className="flex items-center gap-2">
+                  <span className="font-display text-white font-semibold text-sm tracking-wide">SPACE ESCAPE</span>
+                  <span className="text-[10px] text-cyan-400/80 border border-cyan-500/30 px-1.5 py-0.5 rounded">
+                    JOUER
+                  </span>
+                </div>
+                <p className="text-gray-500 text-[11px] mt-0.5">Esquive les planètes • Bats ton record</p>
+              </div>
+              
+              <Link 
+                href="/classement" 
+                className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-cyan-400 transition-colors"
+                data-testid="link-leaderboard"
+              >
+                <Trophy className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Classement</span>
+              </Link>
+            </div>
+          </div>
+        )}
         <div className="flex items-center justify-between mb-2 px-2">
           <div className="flex items-center gap-2">
             <Gamepad2 className="w-4 h-4 text-primary/70" />
