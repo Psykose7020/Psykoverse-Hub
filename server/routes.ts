@@ -3,6 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { randomBytes, createHmac } from "crypto";
 import { z } from "zod";
+import ExcelJS from "exceljs";
 
 const SESSION_SECRET = process.env.SESSION_SECRET || randomBytes(32).toString("hex");
 const activeSessions = new Map<string, { createdAt: number }>();
@@ -708,6 +709,145 @@ export async function registerRoutes(
     } catch (error) {
       console.error("Delete guide error:", error);
       res.status(500).json({ error: "Failed to delete guide" });
+    }
+  });
+
+  const compositionSchema = z.object({
+    composition: z.string().min(10, "La composition doit contenir au moins 10 caractères").max(5000),
+    strategy: z.string().max(2000).nullable().optional(),
+    universe: z.string().max(100).nullable().optional(),
+  });
+
+  app.post("/api/surveys/fleet", async (req, res) => {
+    try {
+      const parsed = compositionSchema.safeParse(req.body);
+      if (!parsed.success) {
+        return res.status(400).json({ error: parsed.error.errors[0]?.message || "Données invalides" });
+      }
+      
+      await storage.createFleetComposition({
+        composition: parsed.data.composition,
+        strategy: parsed.data.strategy || null,
+        universe: parsed.data.universe || null,
+      });
+      
+      res.json({ success: true, message: "Merci pour votre participation !" });
+    } catch (error) {
+      console.error("Error saving fleet composition:", error);
+      res.status(500).json({ error: "Erreur lors de l'enregistrement" });
+    }
+  });
+
+  app.post("/api/surveys/defense", async (req, res) => {
+    try {
+      const parsed = compositionSchema.safeParse(req.body);
+      if (!parsed.success) {
+        return res.status(400).json({ error: parsed.error.errors[0]?.message || "Données invalides" });
+      }
+      
+      await storage.createDefenseComposition({
+        composition: parsed.data.composition,
+        strategy: parsed.data.strategy || null,
+        universe: parsed.data.universe || null,
+      });
+      
+      res.json({ success: true, message: "Merci pour votre participation !" });
+    } catch (error) {
+      console.error("Error saving defense composition:", error);
+      res.status(500).json({ error: "Erreur lors de l'enregistrement" });
+    }
+  });
+
+  app.get("/api/admin/compositions", async (req, res) => {
+    try {
+      const authHeader = req.headers.authorization;
+      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+      
+      const token = authHeader.slice(7);
+      if (!validateToken(token)) {
+        return res.status(401).json({ error: "Invalid or expired token" });
+      }
+
+      const fleetCompositions = await storage.listFleetCompositions();
+      const defenseCompositions = await storage.listDefenseCompositions();
+      
+      res.json({
+        fleet: fleetCompositions,
+        defense: defenseCompositions,
+      });
+    } catch (error) {
+      console.error("Error fetching compositions:", error);
+      res.status(500).json({ error: "Failed to fetch compositions" });
+    }
+  });
+
+  app.get("/api/admin/compositions/export", async (req, res) => {
+    try {
+      const authHeader = req.headers.authorization;
+      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+      
+      const token = authHeader.slice(7);
+      if (!validateToken(token)) {
+        return res.status(401).json({ error: "Invalid or expired token" });
+      }
+
+      const fleetCompositions = await storage.listFleetCompositions();
+      const defenseCompositions = await storage.listDefenseCompositions();
+
+      const workbook = new ExcelJS.Workbook();
+      workbook.creator = "Psykoverse";
+      workbook.created = new Date();
+
+      const fleetSheet = workbook.addWorksheet("Compositions Flotte");
+      fleetSheet.columns = [
+        { header: "ID", key: "id", width: 40 },
+        { header: "Composition", key: "composition", width: 60 },
+        { header: "Stratégie", key: "strategy", width: 40 },
+        { header: "Univers", key: "universe", width: 20 },
+        { header: "Date", key: "createdAt", width: 20 },
+      ];
+      fleetSheet.getRow(1).font = { bold: true };
+      fleetCompositions.forEach(c => {
+        fleetSheet.addRow({
+          id: c.id,
+          composition: c.composition,
+          strategy: c.strategy || "",
+          universe: c.universe || "",
+          createdAt: c.createdAt.toISOString().split("T")[0],
+        });
+      });
+
+      const defenseSheet = workbook.addWorksheet("Compositions Défense");
+      defenseSheet.columns = [
+        { header: "ID", key: "id", width: 40 },
+        { header: "Composition", key: "composition", width: 60 },
+        { header: "Stratégie", key: "strategy", width: 40 },
+        { header: "Univers", key: "universe", width: 20 },
+        { header: "Date", key: "createdAt", width: 20 },
+      ];
+      defenseSheet.getRow(1).font = { bold: true };
+      defenseCompositions.forEach(c => {
+        defenseSheet.addRow({
+          id: c.id,
+          composition: c.composition,
+          strategy: c.strategy || "",
+          universe: c.universe || "",
+          createdAt: c.createdAt.toISOString().split("T")[0],
+        });
+      });
+
+      res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+      res.setHeader("Content-Disposition", "attachment; filename=compositions_psykoverse.xlsx");
+      
+      await workbook.xlsx.write(res);
+      res.end();
+    } catch (error) {
+      console.error("Error exporting compositions:", error);
+      res.status(500).json({ error: "Failed to export compositions" });
     }
   });
 
