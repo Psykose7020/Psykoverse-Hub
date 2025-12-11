@@ -1,16 +1,17 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
-import { Shield, Menu, X, BookOpen, Globe, Rocket, Beer } from "lucide-react";
+import { Menu, X, Beer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import allianceLogo from "@assets/Design_sans_titre_(2)_1765292527261.png";
 import { useYoutubeStats } from "@/hooks/useYoutubeStats";
 
 const navLinks = [
   { href: "/", label: "Accueil" },
-  { href: "/tutoriels", label: "Tutoriels", icon: BookOpen },
-  { href: "/alliance", label: "Où nous trouver", icon: Globe },
-  { href: "/projets", label: "Projets", icon: Rocket },
-  { href: "/support", label: "Support", icon: Shield, highlight: true },
+  { href: "/tutoriels", label: "Tutoriels" },
+  { href: "/alliance", label: "Univers" },
+  { href: "/notre-histoire", label: "Notre Histoire" },
+  { href: "/projets", label: "Projets" },
+  { href: "/support", label: "Support", highlight: true },
 ];
 
 export default function Header() {
@@ -48,15 +49,14 @@ export default function Header() {
             </div>
           </Link>
           
-          <div className="hidden md:flex items-center gap-1">
+          <div className="hidden lg:flex items-center gap-1">
             {navLinks.map((link) => {
               const isActive = location === link.href;
-              const Icon = link.icon;
               return (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`px-4 py-2 rounded transition-colors text-sm font-bold uppercase tracking-wide flex items-center gap-2 ${
+                  className={`px-3 py-2 rounded transition-colors text-sm font-bold uppercase tracking-wide ${
                     isActive
                       ? "bg-primary/20 text-primary"
                       : link.highlight
@@ -64,7 +64,6 @@ export default function Header() {
                       : "text-gray-300 hover:text-white hover:bg-white/5"
                   }`}
                 >
-                  {Icon && <Icon className="w-4 h-4" />}
                   {link.label}
                 </Link>
               );
@@ -100,12 +99,11 @@ export default function Header() {
           <div className="px-4 pb-4 space-y-2 border-t border-[#2E384D]">
             {navLinks.map((link) => {
               const isActive = location === link.href;
-              const Icon = link.icon;
               return (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`flex items-center gap-2 w-full px-4 py-3 rounded text-sm font-bold uppercase tracking-wide ${
+                  className={`block w-full px-4 py-3 rounded text-sm font-bold uppercase tracking-wide ${
                     isActive
                       ? "bg-primary/20 text-primary"
                       : link.highlight
@@ -114,7 +112,6 @@ export default function Header() {
                   }`}
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  {Icon && <Icon className="w-4 h-4" />}
                   {link.label}
                 </Link>
               );
