@@ -248,13 +248,18 @@ export default function SpaceGame() {
   useEffect(() => {
     if (gameState !== "playing") return;
 
+    const targetFPS = 240;
+    const frameTime = 1000 / targetFPS;
+    
     const gameLoop = (time: number) => {
       const delta = time - lastTimeRef.current;
       
-      if (delta > 16) {
-        lastTimeRef.current = time;
+      if (delta >= frameTime) {
+        const frames = Math.floor(delta / frameTime);
+        lastTimeRef.current = time - (delta % frameTime);
+        
         const multiplier = getScoreMultiplier(currentShip.structure);
-        scoreRef.current += Math.round(multiplier);
+        scoreRef.current += Math.round(multiplier * frames * 0.25);
         setScore(scoreRef.current);
         
         updatePlayerPosition();
@@ -281,13 +286,14 @@ export default function SpaceGame() {
           }));
         }
 
+        const speedMultiplier = frames * 0.25;
         setObstacles(prev => {
           const updated = prev
-            .map(o => ({ ...o, y: o.y + o.speed }))
+            .map(o => ({ ...o, y: o.y + o.speed * speedMultiplier }))
             .filter(o => o.y < 110);
           
           const difficultyRamp = Math.min(scoreRef.current / 1000, 1);
-          const spawnRate = 0.008 + difficultyRamp * 0.01 + Math.min(Math.max(0, scoreRef.current - 1000) / 10000, 0.025);
+          const spawnRate = (0.008 + difficultyRamp * 0.01 + Math.min(Math.max(0, scoreRef.current - 1000) / 10000, 0.025)) * speedMultiplier;
           const baseSpeed = 0.4 + difficultyRamp * 0.3;
           const speedBonus = Math.min(Math.max(0, scoreRef.current - 1000) / 2500, 1.2);
           
