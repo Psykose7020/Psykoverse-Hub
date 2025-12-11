@@ -79,6 +79,19 @@ export const insertLeaderboardSchema = createInsertSchema(leaderboard).omit({
 export type InsertLeaderboard = z.infer<typeof insertLeaderboardSchema>;
 export type Leaderboard = typeof leaderboard.$inferSelect;
 
+export const editableContent = pgTable("editable_content", {
+  id: varchar("id").primaryKey(),
+  content: text("content").notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertEditableContentSchema = createInsertSchema(editableContent).omit({
+  updatedAt: true,
+});
+
+export type InsertEditableContent = z.infer<typeof insertEditableContentSchema>;
+export type EditableContent = typeof editableContent.$inferSelect;
+
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
 export type InsertVisit = z.infer<typeof insertVisitSchema>;

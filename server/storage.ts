@@ -1,4 +1,4 @@
-import { users, visits, feedback, suggestions, leaderboard, type User, type InsertUser, type InsertVisit, type Visit, type InsertFeedback, type Feedback, type InsertSuggestion, type Suggestion, type InsertLeaderboard, type Leaderboard } from "@shared/schema";
+import { users, visits, feedback, suggestions, leaderboard, editableContent, type User, type InsertUser, type InsertVisit, type Visit, type InsertFeedback, type Feedback, type InsertSuggestion, type Suggestion, type InsertLeaderboard, type Leaderboard, type EditableContent, type InsertEditableContent } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, sql, gte } from "drizzle-orm";
 
@@ -24,6 +24,9 @@ export interface IStorage {
   addLeaderboardEntry(data: InsertLeaderboard & { ip?: string | null }): Promise<Leaderboard>;
   getLeaderboard(limit?: number): Promise<Leaderboard[]>;
   getPublicLeaderboard(limit?: number): Promise<Omit<Leaderboard, 'ip'>[]>;
+  getEditableContent(id: string): Promise<EditableContent | undefined>;
+  getAllEditableContent(): Promise<EditableContent[]>;
+  upsertEditableContent(data: InsertEditableContent): Promise<EditableContent>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -170,6 +173,28 @@ export class DatabaseStorage implements IStorage {
       .orderBy(desc(leaderboard.score))
       .limit(limit);
     return entries;
+  }
+
+  async getEditableContent(id: string): Promise<EditableContent | undefined> {
+    const [content] = await db.select().from(editableContent).where(eq(editableContent.id, id));
+    return content || undefined;
+  }
+
+  async getAllEditableContent(): Promise<EditableContent[]> {
+    return await db.select().from(editableContent);
+  }
+
+  async upsertEditableContent(data: InsertEditableContent): Promise<EditableContent> {
+    const existing = await this.getEditableContent(data.id);
+    if (existing) {
+      const [updated] = await db.update(editableContent)
+        .set({ content: data.content, updatedAt: new Date() })
+        .where(eq(editableContent.id, data.id))
+        .returning();
+      return updated;
+    }
+    const [created] = await db.insert(editableContent).values(data).returning();
+    return created;
   }
 }
 
