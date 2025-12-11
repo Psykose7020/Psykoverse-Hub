@@ -366,32 +366,32 @@ export default function SpaceGame() {
 
   return (
     <div ref={containerRef} className="block">
-      <div className="relative mb-4 p-4 bg-gradient-to-br from-[#0a1628] to-[#1a1a2e] rounded-2xl border border-primary/20 shadow-xl shadow-primary/5">
-        <div className="flex items-center gap-4">
-          <div className="relative shrink-0">
-            <div className="w-14 h-14 bg-gradient-to-br from-primary/80 to-purple-600/80 rounded-xl flex items-center justify-center shadow-lg">
-              <Gamepad2 className="w-7 h-7 text-white" />
-            </div>
-            <div className="absolute -top-1 -right-1 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center border-2 border-[#0a1628]">
-              <span className="text-[9px] text-white font-bold">▶</span>
-            </div>
+      <div className="relative mb-4 overflow-hidden rounded-xl border border-cyan-500/20 bg-[#080c14]/80 backdrop-blur-sm">
+        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-transparent to-purple-500/5" />
+        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent" />
+        
+        <div className="relative px-4 py-3 flex items-center gap-4">
+          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500/20 to-purple-500/20 border border-cyan-500/30 flex items-center justify-center">
+            <Gamepad2 className="w-5 h-5 text-cyan-400" />
           </div>
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-1">
-              <h3 className="font-display font-bold text-white text-base sm:text-lg">Space Escape</h3>
-              <span className="text-[9px] bg-primary/30 text-primary px-2 py-0.5 rounded font-semibold uppercase tracking-wide">
-                Mini-jeu
+          
+          <div className="flex-1">
+            <div className="flex items-center gap-2">
+              <span className="font-display text-white font-semibold text-sm tracking-wide">SPACE ESCAPE</span>
+              <span className="text-[10px] text-cyan-400/80 border border-cyan-500/30 px-1.5 py-0.5 rounded">
+                JOUER
               </span>
             </div>
-            <p className="text-gray-500 text-xs">Évite les planètes et bats ton record</p>
+            <p className="text-gray-500 text-[11px] mt-0.5">Esquive les planètes • Bats ton record</p>
           </div>
+          
           <Link 
             href="/classement" 
-            className="shrink-0 group flex items-center gap-2 bg-[#1E2A3A] hover:bg-[#2A3A4A] px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 border border-white/5 hover:border-primary/30"
+            className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-cyan-400 transition-colors"
             data-testid="link-leaderboard"
           >
-            <Trophy className="w-4 h-4 text-yellow-500" />
-            <span className="text-white/80 group-hover:text-white hidden sm:inline">Classement</span>
+            <Trophy className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Classement</span>
           </Link>
         </div>
       </div>
