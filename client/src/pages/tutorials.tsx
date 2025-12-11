@@ -8,7 +8,7 @@ import {
   GraduationCap, Compass, Trophy, Shield, Eye, Crosshair, Moon, Globe2,
   Target, TrendingUp, Ghost, Layers, Bomb, Plane, Sparkles, Scale,
   ArrowLeftRight, Swords, Dna, Settings, Search, Filter, ChevronRight,
-  Star, Clock, Zap, MessageSquare, ChevronDown, Network, Mountain, Calculator, BarChart3
+  Star, Clock, Zap, MessageSquare, ChevronDown, Network, Mountain, BarChart3, Calculator
 } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
@@ -98,6 +98,8 @@ const categories = [
       { title: "Reco de 3h00", description: "Confirmer l'absence d'une cible", icon: Clock, color: "from-indigo-500 to-purple-600", link: "/guide/reco-3h" },
       { title: "Décalage à la Sonde", description: "Détecter les DG", icon: Eye, color: "from-cyan-500 to-blue-600", link: "/guide/decalage-sonde" },
       { title: "Split Flotte", description: "Optimiser l'ordre d'attaque", icon: Layers, color: "from-purple-500 to-violet-600", link: "/guide/split" },
+      { title: "Rapid Fire", description: "Tirs multiples en combat", icon: Zap, color: "from-yellow-500 to-orange-600", link: "/guide/rapid-fire", featured: true },
+      { title: "RF : Formules", description: "Calculs détaillés du RF", icon: Calculator, color: "from-purple-500 to-pink-600", link: "/guide/rapid-fire-formules" },
       { title: "ACS", description: "Combat en groupe", icon: Users, color: "from-orange-500 to-amber-600", link: "/guide/acs" },
       { title: "MoonBreak", description: "Destruction de lune", icon: Bomb, color: "from-red-600 to-red-800", link: "/guide/moonbreak" },
       { title: "Classements", description: "Points d'honneur", icon: Trophy, color: "from-yellow-500 to-amber-600", link: "/guide/classements" }
@@ -125,8 +127,7 @@ const categories = [
     guides: [
       { title: "Guide Complet FDV", description: "Races, recherches, artéfacts", icon: Dna, color: "from-purple-500 to-pink-600", link: "/guide/fdv", featured: true },
       { title: "Rock'tal & Mineur", description: "Développer les FDV pour mineurs", icon: Mountain, color: "from-amber-500 to-orange-600", link: "/guide/rocktal", featured: true },
-      { title: "Réduction Temps FDV", description: "Cap -99% et optimisation", icon: Clock, color: "from-purple-500 to-pink-600", link: "/guide/reduction-fdv" },
-      { title: "Rapid Fire", description: "Tirs multiples en combat", icon: Zap, color: "from-yellow-500 to-orange-600", link: "/guide/rapid-fire", featured: true }
+      { title: "Réduction Temps FDV", description: "Cap -99% et optimisation", icon: Clock, color: "from-purple-500 to-pink-600", link: "/guide/reduction-fdv" }
     ]
   }
 ];

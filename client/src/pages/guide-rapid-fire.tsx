@@ -107,7 +107,7 @@ export default function GuideRapidFire() {
                     les cibles concernées. C'est pour ça qu'un seul Bombardier peut détruire 20 Lance-Missiles en un round !
                   </p>
                   <p className="text-sm text-gray-400">
-                    Pour les formules détaillées, consultez le <Link href="/guide/formules" className="text-primary hover:underline">guide des formules</Link>.
+                    Pour les formules détaillées, consultez le <Link href="/guide/rapid-fire-formules" className="text-primary hover:underline">guide expert des formules RF</Link>.
                   </p>
                 </div>
               </div>
