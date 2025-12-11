@@ -141,10 +141,10 @@ export function GlobalEditOverlay() {
         </div>
       )}
 
-      <div className="fixed bottom-20 right-4 z-[9998] bg-cyan-900/90 backdrop-blur text-cyan-100 px-3 py-2 rounded-lg text-xs border border-cyan-500/30 shadow-lg max-w-[200px]">
+      <div className="fixed bottom-40 right-6 z-[9998] bg-cyan-900/90 backdrop-blur text-cyan-100 px-3 py-2 rounded-lg text-xs border border-cyan-500/30 shadow-lg max-w-[200px]">
         <div className="flex items-center gap-2 mb-1">
           <Pencil className="w-3 h-3" />
-          <span className="font-bold">Astuce</span>
+          <span className="font-bold">Astuce Admin</span>
         </div>
         <p>Ctrl + Clic sur n'importe quel texte pour le modifier</p>
       </div>
