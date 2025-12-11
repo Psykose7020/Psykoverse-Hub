@@ -14,22 +14,39 @@ interface Obstacle {
 }
 
 const SHIP_VARIANTS = [
-  { name: "Chasseur Léger", body: "#4ADE80", accent: "#22C55E", glow: "rgba(74,222,128,0.8)", wings: "pointed" },
-  { name: "Chasseur Lourd", body: "#EF4444", accent: "#B91C1C", glow: "rgba(239,68,68,0.8)", wings: "wide" },
-  { name: "Croiseur", body: "#00BFFF", accent: "#0080FF", glow: "rgba(0,191,255,0.8)", wings: "angular" },
-  { name: "Vaisseau Bataille", body: "#8B5CF6", accent: "#7C3AED", glow: "rgba(139,92,246,0.8)", wings: "heavy" },
-  { name: "Traqueur", body: "#F59E0B", accent: "#D97706", glow: "rgba(245,158,11,0.8)", wings: "sleek" },
-  { name: "Bombardier", body: "#6B7280", accent: "#374151", glow: "rgba(107,114,128,0.8)", wings: "bomber" },
-  { name: "Destructeur", body: "#DC2626", accent: "#7F1D1D", glow: "rgba(220,38,38,0.8)", wings: "massive" },
-  { name: "Étoile Mort", body: "#1F2937", accent: "#111827", glow: "rgba(31,41,55,0.8)", wings: "sphere" },
-  { name: "Petit Transport", body: "#14B8A6", accent: "#0D9488", glow: "rgba(20,184,166,0.8)", wings: "cargo" },
-  { name: "Grand Transport", body: "#0EA5E9", accent: "#0369A1", glow: "rgba(14,165,233,0.8)", wings: "freighter" },
-  { name: "Colonisateur", body: "#84CC16", accent: "#65A30D", glow: "rgba(132,204,22,0.8)", wings: "colony" },
-  { name: "Recycleur", body: "#A3A3A3", accent: "#525252", glow: "rgba(163,163,163,0.8)", wings: "recycler" },
-  { name: "Sonde", body: "#E879F9", accent: "#D946EF", glow: "rgba(232,121,249,0.8)", wings: "probe" },
-  { name: "Satellite", body: "#FBBF24", accent: "#F59E0B", glow: "rgba(251,191,36,0.8)", wings: "solar" },
-  { name: "Faucheur", body: "#EC4899", accent: "#DB2777", glow: "rgba(236,72,153,0.8)", wings: "reaper" },
+  { name: "Chasseur Léger", body: "#4ADE80", accent: "#22C55E", glow: "rgba(74,222,128,0.8)", wings: "pointed", structure: 400 },
+  { name: "Chasseur Lourd", body: "#EF4444", accent: "#B91C1C", glow: "rgba(239,68,68,0.8)", wings: "wide", structure: 1000 },
+  { name: "Croiseur", body: "#00BFFF", accent: "#0080FF", glow: "rgba(0,191,255,0.8)", wings: "angular", structure: 2700 },
+  { name: "Vaisseau Bataille", body: "#8B5CF6", accent: "#7C3AED", glow: "rgba(139,92,246,0.8)", wings: "heavy", structure: 6000 },
+  { name: "Traqueur", body: "#F59E0B", accent: "#D97706", glow: "rgba(245,158,11,0.8)", wings: "sleek", structure: 7000 },
+  { name: "Bombardier", body: "#6B7280", accent: "#374151", glow: "rgba(107,114,128,0.8)", wings: "bomber", structure: 7500 },
+  { name: "Destructeur", body: "#DC2626", accent: "#7F1D1D", glow: "rgba(220,38,38,0.8)", wings: "massive", structure: 11000 },
+  { name: "Étoile Mort", body: "#1F2937", accent: "#111827", glow: "rgba(31,41,55,0.8)", wings: "sphere", structure: 900000 },
+  { name: "Petit Transport", body: "#14B8A6", accent: "#0D9488", glow: "rgba(20,184,166,0.8)", wings: "cargo", structure: 400 },
+  { name: "Grand Transport", body: "#0EA5E9", accent: "#0369A1", glow: "rgba(14,165,233,0.8)", wings: "freighter", structure: 1200 },
+  { name: "Colonisateur", body: "#84CC16", accent: "#65A30D", glow: "rgba(132,204,22,0.8)", wings: "colony", structure: 3000 },
+  { name: "Recycleur", body: "#A3A3A3", accent: "#525252", glow: "rgba(163,163,163,0.8)", wings: "recycler", structure: 1600 },
+  { name: "Sonde", body: "#E879F9", accent: "#D946EF", glow: "rgba(232,121,249,0.8)", wings: "probe", structure: 100 },
+  { name: "Satellite", body: "#FBBF24", accent: "#F59E0B", glow: "rgba(251,191,36,0.8)", wings: "solar", structure: 200 },
+  { name: "Faucheur", body: "#EC4899", accent: "#DB2777", glow: "rgba(236,72,153,0.8)", wings: "reaper", structure: 14000 },
 ];
+
+const MIN_STRUCTURE = 100;
+const MAX_STRUCTURE = 14000;
+
+function getShipScale(structure: number): number {
+  const normalized = Math.min(Math.max(structure, MIN_STRUCTURE), MAX_STRUCTURE);
+  const logMin = Math.log(MIN_STRUCTURE);
+  const logMax = Math.log(MAX_STRUCTURE);
+  const logValue = Math.log(normalized);
+  const ratio = (logValue - logMin) / (logMax - logMin);
+  return 0.875 + ratio * 0.25;
+}
+
+function getScoreMultiplier(structure: number): number {
+  const scale = getShipScale(structure);
+  return 0.8 + (scale - 0.875) * 1.6;
+}
 
 const PLANET_VARIANTS = [
   { from: "#8B7355", to: "#4A3728", hasRing: false },
@@ -193,13 +210,13 @@ export default function SpaceGame() {
   };
 
   const submitScore = async () => {
-    if (!pseudo.trim() || pseudo.length < 2 || !univers.trim()) return;
+    if (!pseudo.trim() || pseudo.length < 2) return;
     setIsSubmitting(true);
     try {
       await fetch("/api/leaderboard", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ pseudo: pseudo.trim(), univers: univers.trim(), score })
+        body: JSON.stringify({ pseudo: pseudo.trim(), univers: univers.trim() || "-", score })
       });
       setSubmitted(true);
     } catch (err) {
@@ -225,7 +242,8 @@ export default function SpaceGame() {
       
       if (delta > 16) {
         lastTimeRef.current = time;
-        scoreRef.current += 1;
+        const multiplier = getScoreMultiplier(currentShip.structure);
+        scoreRef.current += Math.round(multiplier);
         setScore(scoreRef.current);
         
         updatePlayerPosition();
@@ -269,11 +287,12 @@ export default function SpaceGame() {
           }
           
           const playerY = 85;
-          const playerSize = 8;
+          const basePlayerSize = 8;
+          const scaledPlayerSize = basePlayerSize * getShipScale(SHIP_VARIANTS[shipVariant].structure);
           for (const o of updated) {
             const dx = Math.abs(o.x - playerXRef.current);
             const dy = Math.abs(o.y - playerY);
-            const minDist = (o.size / 2 + playerSize) * 0.35;
+            const minDist = (o.size / 2 + scaledPlayerSize) * 0.35;
             if (dx < minDist && dy < minDist) {
               endGame();
               return [];
@@ -294,6 +313,7 @@ export default function SpaceGame() {
   }, [gameState, endGame, updatePlayerPosition]);
 
   const currentShip = SHIP_VARIANTS[shipVariant];
+  const shipScale = getShipScale(currentShip.structure);
 
   return (
     <div ref={containerRef} className="hidden lg:block">
@@ -329,14 +349,14 @@ export default function SpaceGame() {
 
         <div
           ref={gameRef}
-          className="relative h-[320px] bg-black/20 rounded-2xl overflow-hidden cursor-none select-none border border-white/10 backdrop-blur-sm"
+          className={`relative h-[320px] bg-black/20 rounded-2xl overflow-hidden select-none border border-white/10 backdrop-blur-sm ${gameState === "playing" ? "cursor-none" : "cursor-default"}`}
         >
         {gameState === "playing" && (
           <>
             <div
               ref={playerRef}
               className="absolute will-change-transform pointer-events-none"
-              style={{ left: "50%", top: "85%", transform: "translate(-50%, -50%)" }}
+              style={{ left: "50%", top: "85%", transform: `translate(-50%, -50%) scale(${shipScale})` }}
             >
               <div className="relative">
                 <div 
@@ -481,14 +501,14 @@ export default function SpaceGame() {
                     type="text"
                     value={univers}
                     onChange={(e) => setUnivers(e.target.value.slice(0, 25))}
-                    placeholder="Univers..."
+                    placeholder="Univers (optionnel)..."
                     className="w-full bg-[#1C2230] border border-[#2E384D] rounded-lg px-3 py-1.5 text-white text-center text-sm placeholder:text-gray-500 focus:outline-none focus:border-primary"
                     maxLength={25}
                   />
                   <div className="flex gap-2">
                     <Button
                       onClick={submitScore}
-                      disabled={isSubmitting || pseudo.trim().length < 2 || !univers}
+                      disabled={isSubmitting || pseudo.trim().length < 2}
                       className="flex-1"
                       size="sm"
                     >

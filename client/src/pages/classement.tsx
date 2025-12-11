@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Layout from "@/components/layout/Layout";
-import { Trophy, Gamepad2, Globe, Clock, Medal } from "lucide-react";
+import { Trophy, Gamepad2, Globe, Clock, Medal, ArrowLeft } from "lucide-react";
+import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
 
 interface LeaderboardEntry {
   id: string;
@@ -48,6 +50,14 @@ export default function Classement() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-12"
           >
+            <div className="mb-6">
+              <Link href="/">
+                <Button variant="ghost" className="text-gray-400 hover:text-white" data-testid="button-back-home">
+                  <ArrowLeft className="w-4 h-4 mr-2" />
+                  Retour à l'accueil
+                </Button>
+              </Link>
+            </div>
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
                 <Gamepad2 className="w-7 h-7 text-white" />
