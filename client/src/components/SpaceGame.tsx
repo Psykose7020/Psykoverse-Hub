@@ -366,6 +366,41 @@ export default function SpaceGame() {
 
   return (
     <div ref={containerRef} className="block">
+      <div className="relative mb-3 p-3 bg-gradient-to-r from-purple-900/40 via-primary/20 to-cyan-900/40 rounded-xl border border-primary/30 overflow-hidden">
+        <div className="absolute inset-0 opacity-30" style={{ backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
+        <div className="relative flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="relative">
+              <div className="w-12 h-12 bg-gradient-to-br from-primary via-purple-500 to-pink-500 rounded-xl flex items-center justify-center animate-pulse shadow-lg shadow-primary/30">
+                <Gamepad2 className="w-6 h-6 text-white" />
+              </div>
+              <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full flex items-center justify-center animate-bounce">
+                <span className="text-[8px] text-white font-bold">!</span>
+              </div>
+            </div>
+            <div>
+              <h3 className="font-display font-bold text-white text-lg flex items-center gap-2">
+                🚀 Space Escape
+                <span className="text-[10px] bg-gradient-to-r from-yellow-400 to-orange-500 text-black px-2 py-0.5 rounded-full font-bold animate-pulse">
+                  MINI-JEU
+                </span>
+              </h3>
+              <p className="text-gray-400 text-xs">Évite les planètes et bats ton record !</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <Link 
+              href="/classement" 
+              className="bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors flex items-center gap-1 border border-yellow-500/30"
+              data-testid="link-leaderboard"
+            >
+              <Trophy className="w-4 h-4" />
+              Classement
+            </Link>
+          </div>
+        </div>
+      </div>
+
       <div 
         className="transition-transform duration-75 ease-out"
         style={{ 
@@ -381,14 +416,6 @@ export default function SpaceGame() {
             )}
           </div>
           <div className="flex items-center gap-3 text-xs">
-            <Link 
-              href="/classement" 
-              className="bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30 px-2 py-1 rounded text-xs font-medium transition-colors flex items-center gap-1"
-              data-testid="link-leaderboard"
-            >
-              <Trophy className="w-3 h-3" />
-              Top
-            </Link>
             <span className="text-primary font-bold">{Math.floor(score)}</span>
             <span className="text-yellow-400 flex items-center gap-1">
               <Trophy className="w-3 h-3" />{highScore}
