@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Calculator, Factory, Rocket, Shield, FlaskConical, Zap, Clock, Fuel, ChevronRight, Info, RefreshCw, ChevronDown, ChevronUp, Sparkles } from "lucide-react";
+import { Calculator, Factory, Rocket, Shield, FlaskConical, Zap, Clock, Fuel, ChevronRight, Info, RefreshCw, ChevronDown, ChevronUp, Sparkles, AlertTriangle } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
@@ -34,8 +34,6 @@ function ProductionCalculator() {
   const [metalLevel, setMetalLevel] = useState(20);
   const [crystalLevel, setCrystalLevel] = useState(18);
   const [deutLevel, setDeutLevel] = useState(15);
-  const [solarLevel, setSolarLevel] = useState(20);
-  const [fusionLevel, setFusionLevel] = useState(0);
   const [ecoSpeed, setEcoSpeed] = useState(1);
   const [tempMax, setTempMax] = useState(40);
   const [showBonuses, setShowBonuses] = useState(false);
@@ -55,18 +53,6 @@ function ProductionCalculator() {
   const crystalProd = Math.round(20 * crystalLevel * Math.pow(1.1, crystalLevel) * ecoSpeed * totalBonusCrystal);
   const tempFactor = 1.36 - 0.004 * tempMax;
   const deutProd = Math.round(10 * deutLevel * Math.pow(1.1, deutLevel) * tempFactor * ecoSpeed * totalBonusDeut);
-  
-  const metalConso = Math.round(10 * metalLevel * Math.pow(1.1, metalLevel));
-  const crystalConso = Math.round(10 * crystalLevel * Math.pow(1.1, crystalLevel));
-  const deutConso = Math.round(10 * deutLevel * Math.pow(1.1, deutLevel));
-  
-  const solarProd = Math.round(20 * solarLevel * Math.pow(1.1, solarLevel));
-  const fusionProd = fusionLevel > 0 ? Math.round(30 * fusionLevel * Math.pow(1.05 + 0.01 * 12, fusionLevel)) : 0;
-  const fusionConso = fusionLevel > 0 ? Math.round(10 * fusionLevel * Math.pow(1.1, fusionLevel)) : 0;
-  
-  const totalEnergy = solarProd + fusionProd;
-  const totalConso = metalConso + crystalConso + deutConso;
-  const energyBalance = totalEnergy - totalConso;
 
   return (
     <div className="space-y-6">
@@ -199,8 +185,6 @@ function ProductionCalculator() {
               { label: "Mine de Métal", value: metalLevel, setter: setMetalLevel, color: "text-gray-400" },
               { label: "Mine de Cristal", value: crystalLevel, setter: setCrystalLevel, color: "text-cyan-400" },
               { label: "Synthétiseur Deut", value: deutLevel, setter: setDeutLevel, color: "text-teal-400" },
-              { label: "Centrale Solaire", value: solarLevel, setter: setSolarLevel, color: "text-yellow-400" },
-              { label: "Centrale Fusion", value: fusionLevel, setter: setFusionLevel, color: "text-orange-400" },
             ].map((item, i) => (
               <div key={i} className="flex items-center justify-between">
                 <label className={item.color}>{item.label}</label>
@@ -238,22 +222,7 @@ function ProductionCalculator() {
             </div>
             <div className="flex justify-between items-center p-3 bg-[#151924] rounded-lg">
               <span className="text-teal-400">Deutérium</span>
-              <span className="font-mono text-xl text-teal-300">{formatNumber(deutProd - fusionConso)}</span>
-            </div>
-            <hr className="border-[#2E384D]" />
-            <div className="flex justify-between items-center p-3 bg-[#151924] rounded-lg">
-              <span className="text-yellow-400">Énergie produite</span>
-              <span className="font-mono text-yellow-300">{formatNumber(totalEnergy)}</span>
-            </div>
-            <div className="flex justify-between items-center p-3 bg-[#151924] rounded-lg">
-              <span className="text-orange-400">Énergie consommée</span>
-              <span className="font-mono text-orange-300">{formatNumber(totalConso)}</span>
-            </div>
-            <div className={`flex justify-between items-center p-3 rounded-lg ${energyBalance >= 0 ? "bg-green-900/20 border border-green-700/30" : "bg-red-900/20 border border-red-700/30"}`}>
-              <span className={energyBalance >= 0 ? "text-green-400" : "text-red-400"}>Balance</span>
-              <span className={`font-mono text-xl ${energyBalance >= 0 ? "text-green-300" : "text-red-300"}`}>
-                {energyBalance >= 0 ? "+" : ""}{formatNumber(energyBalance)}
-              </span>
+              <span className="font-mono text-xl text-teal-300">{formatNumber(deutProd)}</span>
             </div>
           </div>
         </div>
@@ -526,6 +495,10 @@ function SpeedCalculator() {
   const [impulse, setImpulse] = useState(8);
   const [hyperspace, setHyperspace] = useState(6);
   const [fleetSpeed, setFleetSpeed] = useState(1);
+  const [showBonuses, setShowBonuses] = useState(false);
+  const [playerClass, setPlayerClass] = useState("none");
+  const [allianceClass, setAllianceClass] = useState("none");
+  const [lifeformSpeedBonus, setLifeformSpeedBonus] = useState(0);
 
   const ships: Record<string, { name: string; baseSpeed: number; engine: "combustion" | "impulse" | "hyperspace"; upgradeEngine?: { tech: "impulse" | "hyperspace"; level: number } }> = {
     pt: { name: "Petit Transporteur", baseSpeed: 5000, engine: "combustion", upgradeEngine: { tech: "impulse", level: 5 } },
@@ -565,7 +538,12 @@ function SpeedCalculator() {
   }
   
   const bonus = engineBonus[usedEngine];
-  const speed = Math.round(selected.baseSpeed * (1 + bonus * techLevel) * fleetSpeed);
+  
+  const playerClassSpeedBonus = playerClass === "general" ? 0.05 : 0;
+  const allianceClassSpeedBonus = allianceClass === "warrior" ? 0.05 : 0;
+  const totalSpeedBonus = 1 + playerClassSpeedBonus + allianceClassSpeedBonus + (lifeformSpeedBonus / 100);
+  
+  const speed = Math.round(selected.baseSpeed * (1 + bonus * techLevel) * fleetSpeed * totalSpeedBonus);
 
   return (
     <div className="space-y-6">
@@ -608,6 +586,65 @@ function SpeedCalculator() {
                 {[1,2,3,4,5,6,7,8].map(s => <option key={s} value={s}>x{s}</option>)}
               </select>
             </div>
+            
+            <button
+              onClick={() => setShowBonuses(!showBonuses)}
+              className="w-full flex items-center justify-between p-3 bg-purple-900/20 border border-purple-700/30 rounded-lg hover:bg-purple-900/30 transition-colors"
+            >
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-purple-400" />
+                <span className="text-purple-300 font-medium">Bonus Vitesse</span>
+                {totalSpeedBonus > 1 && (
+                  <span className="text-xs bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded-full">
+                    +{Math.round((totalSpeedBonus - 1) * 100)}%
+                  </span>
+                )}
+              </div>
+              {showBonuses ? <ChevronUp className="w-4 h-4 text-purple-400" /> : <ChevronDown className="w-4 h-4 text-purple-400" />}
+            </button>
+            
+            {showBonuses && (
+              <div className="space-y-3 p-4 bg-purple-900/10 border border-purple-700/20 rounded-lg">
+                <div className="flex items-center justify-between">
+                  <label className="text-purple-300 text-sm">Classe Joueur</label>
+                  <select 
+                    value={playerClass} 
+                    onChange={(e) => setPlayerClass(e.target.value)}
+                    className="bg-[#0B0E14] border border-purple-700/30 rounded px-3 py-1 text-white text-sm"
+                  >
+                    <option value="none">Aucune</option>
+                    <option value="general">Général (+5%)</option>
+                    <option value="collector">Collecteur (0%)</option>
+                    <option value="explorer">Explorateur (0%)</option>
+                  </select>
+                </div>
+                <div className="flex items-center justify-between">
+                  <label className="text-purple-300 text-sm">Classe Alliance</label>
+                  <select 
+                    value={allianceClass} 
+                    onChange={(e) => setAllianceClass(e.target.value)}
+                    className="bg-[#0B0E14] border border-purple-700/30 rounded px-3 py-1 text-white text-sm"
+                  >
+                    <option value="none">Aucune</option>
+                    <option value="warrior">Guerrier (+5%)</option>
+                    <option value="trader">Marchand (0%)</option>
+                    <option value="researcher">Chercheur (0%)</option>
+                  </select>
+                </div>
+                <div className="flex items-center justify-between">
+                  <label className="text-purple-300 text-sm">Bonus FdV Vitesse (%)</label>
+                  <input 
+                    type="number" 
+                    value={lifeformSpeedBonus} 
+                    onChange={(e) => setLifeformSpeedBonus(Math.max(0, Math.min(100, Number(e.target.value))))}
+                    className="bg-[#0B0E14] border border-purple-700/30 rounded px-3 py-1 text-white w-20 text-right text-sm"
+                    min="0"
+                    max="100"
+                  />
+                </div>
+              </div>
+            )}
+            
             <hr className="border-[#2E384D]" />
             {[
               { label: "Réacteur Combustion", value: combustion, setter: setCombustion },
@@ -650,11 +687,11 @@ function SpeedCalculator() {
 }
 
 function ConsumptionCalculator() {
-  const [shipType, setShipType] = useState("gt");
-  const [quantity, setQuantity] = useState(100);
+  const [shipQuantities, setShipQuantities] = useState<Record<string, number>>({});
   const [distance, setDistance] = useState(1000);
   const [speedPercent, setSpeedPercent] = useState(100);
-  const [fleetSpeed, setFleetSpeed] = useState(1);
+  const [deutSaveFactor, setDeutSaveFactor] = useState(0);
+  const [lifeformConsoReduction, setLifeformConsoReduction] = useState(0);
 
   const ships: Record<string, { name: string; baseConso: number }> = {
     pt: { name: "Petit Transporteur", baseConso: 10 },
@@ -675,10 +712,28 @@ function ConsumptionCalculator() {
   };
 
   const speedOptions = [10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100];
+  const deutSaveOptions = [0, 0.5, 1, 1.5, 2, 2.5, 3];
 
-  const selected = ships[shipType];
   const speedFactor = speedPercent / 100;
-  const consumption = Math.round(selected.baseConso * quantity * distance / 35000 * Math.pow(speedFactor + 1, 2));
+  const reductionFactor = 1 - (deutSaveFactor / 10) - (lifeformConsoReduction / 100);
+
+  const calculateShipConso = (shipKey: string, qty: number) => {
+    const ship = ships[shipKey];
+    return Math.round(ship.baseConso * qty * distance / 35000 * Math.pow(speedFactor + 1, 2) * Math.max(0, reductionFactor));
+  };
+
+  const totalConsumption = Object.entries(shipQuantities).reduce((total, [key, qty]) => {
+    if (qty > 0) {
+      return total + calculateShipConso(key, qty);
+    }
+    return total;
+  }, 0);
+
+  const totalShips = Object.values(shipQuantities).reduce((sum, qty) => sum + (qty || 0), 0);
+
+  const updateQuantity = (key: string, value: number) => {
+    setShipQuantities(prev => ({ ...prev, [key]: Math.max(0, value) }));
+  };
 
   return (
     <div className="space-y-6">
@@ -688,81 +743,91 @@ function ConsumptionCalculator() {
           <span className="font-bold text-white">Formule de consommation</span>
         </div>
         <p className="text-sm text-gray-400">
-          Conso = <code className="bg-black/30 px-1 rounded">conso base × quantité × distance / 35000 × (vitesse% + 1)²</code>
+          Conso = <code className="bg-black/30 px-1 rounded">base × qté × distance / 35000 × (vitesse% + 1)² × réduction</code>
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-[#1C2230] border border-[#2E384D] rounded-xl p-6">
-          <h3 className="font-bold text-white mb-4">Paramètres</h3>
-          <div className="space-y-4">
-            <div>
-              <label className="text-gray-400 text-sm mb-2 block">Vaisseau</label>
-              <select 
-                value={shipType} 
-                onChange={(e) => setShipType(e.target.value)}
-                className="w-full bg-[#0B0E14] border border-[#2E384D] rounded px-3 py-2 text-white"
-              >
-                {Object.entries(ships).map(([key, s]) => (
-                  <option key={key} value={key}>{s.name}</option>
-                ))}
-              </select>
-            </div>
-            <div className="flex items-center justify-between">
-              <label className="text-gray-400">Quantité</label>
-              <input 
-                type="number" 
-                value={quantity} 
-                onChange={(e) => setQuantity(Math.max(1, Number(e.target.value)))}
-                className="bg-[#0B0E14] border border-[#2E384D] rounded px-2 py-1 text-white w-24 text-right"
-              />
-            </div>
-            <div className="flex items-center justify-between">
-              <label className="text-gray-400">Distance</label>
-              <input 
-                type="number" 
-                value={distance} 
-                onChange={(e) => setDistance(Math.max(1, Number(e.target.value)))}
-                className="bg-[#0B0E14] border border-[#2E384D] rounded px-2 py-1 text-white w-24 text-right"
-              />
-            </div>
-            <div className="flex items-center justify-between">
-              <label className="text-gray-400">Vitesse flotte serveur</label>
-              <select 
-                value={fleetSpeed} 
-                onChange={(e) => setFleetSpeed(Number(e.target.value))}
-                className="bg-[#0B0E14] border border-[#2E384D] rounded px-3 py-1 text-white"
-              >
-                {[1, 2, 3, 4, 5, 6, 7, 8].map(s => <option key={s} value={s}>x{s}</option>)}
-              </select>
-            </div>
-            <div>
-              <label className="text-gray-400 text-sm mb-2 block">Vitesse de vol (%)</label>
-              <select 
-                value={speedPercent} 
-                onChange={(e) => setSpeedPercent(Number(e.target.value))}
-                className="w-full bg-[#0B0E14] border border-[#2E384D] rounded px-3 py-2 text-white"
-              >
-                {speedOptions.map(s => <option key={s} value={s}>{s}%</option>)}
-              </select>
-            </div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2 bg-[#1C2230] border border-[#2E384D] rounded-xl p-6">
+          <h3 className="font-bold text-white mb-4">Sélection des vaisseaux</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-[400px] overflow-y-auto pr-2">
+            {Object.entries(ships).map(([key, ship]) => (
+              <div key={key} className="flex items-center justify-between p-2 bg-[#151924] rounded-lg">
+                <span className="text-gray-300 text-sm truncate flex-1">{ship.name}</span>
+                <input 
+                  type="number" 
+                  value={shipQuantities[key] || ""}
+                  onChange={(e) => updateQuantity(key, parseInt(e.target.value) || 0)}
+                  placeholder="0"
+                  className="bg-[#0B0E14] border border-[#2E384D] rounded px-2 py-1 text-white w-20 text-right text-sm"
+                />
+              </div>
+            ))}
           </div>
         </div>
 
-        <div className="bg-[#1C2230] border border-[#2E384D] rounded-xl p-6">
-          <h3 className="font-bold text-white mb-4">Résultat</h3>
-          <div className="space-y-4">
-            <div className="bg-[#151924] rounded-lg p-4">
-              <p className="text-xs text-gray-500 mb-1">Consommation unitaire</p>
-              <p className="font-mono text-lg text-gray-400">{selected.baseConso} deut/unité</p>
+        <div className="space-y-4">
+          <div className="bg-[#1C2230] border border-[#2E384D] rounded-xl p-6">
+            <h3 className="font-bold text-white mb-4">Paramètres</h3>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <label className="text-gray-400 text-sm">Distance</label>
+                <input 
+                  type="number" 
+                  value={distance} 
+                  onChange={(e) => setDistance(Math.max(1, Number(e.target.value)))}
+                  className="bg-[#0B0E14] border border-[#2E384D] rounded px-2 py-1 text-white w-24 text-right"
+                />
+              </div>
+              <div className="flex items-center justify-between">
+                <label className="text-gray-400 text-sm">Vitesse vol</label>
+                <select 
+                  value={speedPercent} 
+                  onChange={(e) => setSpeedPercent(Number(e.target.value))}
+                  className="bg-[#0B0E14] border border-[#2E384D] rounded px-2 py-1 text-white"
+                >
+                  {speedOptions.map(s => <option key={s} value={s}>{s}%</option>)}
+                </select>
+              </div>
+              <div className="flex items-center justify-between">
+                <label className="text-gray-400 text-sm">Deut Save Factor</label>
+                <select 
+                  value={deutSaveFactor} 
+                  onChange={(e) => setDeutSaveFactor(Number(e.target.value))}
+                  className="bg-[#0B0E14] border border-[#2E384D] rounded px-2 py-1 text-white"
+                >
+                  {deutSaveOptions.map(s => <option key={s} value={s}>{s}</option>)}
+                </select>
+              </div>
+              <div className="flex items-center justify-between">
+                <label className="text-purple-300 text-sm">Réduction FdV (%)</label>
+                <input 
+                  type="number" 
+                  value={lifeformConsoReduction} 
+                  onChange={(e) => setLifeformConsoReduction(Math.max(0, Math.min(50, Number(e.target.value))))}
+                  className="bg-[#0B0E14] border border-purple-700/30 rounded px-2 py-1 text-white w-16 text-right"
+                  min="0"
+                  max="50"
+                />
+              </div>
             </div>
-            <div className="bg-teal-900/20 border border-teal-700/30 rounded-lg p-4">
-              <p className="text-xs text-teal-400 mb-1">Consommation totale</p>
-              <p className="font-mono text-2xl text-teal-300">{formatNumber(consumption)} deut</p>
-            </div>
-            <div className="bg-[#151924] rounded-lg p-4">
-              <p className="text-xs text-gray-500 mb-1">Par vaisseau</p>
-              <p className="font-mono text-lg text-gray-400">{formatNumber(consumption / quantity)} deut</p>
+          </div>
+
+          <div className="bg-[#1C2230] border border-[#2E384D] rounded-xl p-6">
+            <h3 className="font-bold text-white mb-4">Résultat</h3>
+            <div className="space-y-3">
+              <div className="bg-[#151924] rounded-lg p-3">
+                <p className="text-xs text-gray-500 mb-1">Total vaisseaux</p>
+                <p className="font-mono text-lg text-gray-400">{formatNumber(totalShips)}</p>
+              </div>
+              <div className="bg-[#151924] rounded-lg p-3">
+                <p className="text-xs text-gray-500 mb-1">Réduction appliquée</p>
+                <p className="font-mono text-lg text-green-400">-{Math.round((1 - reductionFactor) * 100)}%</p>
+              </div>
+              <div className="bg-teal-900/20 border border-teal-700/30 rounded-lg p-4">
+                <p className="text-xs text-teal-400 mb-1">Consommation totale</p>
+                <p className="font-mono text-2xl text-teal-300">{formatNumber(totalConsumption)} deut</p>
+              </div>
             </div>
           </div>
         </div>
@@ -868,6 +933,12 @@ function ConstructionTimeCalculator() {
               <p className="font-mono text-2xl text-amber-300">
                 {hours > 0 && `${hours}h `}{minutes > 0 && `${minutes}m `}{seconds}s
               </p>
+            </div>
+            <div className="bg-purple-900/20 border border-purple-700/30 rounded-lg p-3">
+              <div className="flex items-center gap-2">
+                <AlertTriangle className="w-4 h-4 text-purple-400" />
+                <span className="text-xs text-purple-300">Les bonus Formes de Vie peuvent réduire ce temps (non inclus dans ce calcul)</span>
+              </div>
             </div>
           </div>
         </div>
