@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
-import { Shield, Menu, X, BookOpen, Globe, Rocket } from "lucide-react";
+import { Shield, Menu, X, BookOpen, Globe, Rocket, Beer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import allianceLogo from "@assets/Design_sans_titre_(2)_1765292527261.png";
 import { useYoutubeStats } from "@/hooks/useYoutubeStats";
@@ -71,7 +71,18 @@ export default function Header() {
             })}
           </div>
 
-          <div className="hidden md:block">
+          <div className="hidden md:flex items-center gap-3">
+            <a 
+              href="https://buymeacoffee.com/psykose" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="group relative flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-black font-bold text-xs uppercase tracking-wide shadow-[0_0_15px_rgba(245,158,11,0.4)] hover:shadow-[0_0_25px_rgba(245,158,11,0.6)] transition-all hover:scale-105"
+            >
+              <Beer className="w-4 h-4 group-hover:animate-bounce" />
+              <span>Buy me a beer</span>
+              <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-ping"></span>
+              <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
+            </a>
             <Button className="bg-secondary hover:bg-secondary/90 text-black font-bold uppercase text-xs tracking-widest px-6 shadow-[0_0_15px_rgba(255,150,0,0.3)] hover:shadow-[0_0_25px_rgba(255,150,0,0.5)] transition-all" asChild>
               <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer">
                 Rejoindre
@@ -111,6 +122,15 @@ export default function Header() {
                 </Link>
               );
             })}
+            <a 
+              href="https://buymeacoffee.com/psykose" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 w-full py-3 bg-gradient-to-r from-amber-500 to-yellow-500 text-black font-bold uppercase text-sm tracking-widest rounded mt-2"
+            >
+              <Beer className="w-5 h-5" />
+              Buy me a beer
+            </a>
             <a 
               href="https://discord.gg/3PWk4HmfNn" 
               target="_blank" 

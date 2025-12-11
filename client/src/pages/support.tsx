@@ -1,4 +1,4 @@
-import { MessageSquare, ShieldAlert, Heart, Coffee } from "lucide-react";
+import { MessageSquare, ShieldAlert, Heart, Beer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Layout from "@/components/layout/Layout";
 import { EditableText } from "@/components/EditableText";
@@ -82,18 +82,18 @@ export default function Support() {
 
                 <p className="text-gray-500 text-xs mb-6 italic">
                   Si ce projet vous est utile et que vous souhaitez m'encourager à continuer, 
-                  un petit café fait toujours plaisir ! Aucune obligation bien sûr, 
+                  une petite bière fait toujours plaisir ! Aucune obligation bien sûr, 
                   votre présence dans la communauté est déjà un soutien précieux.
                 </p>
 
                 <Button 
                   size="lg" 
-                  className="bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-500 hover:to-orange-500 text-white font-display font-bold uppercase tracking-widest h-12 px-8 rounded shadow-lg transition-all hover:shadow-yellow-500/20 hover:shadow-xl" 
+                  className="bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-black font-display font-bold uppercase tracking-widest h-12 px-8 rounded shadow-lg transition-all hover:shadow-yellow-500/20 hover:shadow-xl" 
                   asChild
                 >
                   <a href="https://buymeacoffee.com/psykose" target="_blank" rel="noopener noreferrer">
-                    <Coffee className="mr-3 w-5 h-5" />
-                    Offrir un café
+                    <Beer className="mr-3 w-5 h-5" />
+                    Buy me a beer
                   </a>
                 </Button>
 
