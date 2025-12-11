@@ -113,10 +113,10 @@ export default function GuideRaid() {
                   <div className="bg-[#151924] rounded-lg p-4">
                     <h3 className="font-bold text-white mb-2">2. Coût en deutérium</h3>
                     <p className="text-gray-300 text-sm mb-2">
-                      Le deut de vol compte ! Un raid de 2h avec des Traqueurs peut coûter <strong className="text-primary">100k+ deut</strong>.
+                      Le deut de vol compte ! Les Traqueurs sont très économes, mais les <strong className="text-primary">Destructeurs et EdM</strong> consomment énormément sur les longs trajets.
                     </p>
                     <p className="text-gray-500 text-xs">
-                      Formule : Consommation = (35000 × distance × nb_vaisseaux) / (35000 + 20000)
+                      Astuce : Privilégiez les Traqueurs pour les raids lointains, leur consommation est minimale.
                     </p>
                   </div>
 
