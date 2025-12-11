@@ -426,6 +426,27 @@ export async function registerRoutes(
     }
   });
 
+  app.delete("/api/admin/leaderboard/:id", async (req, res) => {
+    try {
+      const authHeader = req.headers.authorization;
+      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+      
+      const token = authHeader.slice(7);
+      if (!validateToken(token)) {
+        return res.status(401).json({ error: "Invalid or expired token" });
+      }
+
+      const { id } = req.params;
+      await storage.deleteLeaderboardEntry(id);
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Leaderboard delete error:", error);
+      res.status(500).json({ error: "Failed to delete leaderboard entry" });
+    }
+  });
+
   app.get("/api/content", async (req, res) => {
     try {
       const allContent = await storage.getAllEditableContent();

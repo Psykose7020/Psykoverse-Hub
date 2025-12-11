@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
-import { Lock, Users, Eye, Calendar, TrendingUp, ExternalLink, LogOut, BarChart3, Globe, MessageCircle, Mail, Archive, CheckCircle, Clock, ChevronRight, X, Edit, BookOpen } from "lucide-react";
+import { Lock, Users, Eye, Calendar, TrendingUp, ExternalLink, LogOut, BarChart3, Globe, MessageCircle, Mail, Archive, CheckCircle, Clock, ChevronRight, X, Edit, BookOpen, Trash2 } from "lucide-react";
 import { AdminGuidesManager } from "../components/AdminGuidesManager";
 
 interface Feedback {
@@ -143,6 +143,21 @@ export default function Admin() {
       }
     } catch (err) {
       console.error("Failed to fetch leaderboard:", err);
+    }
+  };
+
+  const deleteLeaderboardEntry = async (id: string) => {
+    if (!confirm("Supprimer cette entrée du classement ?")) return;
+    try {
+      const res = await fetch(`/api/admin/leaderboard/${id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.ok) {
+        setLeaderboard(prev => prev.filter(e => e.id !== id));
+      }
+    } catch (err) {
+      console.error("Failed to delete leaderboard entry:", err);
     }
   };
 
@@ -816,6 +831,14 @@ export default function Admin() {
                       </p>
                       <p className="text-xs text-gray-500">points</p>
                     </div>
+                    <button
+                      onClick={() => deleteLeaderboardEntry(entry.id)}
+                      className="p-2 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 hover:text-red-300 transition-colors"
+                      title="Supprimer cette entrée"
+                      data-testid={`delete-leaderboard-${entry.id}`}
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
                   </div>
                 ))}
               </div>

@@ -24,6 +24,7 @@ export interface IStorage {
   addLeaderboardEntry(data: InsertLeaderboard & { ip?: string | null }): Promise<{ entry: Leaderboard; isNew: boolean; isBetter: boolean; previousBest?: number }>;
   getLeaderboard(limit?: number): Promise<Leaderboard[]>;
   getPublicLeaderboard(limit?: number): Promise<Omit<Leaderboard, 'ip'>[]>;
+  deleteLeaderboardEntry(id: string): Promise<boolean>;
   getEditableContent(id: string): Promise<EditableContent | undefined>;
   getAllEditableContent(): Promise<EditableContent[]>;
   upsertEditableContent(data: InsertEditableContent): Promise<EditableContent>;
@@ -178,6 +179,11 @@ export class DatabaseStorage implements IStorage {
       .orderBy(desc(leaderboard.score))
       .limit(limit);
     return entries;
+  }
+
+  async deleteLeaderboardEntry(id: string): Promise<boolean> {
+    const result = await db.delete(leaderboard).where(eq(leaderboard.id, id));
+    return true;
   }
 
   async getEditableContent(id: string): Promise<EditableContent | undefined> {
