@@ -377,14 +377,19 @@ export async function registerRoutes(
       
       const ip = req.headers["x-forwarded-for"]?.toString().split(",")[0] || req.ip || null;
       
-      await storage.addLeaderboardEntry({
+      const result = await storage.addLeaderboardEntry({
         pseudo: pseudo.trim(),
         univers: univers?.trim() || "-",
         score,
         ip,
       });
       
-      res.json({ success: true });
+      res.json({ 
+        success: true, 
+        isNew: result.isNew,
+        isBetter: result.isBetter,
+        previousBest: result.previousBest
+      });
     } catch (error) {
       console.error("Leaderboard error:", error);
       res.status(500).json({ error: "Erreur lors de l'enregistrement du score" });

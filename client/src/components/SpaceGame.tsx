@@ -103,6 +103,7 @@ export default function SpaceGame() {
   const [univers, setUnivers] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState<{ type: 'success' | 'info'; text: string } | null>(null);
   const [gameOffset, setGameOffset] = useState({ x: 0, y: 0 });
   
   const gameRef = useRef<HTMLDivElement>(null);
@@ -208,6 +209,7 @@ export default function SpaceGame() {
       playerRef.current.style.top = "85%";
     }
     setSubmitted(false);
+    setSubmitMessage(null);
     setPseudo("");
     setUnivers("");
     lastTimeRef.current = performance.now();
@@ -223,13 +225,25 @@ export default function SpaceGame() {
   const submitScore = async () => {
     if (!pseudo.trim() || pseudo.length < 2) return;
     setIsSubmitting(true);
+    setSubmitMessage(null);
     try {
-      await fetch("/api/leaderboard", {
+      const res = await fetch("/api/leaderboard", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ pseudo: pseudo.trim(), univers: univers.trim() || "-", score: Math.floor(score) })
       });
+      const data = await res.json();
       setSubmitted(true);
+      
+      if (data.isBetter) {
+        if (data.isNew) {
+          setSubmitMessage({ type: 'success', text: 'Score enregistré !' });
+        } else {
+          setSubmitMessage({ type: 'success', text: `Nouveau record ! (ancien: ${data.previousBest?.toLocaleString()})` });
+        }
+      } else {
+        setSubmitMessage({ type: 'info', text: `Ton record est de ${data.previousBest?.toLocaleString()} pts` });
+      }
     } catch (err) {
       console.error(err);
     } finally {
@@ -587,7 +601,9 @@ export default function SpaceGame() {
                 </div>
               ) : (
                 <div className="space-y-2 text-center">
-                  <p className="text-green-400 text-xs">Score enregistré !</p>
+                  <p className={`text-xs ${submitMessage?.type === 'success' ? 'text-green-400' : 'text-yellow-400'}`}>
+                    {submitMessage?.text || 'Score enregistré !'}
+                  </p>
                   <Button onClick={backToMenu} size="sm">Menu</Button>
                 </div>
               )}

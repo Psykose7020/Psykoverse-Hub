@@ -21,7 +21,7 @@ export interface IStorage {
   updateFeedbackStatus(id: string, status: string): Promise<Feedback | undefined>;
   createSuggestion(data: InsertSuggestion): Promise<Suggestion>;
   listSuggestions(): Promise<Suggestion[]>;
-  addLeaderboardEntry(data: InsertLeaderboard & { ip?: string | null }): Promise<Leaderboard>;
+  addLeaderboardEntry(data: InsertLeaderboard & { ip?: string | null }): Promise<{ entry: Leaderboard; isNew: boolean; isBetter: boolean; previousBest?: number }>;
   getLeaderboard(limit?: number): Promise<Leaderboard[]>;
   getPublicLeaderboard(limit?: number): Promise<Omit<Leaderboard, 'ip'>[]>;
   getEditableContent(id: string): Promise<EditableContent | undefined>;
@@ -138,7 +138,7 @@ export class DatabaseStorage implements IStorage {
     return await db.select().from(suggestions).orderBy(desc(suggestions.createdAt));
   }
 
-  async addLeaderboardEntry(data: InsertLeaderboard & { ip?: string | null }): Promise<Leaderboard> {
+  async addLeaderboardEntry(data: InsertLeaderboard & { ip?: string | null }): Promise<{ entry: Leaderboard; isNew: boolean; isBetter: boolean; previousBest?: number }> {
     // Permettre plusieurs entrées par IP, mais un seul score par pseudo
     const [existing] = await db.select().from(leaderboard).where(eq(leaderboard.pseudo, data.pseudo));
     if (existing) {
@@ -153,12 +153,12 @@ export class DatabaseStorage implements IStorage {
           })
           .where(eq(leaderboard.id, existing.id))
           .returning();
-        return updated;
+        return { entry: updated, isNew: false, isBetter: true, previousBest: existing.score };
       }
-      return existing;
+      return { entry: existing, isNew: false, isBetter: false, previousBest: existing.score };
     }
     const [entry] = await db.insert(leaderboard).values(data).returning();
-    return entry;
+    return { entry, isNew: true, isBetter: true };
   }
 
   async getLeaderboard(limit: number = 20): Promise<Leaderboard[]> {
