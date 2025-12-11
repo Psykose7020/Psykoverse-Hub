@@ -366,7 +366,7 @@ export default function SpaceGame() {
               <Trophy className="w-3 h-3" />
               Top
             </Link>
-            <span className="text-primary font-bold">{score}</span>
+            <span className="text-primary font-bold">{Math.floor(score)}</span>
             <span className="text-yellow-400 flex items-center gap-1">
               <Trophy className="w-3 h-3" />{highScore}
             </span>
@@ -541,7 +541,7 @@ export default function SpaceGame() {
             >
               <div className="text-2xl mb-1">💥</div>
               <h4 className="font-display text-lg font-bold text-white">Game Over</h4>
-              <p className="text-primary text-xl font-bold mb-3">{score} pts</p>
+              <p className="text-primary text-xl font-bold mb-3">{Math.floor(score)} pts</p>
               
               {!submitted ? (
                 <div className="w-full max-w-xs space-y-2">
