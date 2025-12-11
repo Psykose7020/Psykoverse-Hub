@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
-import { Lock, Users, Eye, Calendar, TrendingUp, ExternalLink, LogOut, BarChart3, Globe, MessageCircle, Mail, Archive, CheckCircle, Clock, ChevronRight, X } from "lucide-react";
+import { Lock, Users, Eye, Calendar, TrendingUp, ExternalLink, LogOut, BarChart3, Globe, MessageCircle, Mail, Archive, CheckCircle, Clock, ChevronRight, X, Edit } from "lucide-react";
+import { useEditMode } from "../contexts/EditModeContext";
 
 interface Feedback {
   id: string;
@@ -306,6 +307,7 @@ export default function Admin() {
           </div>
           
           <div className="flex gap-3">
+            <EditModeButton />
             <a
               href="https://replit.com/@7020Psykose/psykoverse"
               target="_blank"
@@ -810,6 +812,27 @@ export default function Admin() {
         )}
       </div>
     </div>
+  );
+}
+
+function EditModeButton() {
+  const [, setLocation] = useLocation();
+  const { enableEditMode } = useEditMode();
+  
+  const handleClick = () => {
+    enableEditMode();
+    setLocation("/");
+  };
+  
+  return (
+    <button
+      onClick={handleClick}
+      className="flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white px-4 py-2 rounded-lg transition-all shadow-lg shadow-cyan-500/20"
+      data-testid="button-edit-mode"
+    >
+      <Edit className="w-4 h-4" />
+      Mode Édition
+    </button>
   );
 }
 
