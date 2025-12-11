@@ -299,18 +299,24 @@ export default function SpaceGame() {
       }
       obstaclesRef.current = obstaclesRef.current.filter(o => o.y < 110);
       
-      const difficultyRamp = Math.min(scoreRef.current / 1000, 1);
-      const spawnRate = (0.008 + difficultyRamp * 0.01 + Math.min(Math.max(0, scoreRef.current - 1000) / 10000, 0.025)) * deltaFactor;
-      const baseSpeed = 0.4 + difficultyRamp * 0.3;
-      const speedBonus = Math.min(Math.max(0, scoreRef.current - 1000) / 2500, 1.2);
+      const difficultyRamp = Math.min(Math.max(0, scoreRef.current - 300) / 700, 1);
+      const lateGameRamp = Math.min(Math.max(0, scoreRef.current - 1000) / 4000, 1);
+      const spawnRate = (0.01 + difficultyRamp * 0.015 + lateGameRamp * 0.02) * deltaFactor;
+      const baseSpeed = 0.45 + difficultyRamp * 0.35 + lateGameRamp * 0.4;
       
       if (Math.random() < spawnRate) {
+        const randomOffset = (Math.random() - 0.5) * 30;
+        const xPos = 7.5 + Math.random() * 85 + randomOffset * (Math.random() > 0.5 ? 1 : -1) * 0.3;
+        const clampedX = Math.max(5, Math.min(95, xPos));
+        
+        const speedVariation = 0.3 + Math.random() * 0.9 + difficultyRamp * 0.5;
+        
         obstaclesRef.current.push({
           id: obstacleIdRef.current++,
-          x: Math.random() * 85 + 7.5,
-          y: -10,
+          x: clampedX,
+          y: -10 - Math.random() * 5,
           size: 14 + Math.random() * 18,
-          speed: baseSpeed + Math.random() * (0.6 + difficultyRamp * 0.4) + speedBonus,
+          speed: baseSpeed + speedVariation * (0.7 + Math.random() * 0.6),
           variant: Math.floor(Math.random() * PLANET_VARIANTS.length)
         });
       }
