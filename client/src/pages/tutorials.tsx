@@ -250,18 +250,18 @@ export default function Tutorials() {
               </div>
             </motion.div>
 
-            <motion.div variants={fadeInUp} className="flex flex-wrap justify-center gap-2 mb-8">
+            <motion.div variants={fadeInUp} className="flex flex-wrap justify-center gap-2 mb-8 px-2">
               <button
                 onClick={() => setActiveFilter(null)}
-                className={`px-4 py-2 rounded-lg text-sm font-bold transition-all flex items-center gap-2 ${
+                className={`px-3 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 sm:gap-2 ${
                   !activeFilter 
                     ? "bg-primary text-black shadow-lg shadow-primary/30" 
                     : "bg-[#1C2230] text-gray-400 hover:text-white border border-[#2E384D] hover:border-primary/30"
                 }`}
                 data-testid="filter-all"
               >
-                <Filter className="w-4 h-4" />
-                Tous ({totalGuides})
+                <Filter className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <span className="hidden sm:inline">Tous</span> ({totalGuides})
               </button>
               {categories.map(cat => {
                 const Icon = cat.icon;
@@ -270,16 +270,16 @@ export default function Tutorials() {
                   <button
                     key={cat.id}
                     onClick={() => setActiveFilter(isActive ? null : cat.id)}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${
+                    className={`px-2 sm:px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all flex items-center gap-1 sm:gap-2 ${
                       isActive 
                         ? "bg-primary text-black shadow-lg shadow-primary/30" 
                         : "bg-[#1C2230] text-gray-400 hover:text-white border border-[#2E384D] hover:border-primary/30"
                     }`}
                     data-testid={`filter-${cat.id}`}
                   >
-                    <Icon className="w-4 h-4 flex-shrink-0" />
-                    <span className="whitespace-nowrap">{cat.title}</span>
-                    <span className={`text-xs px-1.5 py-0.5 rounded flex-shrink-0 ${isActive ? 'bg-black/20' : 'bg-white/10'}`}>
+                    <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
+                    <span className="hidden sm:inline whitespace-nowrap">{cat.title}</span>
+                    <span className={`text-[10px] sm:text-xs px-1 sm:px-1.5 py-0.5 rounded flex-shrink-0 ${isActive ? 'bg-black/20' : 'bg-white/10'}`}>
                       {cat.guides.length}
                     </span>
                   </button>
@@ -322,7 +322,7 @@ export default function Tutorials() {
                     {popularGuides.length > 0 ? 'Les plus consultés' : 'Recommandés'}
                   </span>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                   {displayPopularGuides.map((guide, index) => {
                     const Icon = guide.icon;
                     return (
@@ -379,27 +379,27 @@ export default function Tutorials() {
                       <Link href="/regles">
                         <motion.div
                           variants={fadeInUp}
-                          className="w-full flex items-center justify-between p-4 bg-gradient-to-r from-amber-900/30 via-orange-900/20 to-[#1C2230] border-2 border-amber-500/40 rounded-xl hover:border-amber-400/60 transition-all cursor-pointer group shadow-lg shadow-amber-500/10"
+                          className="w-full flex items-center justify-between p-3 sm:p-4 bg-gradient-to-r from-amber-900/30 via-orange-900/20 to-[#1C2230] border-2 border-amber-500/40 rounded-xl hover:border-amber-400/60 transition-all cursor-pointer group shadow-lg shadow-amber-500/10"
                           data-testid={`link-category-${category.id}`}
                         >
-                          <div className="flex items-center gap-3">
-                            <div className={`w-10 h-10 bg-gradient-to-br ${category.color} rounded-lg flex items-center justify-center shadow-lg ring-2 ring-amber-400/30`}>
-                              <CategoryIcon className="w-5 h-5 text-white" />
+                          <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+                            <div className={`w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-br ${category.color} rounded-lg flex items-center justify-center shadow-lg ring-2 ring-amber-400/30 flex-shrink-0`}>
+                              <CategoryIcon className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                             </div>
-                            <div className="text-left">
-                              <div className="flex items-center gap-2">
-                                <h2 className="font-display text-lg font-bold text-white group-hover:text-amber-400 transition-colors">{category.title}</h2>
-                                <span className={`text-xs px-2 py-0.5 rounded-full border ${levelColors[category.level]}`}>
+                            <div className="text-left min-w-0 flex-1">
+                              <div className="flex flex-wrap items-center gap-1 sm:gap-2">
+                                <h2 className="font-display text-base sm:text-lg font-bold text-white group-hover:text-amber-400 transition-colors">{category.title}</h2>
+                                <span className={`text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 rounded-full border ${levelColors[category.level]} flex-shrink-0`}>
                                   {category.level}
                                 </span>
                               </div>
-                              <p className="text-gray-400 text-sm">{category.description}</p>
+                              <p className="text-gray-400 text-xs sm:text-sm hidden sm:block">{category.description}</p>
                             </div>
                           </div>
-                          <div className="flex items-center gap-3">
-                            <span className="text-amber-400/80 text-sm font-medium">{category.guides.length} règles</span>
-                            <div className="w-8 h-8 bg-amber-500/20 rounded-lg flex items-center justify-center group-hover:bg-amber-500/30 transition-colors">
-                              <ChevronRight className="w-5 h-5 text-amber-400 group-hover:translate-x-0.5 transition-transform" />
+                          <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0 ml-2">
+                            <span className="text-amber-400/80 text-xs sm:text-sm font-medium hidden xs:inline">{category.guides.length}</span>
+                            <div className="w-7 h-7 sm:w-8 sm:h-8 bg-amber-500/20 rounded-lg flex items-center justify-center group-hover:bg-amber-500/30 transition-colors">
+                              <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-amber-400 group-hover:translate-x-0.5 transition-transform" />
                             </div>
                           </div>
                         </motion.div>
@@ -420,25 +420,25 @@ export default function Tutorials() {
                     <motion.button
                       variants={fadeInUp}
                       onClick={() => toggleCategory(category.id)}
-                      className="w-full flex items-center justify-between p-4 bg-[#1C2230] border border-[#2E384D] rounded-xl hover:border-primary/30 transition-all cursor-pointer group"
+                      className="w-full flex items-center justify-between p-3 sm:p-4 bg-[#1C2230] border border-[#2E384D] rounded-xl hover:border-primary/30 transition-all cursor-pointer group"
                       data-testid={`toggle-category-${category.id}`}
                     >
-                      <div className="flex items-center gap-3">
-                        <div className={`w-10 h-10 bg-gradient-to-br ${category.color} rounded-lg flex items-center justify-center shadow-lg`}>
-                          <CategoryIcon className="w-5 h-5 text-white" />
+                      <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+                        <div className={`w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-br ${category.color} rounded-lg flex items-center justify-center shadow-lg flex-shrink-0`}>
+                          <CategoryIcon className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                         </div>
-                        <div className="text-left">
-                          <div className="flex items-center gap-2">
-                            <h2 className="font-display text-lg font-bold text-white group-hover:text-primary transition-colors">{category.title}</h2>
-                            <span className={`text-xs px-2 py-0.5 rounded-full border ${levelColors[category.level]}`}>
+                        <div className="text-left min-w-0 flex-1">
+                          <div className="flex flex-wrap items-center gap-1 sm:gap-2">
+                            <h2 className="font-display text-base sm:text-lg font-bold text-white group-hover:text-primary transition-colors truncate">{category.title}</h2>
+                            <span className={`text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 rounded-full border ${levelColors[category.level]} flex-shrink-0`}>
                               {category.level}
                             </span>
                           </div>
-                          <p className="text-gray-500 text-sm">{category.description}</p>
+                          <p className="text-gray-500 text-xs sm:text-sm hidden sm:block">{category.description}</p>
                         </div>
                       </div>
-                      <div className="flex items-center gap-3">
-                        <span className="text-gray-500 text-sm">{category.guides.length} guides</span>
+                      <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0 ml-2">
+                        <span className="text-gray-500 text-xs sm:text-sm hidden xs:inline">{category.guides.length}</span>
                         <ChevronDown className={`w-5 h-5 text-gray-500 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
                       </div>
                     </motion.button>
@@ -452,7 +452,7 @@ export default function Tutorials() {
                           transition={{ duration: 0.3 }}
                           className="overflow-hidden"
                         >
-                          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-3 pt-4">
+                          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 pt-4">
                             {category.guides.map((guide, index) => {
                               const Icon = guide.icon;
                               return (
