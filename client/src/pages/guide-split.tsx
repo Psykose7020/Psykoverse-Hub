@@ -158,7 +158,7 @@ export default function GuideSplit() {
                       <h3 className="font-bold text-green-400 mb-3">✓ Bon split</h3>
                       <p className="text-sm mb-3">Gros vaisseaux tirent en premier</p>
                       <div className="space-y-2 text-sm">
-                        <p>1. <strong className="text-white">Faucheur</strong> (14 000 attaque) tire sur VB</p>
+                        <p>1. <strong className="text-white">Faucheur</strong> (2 800 attaque) tire sur VB</p>
                         <p className="text-green-400">→ Détruit le bouclier ET fait d'énormes dégâts à la coque</p>
                         <p>2. <strong className="text-white">Chasseur Léger</strong> tire ensuite</p>
                         <p className="text-green-400">→ Le VB a moins de bouclier, le chasseur peut maintenant faire des dégâts efficaces</p>
@@ -186,67 +186,60 @@ export default function GuideSplit() {
                     <span className="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center text-white text-sm font-bold">2</span>
                     <div className="flex-1">
                       <div className="font-bold text-white">Faucheur</div>
-                      <div className="text-red-400 text-sm">14 000 d'attaque</div>
+                      <div className="text-red-400 text-sm">2 800 d'attaque</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-purple-900/30 to-transparent border border-purple-700/30 rounded-lg">
                     <span className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white text-sm font-bold">3</span>
                     <div className="flex-1">
                       <div className="font-bold text-white">Destructeur</div>
-                      <div className="text-purple-400 text-sm">11 000 d'attaque</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-cyan-900/30 to-transparent border border-cyan-700/30 rounded-lg">
-                    <span className="w-8 h-8 bg-cyan-600 rounded-full flex items-center justify-center text-white text-sm font-bold">4</span>
-                    <div className="flex-1">
-                      <div className="font-bold text-white">Traqueur</div>
-                      <div className="text-cyan-400 text-sm">7 000 d'attaque</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-blue-900/30 to-transparent border border-blue-700/30 rounded-lg">
-                    <span className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-bold">5</span>
-                    <div className="flex-1">
-                      <div className="font-bold text-white">Destroyer</div>
-                      <div className="text-blue-400 text-sm">2 000 d'attaque</div>
+                      <div className="text-purple-400 text-sm">2 000 d'attaque</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-indigo-900/30 to-transparent border border-indigo-700/30 rounded-lg">
-                    <span className="w-8 h-8 bg-indigo-600 rounded-full flex items-center justify-center text-white text-sm font-bold">6</span>
+                    <span className="w-8 h-8 bg-indigo-600 rounded-full flex items-center justify-center text-white text-sm font-bold">4</span>
                     <div className="flex-1">
                       <div className="font-bold text-white">Bombardier</div>
                       <div className="text-indigo-400 text-sm">1 000 d'attaque</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-green-900/30 to-transparent border border-green-700/30 rounded-lg">
-                    <span className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white text-sm font-bold">7</span>
+                    <span className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white text-sm font-bold">5</span>
                     <div className="flex-1">
                       <div className="font-bold text-white">Vaisseau de Bataille</div>
                       <div className="text-green-400 text-sm">1 000 d'attaque</div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-cyan-900/30 to-transparent border border-cyan-700/30 rounded-lg">
+                    <span className="w-8 h-8 bg-cyan-600 rounded-full flex items-center justify-center text-white text-sm font-bold">6</span>
+                    <div className="flex-1">
+                      <div className="font-bold text-white">Traqueur</div>
+                      <div className="text-cyan-400 text-sm">700 d'attaque</div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-amber-900/30 to-transparent border border-amber-700/30 rounded-lg">
+                    <span className="w-8 h-8 bg-amber-600 rounded-full flex items-center justify-center text-white text-sm font-bold">7</span>
+                    <div className="flex-1">
+                      <div className="font-bold text-white">Croiseur</div>
+                      <div className="text-amber-400 text-sm">400 d'attaque</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-lime-900/30 to-transparent border border-lime-700/30 rounded-lg">
                     <span className="w-8 h-8 bg-lime-600 rounded-full flex items-center justify-center text-white text-sm font-bold">8</span>
                     <div className="flex-1">
                       <div className="font-bold text-white">Éclaireur</div>
-                      <div className="text-lime-400 text-sm">400 d'attaque</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-amber-900/30 to-transparent border border-amber-700/30 rounded-lg">
-                    <span className="w-8 h-8 bg-amber-600 rounded-full flex items-center justify-center text-white text-sm font-bold">9</span>
-                    <div className="flex-1">
-                      <div className="font-bold text-white">Croiseur</div>
-                      <div className="text-amber-400 text-sm">400 d'attaque</div>
+                      <div className="text-lime-400 text-sm">200 d'attaque</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-slate-700/30 to-transparent border border-slate-600/30 rounded-lg">
-                    <span className="w-8 h-8 bg-slate-600 rounded-full flex items-center justify-center text-white text-sm font-bold">10</span>
+                    <span className="w-8 h-8 bg-slate-600 rounded-full flex items-center justify-center text-white text-sm font-bold">9</span>
                     <div className="flex-1">
                       <div className="font-bold text-white">Chasseur Lourd</div>
                       <div className="text-slate-400 text-sm">150 d'attaque</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-gray-700/30 to-transparent border border-gray-600/30 rounded-lg">
-                    <span className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center text-white text-sm font-bold">11</span>
+                    <span className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center text-white text-sm font-bold">10</span>
                     <div className="flex-1">
                       <div className="font-bold text-white">Chasseur Léger</div>
                       <div className="text-gray-400 text-sm">50 d'attaque</div>
@@ -277,7 +270,7 @@ export default function GuideSplit() {
                     <h3 className="font-bold text-green-400 mb-3">✓ Bon split : Faucheurs en premier</h3>
                     <div className="space-y-2 text-sm text-gray-300">
                       <p><strong className="text-white">Round 1 :</strong></p>
-                      <p>• 100 Faucheurs tirent en premier (14 000 attaque chacun)</p>
+                      <p>• 100 Faucheurs tirent en premier (2 800 attaque chacun)</p>
                       <p>• Ils détruisent ou endommagent gravement les VB</p>
                       <p>• Moins de VB survivent pour riposter</p>
                       <p>• Les 1000 Chasseurs tirent ensuite sur les VB affaiblis</p>
