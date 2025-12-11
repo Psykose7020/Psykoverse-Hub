@@ -13,7 +13,7 @@ export default function Footer() {
           </Link>
           <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">Discord</a>
           <a href="https://www.youtube.com/@7020Psykose" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">YouTube</a>
-          <a href="https://buymeacoffee.com/psykose" target="_blank" rel="noopener noreferrer" className="hover:text-yellow-500 transition-colors">🍺 Buy me a beer</a>
+          <Link href="/soutenir" className="hover:text-yellow-500 transition-colors">🍺 Soutenir</Link>
         </div>
         <div className="mt-8 pt-4 border-t border-[#2E384D]/30">
           <Link 

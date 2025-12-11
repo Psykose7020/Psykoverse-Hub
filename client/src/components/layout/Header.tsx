@@ -72,17 +72,14 @@ export default function Header() {
           </div>
 
           <div className="hidden md:flex items-center gap-3">
-            <a 
-              href="https://buymeacoffee.com/psykose" 
-              target="_blank" 
-              rel="noopener noreferrer"
+            <Link 
+              href="/soutenir"
               className="group relative flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-black font-bold text-xs uppercase tracking-wide shadow-[0_0_15px_rgba(245,158,11,0.4)] hover:shadow-[0_0_25px_rgba(245,158,11,0.6)] transition-all hover:scale-105"
             >
               <Beer className="w-4 h-4 group-hover:animate-bounce" />
-              <span>Buy me a beer</span>
-              <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-ping"></span>
-              <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
-            </a>
+              <span>Soutenir</span>
+              <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-amber-300 rounded-full animate-pulse opacity-70"></span>
+            </Link>
             <Button className="bg-secondary hover:bg-secondary/90 text-black font-bold uppercase text-xs tracking-widest px-6 shadow-[0_0_15px_rgba(255,150,0,0.3)] hover:shadow-[0_0_25px_rgba(255,150,0,0.5)] transition-all" asChild>
               <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer">
                 Rejoindre
@@ -122,15 +119,14 @@ export default function Header() {
                 </Link>
               );
             })}
-            <a 
-              href="https://buymeacoffee.com/psykose" 
-              target="_blank" 
-              rel="noopener noreferrer"
+            <Link 
+              href="/soutenir"
               className="flex items-center justify-center gap-2 w-full py-3 bg-gradient-to-r from-amber-500 to-yellow-500 text-black font-bold uppercase text-sm tracking-widest rounded mt-2"
+              onClick={() => setMobileMenuOpen(false)}
             >
               <Beer className="w-5 h-5" />
-              Buy me a beer
-            </a>
+              Soutenir le projet
+            </Link>
             <a 
               href="https://discord.gg/3PWk4HmfNn" 
               target="_blank" 

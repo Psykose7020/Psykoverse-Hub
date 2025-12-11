@@ -53,6 +53,7 @@ import Rules from "@/pages/rules";
 import RulesCompte from "@/pages/rules-compte";
 import RulesSitting from "@/pages/rules-sitting";
 import RulesPush from "@/pages/rules-push";
+import Soutenir from "@/pages/soutenir";
 import RulesBash from "@/pages/rules-bash";
 import Classement from "@/pages/classement";
 
@@ -114,6 +115,7 @@ function Router() {
       <Route path="/mentions-legales" component={Legal} />
       <Route path="/admin" component={Admin} />
       <Route path="/classement" component={Classement} />
+      <Route path="/soutenir" component={Soutenir} />
       <Route component={NotFound} />
     </Switch>
   );
