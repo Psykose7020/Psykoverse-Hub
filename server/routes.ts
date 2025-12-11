@@ -421,5 +421,93 @@ export async function registerRoutes(
     }
   });
 
+  app.get("/api/content", async (req, res) => {
+    try {
+      const allContent = await storage.getAllEditableContent();
+      const contentMap: Record<string, string> = {};
+      for (const item of allContent) {
+        contentMap[item.id] = item.content;
+      }
+      res.json(contentMap);
+    } catch (error) {
+      console.error("Content fetch error:", error);
+      res.status(500).json({ error: "Failed to fetch content" });
+    }
+  });
+
+  app.get("/api/admin/verify", async (req, res) => {
+    try {
+      const authHeader = req.headers.authorization;
+      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+      
+      const token = authHeader.slice(7);
+      if (!validateToken(token)) {
+        return res.status(401).json({ error: "Invalid or expired token" });
+      }
+
+      res.json({ valid: true });
+    } catch (error) {
+      res.status(401).json({ error: "Invalid token" });
+    }
+  });
+
+  app.post("/api/admin/content", async (req, res) => {
+    try {
+      const authHeader = req.headers.authorization;
+      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+      
+      const token = authHeader.slice(7);
+      if (!validateToken(token)) {
+        return res.status(401).json({ error: "Invalid or expired token" });
+      }
+
+      const { id, content } = req.body;
+      if (!id || typeof id !== "string" || !content || typeof content !== "string") {
+        return res.status(400).json({ error: "Invalid request" });
+      }
+
+      const updated = await storage.upsertEditableContent({ id, content });
+      res.json(updated);
+    } catch (error) {
+      console.error("Content save error:", error);
+      res.status(500).json({ error: "Failed to save content" });
+    }
+  });
+
+  app.post("/api/admin/content/bulk", async (req, res) => {
+    try {
+      const authHeader = req.headers.authorization;
+      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+      
+      const token = authHeader.slice(7);
+      if (!validateToken(token)) {
+        return res.status(401).json({ error: "Invalid or expired token" });
+      }
+
+      const { contents } = req.body;
+      if (!contents || typeof contents !== "object") {
+        return res.status(400).json({ error: "Invalid request" });
+      }
+
+      const results: Record<string, string> = {};
+      for (const [id, content] of Object.entries(contents)) {
+        if (typeof content === "string") {
+          await storage.upsertEditableContent({ id, content });
+          results[id] = content;
+        }
+      }
+      res.json({ success: true, saved: Object.keys(results).length });
+    } catch (error) {
+      console.error("Bulk content save error:", error);
+      res.status(500).json({ error: "Failed to save content" });
+    }
+  });
+
   return httpServer;
 }
