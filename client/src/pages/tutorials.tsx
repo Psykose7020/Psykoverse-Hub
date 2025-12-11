@@ -45,7 +45,7 @@ const categories = [
   },
   {
     id: "bases",
-    title: "Bases du Commandant",
+    title: "Les bases du jeu",
     description: "Comprendre l'univers OGame et ses mécaniques fondamentales",
     icon: GraduationCap,
     color: "from-green-500 to-emerald-600",
@@ -118,8 +118,7 @@ const categories = [
       { title: "Raid Avancé", description: "Techniques de pro", icon: Target, color: "from-orange-500 to-red-600", link: "/guide/raid", featured: true },
       { title: "Split Flotte (Dégroupage)", description: "Optimiser l'ordre d'attaque", icon: Layers, color: "from-purple-500 to-violet-600", link: "/guide/split" },
       { title: "ACS", description: "Combat en groupe", icon: Users, color: "from-orange-500 to-amber-600", link: "/guide/acs" },
-      { title: "Rapid Fire", description: "Tirs multiples en combat", icon: Zap, color: "from-yellow-500 to-orange-600", link: "/guide/rapid-fire", featured: true },
-      { title: "RF : Formules", description: "Calculs détaillés du RF", icon: Calculator, color: "from-purple-500 to-pink-600", link: "/guide/rapid-fire-formules" }
+      { title: "Rapid Fire", description: "Tirs multiples en combat", icon: Zap, color: "from-yellow-500 to-orange-600", link: "/guide/rapid-fire", featured: true }
     ]
   },
   {
@@ -145,6 +144,7 @@ const categories = [
     level: "Expert",
     guides: [
       { title: "Lune & CDR", description: "Champs de débris et lunes", icon: Moon, color: "from-gray-500 to-slate-700", link: "/guide/lune", featured: true },
+      { title: "Rapid Fire (Expert)", description: "Formules et calculs détaillés du RF", icon: Calculator, color: "from-purple-500 to-pink-600", link: "/guide/rapid-fire-formules" },
       { title: "Guide Complet FDV", description: "Races, recherches, artéfacts", icon: Dna, color: "from-purple-500 to-pink-600", link: "/guide/fdv", featured: true },
       { title: "Rock'tal & Mineur", description: "Développer les FDV pour mineurs", icon: Mountain, color: "from-amber-500 to-orange-600", link: "/guide/rocktal" },
       { title: "Réduction Temps FDV", description: "Cap -99% et optimisation", icon: Clock, color: "from-purple-500 to-pink-600", link: "/guide/reduction-fdv" }
