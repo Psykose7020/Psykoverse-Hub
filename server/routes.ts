@@ -516,11 +516,50 @@ export async function registerRoutes(
   });
 
   let youtubeCache: { subscribers: number; updatedAt: number } | null = null;
-  const YOUTUBE_CACHE_DURATION = 3600000;
+  let discordCache: { members: number; updatedAt: number } | null = null;
+  const CACHE_DURATION = 3600000;
+
+  app.get("/api/discord/stats", async (_req, res) => {
+    try {
+      if (discordCache && Date.now() - discordCache.updatedAt < CACHE_DURATION) {
+        return res.json({ members: discordCache.members, cached: true });
+      }
+
+      const botToken = process.env.DISCORD_BOT_TOKEN;
+      const guildId = process.env.DISCORD_GUILD_ID;
+      
+      if (!botToken || !guildId) {
+        return res.json({ members: 180, cached: false, error: "No credentials" });
+      }
+
+      const response = await fetch(
+        `https://discord.com/api/v10/guilds/${guildId}?with_counts=true`,
+        {
+          headers: {
+            Authorization: `Bot ${botToken}`,
+          },
+        }
+      );
+      
+      if (!response.ok) {
+        console.error("Discord API error:", response.status);
+        return res.json({ members: discordCache?.members || 180, cached: false });
+      }
+
+      const data = await response.json();
+      const members = data.approximate_member_count || 180;
+      
+      discordCache = { members, updatedAt: Date.now() };
+      res.json({ members, cached: false });
+    } catch (error) {
+      console.error("Discord API error:", error);
+      res.json({ members: discordCache?.members || 180, cached: false });
+    }
+  });
 
   app.get("/api/youtube/stats", async (_req, res) => {
     try {
-      if (youtubeCache && Date.now() - youtubeCache.updatedAt < YOUTUBE_CACHE_DURATION) {
+      if (youtubeCache && Date.now() - youtubeCache.updatedAt < CACHE_DURATION) {
         return res.json({ subscribers: youtubeCache.subscribers, cached: true });
       }
 

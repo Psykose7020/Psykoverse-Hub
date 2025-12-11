@@ -23,6 +23,7 @@ import Layout from "@/components/layout/Layout";
 import SpaceGame from "@/components/SpaceGame";
 import { EditableText } from "@/components/EditableText";
 import { useYoutubeStats } from "@/hooks/useYoutubeStats";
+import { useDiscordStats } from "@/hooks/useDiscordStats";
 
 import heroBg from "@assets/generated_videos/specific_ogame_destroyer_fleet_formation.mp4";
 import allianceLogo from "@assets/Design_sans_titre_(2)_1765292527261.png";
@@ -106,6 +107,7 @@ const universes = [
 
 export default function Home() {
   const youtubeSubscribers = useYoutubeStats();
+  const discordMembers = useDiscordStats();
   
   return (
     <Layout>
@@ -231,7 +233,7 @@ export default function Home() {
           >
             {[
               { value: "35", label: "Guides complets", icon: BookOpen },
-              { value: "180+", label: "Membres Discord", icon: Users },
+              { value: discordMembers ? `${discordMembers}+` : "...", label: "Membres Discord", icon: Users },
               { value: "3", label: "Univers actifs", icon: Globe },
               { value: youtubeSubscribers ? String(youtubeSubscribers) : "...", label: "Abonnés YouTube", icon: Youtube }
             ].map((stat, i) => (
@@ -421,7 +423,7 @@ export default function Home() {
               Rejoignez la communauté
             </h2>
             <p className="text-gray-400 text-lg mb-8 max-w-2xl mx-auto">
-              180 membres actifs vous attendent sur Discord. Entraide, discussions stratégiques, 
+              {discordMembers ?? "..."} membres actifs vous attendent sur Discord. Entraide, discussions stratégiques, 
               annonces d'événements et bien plus encore !
             </p>
             <div className="flex flex-wrap justify-center gap-4">

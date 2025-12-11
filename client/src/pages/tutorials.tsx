@@ -13,6 +13,7 @@ import {
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { EditableText } from "@/components/EditableText";
+import { useDiscordStats } from "@/hooks/useDiscordStats";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -147,6 +148,7 @@ export default function Tutorials() {
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set(["regles"]));
+  const discordMembers = useDiscordStats();
 
   const { data: popularGuidesData } = useQuery<{ slug: string; views: number }[]>({
     queryKey: ['/api/guides/popular'],
@@ -655,7 +657,7 @@ export default function Tutorials() {
                   Aide personnalisée
                 </h2>
                 <p className="text-gray-400 text-sm mb-3">
-                  180 membres prêts à vous aider sur Discord
+                  {discordMembers ?? "..."} membres prêts à vous aider sur Discord
                 </p>
               </div>
               <Button className="bg-[#5865F2] hover:bg-[#4752C4]" asChild>
