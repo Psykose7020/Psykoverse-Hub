@@ -19,8 +19,8 @@ const staggerContainer = {
 const stats = [
   { icon: Code, value: "40+", label: "Pages développées" },
   { icon: Clock, value: "60+", label: "Heures de travail" },
-  { icon: Users, value: "100%", label: "Gratuit" },
-  { icon: Heart, value: "∞", label: "Passion" },
+  { icon: Target, value: "~160€", label: "Investi (hors temps)" },
+  { icon: Heart, value: "100%", label: "Gratuit pour vous" },
 ];
 
 const reasons = [
@@ -221,9 +221,12 @@ export default function Soutenir() {
 
       <section className="py-16 border-t border-[#2E384D]">
         <div className="container mx-auto px-4 text-center">
-          <p className="text-gray-500 text-sm max-w-xl mx-auto">
+          <p className="text-gray-500 text-sm max-w-xl mx-auto mb-4">
             Psykoverse est un projet indépendant, non affilié à Gameforge.
             Toutes les contributions sont utilisées pour maintenir et améliorer le site.
+          </p>
+          <p className="text-gray-600 text-xs max-w-xl mx-auto">
+            Investissement actuel : ~160€ (coaching développement, hébergement, nom de domaine...) - hors temps de travail bénévole.
           </p>
         </div>
       </section>
