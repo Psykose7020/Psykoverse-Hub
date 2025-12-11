@@ -21,6 +21,7 @@ import {
 import { Button } from "@/components/ui/button";
 import Layout from "@/components/layout/Layout";
 import SpaceGame from "@/components/SpaceGame";
+import { EditableText } from "@/components/EditableText";
 
 import heroBg from "@assets/generated_videos/specific_ogame_destroyer_fleet_formation.mp4";
 import allianceLogo from "@assets/Design_sans_titre_(2)_1765292527261.png";
@@ -130,12 +131,18 @@ export default function Home() {
               <motion.div variants={fadeInUp} className="flex items-center gap-4 mb-6">
                 <img src={allianceLogo} alt="" className="w-20 h-20 md:w-24 md:h-24 logo-float drop-shadow-[0_0_30px_rgba(0,191,255,0.4)]" />
                 <div>
-                  <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-none">
-                    Guides OGame
-                  </h1>
-                  <span className="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-primary leading-none text-glow">
-                    Francophones
-                  </span>
+                  <EditableText 
+                    id="home-title-1" 
+                    defaultValue="Guides OGame" 
+                    as="h1" 
+                    className="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-none"
+                  />
+                  <EditableText 
+                    id="home-title-2" 
+                    defaultValue="Francophones" 
+                    as="span" 
+                    className="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-primary leading-none text-glow"
+                  />
                 </div>
               </motion.div>
               

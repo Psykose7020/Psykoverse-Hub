@@ -60,11 +60,19 @@ export function EditModeProvider({ children }: { children: ReactNode }) {
             setIsAdmin(false);
             setIsEditMode(false);
             localStorage.removeItem("editModeActive");
+            localStorage.removeItem("adminToken");
           }
         })
         .catch(() => {
           setIsAdmin(false);
+          setIsEditMode(false);
+          localStorage.removeItem("editModeActive");
+          localStorage.removeItem("adminToken");
         });
+    } else {
+      setIsAdmin(false);
+      setIsEditMode(false);
+      localStorage.removeItem("editModeActive");
     }
   }, []);
 

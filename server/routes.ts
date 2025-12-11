@@ -470,7 +470,12 @@ export async function registerRoutes(
         return res.status(400).json({ error: "Invalid request" });
       }
 
-      const updated = await storage.upsertEditableContent({ id, content });
+      if (id.length > 100 || content.length > 10000) {
+        return res.status(400).json({ error: "Content too long" });
+      }
+
+      const sanitizedContent = content.replace(/<[^>]*>/g, "").trim();
+      const updated = await storage.upsertEditableContent({ id, content: sanitizedContent });
       res.json(updated);
     } catch (error) {
       console.error("Content save error:", error);
@@ -497,9 +502,10 @@ export async function registerRoutes(
 
       const results: Record<string, string> = {};
       for (const [id, content] of Object.entries(contents)) {
-        if (typeof content === "string") {
-          await storage.upsertEditableContent({ id, content });
-          results[id] = content;
+        if (typeof content === "string" && id.length <= 100 && content.length <= 10000) {
+          const sanitizedContent = content.replace(/<[^>]*>/g, "").trim();
+          await storage.upsertEditableContent({ id, content: sanitizedContent });
+          results[id] = sanitizedContent;
         }
       }
       res.json({ success: true, saved: Object.keys(results).length });
