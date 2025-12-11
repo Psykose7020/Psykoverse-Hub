@@ -402,17 +402,17 @@ export default function SpaceGame() {
         >
         {gameState === "playing" && (
           <>
-            {Array.from({ length: 30 }).map((_, i) => (
+            {Array.from({ length: 50 }).map((_, i) => (
               <div
                 key={`star-${i}`}
-                className="absolute pointer-events-none bg-white"
+                className="absolute pointer-events-none rounded-full bg-white"
                 style={{
-                  left: `${(i * 31 + score * 0.03) % 100}%`,
-                  top: `${((i * 29 + score * (2 + (i % 4) * 0.8)) % 130) - 15}%`,
-                  width: 1 + (i % 2),
-                  height: 8 + (i % 4) * 4,
-                  opacity: 0.3 + (i % 3) * 0.15,
-                  borderRadius: '1px',
+                  left: `${(i * 19 + score * 0.02) % 100}%`,
+                  top: `${((i * 23 + score * (3 + (i % 5) * 1.2)) % 140) - 20}%`,
+                  width: 1 + (i % 3),
+                  height: 1 + (i % 3),
+                  opacity: 0.4 + (i % 4) * 0.15,
+                  boxShadow: i % 5 === 0 ? '0 0 3px rgba(255,255,255,0.5)' : 'none',
                 }}
               />
             ))}
