@@ -17,8 +17,8 @@ const staggerContainer = {
 };
 
 const stats = [
-  { icon: Code, value: "35+", label: "Guides créés" },
-  { icon: Clock, value: "500+", label: "Heures de travail" },
+  { icon: Code, value: "40+", label: "Pages développées" },
+  { icon: Clock, value: "60+", label: "Heures de travail" },
   { icon: Users, value: "100%", label: "Gratuit" },
   { icon: Heart, value: "∞", label: "Passion" },
 ];
