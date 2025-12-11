@@ -54,6 +54,7 @@ import RulesCompte from "@/pages/rules-compte";
 import RulesSitting from "@/pages/rules-sitting";
 import RulesPush from "@/pages/rules-push";
 import Soutenir from "@/pages/soutenir";
+import NotreHistoire from "@/pages/notre-histoire";
 import RulesBash from "@/pages/rules-bash";
 import Classement from "@/pages/classement";
 
@@ -116,6 +117,7 @@ function Router() {
       <Route path="/admin" component={Admin} />
       <Route path="/classement" component={Classement} />
       <Route path="/soutenir" component={Soutenir} />
+      <Route path="/notre-histoire" component={NotreHistoire} />
       <Route component={NotFound} />
     </Switch>
   );

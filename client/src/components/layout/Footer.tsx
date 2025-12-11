@@ -8,6 +8,7 @@ export default function Footer() {
         <img src={allianceLogo} alt="Logo" className="h-10 w-10 mx-auto mb-4 opacity-40 grayscale hover:grayscale-0 hover:opacity-80 transition-all duration-300" />
         <p className="text-gray-600 text-xs md:text-sm mb-4">© 2025 Psykoverse Community. Fan project non affilié à Gameforge.</p>
         <div className="flex flex-wrap justify-center gap-4 md:gap-6 text-xs md:text-sm font-bold text-gray-500 uppercase tracking-wider">
+          <Link href="/notre-histoire" className="hover:text-primary transition-colors">Notre Histoire</Link>
           <Link href="/mentions-legales" className="hover:text-primary transition-colors">
             Mentions Légales
           </Link>
