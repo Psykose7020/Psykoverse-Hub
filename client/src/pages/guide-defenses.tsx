@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Shield, Target, AlertTriangle, CheckCircle, XCircle, Skull, Info, Calculator, Zap } from "lucide-react";
+import { Shield, Target, AlertTriangle, CheckCircle, XCircle, Skull, Info, Zap } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
@@ -77,40 +77,6 @@ const defenseTypes = [
     rapidFireBy: [],
     verdict: "essential",
     description: "Détruit un Croiseur en 1 tir. 46.7% de chance de détruire un VdB au premier tir."
-  }
-];
-
-const quotas = [
-  {
-    name: "Défense \"Parfaite\" (théorique)",
-    description: "Pour 1 EdM à quai",
-    composition: [
-      { defense: "Lasers Lourds", count: 1650, reason: "Pour détruire 990 CL (60% chance/tir)" },
-      { defense: "Plasmas", count: 141, reason: "Pour détruire 66 VdB (46.7% chance/tir)" },
-      { defense: "EdM à quai", count: "X", reason: "Rapid fire contre tous les vaisseaux" }
-    ]
-  },
-  {
-    name: "Défense Équilibrée (recommandée)",
-    description: "Quota pratique et facile à retenir",
-    composition: [
-      { defense: "Lasers Lourds", count: 1500, reason: "Anti-CL principal" },
-      { defense: "Artilleries à ions", count: 500, reason: "RF 2 contre Faucheurs (seule défense avec RF+)" },
-      { defense: "Gauss", count: 250, reason: "Anti-CLo et stop RF des Bombardiers" },
-      { defense: "Plasmas", count: 150, reason: "Anti-VdB et Croiseurs" },
-      { defense: "EdM à quai", count: "X", reason: "Soutien puissance de feu" }
-    ]
-  },
-  {
-    name: "Défense Colonies (sans EdM)",
-    description: "Pour colonies moins protégées",
-    composition: [
-      { defense: "LM ou LL", count: 1100, reason: "Tampon anti-sondes" },
-      { defense: "Lasers Lourds", count: 1500, reason: "Anti-CL" },
-      { defense: "Artilleries à ions", count: 300, reason: "RF 2 contre Faucheurs" },
-      { defense: "Gauss", count: 250, reason: "Anti-CLo" },
-      { defense: "Plasmas", count: 150, reason: "Anti-VdB/Croiseurs" }
-    ]
   }
 ];
 
@@ -231,67 +197,6 @@ export default function GuideDefenses() {
                     )}
                   </div>
                 ))}
-              </div>
-            </motion.div>
-
-            <motion.div
-              variants={fadeInUp}
-              initial="hidden"
-              animate="visible"
-              transition={{ delay: 0.3 }}
-              className="bg-[#1C2230] border border-[#2E384D] rounded-xl p-6"
-            >
-              <div className="flex items-center gap-3 mb-4">
-                <Calculator className="w-6 h-6 text-green-400" />
-                <h2 className="font-display text-xl font-bold text-white">Quotas de défense recommandés</h2>
-              </div>
-
-              <div className="bg-blue-900/20 border border-blue-700/30 rounded-lg p-4 mb-4">
-                <div className="flex items-start gap-3">
-                  <Info className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
-                  <div className="text-sm">
-                    <p className="text-gray-300 mb-2">
-                      <strong className="text-white">Pourquoi une EdM à quai ?</strong>
-                    </p>
-                    <p className="text-gray-400">
-                      Contre les flottes de 200k+ CL, vos défenses légères deviennent inutiles (1-2 CL touchés plusieurs fois sur 200k). 
-                      L'EdM avec son rapid fire contre tous les vaisseaux compense ce problème. 
-                      Mais attention : une EdM à quai = ressources dans le CDR qui viennent de VOUS !
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-6">
-                {quotas.map((quota, index) => (
-                  <div key={quota.name} className="bg-[#151924] rounded-lg p-4">
-                    <div className="flex items-center justify-between mb-3">
-                      <h3 className="font-bold text-white">{quota.name}</h3>
-                      {index === 1 && (
-                        <span className="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded">Recommandé</span>
-                      )}
-                    </div>
-                    <p className="text-gray-400 text-sm mb-3">{quota.description}</p>
-                    
-                    <div className="space-y-2">
-                      {quota.composition.map((item) => (
-                        <div key={item.defense} className="flex items-center justify-between bg-[#1C2230] rounded p-2">
-                          <div className="flex items-center gap-2">
-                            <span className="text-primary font-bold">{item.count}×</span>
-                            <span className="text-white">{item.defense}</span>
-                          </div>
-                          <span className="text-gray-500 text-xs">{item.reason}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-4 bg-amber-900/20 border border-amber-700/30 rounded-lg p-3">
-                <p className="text-amber-300 text-sm">
-                  <strong>Ratio simplifié à retenir :</strong> 22 LM/LL + 30 LLo + 5 Gauss + 3 Plasmas (× multiplicateur)
-                </p>
               </div>
             </motion.div>
 
