@@ -270,28 +270,17 @@ export default function GuideDefenses() {
               transition={{ delay: 0.5 }}
               className="bg-gradient-to-r from-blue-900/30 to-indigo-900/30 border border-blue-700/30 rounded-xl p-6"
             >
-              <h3 className="font-bold text-white mb-3">Résumé : La défense "parfaite"</h3>
+              <h3 className="font-bold text-white mb-3">Conclusion : À vous de simuler !</h3>
               <p className="text-gray-300 text-sm mb-4">
-                La défense parfaite n'existe pas, mais on essaye de s'en rapprocher. L'objectif est de maximiser les dégâts 
-                infligés au <strong className="text-white">premier round</strong> de combat.
+                <strong className="text-white">Chaque défense a son utilité</strong> selon votre style de jeu, 
+                les flottes adverses de votre univers, et vos ressources disponibles. 
+                Il n'y a pas de formule magique : <strong className="text-cyan-400">utilisez un simulateur</strong> pour 
+                tester différentes compositions et trouver celle qui vous convient le mieux !
               </p>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                <div className="bg-[#151924] rounded-lg p-3 text-center">
-                  <div className="text-2xl font-bold text-green-400">LLo</div>
-                  <div className="text-xs text-gray-500">Anti-CL</div>
-                </div>
-                <div className="bg-[#151924] rounded-lg p-3 text-center">
-                  <div className="text-2xl font-bold text-blue-400">Gauss</div>
-                  <div className="text-xs text-gray-500">Anti-CLo</div>
-                </div>
-                <div className="bg-[#151924] rounded-lg p-3 text-center">
-                  <div className="text-2xl font-bold text-purple-400">Plasma</div>
-                  <div className="text-xs text-gray-500">Anti-VdB/Cr</div>
-                </div>
-                <div className="bg-[#151924] rounded-lg p-3 text-center">
-                  <div className="text-2xl font-bold text-red-400">EdM</div>
-                  <div className="text-xs text-gray-500">RF universel</div>
-                </div>
+              <div className="bg-[#151924] rounded-lg p-4 text-center">
+                <p className="text-gray-400 text-sm">
+                  Testez vos défenses sur <strong className="text-white">OGotcha</strong>, <strong className="text-white">TrashSim</strong> ou tout autre simulateur de votre choix.
+                </p>
               </div>
             </motion.div>
 
