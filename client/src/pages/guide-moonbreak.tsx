@@ -14,9 +14,14 @@ const fadeInUp = {
 export default function GuideMoonbreak() {
   const [moonSize, setMoonSize] = useState(8944);
   const [ripCount, setRipCount] = useState(10);
+  const [waveCount, setWaveCount] = useState(3);
   
   const destructionChance = Math.max(0, Math.min(100, (100 - Math.sqrt(moonSize)) * Math.sqrt(ripCount)));
   const ripLossChance = Math.sqrt(moonSize) / 2;
+  
+  const destructionProb = destructionChance / 100;
+  const cumulativeChance = (1 - Math.pow(1 - destructionProb, waveCount)) * 100;
+  const expectedRipLoss = waveCount * (ripLossChance / 100) * ripCount;
   return (
     <Layout>
       <section className="py-12 md:py-20">
@@ -170,7 +175,7 @@ export default function GuideMoonbreak() {
                   <h2 className="font-display text-xl font-bold text-white">Calculateur MoonBreak</h2>
                 </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                   <div>
                     <label className="block text-gray-400 text-sm mb-2">Taille de la lune (km)</label>
                     <input
@@ -211,6 +216,26 @@ export default function GuideMoonbreak() {
                       className="w-full mt-2 accent-primary"
                     />
                   </div>
+                  <div>
+                    <label className="block text-gray-400 text-sm mb-2">Nombre de vagues</label>
+                    <input
+                      type="number"
+                      value={waveCount}
+                      onChange={(e) => setWaveCount(Math.max(1, parseInt(e.target.value) || 1))}
+                      className="w-full bg-[#151924] border border-[#2E384D] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary"
+                      min="1"
+                      max="20"
+                      data-testid="input-wave-count"
+                    />
+                    <input
+                      type="range"
+                      value={waveCount}
+                      onChange={(e) => setWaveCount(parseInt(e.target.value))}
+                      min="1"
+                      max="10"
+                      className="w-full mt-2 accent-primary"
+                    />
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -236,6 +261,30 @@ export default function GuideMoonbreak() {
                   ) : (
                     <span className="text-amber-400">Risque équilibré</span>
                   )}
+                </div>
+
+                <div className="mt-6 bg-violet-900/20 border border-violet-700/30 rounded-lg p-4">
+                  <h3 className="font-bold text-violet-400 mb-3 text-center">Probabilité cumulée sur {waveCount} vague{waveCount > 1 ? 's' : ''}</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="text-center">
+                      <p className="text-gray-400 text-sm mb-1">Chance de détruire la lune</p>
+                      <p className="text-3xl font-bold text-violet-400" data-testid="text-cumulative-chance">
+                        {cumulativeChance.toFixed(1)}%
+                      </p>
+                      <p className="text-xs text-gray-500 mt-1">
+                        Formule : 1 - (1 - {(destructionProb * 100).toFixed(1)}%)^{waveCount}
+                      </p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-gray-400 text-sm mb-1">RIP perdues en moyenne</p>
+                      <p className="text-3xl font-bold text-red-400" data-testid="text-expected-rip-loss">
+                        ~{expectedRipLoss.toFixed(1)}
+                      </p>
+                      <p className="text-xs text-gray-500 mt-1">
+                        Sur {waveCount * ripCount} RIP envoyées au total
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
 
