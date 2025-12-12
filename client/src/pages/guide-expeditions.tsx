@@ -218,8 +218,7 @@ export default function GuideExpeditions() {
                     <li>• <strong className="text-white">Autres univers :</strong> 2/2/2/2 (2 expés par lune, 4 lunes)</li>
                   </ul>
                   <p className="text-xs text-gray-500 mt-2">
-                    Si vous êtes un joueur occasionnel ou sans flotte significative, rester sur la même lune est acceptable. 
-                    Mais si vous lancez des expéditions volumineuses (+1M de vaisseaux), optimiser l'épuisement devient prioritaire.
+                    Si vous êtes un joueur occasionnel ou sans flotte significative, rester sur la même lune est acceptable.
                   </p>
                 </div>
               </div>
