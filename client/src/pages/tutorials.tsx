@@ -8,7 +8,7 @@ import {
   GraduationCap, Compass, Trophy, Shield, Eye, Crosshair, Moon, Globe2,
   Target, TrendingUp, Ghost, Layers, Bomb, Plane, Sparkles, Scale,
   ArrowLeftRight, Swords, Dna, Settings, Search, Filter, ChevronRight,
-  Star, Clock, Zap, MessageSquare, ChevronDown, Network, Mountain, BarChart3, Calculator
+  Star, Clock, Zap, MessageSquare, ChevronDown, Network, Mountain, BarChart3, Calculator, Fuel
 } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
@@ -150,6 +150,24 @@ const categories = [
       { title: "Rock'tal & Mineur", description: "Développer les FDV pour mineurs", icon: Mountain, color: "from-amber-500 to-orange-600", link: "/guide/rocktal", keywords: "rocktal mineur fdv forme vie production bonus mine" },
       { title: "Réduction Temps FDV", description: "Cap -99% et optimisation", icon: Clock, color: "from-purple-500 to-pink-600", link: "/guide/reduction-fdv", keywords: "réduction temps fdv forme vie cap 99 optimisation construction recherche" }
     ]
+  },
+  {
+    id: "outils",
+    title: "Outils & Calculateurs",
+    description: "Calculateurs interactifs pour optimiser votre jeu",
+    icon: Calculator,
+    color: "from-emerald-500 to-teal-600",
+    level: "Tous niveaux",
+    guides: [
+      { title: "Calculateur Production", description: "Mines et ressources par heure", icon: Factory, color: "from-green-500 to-emerald-600", link: "/outils/production", featured: true, keywords: "calculateur production mine métal cristal deutérium ressources heure" },
+      { title: "Calculateur Bâtiments", description: "Temps et coûts de construction", icon: Zap, color: "from-blue-500 to-cyan-600", link: "/outils/batiments", keywords: "calculateur bâtiment temps construction coût robot nanite" },
+      { title: "Calculateur Recherches", description: "Temps et coûts des technologies", icon: FlaskConical, color: "from-teal-500 to-cyan-600", link: "/outils/recherches", keywords: "calculateur recherche technologie temps coût laboratoire rri" },
+      { title: "Calculateur Vitesse", description: "Temps de vol entre coordonnées", icon: Rocket, color: "from-orange-500 to-red-600", link: "/outils/vitesse", featured: true, keywords: "calculateur vitesse temps vol distance coordonnées vaisseau flotte" },
+      { title: "Calculateur Consommation", description: "Deutérium consommé par trajet", icon: Fuel, color: "from-cyan-500 to-blue-600", link: "/outils/consommation", keywords: "calculateur consommation deutérium carburant trajet mission" },
+      { title: "Calculateur Temps de Vol", description: "Durée précise des missions", icon: Clock, color: "from-indigo-500 to-purple-600", link: "/outils/temps-vol", keywords: "calculateur temps vol durée mission aller retour" },
+      { title: "Calculateur Coûts Flotte", description: "Ressources pour vos vaisseaux", icon: Rocket, color: "from-orange-500 to-red-600", link: "/guide/cout-flotte", featured: true, keywords: "calculateur coût flotte vaisseau ressources métal cristal deutérium" },
+      { title: "Calculateur MoonBreak", description: "Probabilités de destruction de lune", icon: Bomb, color: "from-red-600 to-red-800", link: "/outils/moonbreak", featured: true, keywords: "calculateur moonbreak mb destruction lune rip probabilité vague fatale" }
+    ]
   }
 ];
 
@@ -158,7 +176,8 @@ const levelColors: Record<string, string> = {
   "Intermédiaire": "bg-blue-500/20 text-blue-400 border-blue-500/30",
   "Avancé": "bg-orange-500/20 text-orange-400 border-orange-500/30",
   "Expert": "bg-purple-500/20 text-purple-400 border-purple-500/30",
-  "Important": "bg-amber-500/20 text-amber-400 border-amber-500/30"
+  "Important": "bg-amber-500/20 text-amber-400 border-amber-500/30",
+  "Tous niveaux": "bg-emerald-500/20 text-emerald-400 border-emerald-500/30"
 };
 
 const allGuides = categories.flatMap(cat => 
