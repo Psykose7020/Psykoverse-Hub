@@ -12,21 +12,21 @@ const fadeInUp = {
 };
 
 const positionData: Record<number, { casesMin: number; casesMax: number; tempMin: number; tempMax: number }> = {
-  1: { casesMin: 95, casesMax: 108, tempMin: 220, tempMax: 260 },
-  2: { casesMin: 97, casesMax: 110, tempMin: 170, tempMax: 210 },
-  3: { casesMin: 98, casesMax: 139, tempMin: 120, tempMax: 160 },
-  4: { casesMin: 123, casesMax: 210, tempMin: 70, tempMax: 110 },
-  5: { casesMin: 148, casesMax: 215, tempMin: 60, tempMax: 100 },
-  6: { casesMin: 148, casesMax: 239, tempMin: 50, tempMax: 90 },
-  7: { casesMin: 141, casesMax: 242, tempMin: 40, tempMax: 80 },
-  8: { casesMin: 163, casesMax: 248, tempMin: 30, tempMax: 70 },
-  9: { casesMin: 155, casesMax: 243, tempMin: 20, tempMax: 60 },
-  10: { casesMin: 151, casesMax: 225, tempMin: 10, tempMax: 50 },
-  11: { casesMin: 139, casesMax: 205, tempMin: 0, tempMax: 40 },
-  12: { casesMin: 134, casesMax: 180, tempMin: -10, tempMax: 30 },
-  13: { casesMin: 109, casesMax: 121, tempMin: -50, tempMax: -10 },
-  14: { casesMin: 81, casesMax: 93, tempMin: -90, tempMax: -50 },
-  15: { casesMin: 65, casesMax: 74, tempMin: -130, tempMax: -90 }
+  1: { casesMin: 96, casesMax: 172, tempMin: 220, tempMax: 260 },
+  2: { casesMin: 104, casesMax: 176, tempMin: 170, tempMax: 210 },
+  3: { casesMin: 112, casesMax: 182, tempMin: 120, tempMax: 160 },
+  4: { casesMin: 118, casesMax: 208, tempMin: 70, tempMax: 110 },
+  5: { casesMin: 133, casesMax: 232, tempMin: 60, tempMax: 100 },
+  6: { casesMin: 146, casesMax: 242, tempMin: 50, tempMax: 90 },
+  7: { casesMin: 152, casesMax: 248, tempMin: 40, tempMax: 80 },
+  8: { casesMin: 156, casesMax: 252, tempMin: 30, tempMax: 70 },
+  9: { casesMin: 150, casesMax: 246, tempMin: 20, tempMax: 60 },
+  10: { casesMin: 142, casesMax: 232, tempMin: 10, tempMax: 50 },
+  11: { casesMin: 136, casesMax: 210, tempMin: 0, tempMax: 40 },
+  12: { casesMin: 125, casesMax: 186, tempMin: -10, tempMax: 30 },
+  13: { casesMin: 114, casesMax: 172, tempMin: -50, tempMax: -10 },
+  14: { casesMin: 100, casesMax: 168, tempMin: -90, tempMax: -50 },
+  15: { casesMin: 90, casesMax: 164, tempMin: -130, tempMax: -90 }
 };
 
 export default function OutilsColonisation() {
