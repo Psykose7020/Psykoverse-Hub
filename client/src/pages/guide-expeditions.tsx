@@ -198,6 +198,23 @@ export default function GuideExpeditions() {
                     Envoyer un <strong className="text-white">Destructeur</strong> ou <strong className="text-white">Faucheur</strong> permet de débloquer tous les types de vaisseaux au loot.
                   </p>
                 </div>
+
+                <div className="bg-[#151924] rounded-lg p-4 mt-4">
+                  <h4 className="font-bold text-white mb-2">Loot de vaisseaux : les points de structure</h4>
+                  <p className="text-sm text-gray-300 mb-3">
+                    Le nombre et le type de vaisseaux que vous pouvez trouver en expédition dépend des <strong className="text-primary">points de structure</strong> de votre flotte envoyée.
+                  </p>
+                  <ul className="text-sm text-gray-300 space-y-2">
+                    <li>• Chaque vaisseau apporte des points de structure (basés sur sa coque)</li>
+                    <li>• Plus vous envoyez de points de structure, plus vous pouvez trouver de vaisseaux</li>
+                    <li>• Il existe un <strong className="text-white">minimum de points de structure</strong> à atteindre pour débloquer le loot maximum</li>
+                    <li>• Sur les univers <strong className="text-white">×1 économique</strong>, ce minimum est plus difficile à atteindre</li>
+                    <li>• Sur les univers plus rapides (×2 et +), les 50% de fret dépassent généralement ce minimum</li>
+                  </ul>
+                  <p className="text-xs text-gray-500 mt-3">
+                    En résumé : si vous n'atteignez pas le palier de points de structure, vos gains potentiels en vaisseaux seront réduits proportionnellement.
+                  </p>
+                </div>
               </div>
             </motion.div>
 
