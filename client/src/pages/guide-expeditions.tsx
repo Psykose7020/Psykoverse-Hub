@@ -126,8 +126,8 @@ export default function GuideExpeditions() {
                     </div>
                     <div className="flex flex-col items-center text-center">
                       <img src={destructeurImg} alt="Destructeur" className="w-16 h-16 object-contain mb-2" />
-                      <span className="text-white font-bold">1 Destructeur</span>
-                      <span className="text-xs text-gray-400">Contre les pirates</span>
+                      <span className="text-white font-bold">1 gros combat</span>
+                      <span className="text-xs text-gray-400">Hors EdM, influe sur le loot</span>
                     </div>
                     <div className="flex flex-col items-center text-center">
                       <img src={sondeImg} alt="Sonde" className="w-16 h-16 object-contain mb-2" />
@@ -160,6 +160,22 @@ export default function GuideExpeditions() {
                       <li>• Éclaireurs : 10.000 de fret</li>
                     </ul>
                   </div>
+                </div>
+
+                <div className="bg-violet-900/20 border border-violet-700/30 rounded-lg p-4 mt-4">
+                  <h4 className="font-bold text-violet-400 mb-2">Astuce vitesse : combo PT + VB</h4>
+                  <p className="text-sm text-gray-300">
+                    Pour gagner du temps sur le voyage vers la position 16, utilisez un combo <strong className="text-white">Petits Transporteurs + Vaisseaux de Bataille</strong>. 
+                    Ces vaisseaux sont rapides et vous évitez le risque de ramener un vaisseau lent qui ralentirait votre retour.
+                  </p>
+                </div>
+
+                <div className="bg-cyan-900/20 border border-cyan-700/30 rounded-lg p-4 mt-4">
+                  <h4 className="font-bold text-cyan-400 mb-2">Pourquoi un gros vaisseau de combat ?</h4>
+                  <p className="text-sm text-gray-300">
+                    Le type de vaisseau le plus puissant dans votre flotte (hors Étoile de la Mort) influence les vaisseaux que vous pouvez trouver en expédition. 
+                    Envoyer un <strong className="text-white">Destructeur</strong> ou <strong className="text-white">Faucheur</strong> permet de débloquer tous les types de vaisseaux au loot.
+                  </p>
                 </div>
               </div>
             </motion.div>
