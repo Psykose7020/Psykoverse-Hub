@@ -312,11 +312,29 @@ export default function GuideMoonbreak() {
                       <span className="text-purple-400">•</span>
                       <span>Lune 9 400 km : <strong className="text-red-400">~48%</strong> de perte RIP, mais destruction <strong className="text-green-400">réduite à ~33%</strong></span>
                     </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-purple-400">•</span>
-                      <span>Lune 10 000+ km : La destruction devient <strong className="text-white">extrêmement difficile</strong></span>
-                    </li>
                   </ul>
+                </div>
+
+                <div className="bg-amber-900/20 border border-amber-700/30 rounded-lg p-4 mb-4">
+                  <h3 className="font-bold text-amber-400 mb-3">Fatale (100% destruction)</h3>
+                  <p className="text-gray-300 text-sm mb-3">
+                    Pour garantir la destruction à <strong className="text-amber-400">100%</strong>, il faut envoyer suffisamment de RIP :
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="bg-[#151924] rounded-lg p-3 text-center">
+                      <p className="text-gray-400 text-xs mb-1">Lune 8 800 km</p>
+                      <p className="text-2xl font-bold text-amber-400">261 RIP</p>
+                      <p className="text-gray-500 text-xs mt-1">Perte moyenne : ~123 RIP</p>
+                    </div>
+                    <div className="bg-[#151924] rounded-lg p-3 text-center">
+                      <p className="text-gray-400 text-xs mb-1">Lune 9 400 km (Kaelesh)</p>
+                      <p className="text-2xl font-bold text-amber-400">1 075 RIP</p>
+                      <p className="text-gray-500 text-xs mt-1">Perte moyenne : ~521 RIP</p>
+                    </div>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-3 text-center">
+                    Formule : RIP = (100 / (100 - √taille))²
+                  </p>
                 </div>
                 <div className="bg-purple-800/20 border border-purple-600/30 rounded-lg p-4">
                   <p className="text-purple-300 text-sm font-bold">
