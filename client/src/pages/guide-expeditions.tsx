@@ -294,7 +294,7 @@ export default function GuideExpeditions() {
                     className="w-full bg-[#151924] border border-[#2E384D] rounded-lg px-3 py-2 text-white"
                     data-testid="select-hyperspace"
                   >
-                    {[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20].map(h => (
+                    {Array.from({length: 36}, (_, i) => i).map(h => (
                       <option key={h} value={h}>Niveau {h}</option>
                     ))}
                   </select>
