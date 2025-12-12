@@ -165,7 +165,8 @@ const categories = [
       { title: "Calculateur Consommation", description: "Deutérium consommé par trajet", icon: Fuel, color: "from-cyan-500 to-blue-600", link: "/outils/consommation", keywords: "calculateur consommation deutérium carburant trajet mission" },
       { title: "Calculateur Flotte", description: "Coûts des vaisseaux", icon: Rocket, color: "from-orange-500 to-red-600", link: "/guide/cout-flotte", featured: true, keywords: "calculateur coût flotte vaisseau ressources métal cristal deutérium" },
       { title: "Calculateur Défenses", description: "Coûts des défenses", icon: Shield, color: "from-blue-500 to-indigo-600", link: "/guide/defenses", featured: true, keywords: "calculateur défense lm llo lg gauss ion plasma bouclier coût" },
-      { title: "Calculateur MoonBreak", description: "Probabilités de destruction de lune", icon: Bomb, color: "from-red-600 to-red-800", link: "/outils/moonbreak", featured: true, keywords: "calculateur moonbreak mb destruction lune rip probabilité vague fatale" }
+      { title: "Calculateur MoonBreak", description: "Probabilités de destruction de lune", icon: Bomb, color: "from-red-600 to-red-800", link: "/outils/moonbreak", featured: true, keywords: "calculateur moonbreak mb destruction lune rip probabilité vague fatale" },
+      { title: "Calculateur Colonisation", description: "Cases et température par position", icon: Globe2, color: "from-green-500 to-teal-600", link: "/outils/colonisation", featured: true, keywords: "calculateur colonisation cases température position diamètre explorateur chercheur" }
     ]
   }
 ];

@@ -70,6 +70,7 @@ import OutilsMoonbreak from "@/pages/outils-moonbreak";
 import OutilsBatiments from "@/pages/outils-batiments";
 import OutilsRecherches from "@/pages/outils-recherches";
 import OutilsConsommation from "@/pages/outils-consommation";
+import OutilsColonisation from "@/pages/outils-colonisation";
 
 function ScrollToTop() {
   const [location] = useLocation();
@@ -146,6 +147,7 @@ function Router() {
       <Route path="/outils/batiments" component={OutilsBatiments} />
       <Route path="/outils/recherches" component={OutilsRecherches} />
       <Route path="/outils/consommation" component={OutilsConsommation} />
+      <Route path="/outils/colonisation" component={OutilsColonisation} />
       <Route component={NotFound} />
     </Switch>
   );
