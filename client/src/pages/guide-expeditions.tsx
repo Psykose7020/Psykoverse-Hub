@@ -73,6 +73,7 @@ export default function GuideExpeditions() {
   const [hyperspace, setHyperspace] = useState(8);
   const [bonusResources, setBonusResources] = useState(0);
   const [bonusShips, setBonusShips] = useState(0);
+  const [bonusDarkMatter, setBonusDarkMatter] = useState(0);
   const [fleetCounts, setFleetCounts] = useState<Record<string, number>>({});
 
   const updateFleetCount = (shipId: string, count: number) => {
@@ -116,8 +117,8 @@ export default function GuideExpeditions() {
     const cappedMaxDeut = Math.min(maxDeut, totalCapacity);
 
     const baseDM = 1000 + (topPlayerIndex * 400);
-    const dmMultiplier = (playerClass === "explorateur" ? 2 : 1) * (hasPathfinder && playerClass === "explorateur" ? 2 : 1);
-    const maxDarkMatter = Math.floor(baseDM * dmMultiplier);
+    const dmBonusMultiplier = 1 + (bonusDarkMatter / 100);
+    const maxDarkMatter = Math.floor(baseDM * dmBonusMultiplier);
 
     const shipBonusMultiplier = 1 + (bonusShips / 100);
     const hyperBonus = 1 + (hyperspace * 0.05);
@@ -153,7 +154,7 @@ export default function GuideExpeditions() {
       ecoSpeedMultiplier,
       totalMultiplier: classMultiplier * pathfinderMultiplier * ecoSpeedMultiplier * resourceBonusMultiplier
     };
-  }, [fleetCounts, topPlayerIndex, playerClass, ecoSpeed, hyperspace, bonusResources, bonusShips]);
+  }, [fleetCounts, topPlayerIndex, playerClass, ecoSpeed, hyperspace, bonusResources, bonusShips, bonusDarkMatter]);
 
   return (
     <Layout>
@@ -325,6 +326,19 @@ export default function GuideExpeditions() {
                     data-testid="input-bonus-ships"
                   />
                 </div>
+
+                <div>
+                  <label className="block text-sm text-gray-400 mb-2">Bonus matière noire (%)</label>
+                  <input
+                    type="number"
+                    value={bonusDarkMatter}
+                    onChange={(e) => setBonusDarkMatter(Number(e.target.value))}
+                    className="w-full bg-[#151924] border border-[#2E384D] rounded-lg px-3 py-2 text-white"
+                    min="0"
+                    max="200"
+                    data-testid="input-bonus-darkmatter"
+                  />
+                </div>
               </div>
 
               <div className="bg-[#151924] rounded-lg p-4 mb-6">
@@ -407,7 +421,7 @@ export default function GuideExpeditions() {
                     {calculations.maxDarkMatter.toLocaleString()}
                   </div>
                   <p className="text-gray-500 text-xs mt-3">
-                    Explorateur + Éclaireur = ×4 bonus
+                    Pas de bonus classe/éclaireur, uniquement le % bonus
                   </p>
                 </div>
               </div>
