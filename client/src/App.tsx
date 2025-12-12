@@ -66,12 +66,10 @@ import RulesBash from "@/pages/rules-bash";
 import Classement from "@/pages/classement";
 import SurveyCompositions from "@/pages/survey-compositions";
 import OutilsProduction from "@/pages/outils-production";
-import OutilsVitesse from "@/pages/outils-vitesse";
 import OutilsMoonbreak from "@/pages/outils-moonbreak";
 import OutilsBatiments from "@/pages/outils-batiments";
 import OutilsRecherches from "@/pages/outils-recherches";
 import OutilsConsommation from "@/pages/outils-consommation";
-import OutilsTempsVol from "@/pages/outils-temps-vol";
 
 function ScrollToTop() {
   const [location] = useLocation();
@@ -144,12 +142,10 @@ function Router() {
       <Route path="/notre-histoire" component={NotreHistoire} />
       <Route path="/sondage-compositions" component={SurveyCompositions} />
       <Route path="/outils/production" component={OutilsProduction} />
-      <Route path="/outils/vitesse" component={OutilsVitesse} />
       <Route path="/outils/moonbreak" component={OutilsMoonbreak} />
       <Route path="/outils/batiments" component={OutilsBatiments} />
       <Route path="/outils/recherches" component={OutilsRecherches} />
       <Route path="/outils/consommation" component={OutilsConsommation} />
-      <Route path="/outils/temps-vol" component={OutilsTempsVol} />
       <Route component={NotFound} />
     </Switch>
   );

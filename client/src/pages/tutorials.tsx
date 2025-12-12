@@ -162,10 +162,7 @@ const categories = [
       { title: "Calculateur Production", description: "Mines et ressources par heure", icon: Factory, color: "from-green-500 to-emerald-600", link: "/outils/production", featured: true, keywords: "calculateur production mine métal cristal deutérium ressources heure" },
       { title: "Calculateur Bâtiments", description: "Temps et coûts de construction", icon: Zap, color: "from-blue-500 to-cyan-600", link: "/outils/batiments", keywords: "calculateur bâtiment temps construction coût robot nanite" },
       { title: "Calculateur Recherches", description: "Temps et coûts des technologies", icon: FlaskConical, color: "from-teal-500 to-cyan-600", link: "/outils/recherches", keywords: "calculateur recherche technologie temps coût laboratoire rri" },
-      { title: "Calculateur Vitesse", description: "Temps de vol entre coordonnées", icon: Rocket, color: "from-orange-500 to-red-600", link: "/outils/vitesse", featured: true, keywords: "calculateur vitesse temps vol distance coordonnées vaisseau flotte" },
       { title: "Calculateur Consommation", description: "Deutérium consommé par trajet", icon: Fuel, color: "from-cyan-500 to-blue-600", link: "/outils/consommation", keywords: "calculateur consommation deutérium carburant trajet mission" },
-      { title: "Calculateur Temps de Vol", description: "Durée précise des missions", icon: Clock, color: "from-indigo-500 to-purple-600", link: "/outils/temps-vol", keywords: "calculateur temps vol durée mission aller retour" },
-      { title: "Calculateur Coûts Flotte", description: "Ressources pour vos vaisseaux", icon: Rocket, color: "from-orange-500 to-red-600", link: "/guide/cout-flotte", featured: true, keywords: "calculateur coût flotte vaisseau ressources métal cristal deutérium" },
       { title: "Calculateur MoonBreak", description: "Probabilités de destruction de lune", icon: Bomb, color: "from-red-600 to-red-800", link: "/outils/moonbreak", featured: true, keywords: "calculateur moonbreak mb destruction lune rip probabilité vague fatale" }
     ]
   }
