@@ -270,11 +270,12 @@ export default function GuideDefenses() {
               transition={{ delay: 0.5 }}
               className="bg-gradient-to-r from-amber-900/30 to-orange-900/30 border border-amber-700/30 rounded-xl p-6"
             >
-              <h3 className="font-bold text-white mb-3">La technologie Force de Défense (FdV)</h3>
+              <h3 className="font-bold text-white mb-3">Formes de Vie : Intensification du bouclier à l'obsidienne</h3>
               <p className="text-gray-300 text-sm mb-4">
-                La technologie <strong className="text-amber-400">Force de Défense</strong> augmente les statistiques 
-                de toutes vos défenses. En late game, les joueurs atteignent facilement <strong className="text-white">+200%</strong> de bonus, 
-                ce qui double voire triple l'efficacité de chaque unité défensive !
+                La technologie <strong className="text-amber-400">Intensification du bouclier à l'obsidienne</strong> (FdV Roctas) 
+                augmente les statistiques de toutes vos défenses : coque, bouclier ET armes. 
+                En late game, les joueurs atteignent facilement <strong className="text-white">+200%</strong> de bonus, 
+                ce qui triple l'efficacité de chaque unité défensive !
               </p>
               <div className="bg-[#151924] rounded-lg p-4">
                 <p className="text-amber-300 text-sm font-medium mb-2">Fun fact :</p>
