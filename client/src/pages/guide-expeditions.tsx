@@ -101,6 +101,22 @@ export default function GuideExpeditions() {
                   </ul>
                 </div>
               </div>
+
+              <div className="bg-amber-900/20 border border-amber-700/30 rounded-lg p-4 mt-4">
+                <h3 className="font-bold text-amber-400 mb-2">Items Slot d'Expédition : les PLUS RENTABLES du jeu</h3>
+                <p className="text-sm text-gray-300 mb-3">
+                  En boutique ou en récompense lors d'événements (artefact, récompenses, events spéciaux), vous pouvez obtenir des items qui ajoutent des slots d'expédition :
+                </p>
+                <div className="flex flex-wrap gap-3 mb-3">
+                  <span className="bg-[#151924] px-3 py-1 rounded text-white font-bold">+1 Slot</span>
+                  <span className="bg-[#151924] px-3 py-1 rounded text-white font-bold">+2 Slots</span>
+                  <span className="bg-[#151924] px-3 py-1 rounded text-white font-bold">+3 Slots</span>
+                </div>
+                <p className="text-sm text-gray-300">
+                  <strong className="text-amber-400">Ce sont les items les plus rentables du jeu.</strong> Chaque slot supplémentaire multiplie vos gains d'expédition sur le long terme. 
+                  Priorisez-les lors des événements !
+                </p>
+              </div>
             </motion.div>
 
             <motion.div
