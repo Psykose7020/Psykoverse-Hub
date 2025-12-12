@@ -48,12 +48,12 @@ const defenseTypes = [
     name: "Artillerie à ions",
     abbr: "AI",
     cost: { metal: 5000, crystal: 3000, deut: 0 },
-    attack: 450,
-    shield: 1500,
-    hull: 23200,
+    attack: 150,
+    shield: 500,
+    hull: 8000,
     rapidFireBy: ["Bombardier (10)", "EdM (100)", "Faucheur (2)"],
-    verdict: "useful",
-    description: "Mise à jour récente : attaque x3, bouclier x3, coque x3. Devient intéressant en complément pour absorber les dégâts."
+    verdict: "useless",
+    description: "Totalement inutile. Remplacez chaque ion par 4 lasers légers, c'est toujours mieux."
   },
   {
     name: "Canon de Gauss",
@@ -327,13 +327,12 @@ export default function GuideDefenses() {
 
                 <div className="bg-[#151924] rounded-lg p-4">
                   <h3 className="font-bold text-white mb-2 flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-green-400" />
-                    "L'Artillerie à ions a été buffée récemment !"
+                    <XCircle className="w-4 h-4 text-red-400" />
+                    "L'Artillerie à ions a un gros bouclier, elle permet le match nul !"
                   </h3>
                   <p className="text-gray-300 text-sm">
-                    Oui ! L'AI a été mise à jour : <strong className="text-white">attaque 450</strong> (x3), 
-                    <strong className="text-white"> bouclier 1500</strong> (x3), <strong className="text-white">coque 23.200</strong> (x3). 
-                    Elle devient utile en complément pour absorber les dégâts, mais reste vulnérable aux Bombardiers (RF 10).
+                    Remplace chaque ion par <strong className="text-white">4 Lasers Légers</strong> et simule. 
+                    Les LL sont toujours meilleurs. Et comme on l'a vu, les LLo sont encore mieux contre les grosses flottes.
                   </p>
                 </div>
 
