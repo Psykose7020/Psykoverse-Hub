@@ -16,12 +16,14 @@ const fadeInUp = {
 };
 
 const resultats = [
-  { type: "Ressources", desc: "Métal, Cristal ou Deutérium", color: "text-green-400", icon: Package, prob: "68%" },
-  { type: "Vaisseaux", desc: "Flottes abandonnées", color: "text-blue-400", icon: Ship, prob: "14%" },
-  { type: "Antimatière", desc: "Antimatière gratuite", color: "text-purple-400", icon: Gem, prob: "7%" },
-  { type: "Items", desc: "Objets bonus", color: "text-amber-400", icon: Sparkles, prob: "5%" },
-  { type: "Pirates", desc: "Combat PNJ", color: "text-red-400", icon: Skull, prob: "3%" },
-  { type: "Aliens", desc: "Combat difficile", color: "text-red-600", icon: Zap, prob: "2%" }
+  { type: "Ressources", desc: "Métal, Cristal ou Deutérium", color: "text-green-400", icon: Package, prob: "~35%" },
+  { type: "Vaisseaux", desc: "Flottes abandonnées", color: "text-blue-400", icon: Ship, prob: "~14%" },
+  { type: "Antimatière", desc: "Antimatière gratuite", color: "text-purple-400", icon: Gem, prob: "~7%" },
+  { type: "Items", desc: "Objets bonus", color: "text-amber-400", icon: Sparkles, prob: "~5%" },
+  { type: "Pirates", desc: "Combat PNJ", color: "text-red-400", icon: Skull, prob: "~3%" },
+  { type: "Aliens", desc: "Combat difficile", color: "text-red-600", icon: Zap, prob: "~2%" },
+  { type: "Rien", desc: "Expédition vide", color: "text-gray-500", icon: Compass, prob: "~33%" },
+  { type: "Trou noir", desc: "Perte de vaisseaux", color: "text-gray-600", icon: AlertTriangle, prob: "~0.5%" }
 ];
 
 export default function GuideExpeditions() {
@@ -69,7 +71,7 @@ export default function GuideExpeditions() {
                 de l'<strong className="text-purple-400">antimatière</strong>, ou rencontrer des dangers comme des pirates ou des aliens.
               </p>
 
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
+              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3 mb-6">
                 {resultats.map((r, i) => (
                   <div key={i} className="bg-[#151924] rounded-lg p-3 text-center">
                     <r.icon className={`w-6 h-6 mx-auto mb-2 ${r.color}`} />
