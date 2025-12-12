@@ -1,60 +1,19 @@
 import { motion } from "framer-motion";
-import { Compass, Calculator, AlertTriangle, Sparkles, Ship, Gem, Package, Skull, Zap } from "lucide-react";
+import { Compass, ExternalLink, AlertTriangle, Sparkles, Ship, Gem, Package, Skull, Zap } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import RelatedGuides from "@/components/RelatedGuides";
-import { useState, useMemo } from "react";
 
-import ptImg from "@assets/ogame_ships/petit-transporteur.png";
 import gtImg from "@assets/ogame_ships/grand-transporteur.png";
-import clImg from "@assets/ogame_ships/chasseur-leger.png";
-import cloImg from "@assets/ogame_ships/chasseur-lourd.png";
 import eclaireurImg from "@assets/ogame_ships/eclaireur.png";
-import croiseurImg from "@assets/ogame_ships/croiseur.png";
-import vdbImg from "@assets/ogame_ships/vaisseau-bataille.png";
-import traqueurImg from "@assets/ogame_ships/traqueur.png";
-import coloImg from "@assets/ogame_ships/vaisseau-colonisation.png";
-import recycleurImg from "@assets/ogame_ships/recycleur.png";
-import sondeImg from "@assets/ogame_ships/sonde-espionnage.png";
-import bombardierImg from "@assets/ogame_ships/bombardier.png";
 import destructeurImg from "@assets/ogame_ships/destructeur.png";
-import edmImg from "@assets/ogame_ships/etoile-mort.png";
-import faucheurImg from "@assets/ogame_ships/faucheur.png";
+import sondeImg from "@assets/ogame_ships/sonde-espionnage.png";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0 }
 };
-
-const topPlayerRanges = [
-  { label: "< 100.000", maxPoints: 2500 },
-  { label: "< 1.000.000", maxPoints: 6000 },
-  { label: "< 5.000.000", maxPoints: 9000 },
-  { label: "< 25.000.000", maxPoints: 12000 },
-  { label: "< 50.000.000", maxPoints: 15000 },
-  { label: "< 75.000.000", maxPoints: 18000 },
-  { label: "< 100.000.000", maxPoints: 21000 },
-  { label: "> 100.000.000", maxPoints: 25000 }
-];
-
-const ships = [
-  { id: "pt", name: "Petit Transporteur", shortName: "PT", capacity: 5000, expoPoints: 20, img: ptImg },
-  { id: "gt", name: "Grand Transporteur", shortName: "GT", capacity: 25000, expoPoints: 60, img: gtImg },
-  { id: "cl", name: "Chasseur Léger", shortName: "CL", capacity: 50, expoPoints: 20, img: clImg },
-  { id: "clo", name: "Chasseur Lourd", shortName: "CLo", capacity: 100, expoPoints: 50, img: cloImg },
-  { id: "eclaireur", name: "Éclaireur", shortName: "Écl", capacity: 10000, expoPoints: 115, img: eclaireurImg },
-  { id: "croiseur", name: "Croiseur", shortName: "Cr", capacity: 800, expoPoints: 135, img: croiseurImg },
-  { id: "vdb", name: "Vaisseau de Bataille", shortName: "VdB", capacity: 1500, expoPoints: 300, img: vdbImg },
-  { id: "traqueur", name: "Traqueur", shortName: "Traq", capacity: 10000, expoPoints: 350, img: traqueurImg },
-  { id: "colo", name: "Vaisseau de Colonisation", shortName: "Colo", capacity: 7500, expoPoints: 0, img: coloImg },
-  { id: "recycleur", name: "Recycleur", shortName: "Rec", capacity: 20000, expoPoints: 0, img: recycleurImg },
-  { id: "sonde", name: "Sonde d'espionnage", shortName: "Sonde", capacity: 0, expoPoints: 5, img: sondeImg },
-  { id: "bombardier", name: "Bombardier", shortName: "Bomb", capacity: 500, expoPoints: 375, img: bombardierImg },
-  { id: "destructeur", name: "Destructeur", shortName: "Dest", capacity: 2000, expoPoints: 550, img: destructeurImg },
-  { id: "edm", name: "Étoile de la Mort", shortName: "EdM", capacity: 1000000, expoPoints: 0, img: edmImg },
-  { id: "faucheur", name: "Faucheur", shortName: "Fauch", capacity: 10000, expoPoints: 700, img: faucheurImg }
-];
 
 const resultats = [
   { type: "Ressources", desc: "Métal, Cristal ou Deutérium", color: "text-green-400", icon: Package, prob: "68%" },
@@ -66,94 +25,6 @@ const resultats = [
 ];
 
 export default function GuideExpeditions() {
-  const [topPlayerIndex, setTopPlayerIndex] = useState(3);
-  const [playerClass, setPlayerClass] = useState<"explorateur" | "collecteur" | "general">("explorateur");
-  const [ecoSpeed, setEcoSpeed] = useState(6);
-  const [bonusResources, setBonusResources] = useState(0);
-  const [bonusShips, setBonusShips] = useState(0);
-  const [bonusDarkMatter, setBonusDarkMatter] = useState(0);
-  const [fleetCounts, setFleetCounts] = useState<Record<string, number>>({});
-
-  const updateFleetCount = (shipId: string, count: number) => {
-    setFleetCounts(prev => ({ ...prev, [shipId]: count }));
-  };
-
-  const calculations = useMemo(() => {
-    let totalExpoPoints = 0;
-    let totalCapacity = 0;
-    const hasPathfinder = (fleetCounts["eclaireur"] || 0) > 0;
-
-    ships.forEach(ship => {
-      const count = fleetCounts[ship.id] || 0;
-      totalExpoPoints += count * ship.expoPoints;
-      totalCapacity += count * ship.capacity;
-    });
-
-    const maxPoints = topPlayerRanges[topPlayerIndex].maxPoints;
-    const cappedPoints = Math.min(totalExpoPoints, maxPoints);
-
-    const classMultiplier = playerClass === "explorateur" ? 1.5 : 1;
-    const pathfinderMultiplier = (playerClass === "explorateur" && hasPathfinder) ? 2 : 1;
-    const ecoSpeedMultiplier = playerClass === "explorateur" ? ecoSpeed : 1;
-    const resourceBonusMultiplier = 1 + (bonusResources / 100);
-
-    const totalMultiplier = classMultiplier * pathfinderMultiplier * ecoSpeedMultiplier * resourceBonusMultiplier;
-
-    const baseResources = cappedPoints * totalMultiplier;
-
-    const avgMetal = Math.floor(baseResources * 30);
-    const avgCrystal = Math.floor(baseResources * 15);
-    const avgDeut = Math.floor(baseResources * 10);
-
-    const maxMetal = Math.floor(baseResources * 200);
-    const maxCrystal = Math.floor(baseResources * 100);
-    const maxDeut = Math.floor(baseResources * 66);
-
-    const cappedMaxMetal = Math.min(maxMetal, totalCapacity);
-    const cappedMaxCrystal = Math.min(maxCrystal, totalCapacity);
-    const cappedMaxDeut = Math.min(maxDeut, totalCapacity);
-
-    const dmBonusMultiplier = 1 + (bonusDarkMatter / 100);
-    const baseDM = cappedPoints * 0.2;
-    const maxDarkMatter = Math.floor(baseDM * dmBonusMultiplier);
-
-    const shipBonusMultiplier = 1 + (bonusShips / 100);
-    
-    const findableShips: Record<string, number> = {};
-    const lootPool = cappedPoints * totalMultiplier * 50 * shipBonusMultiplier;
-    
-    const shipCosts: Record<string, number> = {
-      pt: 4000, gt: 12000, cl: 4000, clo: 10000, eclaireur: 55000,
-      croiseur: 47000, vdb: 75000, traqueur: 85000, bombardier: 100000,
-      destructeur: 135000, faucheur: 175000, sonde: 1000
-    };
-
-    ships.forEach(ship => {
-      if (ship.id === "edm" || ship.id === "colo" || ship.id === "recycleur") {
-        findableShips[ship.id] = 0;
-      } else {
-        const cost = shipCosts[ship.id] || 10000;
-        findableShips[ship.id] = Math.floor(lootPool / cost);
-      }
-    });
-
-    return {
-      totalExpoPoints,
-      cappedPoints,
-      maxPoints,
-      totalCapacity,
-      avgMetal,
-      avgCrystal,
-      avgDeut,
-      maxMetal: cappedMaxMetal,
-      maxCrystal: cappedMaxCrystal,
-      maxDeut: cappedMaxDeut,
-      maxDarkMatter,
-      findableShips,
-      totalMultiplier
-    };
-  }, [fleetCounts, topPlayerIndex, playerClass, ecoSpeed, bonusResources, bonusShips, bonusDarkMatter]);
-
   return (
     <Layout>
       <section className="py-8 md:py-16">
@@ -178,7 +49,7 @@ export default function GuideExpeditions() {
                 <h1 className="font-display text-3xl md:text-4xl font-bold text-white">
                   Guide des Expéditions
                 </h1>
-                <p className="text-gray-400">Calculateur de gains et optimisation</p>
+                <p className="text-gray-400">Explorez l'espace profond et récupérez des ressources</p>
               </div>
             </div>
           </motion.div>
@@ -237,209 +108,59 @@ export default function GuideExpeditions() {
               transition={{ delay: 0.15 }}
               className="bg-[#1C2230] border border-[#2E384D] rounded-xl p-6"
             >
-              <div className="flex items-center gap-3 mb-4">
-                <Calculator className="w-6 h-6 text-primary" />
-                <h2 className="font-display text-xl font-bold text-white">Calculateur d'Expéditions</h2>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-                <div>
-                  <label className="block text-sm text-gray-400 mb-2">Top 1 joueur (points)</label>
-                  <select
-                    value={topPlayerIndex}
-                    onChange={(e) => setTopPlayerIndex(Number(e.target.value))}
-                    className="w-full bg-[#151924] border border-[#2E384D] rounded-lg px-3 py-2 text-white"
-                    data-testid="select-top-player"
-                  >
-                    {topPlayerRanges.map((range, i) => (
-                      <option key={i} value={i}>{range.label}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm text-gray-400 mb-2">Classe</label>
-                  <select
-                    value={playerClass}
-                    onChange={(e) => setPlayerClass(e.target.value as any)}
-                    className="w-full bg-[#151924] border border-[#2E384D] rounded-lg px-3 py-2 text-white"
-                    data-testid="select-class"
-                  >
-                    <option value="explorateur">Explorateur</option>
-                    <option value="collecteur">Collecteur</option>
-                    <option value="general">Général</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm text-gray-400 mb-2">Vitesse économie</label>
-                  <select
-                    value={ecoSpeed}
-                    onChange={(e) => setEcoSpeed(Number(e.target.value))}
-                    className="w-full bg-[#151924] border border-[#2E384D] rounded-lg px-3 py-2 text-white"
-                    data-testid="select-speed"
-                  >
-                    {[1,2,3,4,5,6,7,8,9,10].map(s => (
-                      <option key={s} value={s}>×{s}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm text-gray-400 mb-2">Bonus ressources (%)</label>
-                  <input
-                    type="number"
-                    value={bonusResources}
-                    onChange={(e) => setBonusResources(Number(e.target.value))}
-                    className="w-full bg-[#151924] border border-[#2E384D] rounded-lg px-3 py-2 text-white"
-                    min="0"
-                    max="200"
-                    data-testid="input-bonus-resources"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm text-gray-400 mb-2">Bonus vaisseaux (%)</label>
-                  <input
-                    type="number"
-                    value={bonusShips}
-                    onChange={(e) => setBonusShips(Number(e.target.value))}
-                    className="w-full bg-[#151924] border border-[#2E384D] rounded-lg px-3 py-2 text-white"
-                    min="0"
-                    max="200"
-                    data-testid="input-bonus-ships"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm text-gray-400 mb-2">Bonus antimatière (%)</label>
-                  <input
-                    type="number"
-                    value={bonusDarkMatter}
-                    onChange={(e) => setBonusDarkMatter(Number(e.target.value))}
-                    className="w-full bg-[#151924] border border-[#2E384D] rounded-lg px-3 py-2 text-white"
-                    min="0"
-                    max="200"
-                    data-testid="input-bonus-darkmatter"
-                  />
-                </div>
-              </div>
-
-              <div className="bg-[#151924] rounded-lg p-4 mb-6">
-                <h3 className="font-bold text-white mb-3">Composition de la flotte</h3>
-                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2">
-                  {ships.map(ship => (
-                    <div 
-                      key={ship.id} 
-                      className="bg-[#1C2230] border border-[#2E384D] rounded-lg p-2 hover:border-primary/50 transition-colors"
-                    >
-                      <div className="flex flex-col items-center">
-                        <img 
-                          src={ship.img} 
-                          alt={ship.name}
-                          className="w-12 h-12 object-contain mb-1"
-                          title={ship.name}
-                        />
-                        <span className="text-xs text-gray-400 mb-1">{ship.shortName}</span>
-                        <input
-                          type="number"
-                          value={fleetCounts[ship.id] || ""}
-                          onChange={(e) => updateFleetCount(ship.id, Number(e.target.value) || 0)}
-                          placeholder="0"
-                          className="w-full bg-[#151924] border border-[#2E384D] rounded px-1 py-1 text-white text-center text-sm"
-                          min="0"
-                          data-testid={`input-ship-${ship.id}`}
-                        />
-                      </div>
+              <h2 className="font-display text-xl font-bold text-white mb-4">Que faut-il envoyer en expédition ?</h2>
+              
+              <div className="space-y-6">
+                <div className="bg-[#151924] rounded-lg p-4">
+                  <h3 className="font-bold text-primary mb-3">Composition optimale (Explorateur)</h3>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="flex flex-col items-center text-center">
+                      <img src={eclaireurImg} alt="Éclaireur" className="w-16 h-16 object-contain mb-2" />
+                      <span className="text-white font-bold">1+ Éclaireur</span>
+                      <span className="text-xs text-gray-400">Obligatoire pour le ×2</span>
                     </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="bg-violet-900/20 border border-violet-700/30 rounded-lg p-3 mb-6">
-                <div className="flex flex-wrap gap-4 text-sm">
-                  <div>
-                    <span className="text-gray-400">Points Expédition : </span>
-                    <span className={`font-bold ${calculations.totalExpoPoints > calculations.maxPoints ? "text-red-400" : "text-white"}`}>
-                      {calculations.totalExpoPoints.toLocaleString()} 
-                      {calculations.totalExpoPoints > calculations.maxPoints && ` → ${calculations.cappedPoints.toLocaleString()}`}
-                    </span>
-                    <span className="text-gray-500"> / {calculations.maxPoints.toLocaleString()} max</span>
-                  </div>
-                  <div>
-                    <span className="text-gray-400">Multiplicateur : </span>
-                    <span className="font-bold text-primary">×{calculations.totalMultiplier.toFixed(1)}</span>
-                  </div>
-                  <div>
-                    <span className="text-gray-400">Capacité : </span>
-                    <span className="font-bold text-white">{calculations.totalCapacity.toLocaleString()}</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-green-900/20 border border-green-700/30 rounded-lg p-4">
-                  <h3 className="font-bold text-green-400 mb-3">Ressources trouvables</h3>
-                  <div className="space-y-3">
-                    <div>
-                      <div className="flex justify-between items-center text-sm text-gray-500 mb-1">
-                        <span>Métal</span>
-                        <span>Moy. {calculations.avgMetal.toLocaleString()}</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-400">Max :</span>
-                        <span className="text-green-400 font-bold text-lg">{calculations.maxMetal.toLocaleString()}</span>
-                      </div>
+                    <div className="flex flex-col items-center text-center">
+                      <img src={gtImg} alt="Grand Transporteur" className="w-16 h-16 object-contain mb-2" />
+                      <span className="text-white font-bold">Grands Transporteurs</span>
+                      <span className="text-xs text-gray-400">Pour le fret</span>
                     </div>
-                    <div>
-                      <div className="flex justify-between items-center text-sm text-gray-500 mb-1">
-                        <span>Cristal</span>
-                        <span>Moy. {calculations.avgCrystal.toLocaleString()}</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-400">Max :</span>
-                        <span className="text-cyan-400 font-bold text-lg">{calculations.maxCrystal.toLocaleString()}</span>
-                      </div>
+                    <div className="flex flex-col items-center text-center">
+                      <img src={destructeurImg} alt="Destructeur" className="w-16 h-16 object-contain mb-2" />
+                      <span className="text-white font-bold">1 Destructeur</span>
+                      <span className="text-xs text-gray-400">Contre les pirates</span>
                     </div>
-                    <div>
-                      <div className="flex justify-between items-center text-sm text-gray-500 mb-1">
-                        <span>Deutérium</span>
-                        <span>Moy. {calculations.avgDeut.toLocaleString()}</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-400">Max :</span>
-                        <span className="text-blue-400 font-bold text-lg">{calculations.maxDeut.toLocaleString()}</span>
-                      </div>
+                    <div className="flex flex-col items-center text-center">
+                      <img src={sondeImg} alt="Sonde" className="w-16 h-16 object-contain mb-2" />
+                      <span className="text-white font-bold">1 Sonde</span>
+                      <span className="text-xs text-gray-400">Points bonus</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-purple-900/20 border border-purple-700/30 rounded-lg p-4">
-                  <h3 className="font-bold text-purple-400 mb-3">Antimatière (max)</h3>
-                  <div className="text-3xl font-bold text-purple-400">
-                    {calculations.maxDarkMatter.toLocaleString()}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-green-900/20 border border-green-700/30 rounded-lg p-4">
+                    <h4 className="font-bold text-green-400 mb-2">Points d'expédition</h4>
+                    <p className="text-sm text-gray-300 mb-2">
+                      Chaque vaisseau apporte des points d'expédition. Plus vous en avez, plus les gains sont élevés.
+                    </p>
+                    <ul className="text-sm text-gray-400 space-y-1">
+                      <li>• Le maximum dépend du Top 1 de l'univers</li>
+                      <li>• Atteignez le cap sans le dépasser</li>
+                      <li>• Grands Transporteurs = bon ratio points/fret</li>
+                    </ul>
                   </div>
-                  <p className="text-gray-500 text-xs mt-3">
-                    Basé sur les points d'expédition + bonus %
-                  </p>
+                  <div className="bg-blue-900/20 border border-blue-700/30 rounded-lg p-4">
+                    <h4 className="font-bold text-blue-400 mb-2">Capacité de fret</h4>
+                    <p className="text-sm text-gray-300 mb-2">
+                      Assurez-vous d'avoir assez de capacité pour ramener les ressources trouvées.
+                    </p>
+                    <ul className="text-sm text-gray-400 space-y-1">
+                      <li>• Si capacité insuffisante → ressources perdues</li>
+                      <li>• Grands Transporteurs : 25.000 de fret</li>
+                      <li>• Éclaireurs : 10.000 de fret</li>
+                    </ul>
+                  </div>
                 </div>
-              </div>
-
-              <div className="mt-6 bg-blue-900/20 border border-blue-700/30 rounded-lg p-4">
-                <h3 className="font-bold text-blue-400 mb-3">Vaisseaux trouvables (max)</h3>
-                <div className="grid grid-cols-3 md:grid-cols-5 gap-2">
-                  {ships.filter(s => s.id !== "edm" && s.id !== "colo" && s.id !== "recycleur").map(ship => (
-                    <div key={ship.id} className="flex items-center gap-2 bg-[#151924] rounded px-2 py-1">
-                      <img src={ship.img} alt={ship.shortName} className="w-6 h-6 object-contain" />
-                      <span className={`font-bold text-sm ${calculations.findableShips[ship.id] > 0 ? "text-blue-400" : "text-gray-600"}`}>
-                        {calculations.findableShips[ship.id] || 0}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-                <p className="text-gray-500 text-xs mt-2">
-                  Note : EdM, Colo et Recycleurs ne peuvent pas être trouvés en expédition
-                </p>
               </div>
             </motion.div>
 
@@ -448,6 +169,33 @@ export default function GuideExpeditions() {
               initial="hidden"
               animate="visible"
               transition={{ delay: 0.2 }}
+              className="bg-primary/10 border border-primary/30 rounded-xl p-6"
+            >
+              <div className="flex items-center justify-between flex-wrap gap-4">
+                <div>
+                  <h3 className="font-bold text-white text-lg mb-1">Calculateur d'expéditions</h3>
+                  <p className="text-gray-400 text-sm">
+                    Pour calculer précisément vos gains potentiels, utilisez le calculateur en ligne
+                  </p>
+                </div>
+                <a 
+                  href="https://logserver.net/expocalc/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-primary hover:bg-primary/80 text-white font-bold px-6 py-3 rounded-lg transition-colors"
+                  data-testid="link-expocalc"
+                >
+                  Ouvrir le calculateur
+                  <ExternalLink className="w-4 h-4" />
+                </a>
+              </div>
+            </motion.div>
+
+            <motion.div
+              variants={fadeInUp}
+              initial="hidden"
+              animate="visible"
+              transition={{ delay: 0.25 }}
               className="bg-amber-900/20 border border-amber-700/30 rounded-xl p-6"
             >
               <div className="flex items-start gap-3">
