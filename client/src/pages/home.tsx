@@ -45,10 +45,10 @@ const sections = [
   {
     href: "/tutoriels",
     icon: BookOpen,
-    title: "41 Guides",
+    title: "42 Guides",
     description: "Du débutant à l'expert, tout pour progresser sur OGame.",
     color: "from-primary to-blue-600",
-    stats: "41 guides",
+    stats: "42 guides",
     featured: true
   },
   {
@@ -81,7 +81,7 @@ const features = [
   {
     icon: Star,
     title: "Guides Complets",
-    description: "41 tutoriels couvrant tous les aspects du jeu, des bases aux stratégies avancées."
+    description: "42 tutoriels couvrant tous les aspects du jeu, des bases aux stratégies avancées."
   },
   {
     icon: Users,
@@ -155,7 +155,7 @@ export default function Home() {
               <motion.div variants={fadeInUp} className="text-lg md:text-xl text-gray-300 mb-8 leading-relaxed max-w-2xl">
                 <EditableText 
                   id="home-description" 
-                  defaultValue="La ressource complète pour tous les joueurs OGame francophones. 41 guides complets, des bases aux stratégies avancées, accessibles à tous !" 
+                  defaultValue="La ressource complète pour tous les joueurs OGame francophones. 42 guides complets, des bases aux stratégies avancées, accessibles à tous !" 
                   as="p"
                   className="text-lg md:text-xl text-gray-300 leading-relaxed"
                   multiline
