@@ -132,7 +132,7 @@ export default function GuideExpeditions() {
                     <div className="flex flex-col items-center text-center">
                       <img src={sondeImg} alt="Sonde" className="w-16 h-16 object-contain mb-2" />
                       <span className="text-white font-bold">1 Sonde</span>
-                      <span className="text-xs text-gray-400">Points bonus</span>
+                      <span className="text-xs text-gray-400">Voir si SS épuisé</span>
                     </div>
                   </div>
                 </div>
@@ -175,6 +175,51 @@ export default function GuideExpeditions() {
                   <p className="text-sm text-gray-300">
                     Le type de vaisseau le plus puissant dans votre flotte (hors Étoile de la Mort) influence les vaisseaux que vous pouvez trouver en expédition. 
                     Envoyer un <strong className="text-white">Destructeur</strong> ou <strong className="text-white">Faucheur</strong> permet de débloquer tous les types de vaisseaux au loot.
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              variants={fadeInUp}
+              initial="hidden"
+              animate="visible"
+              transition={{ delay: 0.18 }}
+              className="bg-[#1C2230] border border-[#2E384D] rounded-xl p-6"
+            >
+              <h2 className="font-display text-xl font-bold text-white mb-4">Épuisement des systèmes solaires</h2>
+              
+              <div className="space-y-4">
+                <div className="bg-[#151924] rounded-lg p-4">
+                  <h4 className="font-bold text-primary mb-2">Comment ça fonctionne ?</h4>
+                  <ul className="text-sm text-gray-300 space-y-2">
+                    <li>• Une position vierge dispose d'un <strong className="text-white">score de 80</strong></li>
+                    <li>• Ce score diminue de <strong className="text-red-400">1 point par expédition</strong></li>
+                    <li>• Il se recharge de <strong className="text-green-400">10 points toutes les 2 heures</strong></li>
+                    <li>• Plus le score est bas, plus la probabilité de "rien" augmente</li>
+                  </ul>
+                </div>
+
+                <div className="bg-amber-900/20 border border-amber-700/30 rounded-lg p-4">
+                  <h4 className="font-bold text-amber-400 mb-2">À quoi sert la sonde ?</h4>
+                  <p className="text-sm text-gray-300">
+                    Envoyer une sonde permet de voir si le système solaire est épuisé avant d'y envoyer votre flotte principale. 
+                    Si d'autres joueurs lancent leurs expés dans le même système que vous, cela contribue à son épuisement. <strong className="text-white">Partez ailleurs.</strong>
+                  </p>
+                </div>
+
+                <div className="bg-green-900/20 border border-green-700/30 rounded-lg p-4">
+                  <h4 className="font-bold text-green-400 mb-2">Stratégie recommandée</h4>
+                  <p className="text-sm text-gray-300 mb-2">
+                    Répartissez vos expéditions sur plusieurs lunes pour maintenir le compteur le plus haut possible :
+                  </p>
+                  <ul className="text-sm text-gray-300 space-y-1">
+                    <li>• <strong className="text-white">Univers ×1 flotte :</strong> 4/4 (4 expés par lune, 2 lunes)</li>
+                    <li>• <strong className="text-white">Autres univers :</strong> 2/2/2/2 (2 expés par lune, 4 lunes)</li>
+                  </ul>
+                  <p className="text-xs text-gray-500 mt-2">
+                    Si vous êtes un joueur occasionnel ou sans flotte significative, rester sur la même lune est acceptable. 
+                    Mais si vous lancez des expéditions volumineuses (+1M de vaisseaux), optimiser l'épuisement devient prioritaire.
                   </p>
                 </div>
               </div>
