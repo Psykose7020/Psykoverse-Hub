@@ -53,8 +53,8 @@ const defenseTypes = [
     hull: 8000,
     rapidFireBy: ["Bombardier (10)", "EdM (100)"],
     rapidFireAgainst: ["Faucheur (2)"],
-    verdict: "useless",
-    description: "Totalement inutile. Remplacez chaque ion par 4 lasers légers, c'est toujours mieux."
+    verdict: "useful",
+    description: "Seule défense du jeu à posséder un Rapid Fire positif sur un vaisseau : RF 2 contre le Faucheur."
   },
   {
     name: "Canon de Gauss",
@@ -334,12 +334,12 @@ export default function GuideDefenses() {
 
                 <div className="bg-[#151924] rounded-lg p-4">
                   <h3 className="font-bold text-white mb-2 flex items-center gap-2">
-                    <XCircle className="w-4 h-4 text-red-400" />
-                    "L'Artillerie à ions a un gros bouclier, elle permet le match nul !"
+                    <CheckCircle className="w-4 h-4 text-green-400" />
+                    "L'Artillerie à ions est-elle utile ?"
                   </h3>
                   <p className="text-gray-300 text-sm">
-                    Remplace chaque ion par <strong className="text-white">4 Lasers Légers</strong> et simule. 
-                    Les LL sont toujours meilleurs. Et comme on l'a vu, les LLo sont encore mieux contre les grosses flottes.
+                    L'Artillerie à ions est la <strong className="text-white">seule défense avec un Rapid Fire positif</strong> sur un vaisseau : 
+                    RF 2 contre le Faucheur. Si vous affrontez des flottes de Faucheurs, elle devient intéressante.
                   </p>
                 </div>
 
