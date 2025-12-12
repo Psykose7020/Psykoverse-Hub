@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Shield, Target, AlertTriangle, CheckCircle, XCircle, Skull, Info, Calculator } from "lucide-react";
+import { Shield, Target, AlertTriangle, CheckCircle, XCircle, Skull, Info, Calculator, Zap } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
@@ -51,7 +51,8 @@ const defenseTypes = [
     attack: 150,
     shield: 500,
     hull: 8000,
-    rapidFireBy: ["Bombardier (10)", "EdM (100)", "Faucheur (2)"],
+    rapidFireBy: ["Bombardier (10)", "EdM (100)"],
+    rapidFireAgainst: ["Faucheur (2)"],
     verdict: "useless",
     description: "Totalement inutile. Remplacez chaque ion par 4 lasers légers, c'est toujours mieux."
   },
@@ -218,6 +219,12 @@ export default function GuideDefenses() {
                       <div className="flex items-center gap-2 text-xs text-red-400">
                         <Skull className="w-3 h-3" />
                         <span>Subit RF de: {def.rapidFireBy.join(", ")}</span>
+                      </div>
+                    )}
+                    {def.rapidFireAgainst && def.rapidFireAgainst.length > 0 && (
+                      <div className="flex items-center gap-2 text-xs text-green-400">
+                        <Zap className="w-3 h-3" />
+                        <span>RF sur: {def.rapidFireAgainst.join(", ")}</span>
                       </div>
                     )}
                   </div>
