@@ -95,6 +95,7 @@ const quotas = [
     description: "Quota pratique et facile à retenir",
     composition: [
       { defense: "Lasers Lourds", count: 1500, reason: "Anti-CL principal" },
+      { defense: "Artilleries à ions", count: 500, reason: "RF 2 contre Faucheurs (seule défense avec RF+)" },
       { defense: "Gauss", count: 250, reason: "Anti-CLo et stop RF des Bombardiers" },
       { defense: "Plasmas", count: 150, reason: "Anti-VdB et Croiseurs" },
       { defense: "EdM à quai", count: "X", reason: "Soutien puissance de feu" }
@@ -106,6 +107,7 @@ const quotas = [
     composition: [
       { defense: "LM ou LL", count: 1100, reason: "Tampon anti-sondes" },
       { defense: "Lasers Lourds", count: 1500, reason: "Anti-CL" },
+      { defense: "Artilleries à ions", count: 300, reason: "RF 2 contre Faucheurs" },
       { defense: "Gauss", count: 250, reason: "Anti-CLo" },
       { defense: "Plasmas", count: 150, reason: "Anti-VdB/Croiseurs" }
     ]
