@@ -200,19 +200,25 @@ export default function GuideExpeditions() {
                 </div>
 
                 <div className="bg-[#151924] rounded-lg p-4 mt-4">
-                  <h4 className="font-bold text-white mb-2">Loot de vaisseaux : les points de structure</h4>
+                  <h4 className="font-bold text-white mb-2">Loot de vaisseaux : quantité vs type</h4>
                   <p className="text-sm text-gray-300 mb-3">
-                    Le nombre et le type de vaisseaux que vous pouvez trouver en expédition dépend des <strong className="text-primary">points de structure</strong> de votre flotte envoyée.
+                    Deux facteurs déterminent les vaisseaux que vous pouvez trouver :
                   </p>
                   <ul className="text-sm text-gray-300 space-y-2">
-                    <li>• Chaque vaisseau apporte des points de structure (basés sur sa coque)</li>
-                    <li>• Plus vous envoyez de points de structure, plus vous pouvez trouver de vaisseaux</li>
-                    <li>• Il existe un <strong className="text-white">minimum de points de structure</strong> à atteindre pour débloquer le loot maximum</li>
-                    <li>• Sur les univers <strong className="text-white">×1 économique</strong>, ce minimum est plus difficile à atteindre</li>
-                    <li>• Sur les univers plus rapides (×2 et +), les 50% de fret dépassent généralement ce minimum</li>
+                    <li>• <strong className="text-primary">La quantité</strong> dépend des <strong className="text-white">points de structure</strong> de votre flotte envoyée</li>
+                    <li>• <strong className="text-cyan-400">Le type</strong> dépend du <strong className="text-white">plus gros vaisseau de combat</strong> envoyé (hors EdM)</li>
                   </ul>
+                  <div className="mt-3 pt-3 border-t border-[#2E384D]">
+                    <p className="text-sm text-gray-400 mb-2">Points de structure :</p>
+                    <ul className="text-sm text-gray-300 space-y-1">
+                      <li>• Chaque vaisseau apporte des points de structure (basés sur sa coque)</li>
+                      <li>• Il existe un minimum à atteindre pour débloquer le loot maximum</li>
+                      <li>• Sur les univers <strong className="text-white">×1 éco</strong>, ce minimum est plus difficile à atteindre</li>
+                      <li>• Sur les univers plus rapides, les 50% de fret dépassent généralement ce minimum</li>
+                    </ul>
+                  </div>
                   <p className="text-xs text-gray-500 mt-3">
-                    En résumé : si vous n'atteignez pas le palier de points de structure, vos gains potentiels en vaisseaux seront réduits proportionnellement.
+                    En résumé : envoyez un gros vaisseau de combat pour débloquer tous les types, et assez de points de structure pour maximiser la quantité.
                   </p>
                 </div>
               </div>
