@@ -164,9 +164,12 @@ export default function GuideExpeditions() {
 
                 <div className="bg-violet-900/20 border border-violet-700/30 rounded-lg p-4 mt-4">
                   <h4 className="font-bold text-violet-400 mb-2">Astuce vitesse : combo PT + VB</h4>
-                  <p className="text-sm text-gray-300">
+                  <p className="text-sm text-gray-300 mb-2">
                     Pour gagner du temps sur le voyage vers la position 16, utilisez un combo <strong className="text-white">Petits Transporteurs + Vaisseaux de Bataille</strong>. 
                     Ces vaisseaux sont rapides et vous évitez le risque de ramener un vaisseau lent qui ralentirait votre retour.
+                  </p>
+                  <p className="text-sm text-gray-400">
+                    L'expédition en <strong className="text-white">full Éclaireurs</strong> est encore plus rapide, mais la consommation en deutérium est très élevée.
                   </p>
                 </div>
 
