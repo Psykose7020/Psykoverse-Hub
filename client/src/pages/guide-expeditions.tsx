@@ -113,7 +113,7 @@ export default function GuideExpeditions() {
                   <span className="bg-[#151924] px-3 py-1 rounded text-white font-bold">+3 Slots</span>
                 </div>
                 <p className="text-sm text-gray-300">
-                  <strong className="text-amber-400">Ce sont les items les plus rentables du jeu.</strong> Chaque slot supplémentaire multiplie vos gains d'expédition sur le long terme. 
+                  <strong className="text-amber-400">Ce sont les items les plus rentables du jeu.</strong> Chaque slot supplémentaire multiplie vos gains d'expédition pendant leur durée d'activation. 
                   Priorisez-les lors des événements !
                 </p>
               </div>
