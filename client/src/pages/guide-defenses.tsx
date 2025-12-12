@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Shield, Target, Zap, AlertTriangle, CheckCircle, XCircle, Skull, Info, Calculator } from "lucide-react";
+import { Shield, Target, AlertTriangle, CheckCircle, XCircle, Skull, Info, Calculator } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
@@ -77,14 +77,6 @@ const defenseTypes = [
     verdict: "essential",
     description: "Détruit un Croiseur en 1 tir. 46.7% de chance de détruire un VdB au premier tir."
   }
-];
-
-const fleetEvolution = [
-  { phase: "Début", composition: "CL + VdB", description: "Flottes légères de raid" },
-  { phase: "Milieu", composition: "CL + VdB + Bombardiers", description: "Ajout des bombardiers anti-défense" },
-  { phase: "Avancé", composition: "CL + VdB + Bombardiers + Destructeurs", description: "Flottes équilibrées" },
-  { phase: "Expert", composition: "CL + Destructeurs", description: "Flottes optimisées" },
-  { phase: "Endgame", composition: "Destructeurs + EdM", description: "Flottes lourdes dominantes" }
 ];
 
 const quotas = [
@@ -228,41 +220,6 @@ export default function GuideDefenses() {
                         <span>Subit RF de: {def.rapidFireBy.join(", ")}</span>
                       </div>
                     )}
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-
-            <motion.div
-              variants={fadeInUp}
-              initial="hidden"
-              animate="visible"
-              transition={{ delay: 0.2 }}
-              className="bg-[#1C2230] border border-[#2E384D] rounded-xl p-6"
-            >
-              <div className="flex items-center gap-3 mb-4">
-                <Zap className="w-6 h-6 text-amber-400" />
-                <h2 className="font-display text-xl font-bold text-white">Évolution des flottes adverses</h2>
-              </div>
-              
-              <p className="text-gray-300 text-sm mb-4">
-                Les flottes évoluent au fil du temps. Les <strong className="text-white">Destructeurs</strong> deviennent dominants 
-                car ils ne se perdent presque jamais lors des recyclages, ce qui permet d'augmenter leur nombre progressivement.
-              </p>
-
-              <div className="space-y-2">
-                {fleetEvolution.map((phase, index) => (
-                  <div key={phase.phase} className="flex items-center gap-4 bg-[#151924] rounded-lg p-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center text-white text-sm font-bold">
-                      {index + 1}
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2">
-                        <span className="font-bold text-white">{phase.phase}</span>
-                        <span className="text-primary text-sm">→ {phase.composition}</span>
-                      </div>
-                      <p className="text-gray-500 text-xs">{phase.description}</p>
-                    </div>
                   </div>
                 ))}
               </div>
