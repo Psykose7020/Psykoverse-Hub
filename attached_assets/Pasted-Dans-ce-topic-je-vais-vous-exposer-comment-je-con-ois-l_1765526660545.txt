@@ -1,0 +1,182 @@
+Dans ce topic je vais vous exposer comment je conçois la défense pour tout mineur confirmé, c'est à dire qu'il a passé le stade de développement et qu'il n'utilise plus, s'il a malheureusement utilisé un jour, les défenses dites "inutiles".
+
+
+
+Utilité des défenses :
+Lance missiles :
+Défense la moins chère ce qui permet d'en avoir un grand nombre. Elle coûte uniquement du métal.
+Subit un rapid fire des Cr (10) et des Bo (20).
+
+
+
+Lasers légers :
+Défense la moins chère avec le lance-missile ce qui permet aussi d'en avoir un grand nombre. Coûte du métal et du cristal ce qui permet de faire descendre les 2 stocks de ressources. Défense plus performante que les lances missiles.
+Subit un rapid fire des Bo (20) et des Des (10).
+
+
+
+Lasers lourds :
+60% de chance de détruire un Cl au premier tir.
+C'est pourquoi on dit qu'il permet de détruire 1 Cl en 1 tir.
+
+
+
+Artillerie à ions :
+Totalement inutile.
+
+
+
+Canon de Gauss :
+Permet de stopper le rapid fire des Bombardiers et détruit 1 CL en 1 tir.
+
+
+
+Plasma :
+Permet de détruire un Cr en 1 tir.
+
+
+
+Remarque :
+Le premier tir de plasma à 46,7 % de chance de détruire un VB ce qui permet à un tir d'une autre défense de passer au dessus de 50% de chance de détruire le VB. C'est de là que vient le fait que beaucoup de joueurs disent qu'un tir de plasma sur un VB équivaut à sa destruction.
+
+
+
+Au fil du temps les flottes se développent de cette façon :
+Cl+VB
+Cl+VB+Bo
+Cl+VB+Bo+Des
+Cl+Des
+Des+EDLM
+
+
+
+Comme on peut le voir les Cl et les VB sont les plus dominant mais par la suite les Destructeurs deviennent très nombreux car dans chaque recyclage que fait l'attaquant il ne va pas perdre de destructeur ou très peu, ce qui lui permet d'augmenter son quota au fil du temps.
+
+
+
+Comment allons nous axer notre défense?
+Vous devez avant tout être convaincus que votre défense se fera passer et que votre défense doit viser à faire un maximum de dégât,mais un maximum de dégât non pas en 6 tour, mais en 1 TOUR voir 2.
+
+
+
+L'idée de faire un maximum de dégâts en un tour nous contraint à utiliser des défenses (que certains diront peu rentable vu leur prix) et à rendre inutile les défenses dites les plus rentables.
+
+
+
+Nous devons donc pouvoir éliminer un maximum de Cl, VB, Bo et Des en 1 tour.
+Ce qui impose l'utilisation des lasers lourds (pour les Cl) et des plasmas (pour les VB).
+Après nous pouvons décidez d'utiliser des lasers légers et des lanceurs de missiles pour faire tampon, de plus il a été prouvé que ceux sont les deux défenses les plus rentable question rapport qualité/prix.
+
+
+
+Avant d'aller plus loin je tiens à préciser que certains joueurs jouent avec masse Cl, en univers 2 les 200k de Cl a été franchie, ce qui implique que leurs VB, Bo, Des ne sont même pas effleurés par vos défenses et que le grand nombre de Cl permet de rendre pratiquement inutile la force de frappe de vos lances missiles et lasers légers. Car sur les 200 k de Cl il n' y en a que 1 ou 2 qui se font toucher par plus de une défense.
+C'est ici qu'on pense à utiliser une EDLM à quai pour soutenir votre défense, grâce à son rapid fire contre tout les vaisseaux. De plus l'EDLM permet d'augmenter l'utilité votre défense face aux flottes composées uniquement d'EDLM.
+Néanmoins une EDLM à quai signifie des ressources dans le champs de ruine qui viennent de vous, le défenseur! Il faut donc avoir une défense conséquente derrière.
+Il ne faut pas oublier que les EDLM ne se reconstruisent pas vous pouvez donc vous faire raider perdre vos EDLM puis raider à nouveau sans bénéficier de l'avantage de vos EDLM défuntes.
+
+
+
+Vu qu'on souhaite utiliser une EDLM à quai il faut pouvoir être sur de faire perdre à l'attaquant environ 44% des ressources que coûte une EDLM en 1 tour.
+
+
+
+Il faut donc être sur de pouvoir détruire le nombre de vaisseaux suivant en 1 tour :
+990 Cl = 2 970 k de M + 990 k de C
+66 VB = 2 640 k de M + 1 320 k de C
+53 Bo = 2 650 k de M + 1 325 k de C
+36 Des = 2 160 k de M + 1 800 k de C
+(le deutérium ne va pas dans les champs de ruines il est donc inutile de regarder les pertes de deutérium)
+
+
+
+Les Cl impliquent d'avoir 1650 lasers lourds (car seul 60% des Cl seront détruits en un tir) et les VB impliquent 141 plasmas (car seul 46.7% des VB seront détruits en un tir) pour 1 EDLM. Sachant que si vous vous faites raider par une flotte de bombardier ou de Destructeurs qui tendent vers l'infini vous ne pouvez en aucun cas en détruire autant que ce que j'ai préciser au dessus avec uniquement vos défenses. Mais l'EDLM est la pour les détruire et avec son rapid fire on se rapproche de la défense dites "parfaite" du point de vue des dégâts infligés.
+
+
+
+Je préconise donc une défense, dite "parfaite" pour protéger votre planète (et non votre flotte ou les disaines de millions de ressources entreposée sur votre planète), composée de :
+1650 X Lasers Lourds + 141 X Plasmas + X EDLM
+
+
+
+Voilà mon point de vue de la défense dite "parfaite".
+
+
+
+PS : Remarquez que j'ai beaucoup utilisé le mot "parfaite" mais à chaque fois entre guillemet car la défense parfaite n'existe pas mais on essaye de s'en rapprocher. J'aurais du utiliser le mot "idéale" mais parfaite retient plus l'attention il donne envie de dire "Une défense parfaite ça n'existe pas!" :twisted:
+Vous avez remarqué? Encore 4 fois "parfaite" :wink:
+
+
+
+Edit : J'avais fais une erreure de frappe pour le nombre de lasers lourds...
+Et puis je vais quand même vous donnez le quota que j'utilise qui est assez différent de celui que je viens de vous conseiller comme le meilleur théoriquement...
+1500 X lasers lourds + 250 X gauss + 150 X plasmas + X EDLM
+Cette défense estun petit peu plus conséquentes car je pars du fait que mon EDLM se fais recycler, les kamikazes ou les vengeances existent.
+A part des simultations je n'ai aucun argument pour prouver que ce dernier quota est le meilleur et ce n'est surement pas le meilleur mais il est facile à retenir.
+
+
+
+Edit 2 : En étudiant les HoF allemands on peut voir que certains joueurs utilisent beaucoup de CL. Peut-être pas autant que les Cl mais assez pour rendre vulnérable une défense composée uniquement de lasers lourds et plasmas. C'est pourquoi j'ai introduit les gauss dans la ligne de défense que j'utilise. Ce quota vient du fait qu'il faut détruire un certain nombre de CL en un tour
+396 CL = 2 376 k de M + 1 584 k de C
+Grace aux plasmas on en détruit déjà 150 il manque donc plus que 246 et comme j'aime bien les chiffres rond j'en fais 250 :P
+C'est peut-être prématuré de comparer aux flottes allemandes mais les françaises risquent fortement de leur ressembler.
+Mais pour le moment l'ancienne défense tient toujours la route. ;)
+
+
+
+QUESTIONS RECCURENTES :
+La défense ça sert à rien, la meilleure défense c'est les GT!
+Si tu peux jouer 24h/24h, dans l'absolu, tu as raison la défense est une très grosse pertes de ressources.
+Mais si tu y joues 10 minutes par jour, comment va survivre ta production de la journée pendant les 23h50 restantes?
+
+
+
+
+
+Les lasers légers sont plus performants que les lasers lourds il suffit de simuler 4000 Cl vs 4000 lasers légers et 4000 Cl vs 1000 lasers lourds et on voit bien que les lasers légers sont beaucoup mieux!
+Ok nous sommes d'accord du point de vue rapport/qualité prix les lasers légers sont plus rentables.
+Comment ce n'est pas ce que tu as dit? Et bien si! Simuler une défense contre une flotte à peu près équivalentes en ressources revient à regarder le rapport/qualité prix par rapport aux flottes.
+Sache qu'aucun raiders ne te raidera si il perd la bataille ou si cela n'est pas rentable pour lui. C'est pouquoi ta défense sera toujours confrontées à des flottes plus puissantes et même beacoup plus puissantes. D'où l'utilité de faire un maximum de dégâts en 1 tour.
+Donc maintenant simule tes 4000 lasers légers vs 100 000 Cl et 1000 lasers lourds vs 100 000 Cl ou même 1000 lasers lourds vs 1 000 000 Cl.
+
+
+
+
+
+Bon d'accord contre les flottes largement plus puissante que la défense les lasers lourds deviennent meilleurs que les lasers légers mais moi je peux rester dans un rapport de 5 avec les flottes les plus puissantes de mon univers, donc les lasers légers sont mieux que les lasers lourds!
+Euh dis moi tu joues combien de temps par jour à ogame?
+Tu fais des pauses des fois?
+Tu resteras toujours un pur mineur défensif?
+Tu penses que tout le monde peut faire comme toi?
+Bon, donc si tu joues pas beaucoup à ogame, comme pas tout les jours par exemple, ou que des fois tu n'y joues pas pendant 2 semaines (bah quoi on a le droit de partir en vacance non?), tu penses vraiment pouvoir tenir le rythme avec ceux qui y joue 2h par jour? Et bien il faudra que tu me donnes ta recette.
+Plus sérieusement même si tu joues autant que les gros raiders un jour tu finiras par vouloir faire une flotte et là ta défense commencera à se faire distancer par les premières flottes de ton univers et tes lasers légers deviendront moins efficaces que les lasers lourds.
+
+
+
+L'artillerie à ion à un très gros bouclier ce qui lui permet de mieux resister aux tir et ainsi elle permet d'atteindre le match nul!
+Remplace chaque ion par 4 lasers légers et tu verras que dans tout les cas les lasers légers sont mieux. Et quand tu seras convaincu qu'il vaut mieux utiliser des lasers légers que des ions je te demande de te reporter aux deux questions précédentes.
+
+
+
+Pourquoi tu ne parles pas des technologies arme, bouclier et coque?
+A haut niveau les technologies sont sensiblement les même. Et pour augmenter ne serait-ce que d'un niveau une de ces technologie cela demande un prix exhorbitant, donc l'attaquant aura rarement plus d'un voir deux niveaux de plus que le défenseur.
+Tout ce qui est développé ici se base sur le fait que l'attaquant et le défenseur ont les même technologies, il faut donc que vous vous efforciez d'être à peu près aux niveaux des meilleurs raideurs de votre univers.
+
+
+
+Si je n'utilise pas d'EDLM pour pouvoir protéger plus de ressources que dois-je faire pour contrer l'utilité des sondes en tampon?
+Et bien dans ces conditions il faut que tu ajoutes un quota de lasers légers et/ou lance missile. En sachant que les Croiseurs sont beaucoup plus fragiles que les Destructeurs je priviligierais les lance-missiles.
+2 970 sondes = 990 Clé aux taux de commerce 3M = 2 C
+Il faut donc rajouter un quota de [2 970 - (1 500 + 250 + 150)] lance-missiles ou lasers légers ou encore un mixte des deux.
+Si on arrondi ce chiffre à 1 100 ca nous donne la ligne de défense suivante :
+1 100 lm/ll + 1500 llo + 250 gauss + 150 plasmas
+ou encore
+22 lm/ll + 30 llo + 5 gauss + 3 plasmas
+
+
+
+Cette ligne de défense est la plus complète pour vos colonnies peu protégées.
+
+
+
+Information :
+Je déplacerai tout les posts de flood ou les problèmes résolus après intégration au topic, dans le topic suivant pour que ce topic reste le plus clair possible

@@ -131,6 +131,7 @@ const categories = [
     level: "Avancé",
     guides: [
       { title: "Ghost (Fleetsave)", description: "12 techniques de protection", icon: Ghost, color: "from-blue-600 to-indigo-700", link: "/guide/fleetsave", featured: true },
+      { title: "Guide des Défenses", description: "Construire une défense efficace", icon: Shield, color: "from-blue-500 to-indigo-600", link: "/guide/defenses", featured: true },
       { title: "Éviter Interception", description: "Raider en sécurité", icon: Shield, color: "from-blue-500 to-cyan-600", link: "/guide/eviter-interception" },
       { title: "MoonBreak", description: "Destruction de lune", icon: Bomb, color: "from-red-600 to-red-800", link: "/guide/moonbreak" },
       { title: "Classements", description: "Points d'honneur et gestion PH", icon: Trophy, color: "from-yellow-500 to-amber-600", link: "/guide/classements" }

@@ -53,8 +53,8 @@ const guideRelations: Record<string, RelatedGuide[]> = {
   ],
   "chantier": [
     { title: "Coûts Flotte & Défenses", link: "/guide/cout-flotte" },
-    { title: "Rapid Fire", link: "/guide/rapid-fire" },
-    { title: "Attaque", link: "/guide/attaque" }
+    { title: "Guide des Défenses", link: "/guide/defenses" },
+    { title: "Rapid Fire", link: "/guide/rapid-fire" }
   ],
   "cout-flotte": [
     { title: "Chantier spatial", link: "/guide/chantier" },
@@ -157,7 +157,7 @@ const guideRelations: Record<string, RelatedGuide[]> = {
     { title: "Coûts Flotte & Défenses", link: "/guide/cout-flotte" }
   ],
   "fleetsave": [
-    { title: "Activité", link: "/guide/activite" },
+    { title: "Guide des Défenses", link: "/guide/defenses" },
     { title: "Lune & CDR", link: "/guide/lune" },
     { title: "Volantes", link: "/guide/volante" }
   ],
@@ -195,6 +195,11 @@ const guideRelations: Record<string, RelatedGuide[]> = {
     { title: "Guide Complet FDV", link: "/guide/fdv" },
     { title: "Rock'tal & Mineur", link: "/guide/rocktal" },
     { title: "Formules & Calculateurs", link: "/guide/formules" }
+  ],
+  "defenses": [
+    { title: "Chantier spatial", link: "/guide/chantier" },
+    { title: "Fleetsave", link: "/guide/fleetsave" },
+    { title: "Coûts Flotte & Défenses", link: "/guide/cout-flotte" }
   ]
 };
 

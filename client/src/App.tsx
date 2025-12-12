@@ -55,6 +55,7 @@ import GuideReco3h from "@/pages/guide-reco-3h";
 import GuideRocktal from "@/pages/guide-rocktal";
 import GuideFormules from "@/pages/guide-formules";
 import GuideCoutFlotte from "@/pages/guide-cout-flotte";
+import GuideDefenses from "@/pages/guide-defenses";
 import Rules from "@/pages/rules";
 import RulesCompte from "@/pages/rules-compte";
 import RulesSitting from "@/pages/rules-sitting";
@@ -125,6 +126,7 @@ function Router() {
       <Route path="/guide/rocktal" component={GuideRocktal} />
       <Route path="/guide/formules" component={GuideFormules} />
       <Route path="/guide/cout-flotte" component={GuideCoutFlotte} />
+      <Route path="/guide/defenses" component={GuideDefenses} />
       <Route path="/alliance" component={Alliance} />
       <Route path="/projets" component={Projects} />
       <Route path="/support" component={Support} />
