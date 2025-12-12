@@ -268,6 +268,29 @@ export default function GuideDefenses() {
               initial="hidden"
               animate="visible"
               transition={{ delay: 0.5 }}
+              className="bg-gradient-to-r from-amber-900/30 to-orange-900/30 border border-amber-700/30 rounded-xl p-6"
+            >
+              <h3 className="font-bold text-white mb-3">La technologie Force de Défense (FdV)</h3>
+              <p className="text-gray-300 text-sm mb-4">
+                La technologie <strong className="text-amber-400">Force de Défense</strong> augmente les statistiques 
+                de toutes vos défenses. En late game, les joueurs atteignent facilement <strong className="text-white">+200%</strong> de bonus, 
+                ce qui double voire triple l'efficacité de chaque unité défensive !
+              </p>
+              <div className="bg-[#151924] rounded-lg p-4">
+                <p className="text-amber-300 text-sm font-medium mb-2">Fun fact :</p>
+                <p className="text-gray-400 text-sm">
+                  Beaucoup de raiders ne simulent pas quand ils veulent "juste piller derrière une défense". 
+                  Résultat : ils sous-estiment énormément la puissance réelle des défenses car ils ne prennent pas 
+                  en compte le <strong className="text-white">boost FdV</strong>... et <strong className="text-red-400">s'embrochent</strong> régulièrement !
+                </p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              variants={fadeInUp}
+              initial="hidden"
+              animate="visible"
+              transition={{ delay: 0.6 }}
               className="bg-gradient-to-r from-blue-900/30 to-indigo-900/30 border border-blue-700/30 rounded-xl p-6"
             >
               <h3 className="font-bold text-white mb-3">Conclusion : À vous de simuler !</h3>
