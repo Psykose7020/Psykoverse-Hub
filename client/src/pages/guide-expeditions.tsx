@@ -184,6 +184,56 @@ export default function GuideExpeditions() {
               variants={fadeInUp}
               initial="hidden"
               animate="visible"
+              transition={{ delay: 0.17 }}
+              className="bg-[#1C2230] border border-[#2E384D] rounded-xl p-6"
+            >
+              <h2 className="font-display text-xl font-bold text-white mb-4">Optimisation du fret : la règle des 50%</h2>
+              
+              <div className="space-y-4">
+                <div className="bg-primary/10 border border-primary/30 rounded-lg p-4">
+                  <h4 className="font-bold text-primary mb-2">Recommandation : envoyer 50% du fret max</h4>
+                  <p className="text-sm text-gray-300">
+                    Le seuil de rentabilité optimal est d'environ <strong className="text-white">65%</strong> du fret maximum. 
+                    Au-delà, les gains ne couvrent plus les pertes (consommation + risque de trou noir). 
+                    <strong className="text-white">50%</strong> est recommandé car plus simple à mémoriser.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-green-900/20 border border-green-700/30 rounded-lg p-4">
+                    <h4 className="font-bold text-green-400 mb-2">Pourquoi 50% suffit ?</h4>
+                    <ul className="text-sm text-gray-300 space-y-1">
+                      <li>• Le cristal est capé à 50% du métal max</li>
+                      <li>• Le deutérium est capé à 33% du métal max</li>
+                      <li>• Seules les trouvailles exceptionnelles de métal (1% de chance) dépassent 50%</li>
+                      <li>• Les vaisseaux trouvables ne sont <strong className="text-white">pas affectés</strong> par la réduction de fret</li>
+                    </ul>
+                  </div>
+                  <div className="bg-red-900/20 border border-red-700/30 rounded-lg p-4">
+                    <h4 className="font-bold text-red-400 mb-2">Risques du 100%</h4>
+                    <ul className="text-sm text-gray-300 space-y-1">
+                      <li>• Consommation de deutérium doublée</li>
+                      <li>• Risque de trou noir plus élevé que les trouvailles exceptionnelles</li>
+                      <li>• Surcoût moyen de +100% par expédition</li>
+                      <li>• Rentable uniquement en ultra late-game avec GT + bonus fret FdV</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="bg-amber-900/20 border border-amber-700/30 rounded-lg p-4">
+                  <h4 className="font-bold text-amber-400 mb-2">Exception : les points de structure</h4>
+                  <p className="text-sm text-gray-300">
+                    Sur les univers <strong className="text-white">×1 économique</strong>, assurez-vous d'atteindre le minimum de points de structure 
+                    pour ne pas réduire les gains potentiels. Dès que vous dépassez le ×1, les 50% dépassent largement ce minimum.
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              variants={fadeInUp}
+              initial="hidden"
+              animate="visible"
               transition={{ delay: 0.18 }}
               className="bg-[#1C2230] border border-[#2E384D] rounded-xl p-6"
             >
