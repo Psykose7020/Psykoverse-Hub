@@ -360,7 +360,7 @@ export default function SpaceGame() {
           id: obstacleIdRef.current++,
           x: clampedX,
           y: -10 - Math.random() * 5,
-          size: (14 + Math.random() * 18) * 1.25,
+          size: (14 + Math.random() * 18) * 1.55,
           speed: baseSpeed + speedVariation * (0.7 + Math.random() * 0.6),
           variant: Math.floor(Math.random() * PLANET_VARIANTS.length)
         });
@@ -431,7 +431,7 @@ export default function SpaceGame() {
               const size = 1 + ((starSeed * 13) % 3);
               const startOffset = ((starSeed * 23) % 10000) / 10;
               const gameHeight = isFullscreen ? 80 : 100;
-              const yPos = ((startOffset + score * speedMultiplier * 4) % (gameHeight + 20)) - 10;
+              const yPos = ((startOffset + score * speedMultiplier * 2.8) % (gameHeight + 20)) - 10;
               const brightness = 0.4 + ((starSeed * 11) % 60) / 100;
               return (
                 <div

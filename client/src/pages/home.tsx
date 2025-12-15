@@ -196,15 +196,15 @@ export default function Home() {
               transition={{ delay: 0.5, duration: 0.8 }}
               className="hidden lg:flex flex-col gap-4 flex-shrink-0"
             >
-              <div className="rounded-2xl overflow-hidden bg-slate-900/50 backdrop-blur-md border border-white/10 shadow-2xl">
+              <div className="rounded-2xl overflow-hidden bg-slate-900/50 backdrop-blur-md border border-white/10 shadow-xl p-4">
                 <iframe 
                   src="https://discordapp.com/widget?id=1240631649327386624&theme=dark" 
-                  width="350" 
-                  height="450" 
+                  width="320" 
+                  height="420" 
                   frameBorder="0" 
                   sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
                   title="Widget Discord Psykoverse"
-                  className="rounded-xl opacity-85"
+                  className="rounded-xl"
                   style={{ background: 'transparent' }}
                 />
               </div>
