@@ -85,7 +85,7 @@ export default function GuideExpeditions() {
                 <div className="bg-green-900/20 border border-green-700/30 rounded-lg p-4">
                   <h3 className="font-bold text-green-400 mb-2">Points clés</h3>
                   <ul className="text-sm text-gray-300 space-y-1">
-                    <li>• Nombre de slots = Astrophysique ÷ 2 (arrondi)</li>
+                    <li>• Nombre de slots = √Astrophysique (arrondi inf.)</li>
                     <li>• Classe <strong className="text-white">Explorateur</strong> : +2 slots bonus</li>
                     <li>• Durée recommandée : <strong className="text-white">1 heure</strong></li>
                     <li>• Les gains dépendent des points du Top 1</li>
