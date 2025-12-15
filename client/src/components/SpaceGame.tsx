@@ -299,7 +299,7 @@ export default function SpaceGame() {
       const deltaFactor = deltaMs / 16.67;
       
       const multiplier = getScoreMultiplier(currentShip.structure);
-      scoreRef.current += multiplier * deltaFactor * 0.25;
+      scoreRef.current += multiplier * deltaFactor * 0.325;
       
       scoreUpdateRef.current += deltaMs;
       if (scoreUpdateRef.current > 50) {
@@ -346,7 +346,7 @@ export default function SpaceGame() {
       const spawnRate = (0.018 + difficultyRamp * 0.045) * deltaFactor;
       
       // Vitesse max (équivalente à l'ancienne difficulté à 2000) atteinte à 10000
-      const baseSpeed = 0.45 + difficultyRamp * 0.75;
+      const baseSpeed = (0.45 + difficultyRamp * 0.75) * 1.3;
       setCurrentSpeed(baseSpeed);
       
       if (Math.random() < spawnRate) {
@@ -360,7 +360,7 @@ export default function SpaceGame() {
           id: obstacleIdRef.current++,
           x: clampedX,
           y: -10 - Math.random() * 5,
-          size: (14 + Math.random() * 18) * 1.55,
+          size: (14 + Math.random() * 18) * 1.86,
           speed: baseSpeed + speedVariation * (0.7 + Math.random() * 0.6),
           variant: Math.floor(Math.random() * PLANET_VARIANTS.length)
         });
@@ -397,18 +397,21 @@ export default function SpaceGame() {
   const isInChaos = score >= 2500 && gameState === "playing";
 
   const scoreBar = (
-    <div className="flex items-center justify-between mb-2 px-2">
-      <div className="flex items-center gap-2">
-        <Gamepad2 className="w-4 h-4 text-primary/70" />
-        <span className="font-display font-bold text-white/80 text-xs">Space Escape</span>
+    <div className="flex items-center justify-between mb-3 px-3 py-2 bg-black/30 rounded-xl border border-white/10">
+      <div className="flex items-center gap-3">
+        <Gamepad2 className="w-5 h-5 text-primary" />
+        <span className="font-display font-bold text-white text-sm">Space Escape</span>
         {score >= 2500 && (
-          <span className="text-orange-400 text-[10px] animate-pulse">MODE CHAOS</span>
+          <span className="text-orange-400 text-xs font-bold animate-pulse bg-orange-500/20 px-2 py-0.5 rounded">MODE CHAOS</span>
         )}
       </div>
-      <div className="flex items-center gap-3 text-xs">
-        <span className="text-primary font-bold">{Math.floor(score)}</span>
-        <span className="text-yellow-400 flex items-center gap-1">
-          <Trophy className="w-3 h-3" />{highScore}
+      <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 bg-primary/20 px-3 py-1 rounded-lg border border-primary/30">
+          <span className="text-primary font-bold text-lg">{Math.floor(score)}</span>
+          <span className="text-primary/60 text-xs">pts</span>
+        </div>
+        <span className="text-yellow-400 flex items-center gap-1.5 text-sm">
+          <Trophy className="w-4 h-4" />{highScore}
         </span>
       </div>
     </div>
@@ -650,7 +653,7 @@ export default function SpaceGame() {
 
   if (isFullscreen) {
     return (
-      <div className="fixed inset-0 z-50 bg-[#0a0f1a] flex flex-col">
+      <div className="fixed inset-0 z-[100] bg-[#0a0f1a] flex flex-col">
         <div ref={containerRef} className="flex-1 flex flex-col p-4 max-w-4xl mx-auto w-full">
           {scoreBar}
           {gameArea}
