@@ -16,7 +16,8 @@ import {
   Clock,
   Trophy,
   Target,
-  Sparkles
+  Sparkles,
+  Gamepad2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Layout from "@/components/layout/Layout";
@@ -176,6 +177,16 @@ export default function Home() {
                     Voir les guides
                   </Link>
                 </Button>
+                <Button 
+                  size="lg" 
+                  variant="outline" 
+                  className="border-cyan-500/50 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-400" 
+                  onClick={() => document.getElementById('space-game')?.scrollIntoView({ behavior: 'smooth' })}
+                  data-testid="btn-game-hero"
+                >
+                  <Gamepad2 className="w-5 h-5 mr-2" />
+                  Mini-jeu
+                </Button>
               </motion.div>
             </motion.div>
 
@@ -183,18 +194,34 @@ export default function Home() {
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.5, duration: 0.8 }}
-              className="hidden lg:block flex-shrink-0"
+              className="hidden lg:flex flex-col gap-4 flex-shrink-0"
             >
-              <div className="rounded-xl overflow-hidden shadow-2xl shadow-[#5865F2]/20 border border-[#5865F2]/30">
+              <div className="rounded-2xl overflow-hidden bg-[#1C2230]/80 backdrop-blur-sm border border-[#5865F2]/20 p-1">
                 <iframe 
                   src="https://discordapp.com/widget?id=1240631649327386624&theme=dark" 
-                  width="300" 
-                  height="400" 
+                  width="350" 
+                  height="450" 
                   frameBorder="0" 
                   sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
                   title="Widget Discord Psykoverse"
+                  className="rounded-xl"
                 />
               </div>
+              <a 
+                href="https://www.youtube.com/@7020Psykose" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="group flex items-center gap-3 bg-[#1C2230]/80 backdrop-blur-sm border border-red-500/20 hover:border-red-500/40 rounded-2xl p-4 transition-all hover:bg-red-900/10"
+              >
+                <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center shadow-lg shadow-red-500/20 group-hover:scale-110 transition-transform">
+                  <Youtube className="w-6 h-6 text-white" />
+                </div>
+                <div className="flex-1">
+                  <p className="font-display font-bold text-white text-sm">@7020Psykose</p>
+                  <p className="text-gray-400 text-xs">{youtubeSubscribers ?? "..."} abonnés</p>
+                </div>
+                <ExternalLink className="w-4 h-4 text-gray-500 group-hover:text-red-400 transition-colors" />
+              </a>
             </motion.div>
           </div>
         </div>
@@ -507,7 +534,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-16 md:py-24 border-t border-[#2E384D]">
+      <section id="space-game" className="py-16 md:py-24 border-t border-[#2E384D]">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
