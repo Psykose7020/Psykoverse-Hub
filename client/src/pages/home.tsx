@@ -121,10 +121,10 @@ export default function Home() {
             loop 
             muted 
             playsInline
-            className="w-full h-full object-cover opacity-40"
+            className="w-full h-full object-cover opacity-70"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-background/40" />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/50 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-80" />
         </div>
 
         <div className="container relative z-20 px-4">
@@ -196,7 +196,7 @@ export default function Home() {
               transition={{ delay: 0.5, duration: 0.8 }}
               className="hidden lg:flex flex-col gap-4 flex-shrink-0"
             >
-              <div className="rounded-2xl overflow-hidden bg-[#1C2230]/80 backdrop-blur-sm border border-[#5865F2]/20 p-1">
+              <div className="rounded-2xl overflow-hidden bg-black/40 backdrop-blur-md border border-white/10 p-1 shadow-2xl">
                 <iframe 
                   src="https://discordapp.com/widget?id=1240631649327386624&theme=dark" 
                   width="350" 
@@ -211,7 +211,7 @@ export default function Home() {
                 href="https://www.youtube.com/@7020Psykose" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="group flex items-center gap-3 bg-[#1C2230]/80 backdrop-blur-sm border border-red-500/20 hover:border-red-500/40 rounded-2xl p-4 transition-all hover:bg-red-900/10"
+                className="group flex items-center gap-3 bg-black/40 backdrop-blur-md border border-white/10 hover:border-red-500/40 rounded-2xl p-4 transition-all hover:bg-red-900/20 shadow-xl"
               >
                 <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center shadow-lg shadow-red-500/20 group-hover:scale-110 transition-transform">
                   <Youtube className="w-6 h-6 text-white" />
