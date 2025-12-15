@@ -366,13 +366,15 @@ export default function SpaceGame() {
         });
       }
       
-      const basePlayerSize = 8;
+      const basePlayerSize = 3;
       const scaledPlayerSize = basePlayerSize * getShipScale(SHIP_VARIANTS[shipVariant].structure);
       for (const o of obstaclesRef.current) {
         const dx = Math.abs(o.x - playerXRef.current);
         const dy = Math.abs(o.y - playerYRef.current);
-        const minDist = (o.size / 2 + scaledPlayerSize) * 0.35;
-        if (dx < minDist && dy < minDist) {
+        const obstacleSizePercent = o.size * 0.15;
+        const minDistX = obstacleSizePercent * 0.4 + scaledPlayerSize;
+        const minDistY = obstacleSizePercent * 0.4 + scaledPlayerSize;
+        if (dx < minDistX && dy < minDistY) {
           endGame();
           return;
         }
