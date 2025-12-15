@@ -106,6 +106,7 @@ export default function SpaceGame() {
   const [submitMessage, setSubmitMessage] = useState<{ type: 'success' | 'info'; text: string } | null>(null);
   const [gameOffset, setGameOffset] = useState({ x: 0, y: 0 });
   const [currentSpeed, setCurrentSpeed] = useState(0.5);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   
   const playGameOverSound = useCallback(() => {
     try {
@@ -163,6 +164,7 @@ export default function SpaceGame() {
     isPlayingRef.current = false;
     document.exitPointerLock?.();
     setGameOffset({ x: 0, y: 0 });
+    setIsFullscreen(false);
     playGameOverSound();
     const finalScore = scoreRef.current;
     setScore(finalScore);
@@ -213,6 +215,7 @@ export default function SpaceGame() {
   const startGame = () => {
     localStorage.setItem("psykoverse:ship", shipVariant.toString());
     setGameState("playing");
+    setIsFullscreen(true);
     isPlayingRef.current = true;
     setScore(0);
     scoreRef.current = 0;
@@ -233,7 +236,9 @@ export default function SpaceGame() {
     setUnivers("");
     lastTimeRef.current = performance.now();
     lastShakeTimeRef.current = performance.now();
-    gameRef.current?.requestPointerLock?.();
+    setTimeout(() => {
+      gameRef.current?.requestPointerLock?.();
+    }, 100);
   };
 
   const backToMenu = () => {
@@ -389,66 +394,34 @@ export default function SpaceGame() {
 
   const isInChaos = score >= 2500 && gameState === "playing";
 
-  return (
-    <div ref={containerRef} className="block">
-      <div 
-        className="transition-transform duration-75 ease-out"
-        style={{ 
-          transform: `translate(${gameOffset.x}px, ${gameOffset.y}px)`,
-        }}
-      >
-        {!isInChaos && (
-          <div className="relative mb-4 overflow-hidden rounded-xl border border-cyan-500/20 bg-[#080c14]/80 backdrop-blur-sm">
-            <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-transparent to-purple-500/5" />
-            <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent" />
-            
-            <div className="relative px-4 py-3 flex items-center gap-4">
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500/20 to-purple-500/20 border border-cyan-500/30 flex items-center justify-center">
-                <Gamepad2 className="w-5 h-5 text-cyan-400" />
-              </div>
-              
-              <div className="flex-1">
-                <div className="flex items-center gap-2">
-                  <span className="font-display text-white font-semibold text-sm tracking-wide">SPACE ESCAPE</span>
-                  <span className="text-[10px] text-cyan-400/80 border border-cyan-500/30 px-1.5 py-0.5 rounded">
-                    JOUER
-                  </span>
-                </div>
-                <p className="text-gray-500 text-[11px] mt-0.5">Esquive les planètes • Bats ton record</p>
-              </div>
-              
-              <Link 
-                href="/classement" 
-                className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-cyan-400 transition-colors"
-                data-testid="link-leaderboard"
-              >
-                <Trophy className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Classement</span>
-              </Link>
-            </div>
-          </div>
+  const scoreBar = (
+    <div className="flex items-center justify-between mb-2 px-2">
+      <div className="flex items-center gap-2">
+        <Gamepad2 className="w-4 h-4 text-primary/70" />
+        <span className="font-display font-bold text-white/80 text-xs">Space Escape</span>
+        {score >= 2500 && (
+          <span className="text-orange-400 text-[10px] animate-pulse">MODE CHAOS</span>
         )}
-        <div className="flex items-center justify-between mb-2 px-2">
-          <div className="flex items-center gap-2">
-            <Gamepad2 className="w-4 h-4 text-primary/70" />
-            <span className="font-display font-bold text-white/80 text-xs">Space Escape</span>
-            {score >= 2500 && (
-              <span className="text-orange-400 text-[10px] animate-pulse">MODE CHAOS</span>
-            )}
-          </div>
-          <div className="flex items-center gap-3 text-xs">
-            <span className="text-primary font-bold">{Math.floor(score)}</span>
-            <span className="text-yellow-400 flex items-center gap-1">
-              <Trophy className="w-3 h-3" />{highScore}
-            </span>
-          </div>
-        </div>
+      </div>
+      <div className="flex items-center gap-3 text-xs">
+        <span className="text-primary font-bold">{Math.floor(score)}</span>
+        <span className="text-yellow-400 flex items-center gap-1">
+          <Trophy className="w-3 h-3" />{highScore}
+        </span>
+      </div>
+    </div>
+  );
 
-        <div
-          ref={gameRef}
-          className={`relative h-[320px] bg-black/10 rounded-2xl overflow-hidden select-none border border-white/5 ${gameState === "playing" ? "cursor-none" : "cursor-default"}`}
-        >
-        {gameState === "playing" && (
+  const gameArea = (
+    <div
+      ref={gameRef}
+      className={`relative ${isFullscreen ? "h-[80vh]" : "h-[320px]"} bg-black/10 rounded-2xl overflow-hidden select-none border border-white/5 ${gameState === "playing" ? "cursor-none" : "cursor-default"}`}
+      style={{ 
+        transform: isInChaos ? `translate(${gameOffset.x}px, ${gameOffset.y}px)` : undefined,
+        transition: isInChaos ? 'transform 75ms ease-out' : undefined
+      }}
+    >
+      {gameState === "playing" && (
           <>
             {Array.from({ length: 60 }).map((_, i) => {
               const seed = Math.sin(i * 9999) * 10000;
@@ -668,8 +641,53 @@ export default function SpaceGame() {
             </motion.div>
           )}
         </AnimatePresence>
+    </div>
+  );
+
+  if (isFullscreen) {
+    return (
+      <div className="fixed inset-0 z-50 bg-[#0a0f1a] flex flex-col">
+        <div ref={containerRef} className="flex-1 flex flex-col p-4 max-w-4xl mx-auto w-full">
+          {scoreBar}
+          {gameArea}
+        </div>
       </div>
+    );
+  }
+
+  return (
+    <div ref={containerRef} className="block">
+      <div className="relative mb-4 overflow-hidden rounded-xl border border-cyan-500/20 bg-[#080c14]/80 backdrop-blur-sm">
+        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-transparent to-purple-500/5" />
+        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent" />
+        
+        <div className="relative px-4 py-3 flex items-center gap-4">
+          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500/20 to-purple-500/20 border border-cyan-500/30 flex items-center justify-center">
+            <Gamepad2 className="w-5 h-5 text-cyan-400" />
+          </div>
+          
+          <div className="flex-1">
+            <div className="flex items-center gap-2">
+              <span className="font-display text-white font-semibold text-sm tracking-wide">SPACE ESCAPE</span>
+              <span className="text-[10px] text-cyan-400/80 border border-cyan-500/30 px-1.5 py-0.5 rounded">
+                JOUER
+              </span>
+            </div>
+            <p className="text-gray-500 text-[11px] mt-0.5">Esquive les planètes • Bats ton record</p>
+          </div>
+          
+          <Link 
+            href="/classement" 
+            className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-cyan-400 transition-colors"
+            data-testid="link-leaderboard"
+          >
+            <Trophy className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Classement</span>
+          </Link>
+        </div>
       </div>
+      {scoreBar}
+      {gameArea}
     </div>
   );
 }

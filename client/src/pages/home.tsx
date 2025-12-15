@@ -183,9 +183,18 @@ export default function Home() {
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.5, duration: 0.8 }}
-              className="hidden lg:block w-[280px] flex-shrink-0"
+              className="hidden lg:block flex-shrink-0"
             >
-              <SpaceGame />
+              <div className="rounded-xl overflow-hidden shadow-2xl shadow-[#5865F2]/20 border border-[#5865F2]/30">
+                <iframe 
+                  src="https://discordapp.com/widget?id=1240631649327386624&theme=dark" 
+                  width="300" 
+                  height="400" 
+                  frameBorder="0" 
+                  sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
+                  title="Widget Discord Psykoverse"
+                />
+              </div>
             </motion.div>
           </div>
         </div>
@@ -426,58 +435,37 @@ export default function Home() {
 
       <section className="py-16 md:py-24 border-b border-[#2E384D] bg-gradient-to-b from-transparent via-[#5865F2]/5 to-transparent">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="text-center lg:text-left"
-            >
-              <div className="w-20 h-20 bg-[#5865F2] rounded-2xl flex items-center justify-center mx-auto lg:mx-0 mb-6 shadow-lg shadow-[#5865F2]/30">
-                <Users className="w-10 h-10 text-white" />
-              </div>
-              <h2 className="font-display text-3xl md:text-4xl font-bold text-white mb-4">
-                Rejoignez la communauté
-              </h2>
-              <p className="text-gray-400 text-lg mb-8">
-                {discordMembers ?? "..."} membres actifs vous attendent sur Discord. Entraide, discussions stratégiques, 
-                annonces d'événements et bien plus encore !
-              </p>
-              <div className="flex flex-wrap justify-center lg:justify-start gap-4">
-                <Button size="lg" className="bg-[#5865F2] hover:bg-[#4752C4] shadow-lg shadow-[#5865F2]/20" asChild>
-                  <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer" data-testid="btn-discord-cta">
-                    <MessageSquare className="w-5 h-5 mr-2" />
-                    Rejoindre le Discord
-                  </a>
-                </Button>
-                <Button size="lg" variant="outline" asChild>
-                  <Link href="/support" data-testid="btn-support">
-                    <Shield className="w-5 h-5 mr-2" />
-                    Obtenir de l'aide
-                  </Link>
-                </Button>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="flex justify-center"
-            >
-              <div className="rounded-xl overflow-hidden shadow-2xl shadow-[#5865F2]/20 border border-[#5865F2]/30">
-                <iframe 
-                  src="https://discordapp.com/widget?id=1240631649327386624&theme=dark" 
-                  width="350" 
-                  height="500" 
-                  allowTransparency={true}
-                  frameBorder="0" 
-                  sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
-                  title="Widget Discord Psykoverse"
-                />
-              </div>
-            </motion.div>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="max-w-2xl mx-auto text-center"
+          >
+            <div className="w-20 h-20 bg-[#5865F2] rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-[#5865F2]/30">
+              <Users className="w-10 h-10 text-white" />
+            </div>
+            <h2 className="font-display text-3xl md:text-4xl font-bold text-white mb-4">
+              Rejoignez la communauté
+            </h2>
+            <p className="text-gray-400 text-lg mb-8">
+              {discordMembers ?? "..."} membres actifs vous attendent sur Discord. Entraide, discussions stratégiques, 
+              annonces d'événements et bien plus encore !
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Button size="lg" className="bg-[#5865F2] hover:bg-[#4752C4] shadow-lg shadow-[#5865F2]/20" asChild>
+                <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer" data-testid="btn-discord-cta">
+                  <MessageSquare className="w-5 h-5 mr-2" />
+                  Rejoindre le Discord
+                </a>
+              </Button>
+              <Button size="lg" variant="outline" asChild>
+                <Link href="/support" data-testid="btn-support">
+                  <Shield className="w-5 h-5 mr-2" />
+                  Obtenir de l'aide
+                </Link>
+              </Button>
+            </div>
+          </motion.div>
         </div>
       </section>
 
@@ -515,6 +503,19 @@ export default function Home() {
                 </a>
               </Button>
             </div>
+          </motion.div>
+        </div>
+      </section>
+
+      <section className="py-16 md:py-24 border-t border-[#2E384D]">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="max-w-xl mx-auto"
+          >
+            <SpaceGame />
           </motion.div>
         </div>
       </section>
