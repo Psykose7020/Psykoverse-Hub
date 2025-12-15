@@ -87,6 +87,7 @@ export default function GuideExpeditions() {
                   <ul className="text-sm text-gray-300 space-y-1">
                     <li>• Nombre de slots = √Astrophysique (arrondi inf.)</li>
                     <li>• Classe <strong className="text-white">Explorateur</strong> : +2 slots bonus</li>
+                    <li>• <strong className="text-white">Commandant Amiral</strong> : +1 slot bonus</li>
                     <li>• Durée recommandée : <strong className="text-white">1 heure</strong></li>
                     <li>• Les gains dépendent des points du Top 1</li>
                   </ul>
