@@ -196,7 +196,7 @@ export default function Home() {
               transition={{ delay: 0.5, duration: 0.8 }}
               className="hidden lg:flex flex-col gap-4 flex-shrink-0"
             >
-              <div className="rounded-2xl overflow-hidden bg-black/40 backdrop-blur-md border border-white/10 p-1 shadow-2xl">
+              <div className="rounded-2xl overflow-hidden bg-slate-900/50 backdrop-blur-md border border-white/10 shadow-2xl">
                 <iframe 
                   src="https://discordapp.com/widget?id=1240631649327386624&theme=dark" 
                   width="350" 
@@ -204,14 +204,15 @@ export default function Home() {
                   frameBorder="0" 
                   sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
                   title="Widget Discord Psykoverse"
-                  className="rounded-xl"
+                  className="rounded-xl opacity-85"
+                  style={{ background: 'transparent' }}
                 />
               </div>
               <a 
                 href="https://www.youtube.com/@7020Psykose" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="group flex items-center gap-3 bg-black/40 backdrop-blur-md border border-white/10 hover:border-red-500/40 rounded-2xl p-4 transition-all hover:bg-red-900/20 shadow-xl"
+                className="group flex items-center gap-3 bg-slate-900/50 backdrop-blur-md border border-white/10 hover:border-red-500/40 rounded-2xl p-4 transition-all hover:bg-red-900/30 shadow-xl"
               >
                 <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center shadow-lg shadow-red-500/20 group-hover:scale-110 transition-transform">
                   <Youtube className="w-6 h-6 text-white" />
@@ -269,7 +270,7 @@ export default function Home() {
             className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8"
           >
             {[
-              { value: "41", label: "Guides complets", icon: BookOpen },
+              { value: "48", label: "Guides complets", icon: BookOpen },
               { value: discordMembers ? `${discordMembers}+` : "...", label: "Membres Discord", icon: Users },
               { value: "3", label: "Univers actifs", icon: Globe },
               { value: youtubeSubscribers ? String(youtubeSubscribers) : "...", label: "Abonnés YouTube", icon: Youtube }

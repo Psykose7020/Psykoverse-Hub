@@ -423,26 +423,27 @@ export default function SpaceGame() {
     >
       {gameState === "playing" && (
           <>
-            {Array.from({ length: 60 }).map((_, i) => {
-              const seed = Math.sin(i * 9999) * 10000;
-              const randomX = Math.abs(seed % 100);
-              const speedMultiplier = (0.8 + (Math.abs(Math.sin(i * 1234) * 10000) % 5) / 10) * 1.2;
-              const size = 1 + (i % 2);
-              const startY = Math.abs(Math.sin(i * 5678) * 10000) % 100;
-              const gameHeight = isFullscreen ? 600 : 320;
-              const yPos = ((startY + score * currentSpeed * speedMultiplier * 3.6) % (gameHeight + 80)) - 40;
+            {Array.from({ length: 120 }).map((_, i) => {
+              const starSeed = i * 7919 + 1;
+              const randomX = ((starSeed * 31) % 10000) / 100;
+              const baseSpeed = 0.5 + ((starSeed * 17) % 100) / 100;
+              const speedMultiplier = baseSpeed * (1 + currentSpeed * 0.8);
+              const size = 1 + ((starSeed * 13) % 3);
+              const startOffset = ((starSeed * 23) % 10000) / 10;
+              const gameHeight = isFullscreen ? 80 : 100;
+              const yPos = ((startOffset + score * speedMultiplier * 4) % (gameHeight + 20)) - 10;
+              const brightness = 0.4 + ((starSeed * 11) % 60) / 100;
               return (
                 <div
                   key={`star-${i}`}
                   className="absolute pointer-events-none rounded-full bg-white"
                   style={{
                     left: `${randomX}%`,
-                    top: 0,
-                    transform: `translateY(${yPos}px)`,
+                    top: `${yPos}%`,
                     width: size,
                     height: size,
-                    opacity: 0.5 + (i % 3) * 0.15,
-                    backfaceVisibility: 'hidden',
+                    opacity: brightness,
+                    boxShadow: size > 2 ? `0 0 ${size}px rgba(255,255,255,0.5)` : undefined,
                   }}
                 />
               );
