@@ -140,12 +140,37 @@ export default function SpaceGame() {
   const shakeTargetRef = useRef({ x: 0, y: 0 });
   const lastShakeTimeRef = useRef(0);
 
+  const [leaderboard, setLeaderboard] = useState<{pseudo: string, score: number, univers: string}[]>([]);
+
   useEffect(() => {
     const saved = localStorage.getItem("psykoverse:highscore");
     if (saved) setHighScore(parseInt(saved));
     const savedShip = localStorage.getItem("psykoverse:ship");
     if (savedShip) setShipVariant(parseInt(savedShip));
+    
+    fetch("/api/leaderboard")
+      .then(res => res.json())
+      .then(data => setLeaderboard(data.slice(0, 10)))
+      .catch(() => {});
   }, []);
+
+  useEffect(() => {
+    const shouldHide = isFullscreen && gameState === "playing";
+    if (shouldHide) {
+      document.body.style.overflow = 'hidden';
+      document.querySelector('header')?.classList.add('hidden');
+      document.querySelector('footer')?.classList.add('hidden');
+    } else {
+      document.body.style.overflow = '';
+      document.querySelector('header')?.classList.remove('hidden');
+      document.querySelector('footer')?.classList.remove('hidden');
+    }
+    return () => {
+      document.body.style.overflow = '';
+      document.querySelector('header')?.classList.remove('hidden');
+      document.querySelector('footer')?.classList.remove('hidden');
+    };
+  }, [isFullscreen, gameState]);
 
   const updatePlayerPosition = useCallback(() => {
     if (!isPlayingRef.current) return;
@@ -662,6 +687,50 @@ export default function SpaceGame() {
     );
   }
 
+  const leaderboardPreview = gameState === "menu" && leaderboard.length > 0 && (
+    <div className="hidden lg:block w-64 shrink-0">
+      <div className="bg-[#080c14]/80 backdrop-blur-sm rounded-xl border border-cyan-500/20 overflow-hidden">
+        <div className="px-4 py-3 border-b border-cyan-500/10 flex items-center gap-2">
+          <Trophy className="w-4 h-4 text-yellow-400" />
+          <span className="text-white font-semibold text-sm">Classement</span>
+        </div>
+        <div className="p-2 space-y-1">
+          {leaderboard.map((entry, index) => (
+            <div 
+              key={index}
+              className={`flex items-center gap-2 px-2 py-1.5 rounded-lg ${
+                index === 0 ? 'bg-yellow-500/10' : 
+                index === 1 ? 'bg-gray-400/10' : 
+                index === 2 ? 'bg-orange-700/10' : 'bg-white/5'
+              }`}
+            >
+              <span className={`w-5 text-center text-xs font-bold ${
+                index === 0 ? 'text-yellow-400' :
+                index === 1 ? 'text-gray-300' :
+                index === 2 ? 'text-orange-400' : 'text-gray-500'
+              }`}>
+                {index + 1}
+              </span>
+              <div className="flex-1 min-w-0">
+                <p className="text-white text-xs font-medium truncate">{entry.pseudo}</p>
+                {entry.univers && entry.univers !== '-' && (
+                  <p className="text-gray-500 text-[10px] truncate">{entry.univers}</p>
+                )}
+              </div>
+              <span className="text-primary text-xs font-bold">{entry.score.toLocaleString()}</span>
+            </div>
+          ))}
+        </div>
+        <Link 
+          href="/classement"
+          className="block text-center text-xs text-cyan-400 hover:text-cyan-300 py-2 border-t border-cyan-500/10 transition-colors"
+        >
+          Voir tout →
+        </Link>
+      </div>
+    </div>
+  );
+
   return (
     <div ref={containerRef} className="block">
       <div className="relative mb-4 overflow-hidden rounded-xl border border-cyan-500/20 bg-[#080c14]/80 backdrop-blur-sm">
@@ -693,8 +762,13 @@ export default function SpaceGame() {
           </Link>
         </div>
       </div>
-      {scoreBar}
-      {gameArea}
+      <div className="flex gap-4">
+        <div className="flex-1">
+          {scoreBar}
+          {gameArea}
+        </div>
+        {leaderboardPreview}
+      </div>
     </div>
   );
 }
