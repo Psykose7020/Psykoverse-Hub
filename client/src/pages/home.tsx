@@ -342,10 +342,11 @@ export default function Home() {
                 </div>
                 
                 {totalVisits > 0 && (
-                  <p className="text-gray-600 text-xs flex items-center justify-center gap-1.5">
-                    <Eye className="w-3 h-3" />
-                    {totalVisits.toLocaleString()} visites depuis la création
-                  </p>
+                  <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/30 px-4 py-2 rounded-full">
+                    <Eye className="w-4 h-4 text-primary" />
+                    <span className="text-white font-semibold">{totalVisits.toLocaleString()}</span>
+                    <span className="text-gray-400 text-sm">visites depuis la création</span>
+                  </div>
                 )}
               </div>
             </div>
