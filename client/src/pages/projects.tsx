@@ -19,16 +19,16 @@ const staggerContainer = {
 
 const currentProjects = [
   {
-    status: "in-progress",
+    status: "completed",
     date: "19 Décembre 2025",
-    title: "Serveur Saison",
-    description: "Lancement sur le nouveau serveur saison. Rejoignez-nous pour cette nouvelle aventure !",
+    title: "Veritate - Serveur Saison",
+    description: "Alliance lancée sur le serveur saison Veritate ! Rejoignez-nous pour cette nouvelle aventure.",
     icon: Rocket,
-    color: "from-orange-500 to-amber-500",
+    color: "from-green-500 to-emerald-500",
     highlight: true
   },
   {
-    status: "planned",
+    status: "in-progress",
     date: "Fin Décembre 2025",
     title: "Version 2.1 - Outils OGame",
     description: "Intégration des outils communautaires : OGame Infinity, OGlight, PTRE, OGame Tracker et autres extensions.",
@@ -58,8 +58,8 @@ const continuousProjects = [
 const upcomingEvents = [
   {
     date: "19 Déc",
-    title: "Lancement Serveur Saison",
-    type: "event"
+    title: "Veritate lancé !",
+    type: "completed"
   },
   {
     date: "Fin Déc",
@@ -128,11 +128,13 @@ export default function Projects() {
                           <div className="flex items-center gap-3 mb-2">
                             <h3 className="font-display text-lg font-bold text-white">{project.title}</h3>
                             <span className={`px-2 py-0.5 rounded text-xs font-bold uppercase ${
-                              project.status === "in-progress" 
+                              project.status === "completed"
+                                ? "bg-green-500/20 text-green-400"
+                                : project.status === "in-progress" 
                                 ? "bg-secondary/20 text-secondary" 
                                 : "bg-primary/20 text-primary"
                             }`}>
-                              {project.status === "in-progress" ? "En cours" : "Prévu"}
+                              {project.status === "completed" ? "Terminé" : project.status === "in-progress" ? "En cours" : "Prévu"}
                             </span>
                           </div>
                           <p className="text-gray-400 text-sm mb-2">{project.description}</p>
@@ -180,7 +182,9 @@ export default function Projects() {
                   {upcomingEvents.map((event, index) => (
                     <div key={index} className="flex items-center gap-3">
                       <div className={`w-12 h-12 rounded-lg flex items-center justify-center text-xs font-bold ${
-                        event.type === "event" 
+                        event.type === "completed"
+                          ? "bg-green-500/20 text-green-400"
+                          : event.type === "event" 
                           ? "bg-secondary/20 text-secondary" 
                           : event.type === "update"
                           ? "bg-primary/20 text-primary"

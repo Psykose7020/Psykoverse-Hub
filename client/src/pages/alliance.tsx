@@ -19,6 +19,16 @@ const staggerContainer = {
 
 const universes = [
   {
+    name: "Veritate",
+    status: "new",
+    type: "Serveur Saison",
+    players: "Lancé le 19 Décembre",
+    description: "Notre nouveau serveur saison ! Compétition intense et nouveau départ pour tous.",
+    features: ["CDR 80%", "Vitesse x6", "Catégorie Agressif"],
+    joinable: true,
+    allianceLink: "https://s277-fr.ogame.gameforge.com/game/allianceInfo.php?allianceId=500043"
+  },
+  {
     name: "Scorpius",
     status: "active",
     type: "Univers Principal",
@@ -35,16 +45,6 @@ const universes = [
     description: "Nous venons d'ouvrir l'alliance sur cet univers. Rejoignez-nous pour construire ensemble !",
     features: ["Nouvelle alliance", "Recrutement actif", "Nouvelles opportunités"],
     joinable: true
-  },
-  {
-    name: "Serveur Saison",
-    status: "upcoming",
-    type: "Lancement le 19 Décembre",
-    players: "Inscription ouverte",
-    description: "Nouveau départ pour tous ! Serveur saison avec règles spéciales et compétition intense.",
-    features: ["CDR 80%", "Vitesse x6", "Catégorie Agressif"],
-    joinable: true,
-    launchDate: "19 Décembre 2025"
   }
 ];
 
@@ -96,27 +96,29 @@ export default function Alliance() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.15 }}
                 className={`relative bg-[#1C2230] border rounded-lg overflow-hidden ${
-                  universe.status === "upcoming" 
-                    ? "border-secondary shadow-[0_0_20px_rgba(255,150,0,0.2)]" 
+                  universe.status === "new" 
+                    ? "border-green-500/50 shadow-[0_0_20px_rgba(34,197,94,0.2)]" 
                     : "border-[#2E384D] hover:border-primary/50"
                 } transition-all`}
               >
-                {universe.status === "upcoming" && (
-                  <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-secondary to-orange-600 text-black text-xs font-bold uppercase tracking-wider py-2 text-center">
-                    <Calendar className="w-4 h-4 inline mr-2" />
-                    Lancement {universe.launchDate}
+                {universe.status === "new" && (
+                  <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-green-500 to-emerald-600 text-white text-xs font-bold uppercase tracking-wider py-2 text-center">
+                    <Zap className="w-4 h-4 inline mr-2" />
+                    Nouveau Serveur Saison
                   </div>
                 )}
                 
-                <div className={`p-6 ${universe.status === "upcoming" ? "pt-12" : ""}`}>
+                <div className={`p-6 ${universe.status === "new" ? "pt-12" : ""}`}>
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="font-display text-2xl font-bold text-white">{universe.name}</h3>
                     <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${
-                      universe.status === "active" 
+                      universe.status === "new"
+                        ? "bg-green-500/20 text-green-400 animate-pulse"
+                        : universe.status === "active" 
                         ? "bg-green-900/50 text-green-400" 
                         : "bg-orange-900/50 text-orange-400"
                     }`}>
-                      {universe.status === "active" ? "Actif" : "Bientôt"}
+                      {universe.status === "new" ? "Nouveau" : universe.status === "active" ? "Actif" : "Bientôt"}
                     </span>
                   </div>
                   
@@ -132,21 +134,35 @@ export default function Alliance() {
                     ))}
                   </div>
                   
-                  {universe.joinable && (
-                    <Button 
-                      className={`w-full ${
-                        universe.status === "upcoming" 
-                          ? "bg-secondary hover:bg-secondary/90 text-black" 
-                          : ""
-                      }`} 
-                      asChild
-                    >
-                      <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer">
-                        <Users className="w-4 h-4 mr-2" />
-                        Rejoindre sur Discord
-                      </a>
-                    </Button>
-                  )}
+                  <div className="space-y-2">
+                    {universe.joinable && (
+                      <Button 
+                        className={`w-full ${
+                          universe.status === "new" 
+                            ? "bg-green-500 hover:bg-green-600 text-white" 
+                            : ""
+                        }`} 
+                        asChild
+                      >
+                        <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer">
+                          <Users className="w-4 h-4 mr-2" />
+                          Rejoindre sur Discord
+                        </a>
+                      </Button>
+                    )}
+                    {'allianceLink' in universe && universe.allianceLink && (
+                      <Button 
+                        variant="outline"
+                        className="w-full border-primary/50 text-primary hover:bg-primary/10" 
+                        asChild
+                      >
+                        <a href={universe.allianceLink} target="_blank" rel="noopener noreferrer">
+                          <ExternalLink className="w-4 h-4 mr-2" />
+                          Page Alliance OGame
+                        </a>
+                      </Button>
+                    )}
+                  </div>
                 </div>
               </motion.div>
             ))}

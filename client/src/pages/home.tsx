@@ -56,7 +56,7 @@ const sections = [
     href: "/alliance",
     icon: Globe,
     title: "3 Univers",
-    description: "Hercules, Scorpius et le serveur Saison du 19 décembre.",
+    description: "Veritate (Saison), Scorpius et Hercules.",
     color: "from-green-500 to-emerald-600",
     stats: "Actifs"
   },
@@ -102,9 +102,9 @@ const features = [
 ];
 
 const universes = [
-  { name: "Hercules", status: "Actif", players: "Alliance présente" },
-  { name: "Scorpius", status: "Actif", players: "Alliance présente" },
-  { name: "Saison", status: "19 Déc", players: "Nouveau serveur" }
+  { name: "Veritate", status: "Nouveau", players: "Serveur Saison", isNew: true },
+  { name: "Scorpius", status: "Actif", players: "Univers principal" },
+  { name: "Hercules", status: "Actif", players: "Alliance présente" }
 ];
 
 export default function Home() {
@@ -413,7 +413,7 @@ export default function Home() {
                 <EditableText id="home-universes-title" defaultValue="Où nous trouver ?" as="span" className="font-display text-3xl md:text-4xl font-bold text-white" />
               </h2>
               <p className="text-gray-400 mb-8">
-                <EditableText id="home-universes-desc" defaultValue="Psykoverse est présent sur plusieurs univers OGame.fr. Rejoignez-nous sur l'un d'entre eux ou attendez le nouveau serveur Saison du 19 décembre !" as="span" className="text-gray-400" multiline />
+                <EditableText id="home-universes-desc" defaultValue="Psykoverse est présent sur plusieurs univers OGame.fr. Rejoignez-nous sur Veritate (Saison) ou sur nos univers classiques !" as="span" className="text-gray-400" multiline />
               </p>
               <Button asChild>
                 <Link href="/alliance" data-testid="btn-alliance">
@@ -432,11 +432,17 @@ export default function Home() {
               {universes.map((uni, index) => (
                 <div 
                   key={index}
-                  className="bg-[#1C2230] border border-[#2E384D] rounded-xl p-5 flex items-center justify-between"
+                  className={`bg-[#1C2230] border rounded-xl p-5 flex items-center justify-between ${
+                    'isNew' in uni && uni.isNew 
+                      ? "border-green-500/50 shadow-[0_0_15px_rgba(34,197,94,0.15)]" 
+                      : "border-[#2E384D]"
+                  }`}
                 >
                   <div className="flex items-center gap-4">
                     <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-                      uni.status === "Actif" 
+                      'isNew' in uni && uni.isNew
+                        ? "bg-green-500/30 text-green-400"
+                        : uni.status === "Actif" 
                         ? "bg-green-500/20 text-green-400" 
                         : "bg-amber-500/20 text-amber-400"
                     }`}>
@@ -448,7 +454,9 @@ export default function Home() {
                     </div>
                   </div>
                   <span className={`text-sm font-medium px-3 py-1 rounded-full ${
-                    uni.status === "Actif"
+                    'isNew' in uni && uni.isNew
+                      ? "bg-green-500/20 text-green-400 animate-pulse"
+                      : uni.status === "Actif"
                       ? "bg-green-500/20 text-green-400"
                       : "bg-amber-500/20 text-amber-400"
                   }`}>
