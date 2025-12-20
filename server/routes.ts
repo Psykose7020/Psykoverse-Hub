@@ -126,6 +126,16 @@ export async function registerRoutes(
     }
   });
 
+  app.get("/api/visits/total", async (req, res) => {
+    try {
+      const stats = await storage.getVisitStats();
+      res.json({ total: stats.total });
+    } catch (error) {
+      console.error("Error getting total visits:", error);
+      res.status(500).json({ error: "Failed to get total visits" });
+    }
+  });
+
   app.post("/api/admin/login", async (req, res) => {
     try {
       const ip = req.ip || req.socket?.remoteAddress || "unknown";

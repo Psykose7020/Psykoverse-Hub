@@ -282,29 +282,6 @@ export default function Tutorials() {
               />
             </motion.p>
 
-            <motion.div 
-              variants={fadeInUp} 
-              className="mb-10 bg-gradient-to-r from-orange-900/30 via-red-900/20 to-purple-900/30 border border-orange-500/30 rounded-2xl p-6 md:p-8"
-            >
-              <div className="flex flex-col md:flex-row items-center gap-6">
-                <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl flex items-center justify-center flex-shrink-0">
-                  <BarChart3 className="w-8 h-8 text-white" />
-                </div>
-                <div className="text-center md:text-left flex-1">
-                  <h3 className="text-xl font-bold text-white mb-2">Participez au Sondage Communautaire</h3>
-                  <p className="text-gray-300 text-sm mb-4">
-                    Partagez votre composition de flotte ou défense idéale ! Vos réponses anonymes nous aideront à créer des guides basés sur les tendances de la communauté.
-                  </p>
-                  <Link href="/sondage-compositions">
-                    <Button className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700" data-testid="btn-survey-cta">
-                      <MessageSquare className="w-4 h-4 mr-2" />
-                      Répondre au sondage
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-            </motion.div>
-
             <motion.div variants={fadeInUp} className="max-w-xl mx-auto mb-8">
               <div className="relative">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
@@ -708,6 +685,31 @@ export default function Tutorials() {
                   RapidFire, ordre de tir et composition de flotte.
                 </p>
               </a>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="bg-gradient-to-r from-orange-900/20 via-red-900/10 to-purple-900/20 border border-orange-500/20 rounded-xl p-5 mt-8"
+          >
+            <div className="flex flex-col sm:flex-row items-center gap-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                <BarChart3 className="w-6 h-6 text-white" />
+              </div>
+              <div className="flex-1 text-center sm:text-left">
+                <h3 className="font-bold text-white mb-1">Sondage Communautaire</h3>
+                <p className="text-gray-400 text-sm">
+                  Partagez votre composition de flotte ou défense idéale !
+                </p>
+              </div>
+              <Link href="/sondage-compositions">
+                <Button size="sm" className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700" data-testid="btn-survey-cta">
+                  <MessageSquare className="w-4 h-4 mr-2" />
+                  Participer
+                </Button>
+              </Link>
             </div>
           </motion.div>
 

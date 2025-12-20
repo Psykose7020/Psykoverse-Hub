@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "wouter";
+import { useQuery } from "@tanstack/react-query";
 import { 
   Users, 
   Youtube, 
@@ -17,7 +18,8 @@ import {
   Trophy,
   Target,
   Sparkles,
-  Gamepad2
+  Gamepad2,
+  Eye
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Layout from "@/components/layout/Layout";
@@ -110,6 +112,17 @@ const universes = [
 export default function Home() {
   const youtubeSubscribers = useYoutubeStats();
   const discordMembers = useDiscordStats();
+  
+  const { data: visitData } = useQuery<{ total: number }>({
+    queryKey: ['/api/visits/total'],
+    queryFn: async () => {
+      const res = await fetch('/api/visits/total');
+      if (!res.ok) return { total: 0 };
+      return res.json();
+    },
+    staleTime: 60000,
+  });
+  const totalVisits = visitData?.total || 0;
   
   return (
     <Layout>
@@ -283,6 +296,59 @@ export default function Home() {
                 </div>
               </div>
             ))}
+          </motion.div>
+        </div>
+      </section>
+
+      <section className="py-12 md:py-16 border-b border-[#2E384D]">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="max-w-3xl mx-auto"
+          >
+            <div className="relative bg-gradient-to-br from-primary/10 via-purple-500/10 to-pink-500/10 border border-primary/30 rounded-2xl p-6 md:p-10 overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-purple-500 to-pink-500" />
+              <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/20 rounded-full blur-3xl" />
+              <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-purple-500/20 rounded-full blur-3xl" />
+              
+              <div className="relative text-center">
+                <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-primary to-purple-500 rounded-2xl mb-5 shadow-lg shadow-primary/30">
+                  <Sparkles className="w-7 h-7 text-white" />
+                </div>
+                
+                <h2 className="font-display text-xl md:text-2xl font-bold text-white mb-3">
+                  Merci à toute la communauté !
+                </h2>
+                
+                <p className="text-gray-300 mb-5 max-w-lg mx-auto">
+                  Votre soutien et vos visites nous motivent à améliorer ce site. 
+                  Ensemble, construisons la meilleure ressource OGame francophone !
+                </p>
+                
+                <div className="bg-[#1C2230]/80 border border-[#2E384D] rounded-xl p-5 mb-4">
+                  <p className="text-gray-400 text-sm mb-3">
+                    Une suggestion ou une erreur à signaler ?
+                    <span className="text-white font-medium"> Vos retours améliorent nos tutoriels !</span>
+                  </p>
+                  <button
+                    onClick={() => window.dispatchEvent(new Event("openFeedbackModal"))}
+                    className="inline-flex items-center gap-2 bg-gradient-to-r from-primary to-purple-500 hover:from-primary/90 hover:to-purple-500/90 text-white px-5 py-2.5 rounded-xl font-medium transition-all shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 cursor-pointer text-sm"
+                  >
+                    <MessageSquare className="w-4 h-4" />
+                    Donner mon feedback
+                  </button>
+                </div>
+                
+                {totalVisits > 0 && (
+                  <p className="text-gray-600 text-xs flex items-center justify-center gap-1.5">
+                    <Eye className="w-3 h-3" />
+                    {totalVisits.toLocaleString()} visites depuis la création
+                  </p>
+                )}
+              </div>
+            </div>
           </motion.div>
         </div>
       </section>
@@ -500,57 +566,6 @@ export default function Home() {
                   Obtenir de l'aide
                 </Link>
               </Button>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      <section className="py-16 md:py-24 border-b border-[#2E384D]">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="max-w-3xl mx-auto"
-          >
-            <div className="relative bg-gradient-to-br from-primary/10 via-purple-500/10 to-pink-500/10 border border-primary/30 rounded-2xl p-8 md:p-12 overflow-hidden">
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-purple-500 to-pink-500" />
-              <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/20 rounded-full blur-3xl" />
-              <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-purple-500/20 rounded-full blur-3xl" />
-              
-              <div className="relative text-center">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary to-purple-500 rounded-2xl mb-6 shadow-lg shadow-primary/30">
-                  <Sparkles className="w-8 h-8 text-white" />
-                </div>
-                
-                <h2 className="font-display text-2xl md:text-3xl font-bold text-white mb-4">
-                  Merci à toute la communauté !
-                </h2>
-                
-                <p className="text-gray-300 text-lg mb-6 max-w-xl mx-auto">
-                  Votre soutien et vos visites nous motivent à améliorer continuellement ce site. 
-                  Ensemble, nous construisons la meilleure ressource OGame francophone !
-                </p>
-                
-                <div className="bg-[#1C2230]/80 border border-[#2E384D] rounded-xl p-6 mb-6">
-                  <p className="text-gray-400 mb-4">
-                    Vous avez une suggestion, une erreur à signaler ou une idée d'amélioration ?
-                    <br />
-                    <span className="text-white font-medium">Vos retours nous aident à créer de meilleurs tutoriels !</span>
-                  </p>
-                  <button
-                    onClick={() => window.dispatchEvent(new Event("openFeedbackModal"))}
-                    className="inline-flex items-center gap-2 bg-gradient-to-r from-primary to-purple-500 hover:from-primary/90 hover:to-purple-500/90 text-white px-6 py-3 rounded-xl font-medium transition-all shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 cursor-pointer"
-                  >
-                    <MessageSquare className="w-5 h-5" />
-                    Donner mon feedback
-                  </button>
-                </div>
-                
-                <p className="text-gray-500 text-sm">
-                  Chaque retour compte et nous aide à progresser. Merci d'être là !
-                </p>
-              </div>
             </div>
           </motion.div>
         </div>

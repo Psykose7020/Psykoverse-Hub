@@ -45,7 +45,7 @@ export default function Header() {
               <span className="font-display font-bold text-lg md:text-xl leading-none tracking-wide text-white group-hover:text-primary transition-colors">
                 PSYKOVERSE
               </span>
-              <span className="text-[9px] md:text-[10px] uppercase tracking-widest text-primary font-bold">Alliance OGame</span>
+              <span className="text-[9px] md:text-[10px] uppercase tracking-widest text-primary font-bold">Communauté OGame</span>
             </div>
           </Link>
           
