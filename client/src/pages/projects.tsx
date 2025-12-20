@@ -28,8 +28,8 @@ const currentProjects = [
     highlight: true
   },
   {
-    status: "in-progress",
-    date: "Fin Décembre 2025",
+    status: "planned",
+    date: "Mi-Janvier 2026",
     title: "Version 2.1 - Outils OGame",
     description: "Intégration des outils communautaires : OGame Infinity, OGlight, PTRE, OGame Tracker et autres extensions.",
     icon: Wrench,
@@ -62,7 +62,7 @@ const upcomingEvents = [
     type: "completed"
   },
   {
-    date: "Fin Déc",
+    date: "Mi-Jan",
     title: "Version 2.1 du site",
     type: "update"
   },
