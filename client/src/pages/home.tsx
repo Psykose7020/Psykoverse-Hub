@@ -19,7 +19,9 @@ import {
   Target,
   Sparkles,
   Gamepad2,
-  Eye
+  Eye,
+  Radio,
+  Bell
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Layout from "@/components/layout/Layout";
@@ -572,7 +574,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-16 md:py-24">
+      <section className="py-16 md:py-24 border-b border-[#2E384D]">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -580,31 +582,76 @@ export default function Home() {
             viewport={{ once: true }}
             className="max-w-4xl mx-auto"
           >
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="font-display text-2xl md:text-3xl font-bold text-white flex items-center gap-3">
-                <Play className="w-8 h-8 text-red-500" />
-                Chaîne YouTube
-              </h2>
-              <Button variant="ghost" className="text-primary" asChild>
-                <Link href="/tutoriels" data-testid="btn-tutorials-footer">
-                  Voir tous les tutoriels
-                  <ExternalLink className="w-4 h-4 ml-2" />
-                </Link>
-              </Button>
-            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Link href="/twitch" data-testid="link-twitch-home">
+                <div className="group relative bg-gradient-to-br from-purple-900/30 via-[#1C2230] to-[#151924] border border-purple-500/30 rounded-2xl p-6 md:p-8 hover:border-purple-500/50 transition-all cursor-pointer overflow-hidden h-full">
+                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500" />
+                  <div className="absolute -top-20 -right-20 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl" />
+                  
+                  <div className="relative">
+                    <div className="flex items-center gap-4 mb-4">
+                      <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/30 group-hover:scale-110 transition-transform">
+                        <Radio className="w-7 h-7 text-white" />
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-bold text-white group-hover:text-purple-400 transition-colors">Lives Twitch</h3>
+                        <p className="text-purple-400 text-sm">@psykoseogame</p>
+                      </div>
+                    </div>
+                    
+                    <p className="text-gray-400 text-sm mb-4">
+                      Suivez l'évolution de mon compte Veritate en direct ! Streams hebdomadaires avec stratégies en temps réel.
+                    </p>
+                    
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      <span className="bg-purple-500/20 text-purple-400 px-2 py-1 rounded text-xs border border-purple-500/30">
+                        OGame Live
+                      </span>
+                      <span className="bg-purple-500/20 text-purple-400 px-2 py-1 rounded text-xs border border-purple-500/30">
+                        Serveur Saison
+                      </span>
+                    </div>
+                    
+                    <div className="flex items-center gap-2 text-purple-400 text-sm font-medium group-hover:gap-3 transition-all">
+                      <Bell className="w-4 h-4" />
+                      Voir la chaîne
+                      <ExternalLink className="w-3 h-3" />
+                    </div>
+                  </div>
+                </div>
+              </Link>
 
-            <div className="bg-gradient-to-br from-[#1C2230] to-[#151924] border border-[#2E384D] rounded-2xl p-8 text-center">
-              <div className="w-20 h-20 bg-red-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-red-500/20">
-                <Youtube className="w-10 h-10 text-white" />
+              <div className="bg-gradient-to-br from-[#1C2230] to-[#151924] border border-[#2E384D] rounded-2xl p-6 md:p-8">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-14 h-14 bg-red-600 rounded-xl flex items-center justify-center shadow-lg shadow-red-500/20">
+                    <Youtube className="w-7 h-7 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-white">Chaîne YouTube</h3>
+                    <p className="text-gray-400 text-sm">@7020Psykose</p>
+                  </div>
+                </div>
+                
+                <p className="text-gray-400 text-sm mb-4">
+                  {youtubeSubscribers ?? "..."} abonnés • Tutoriels complets et guides vidéo pour tous niveaux.
+                </p>
+                
+                <div className="flex flex-wrap gap-2 mb-4">
+                  <span className="bg-red-500/20 text-red-400 px-2 py-1 rounded text-xs border border-red-500/30">
+                    48 Guides
+                  </span>
+                  <span className="bg-red-500/20 text-red-400 px-2 py-1 rounded text-xs border border-red-500/30">
+                    Français
+                  </span>
+                </div>
+                
+                <Button className="w-full bg-red-600 hover:bg-red-700 shadow-lg shadow-red-500/20" asChild>
+                  <a href="https://www.youtube.com/@7020Psykose" target="_blank" rel="noopener noreferrer" data-testid="btn-youtube">
+                    <Youtube className="w-4 h-4 mr-2" />
+                    S'abonner
+                  </a>
+                </Button>
               </div>
-              <h3 className="text-2xl font-bold text-white mb-2">@7020Psykose</h3>
-              <p className="text-gray-400 mb-6">{youtubeSubscribers ?? "..."} abonnés • Tutoriels OGame en français</p>
-              <Button className="bg-red-600 hover:bg-red-700 shadow-lg shadow-red-500/20" size="lg" asChild>
-                <a href="https://www.youtube.com/@7020Psykose" target="_blank" rel="noopener noreferrer" data-testid="btn-youtube">
-                  <Youtube className="w-5 h-5 mr-2" />
-                  S'abonner à la chaîne
-                </a>
-              </Button>
             </div>
           </motion.div>
         </div>

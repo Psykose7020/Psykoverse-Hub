@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
-import { Menu, X, Beer } from "lucide-react";
+import { Menu, X, Beer, Radio } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import allianceLogo from "@assets/Design_sans_titre_(2)_1765292527261.png";
 import { useYoutubeStats } from "@/hooks/useYoutubeStats";
@@ -8,6 +8,7 @@ import { useYoutubeStats } from "@/hooks/useYoutubeStats";
 const navLinks = [
   { href: "/", label: "Accueil" },
   { href: "/tutoriels", label: "Tutoriels" },
+  { href: "/twitch", label: "Lives", icon: Radio, special: "twitch" },
   { href: "/alliance", label: "Univers" },
   { href: "/notre-histoire", label: "Notre Histoire" },
   { href: "/projets", label: "Projets" },
@@ -52,18 +53,23 @@ export default function Header() {
           <div className="hidden xl:flex items-center gap-1">
             {navLinks.map((link) => {
               const isActive = location === link.href;
+              const Icon = 'icon' in link ? link.icon : null;
+              const isTwitch = 'special' in link && link.special === 'twitch';
               return (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`px-3 py-2 rounded transition-colors text-sm font-bold uppercase tracking-wide ${
+                  className={`px-3 py-2 rounded transition-colors text-sm font-bold uppercase tracking-wide flex items-center gap-1.5 ${
                     isActive
-                      ? "bg-primary/20 text-primary"
+                      ? isTwitch ? "bg-purple-500/20 text-purple-400" : "bg-primary/20 text-primary"
                       : link.highlight
                       ? "text-primary hover:bg-primary/10"
+                      : isTwitch
+                      ? "text-purple-400 hover:bg-purple-500/10"
                       : "text-gray-300 hover:text-white hover:bg-white/5"
                   }`}
                 >
+                  {Icon && <Icon className="w-4 h-4" />}
                   {link.label}
                 </Link>
               );
@@ -99,19 +105,24 @@ export default function Header() {
           <div className="px-4 pb-4 space-y-2 border-t border-[#2E384D]">
             {navLinks.map((link) => {
               const isActive = location === link.href;
+              const Icon = 'icon' in link ? link.icon : null;
+              const isTwitch = 'special' in link && link.special === 'twitch';
               return (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`block w-full px-4 py-3 rounded text-sm font-bold uppercase tracking-wide ${
+                  className={`flex items-center gap-2 w-full px-4 py-3 rounded text-sm font-bold uppercase tracking-wide ${
                     isActive
-                      ? "bg-primary/20 text-primary"
+                      ? isTwitch ? "bg-purple-500/20 text-purple-400" : "bg-primary/20 text-primary"
                       : link.highlight
                       ? "text-primary hover:bg-primary/10"
+                      : isTwitch
+                      ? "text-purple-400 hover:bg-purple-500/10"
                       : "text-gray-300 hover:text-white hover:bg-white/5"
                   }`}
                   onClick={() => setMobileMenuOpen(false)}
                 >
+                  {Icon && <Icon className="w-4 h-4" />}
                   {link.label}
                 </Link>
               );

@@ -71,6 +71,7 @@ import OutilsBatiments from "@/pages/outils-batiments";
 import OutilsRecherches from "@/pages/outils-recherches";
 import OutilsConsommation from "@/pages/outils-consommation";
 import OutilsColonisation from "@/pages/outils-colonisation";
+import Twitch from "@/pages/twitch";
 
 function ScrollToTop() {
   const [location] = useLocation();
@@ -148,6 +149,7 @@ function Router() {
       <Route path="/outils/recherches" component={OutilsRecherches} />
       <Route path="/outils/consommation" component={OutilsConsommation} />
       <Route path="/outils/colonisation" component={OutilsColonisation} />
+      <Route path="/twitch" component={Twitch} />
       <Route component={NotFound} />
     </Switch>
   );
