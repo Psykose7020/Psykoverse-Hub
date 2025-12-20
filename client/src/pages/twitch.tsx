@@ -170,16 +170,22 @@ export default function Twitch() {
                     className="absolute inset-0"
                     data-testid="twitch-embed"
                   />
-                ) : (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="w-20 h-20 bg-purple-600/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <Radio className="w-10 h-10 text-purple-500" />
-                      </div>
-                      <p className="text-gray-500">Chargement du stream...</p>
+                ) : null}
+                <a 
+                  href={TWITCH_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="absolute inset-0 flex items-center justify-center group bg-[#0e0e10]/80 hover:bg-[#0e0e10]/60 transition-colors cursor-pointer"
+                  data-testid="link-twitch-overlay"
+                >
+                  <div className="text-center">
+                    <div className="w-20 h-20 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform shadow-lg shadow-purple-500/50">
+                      <Play className="w-10 h-10 text-white ml-1" />
                     </div>
+                    <p className="text-white font-bold text-lg mb-1">Regarder sur Twitch</p>
+                    <p className="text-gray-400 text-sm">Cliquez pour ouvrir le stream</p>
                   </div>
-                )}
+                </a>
               </div>
               
               <div className="p-4 border-t border-purple-500/20 bg-[#0e0e10]/50">
