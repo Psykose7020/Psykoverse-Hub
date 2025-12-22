@@ -186,7 +186,7 @@ const chapters: Chapter[] = [
           </p>
           <div className="flex items-center justify-center gap-2 text-gray-500 text-sm">
             <Calendar className="w-4 h-4" />
-            <span>Décembre 2024</span>
+            <span>Décembre 2025</span>
           </div>
           <motion.button 
             className="pt-6 cursor-pointer hover:scale-105 transition-transform"
