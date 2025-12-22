@@ -858,6 +858,44 @@ const chapters: Chapter[] = [
         <div className="text-center mt-12">
           <p className="text-gray-500 text-sm">— Fin du journal —</p>
         </div>
+        
+        <div className="mt-16 bg-gradient-to-br from-[#5865F2]/20 via-[#1C2230] to-primary/10 border-2 border-[#5865F2]/40 rounded-2xl p-8 md:p-10">
+          <div className="text-center mb-6">
+            <div className="w-16 h-16 bg-[#5865F2]/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <MessageSquare className="w-8 h-8 text-[#5865F2]" />
+            </div>
+            <h4 className="text-2xl font-bold text-white mb-2">Et vous, qu'en pensez-vous ?</h4>
+            <p className="text-gray-400 max-w-lg mx-auto">
+              Cette histoire vous a parlé ? Vous avez vécu quelque chose de similaire ? 
+              Venez partager votre avis avec la communauté !
+            </p>
+          </div>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a 
+              href="https://discord.gg/3PWk4HmfNn" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 bg-[#5865F2] hover:bg-[#4752C4] text-white font-bold px-6 py-3 rounded-xl transition-all hover:scale-105 shadow-lg shadow-[#5865F2]/30"
+              data-testid="btn-discord-journal"
+            >
+              <MessageSquare className="w-5 h-5" />
+              Discuter sur Discord
+            </a>
+            <button 
+              onClick={() => window.dispatchEvent(new Event("openFeedbackModal"))}
+              className="inline-flex items-center justify-center gap-2 bg-primary/20 hover:bg-primary/30 text-primary font-bold px-6 py-3 rounded-xl transition-all hover:scale-105 border border-primary/30"
+              data-testid="btn-feedback-journal"
+            >
+              <Heart className="w-5 h-5" />
+              Laisser un feedback
+            </button>
+          </div>
+          
+          <p className="text-center text-gray-500 text-sm mt-6">
+            Votre retour nous aide à créer du contenu qui vous ressemble.
+          </p>
+        </div>
       </div>
     )
   }
