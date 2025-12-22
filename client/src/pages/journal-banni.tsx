@@ -1009,62 +1009,292 @@ const moodBackgrounds: Record<string, { gradient: string; elements: React.ReactN
   }
 };
 
+const ShootingStar = ({ delay }: { delay: number }) => {
+  const startX = Math.random() * 100;
+  const startY = Math.random() * 50;
+  
+  return (
+    <motion.div
+      className="absolute w-1 h-1 bg-white rounded-full"
+      style={{ top: `${startY}%`, left: `${startX}%` }}
+      initial={{ opacity: 0, x: 0, y: 0 }}
+      animate={{
+        opacity: [0, 1, 1, 0],
+        x: [0, 150, 300],
+        y: [0, 75, 150],
+      }}
+      transition={{
+        duration: 1.5,
+        delay,
+        repeat: Infinity,
+        repeatDelay: Math.random() * 8 + 5,
+        ease: "easeOut"
+      }}
+    >
+      <div className="absolute inset-0 w-24 h-px bg-gradient-to-r from-white via-white/50 to-transparent -translate-x-full" />
+    </motion.div>
+  );
+};
+
+const FloatingParticle = ({ index, mood }: { index: number; mood: string }) => {
+  const colors: Record<string, string> = {
+    neutral: "bg-blue-400/30",
+    dark: "bg-gray-500/20",
+    hope: "bg-emerald-400/40",
+    despair: "bg-red-400/30",
+    relief: "bg-cyan-400/40"
+  };
+  
+  const size = Math.random() * 3 + 1;
+  const duration = Math.random() * 20 + 15;
+  const delay = Math.random() * 10;
+  
+  return (
+    <motion.div
+      className={`absolute rounded-full ${colors[mood] || colors.neutral} blur-sm`}
+      style={{
+        width: size,
+        height: size,
+        left: `${Math.random() * 100}%`,
+        top: `${Math.random() * 100}%`,
+      }}
+      animate={{
+        y: [0, -30, 0, 30, 0],
+        x: [0, 15, 0, -15, 0],
+        opacity: [0.2, 0.6, 0.2],
+        scale: [1, 1.2, 1, 0.8, 1],
+      }}
+      transition={{
+        duration,
+        delay,
+        repeat: Infinity,
+        ease: "easeInOut"
+      }}
+    />
+  );
+};
+
+const Nebula = ({ mood, layer }: { mood: string; layer: number }) => {
+  const nebulaColors: Record<string, { from: string; to: string }> = {
+    neutral: { from: "from-blue-900/20", to: "to-purple-900/10" },
+    dark: { from: "from-gray-900/30", to: "to-slate-900/20" },
+    hope: { from: "from-emerald-900/25", to: "to-teal-900/15" },
+    despair: { from: "from-red-900/30", to: "to-rose-950/20" },
+    relief: { from: "from-cyan-900/25", to: "to-blue-900/15" }
+  };
+  
+  const colors = nebulaColors[mood] || nebulaColors.neutral;
+  const positions = [
+    { top: "10%", left: "-20%", size: "60%" },
+    { top: "50%", right: "-15%", size: "50%" },
+    { bottom: "10%", left: "30%", size: "40%" },
+  ];
+  const pos = positions[layer % positions.length];
+  
+  return (
+    <motion.div
+      className={`absolute bg-gradient-radial ${colors.from} ${colors.to} rounded-full blur-3xl`}
+      style={{
+        width: pos.size,
+        height: pos.size,
+        ...pos
+      }}
+      animate={{
+        scale: [1, 1.1, 1, 0.95, 1],
+        opacity: [0.3, 0.5, 0.3, 0.4, 0.3],
+        x: layer % 2 === 0 ? [0, 20, 0, -20, 0] : [0, -15, 0, 15, 0],
+        y: layer % 2 === 0 ? [0, -15, 0, 15, 0] : [0, 10, 0, -10, 0],
+      }}
+      transition={{
+        duration: 20 + layer * 5,
+        repeat: Infinity,
+        ease: "easeInOut"
+      }}
+    />
+  );
+};
+
+const PulseRing = ({ mood }: { mood: string }) => {
+  const colors: Record<string, string> = {
+    neutral: "border-blue-500/20",
+    dark: "border-gray-600/10",
+    hope: "border-emerald-500/30",
+    despair: "border-red-500/20",
+    relief: "border-cyan-500/30"
+  };
+  
+  return (
+    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+      {[0, 1, 2].map((i) => (
+        <motion.div
+          key={i}
+          className={`absolute rounded-full border ${colors[mood] || colors.neutral}`}
+          style={{
+            width: 200 + i * 150,
+            height: 200 + i * 150,
+            left: -(100 + i * 75),
+            top: -(100 + i * 75),
+          }}
+          animate={{
+            scale: [1, 1.5, 1],
+            opacity: [0.3, 0, 0.3],
+          }}
+          transition={{
+            duration: 4 + i,
+            delay: i * 1.5,
+            repeat: Infinity,
+            ease: "easeOut"
+          }}
+        />
+      ))}
+    </div>
+  );
+};
+
 const SpaceBackground = ({ mood, chapterIndex }: { mood: string; chapterIndex: number }) => {
   const bg = moodBackgrounds[mood] || moodBackgrounds.neutral;
+  const [stars] = useState(() => 
+    [...Array(80)].map((_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      size: Math.random() * 2.5 + 0.5,
+      delay: Math.random() * 3,
+      duration: Math.random() * 3 + 2
+    }))
+  );
   
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      <div className={`absolute inset-0 bg-gradient-to-b ${bg.gradient}`} />
+      <motion.div 
+        className={`absolute inset-0 bg-gradient-to-b ${bg.gradient}`}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+      />
+      
+      {[0, 1, 2].map((layer) => (
+        <Nebula key={layer} mood={mood} layer={layer} />
+      ))}
       
       <div className="absolute inset-0">
-        {[...Array(50)].map((_, i) => (
-          <div
-            key={i}
+        {stars.map((star) => (
+          <motion.div
+            key={star.id}
             className="absolute rounded-full bg-white"
             style={{
-              width: Math.random() * 2 + 1 + 'px',
-              height: Math.random() * 2 + 1 + 'px',
-              top: Math.random() * 100 + '%',
-              left: Math.random() * 100 + '%',
-              opacity: Math.random() * 0.5 + 0.1,
-              animation: `twinkle ${Math.random() * 3 + 2}s ease-in-out infinite`,
-              animationDelay: Math.random() * 2 + 's'
+              width: star.size,
+              height: star.size,
+              top: `${star.y}%`,
+              left: `${star.x}%`,
+            }}
+            animate={{
+              opacity: [0.1, 0.9, 0.1],
+              scale: [1, 1.3, 1],
+              boxShadow: [
+                "0 0 0px rgba(255,255,255,0)",
+                "0 0 6px rgba(255,255,255,0.8)",
+                "0 0 0px rgba(255,255,255,0)"
+              ]
+            }}
+            transition={{
+              duration: star.duration,
+              delay: star.delay,
+              repeat: Infinity,
+              ease: "easeInOut"
             }}
           />
         ))}
       </div>
       
-      {chapterIndex >= 5 && chapterIndex <= 9 && (
-        <div className="absolute top-1/4 right-10 w-24 h-24 md:w-32 md:h-32">
-          <div className="absolute inset-0 bg-gradient-to-br from-red-600/20 to-red-900/40 rounded-full blur-sm" />
-          <div className="absolute inset-2 bg-gradient-to-br from-red-700/30 to-red-950/50 rounded-full" />
-          <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-red-400/30 rounded-full" />
-        </div>
+      {[...Array(30)].map((_, i) => (
+        <FloatingParticle key={i} index={i} mood={mood} />
+      ))}
+      
+      {[0, 3, 7, 12].map((delay) => (
+        <ShootingStar key={delay} delay={delay} />
+      ))}
+      
+      {chapterIndex > 0 && <PulseRing mood={mood} />}
+      
+      {chapterIndex >= 6 && chapterIndex <= 10 && (
+        <motion.div 
+          className="absolute top-1/4 right-10 w-28 h-28 md:w-40 md:h-40"
+          animate={{ 
+            rotate: 360,
+            scale: [1, 1.05, 1]
+          }}
+          transition={{ 
+            rotate: { duration: 60, repeat: Infinity, ease: "linear" },
+            scale: { duration: 4, repeat: Infinity, ease: "easeInOut" }
+          }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-red-600/30 to-red-900/50 rounded-full blur-md" />
+          <div className="absolute inset-2 bg-gradient-to-br from-red-700/40 to-red-950/60 rounded-full" />
+          <div className="absolute inset-4 bg-gradient-to-tr from-red-800/30 to-transparent rounded-full" />
+          <motion.div 
+            className="absolute top-1/4 left-1/3 w-3 h-3 bg-red-400/40 rounded-full blur-sm"
+            animate={{ opacity: [0.3, 0.6, 0.3] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          />
+          <div className="absolute -inset-4 border border-red-500/10 rounded-full" />
+        </motion.div>
       )}
       
-      {(chapterIndex === 10 || chapterIndex === 11) && (
-        <div className="absolute top-1/3 right-20 w-20 h-20 md:w-28 md:h-28">
-          <div className="absolute inset-0 bg-gradient-to-br from-green-500/20 to-emerald-800/30 rounded-full blur-sm animate-pulse" style={{ animationDuration: '4s' }} />
-          <div className="absolute inset-2 bg-gradient-to-br from-green-600/20 to-teal-900/30 rounded-full" />
-        </div>
+      {(chapterIndex >= 11 && chapterIndex <= 12) && (
+        <motion.div 
+          className="absolute top-1/3 right-16 w-24 h-24 md:w-32 md:h-32"
+          animate={{ 
+            y: [0, -10, 0],
+            scale: [1, 1.1, 1]
+          }}
+          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <motion.div 
+            className="absolute inset-0 bg-gradient-to-br from-green-400/30 to-emerald-700/40 rounded-full blur-md"
+            animate={{ opacity: [0.5, 0.8, 0.5] }}
+            transition={{ duration: 3, repeat: Infinity }}
+          />
+          <div className="absolute inset-2 bg-gradient-to-br from-green-500/30 to-teal-800/40 rounded-full" />
+          <motion.div 
+            className="absolute -inset-2 border-2 border-green-500/30 rounded-full"
+            animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0, 0.3] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          />
+        </motion.div>
       )}
       
-      {(chapterIndex === 12 || chapterIndex === 13) && (
-        <div className="absolute top-20 right-1/4 w-32 h-32 md:w-40 md:h-40">
-          <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 to-blue-900/30 rounded-full blur-md animate-pulse" style={{ animationDuration: '6s' }} />
-          <div className="absolute inset-4 bg-gradient-to-br from-primary/30 to-cyan-800/20 rounded-full" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-white/40 rounded-full" />
-        </div>
+      {(chapterIndex >= 13) && (
+        <motion.div 
+          className="absolute top-16 right-1/4 w-36 h-36 md:w-48 md:h-48"
+          animate={{ 
+            rotate: -360,
+            y: [0, -5, 0, 5, 0]
+          }}
+          transition={{ 
+            rotate: { duration: 80, repeat: Infinity, ease: "linear" },
+            y: { duration: 6, repeat: Infinity, ease: "easeInOut" }
+          }}
+        >
+          <motion.div 
+            className="absolute inset-0 bg-gradient-to-br from-cyan-400/30 to-blue-800/40 rounded-full blur-lg"
+            animate={{ 
+              boxShadow: [
+                "0 0 30px rgba(34, 211, 238, 0.2)",
+                "0 0 60px rgba(34, 211, 238, 0.4)",
+                "0 0 30px rgba(34, 211, 238, 0.2)"
+              ]
+            }}
+            transition={{ duration: 4, repeat: Infinity }}
+          />
+          <div className="absolute inset-4 bg-gradient-to-br from-primary/40 to-cyan-700/30 rounded-full" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-white/50 rounded-full blur-sm" />
+          <div className="absolute inset-0 border border-cyan-400/20 rounded-full" />
+        </motion.div>
       )}
       
       {bg.elements}
       
-      <style>{`
-        @keyframes twinkle {
-          0%, 100% { opacity: 0.1; transform: scale(1); }
-          50% { opacity: 0.8; transform: scale(1.2); }
-        }
-      `}</style>
+      <div className="absolute inset-0 bg-gradient-to-t from-[#0B0E14] via-transparent to-transparent opacity-60" />
     </div>
   );
 };
