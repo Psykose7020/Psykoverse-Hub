@@ -188,17 +188,19 @@ const chapters: Chapter[] = [
             <Calendar className="w-4 h-4" />
             <span>Décembre 2024</span>
           </div>
-          <motion.div 
-            className="pt-6"
+          <motion.button 
+            className="pt-6 cursor-pointer hover:scale-105 transition-transform"
             animate={{ y: [0, 5, 0] }}
             transition={{ duration: 2, repeat: Infinity }}
+            onClick={() => window.dispatchEvent(new Event("nextChapter"))}
+            data-testid="btn-start-reading"
           >
             <p className="text-primary font-medium flex items-center justify-center gap-2">
               <ChevronRight className="w-5 h-5" />
               Cliquez pour commencer la lecture
               <ChevronRight className="w-5 h-5" />
             </p>
-          </motion.div>
+          </motion.button>
         </div>
       </div>
     )
@@ -1095,6 +1097,12 @@ export default function JournalBanni() {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleKeyDown]);
+
+  useEffect(() => {
+    const handleNextChapter = () => nextPage();
+    window.addEventListener("nextChapter", handleNextChapter);
+    return () => window.removeEventListener("nextChapter", handleNextChapter);
+  }, [currentPage]);
 
   const chapter = chapters[currentPage];
   const Icon = chapter.icon;
