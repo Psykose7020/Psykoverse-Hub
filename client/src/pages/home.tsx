@@ -21,7 +21,9 @@ import {
   Gamepad2,
   Eye,
   Radio,
-  Bell
+  Bell,
+  BookMarked,
+  ChevronRight
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Layout from "@/components/layout/Layout";
@@ -250,6 +252,43 @@ export default function Home() {
           <ChevronDown className="w-8 h-8 text-gray-500" />
         </motion.div>
       </header>
+
+      <Link href="/journal-banni">
+        <motion.section 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="py-4 md:py-5 bg-gradient-to-r from-red-900/40 via-orange-900/30 to-red-900/40 border-b-2 border-red-500/50 cursor-pointer hover:from-red-900/50 hover:via-orange-900/40 hover:to-red-900/50 transition-all group"
+          data-testid="banner-journal-banni"
+        >
+          <div className="container mx-auto px-4">
+            <div className="flex flex-col md:flex-row items-center justify-center gap-4 text-center">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-orange-500 rounded-xl flex items-center justify-center shadow-lg shadow-red-500/30 group-hover:scale-110 transition-transform">
+                  <BookMarked className="w-6 h-6 text-white" />
+                </div>
+                <div className="text-left">
+                  <div className="flex items-center gap-2">
+                    <span className="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider animate-pulse">
+                      Nouveau
+                    </span>
+                    <span className="text-red-300 text-xs">Récit exclusif</span>
+                  </div>
+                  <h3 className="font-display text-lg md:text-xl font-bold text-white group-hover:text-red-300 transition-colors">
+                    🪐 Journal d'un banni
+                  </h3>
+                </div>
+              </div>
+              <p className="text-gray-300 text-sm md:text-base max-w-md hidden md:block">
+                Récit intime d'un commandant spatial enfermé sans murs, sans barreaux...
+              </p>
+              <div className="flex items-center gap-2 text-red-300 font-semibold group-hover:gap-3 transition-all">
+                Lire l'histoire
+                <ChevronRight className="w-5 h-5" />
+              </div>
+            </div>
+          </div>
+        </motion.section>
+      </Link>
 
       <section className="py-4 bg-gradient-to-r from-amber-900/30 via-orange-900/20 to-amber-900/30 border-b border-amber-700/40">
         <div className="container mx-auto px-4">
