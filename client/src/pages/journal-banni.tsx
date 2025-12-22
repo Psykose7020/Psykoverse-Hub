@@ -389,12 +389,144 @@ const chapters: Chapter[] = [
   }
 ];
 
-const moodColors = {
-  neutral: "from-gray-800/50 to-[#0B0E14]",
-  dark: "from-slate-900/80 to-[#0B0E14]",
-  hope: "from-green-900/30 to-[#0B0E14]",
-  despair: "from-red-900/30 to-[#0B0E14]",
-  relief: "from-primary/20 to-[#0B0E14]"
+const moodBackgrounds: Record<string, { gradient: string; elements: React.ReactNode }> = {
+  neutral: {
+    gradient: "from-slate-900 via-[#0B0E14] to-[#0B0E14]",
+    elements: (
+      <>
+        <div className="absolute top-20 left-10 w-2 h-2 bg-white/30 rounded-full animate-pulse" />
+        <div className="absolute top-40 right-20 w-1 h-1 bg-primary/50 rounded-full animate-ping" style={{ animationDuration: '3s' }} />
+        <div className="absolute bottom-40 left-1/4 w-1.5 h-1.5 bg-blue-400/40 rounded-full animate-pulse" style={{ animationDelay: '1s' }} />
+        <div className="absolute top-1/3 right-1/3 w-96 h-96 bg-blue-900/10 rounded-full blur-3xl" />
+      </>
+    )
+  },
+  dark: {
+    gradient: "from-slate-950 via-gray-950 to-[#0B0E14]",
+    elements: (
+      <>
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-slate-900/50 to-black/80" />
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gray-700/50 to-transparent" />
+        <div className="absolute top-1/4 left-10 w-1 h-1 bg-gray-500/30 rounded-full" />
+        <div className="absolute top-1/2 right-10 w-1 h-1 bg-gray-600/20 rounded-full" />
+        <div className="absolute bottom-1/3 left-1/3 w-64 h-64 bg-slate-800/20 rounded-full blur-3xl" />
+        <div className="absolute top-20 right-1/4 w-32 h-32 bg-gray-900/30 rounded-full blur-2xl" />
+      </>
+    )
+  },
+  hope: {
+    gradient: "from-emerald-950/50 via-teal-950/30 to-[#0B0E14]",
+    elements: (
+      <>
+        <div className="absolute top-10 right-20 w-3 h-3 bg-green-400/40 rounded-full animate-pulse" />
+        <div className="absolute top-1/3 left-10 w-2 h-2 bg-emerald-400/30 rounded-full animate-ping" style={{ animationDuration: '4s' }} />
+        <div className="absolute bottom-20 right-1/4 w-2 h-2 bg-teal-300/30 rounded-full animate-pulse" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-1/4 right-1/4 w-80 h-80 bg-emerald-900/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 left-1/4 w-60 h-60 bg-teal-900/15 rounded-full blur-3xl" />
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-green-500/30 to-transparent" />
+      </>
+    )
+  },
+  despair: {
+    gradient: "from-red-950/60 via-rose-950/30 to-[#0B0E14]",
+    elements: (
+      <>
+        <div className="absolute inset-0 bg-gradient-to-b from-red-900/10 via-transparent to-black/50" />
+        <div className="absolute top-10 left-1/4 w-2 h-2 bg-red-500/30 rounded-full animate-pulse" />
+        <div className="absolute top-1/2 right-20 w-1 h-1 bg-red-400/40 rounded-full" />
+        <div className="absolute bottom-1/4 left-10 w-1.5 h-1.5 bg-orange-500/20 rounded-full animate-pulse" style={{ animationDelay: '1.5s' }} />
+        <div className="absolute top-1/3 left-1/3 w-96 h-96 bg-red-900/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/3 right-1/4 w-64 h-64 bg-rose-900/15 rounded-full blur-3xl" />
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-red-500/40 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/60 to-transparent" />
+      </>
+    )
+  },
+  relief: {
+    gradient: "from-cyan-950/40 via-blue-950/30 to-[#0B0E14]",
+    elements: (
+      <>
+        <div className="absolute top-10 right-10 w-4 h-4 bg-primary/30 rounded-full animate-pulse shadow-lg shadow-primary/20" />
+        <div className="absolute top-1/4 left-20 w-2 h-2 bg-cyan-400/40 rounded-full animate-ping" style={{ animationDuration: '3s' }} />
+        <div className="absolute top-1/2 right-1/4 w-3 h-3 bg-blue-400/30 rounded-full animate-pulse" style={{ animationDelay: '1s' }} />
+        <div className="absolute bottom-1/4 left-1/3 w-2 h-2 bg-teal-400/30 rounded-full animate-ping" style={{ animationDuration: '4s', animationDelay: '2s' }} />
+        <div className="absolute top-1/4 right-1/3 w-80 h-80 bg-primary/10 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '8s' }} />
+        <div className="absolute bottom-1/4 left-1/4 w-60 h-60 bg-cyan-900/20 rounded-full blur-3xl" />
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+        <div className="absolute top-20 left-1/2 w-px h-32 bg-gradient-to-b from-primary/20 to-transparent" />
+      </>
+    )
+  }
+};
+
+const SpaceBackground = ({ mood, chapterIndex }: { mood: string; chapterIndex: number }) => {
+  const bg = moodBackgrounds[mood] || moodBackgrounds.neutral;
+  
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      <div className={`absolute inset-0 bg-gradient-to-b ${bg.gradient}`} />
+      
+      <div className="absolute inset-0">
+        {[...Array(50)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute rounded-full bg-white"
+            style={{
+              width: Math.random() * 2 + 1 + 'px',
+              height: Math.random() * 2 + 1 + 'px',
+              top: Math.random() * 100 + '%',
+              left: Math.random() * 100 + '%',
+              opacity: Math.random() * 0.5 + 0.1,
+              animation: `twinkle ${Math.random() * 3 + 2}s ease-in-out infinite`,
+              animationDelay: Math.random() * 2 + 's'
+            }}
+          />
+        ))}
+      </div>
+      
+      {chapterIndex >= 5 && chapterIndex <= 9 && (
+        <div className="absolute top-1/4 right-10 w-24 h-24 md:w-32 md:h-32">
+          <div className="absolute inset-0 bg-gradient-to-br from-red-600/20 to-red-900/40 rounded-full blur-sm" />
+          <div className="absolute inset-2 bg-gradient-to-br from-red-700/30 to-red-950/50 rounded-full" />
+          <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-red-400/30 rounded-full" />
+          <div className="absolute bottom-1/3 right-1/3 w-4 h-1 bg-red-500/20 rounded-full rotate-12" />
+        </div>
+      )}
+      
+      {(chapterIndex === 10 || chapterIndex === 11) && (
+        <div className="absolute top-1/3 right-20 w-20 h-20 md:w-28 md:h-28">
+          <div className="absolute inset-0 bg-gradient-to-br from-green-500/20 to-emerald-800/30 rounded-full blur-sm animate-pulse" style={{ animationDuration: '4s' }} />
+          <div className="absolute inset-2 bg-gradient-to-br from-green-600/20 to-teal-900/30 rounded-full" />
+          <div className="absolute -top-2 -left-2 w-8 h-8 bg-gradient-to-r from-green-400/30 to-transparent rounded-full blur-md" />
+        </div>
+      )}
+      
+      {(chapterIndex === 12 || chapterIndex === 13) && (
+        <>
+          <div className="absolute top-20 right-1/4 w-32 h-32 md:w-40 md:h-40">
+            <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 to-blue-900/30 rounded-full blur-md animate-pulse" style={{ animationDuration: '6s' }} />
+            <div className="absolute inset-4 bg-gradient-to-br from-primary/30 to-cyan-800/20 rounded-full" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-white/40 rounded-full" />
+          </div>
+          <div className="absolute top-1/2 left-10 w-1 h-20 bg-gradient-to-b from-primary/40 to-transparent rotate-45" />
+          <div className="absolute bottom-1/3 right-10 w-1 h-16 bg-gradient-to-b from-cyan-400/30 to-transparent -rotate-30" />
+        </>
+      )}
+      
+      {bg.elements}
+      
+      <style>{`
+        @keyframes twinkle {
+          0%, 100% { opacity: 0.1; transform: scale(1); }
+          50% { opacity: 0.8; transform: scale(1.2); }
+        }
+        @keyframes shootingStar {
+          0% { transform: translateX(0) translateY(0); opacity: 1; }
+          100% { transform: translateX(-200px) translateY(200px); opacity: 0; }
+        }
+      `}</style>
+    </div>
+  );
 };
 
 export default function JournalBanni() {
@@ -431,8 +563,8 @@ export default function JournalBanni() {
 
   return (
     <Layout>
-      <section className={`min-h-screen py-8 md:py-12 relative overflow-hidden bg-gradient-to-b ${moodColors[chapter.mood]}`}>
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ccircle%20cx%3D%221%22%20cy%3D%221%22%20r%3D%221%22%20fill%3D%22%23ffffff08%22%2F%3E%3C%2Fsvg%3E')] pointer-events-none" />
+      <section className="min-h-screen py-8 md:py-12 relative overflow-hidden bg-[#0B0E14]">
+        <SpaceBackground mood={chapter.mood} chapterIndex={currentPage} />
         
         <div className="container mx-auto px-4 relative">
           <motion.div
