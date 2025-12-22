@@ -174,11 +174,107 @@ const chapters: Chapter[] = [
     content: (
       <div className="flex flex-col items-center justify-center -mt-4">
         <div className="relative w-full max-w-lg mx-auto mb-6">
-          <img 
-            src="/journal-cover.png" 
-            alt="Le Journal d'un Banni - Psykose" 
-            className="w-full h-auto rounded-xl shadow-2xl shadow-primary/20 border border-[#2E384D]"
-          />
+          <motion.div className="relative">
+            <motion.img 
+              src="/journal-cover.png" 
+              alt="Le Journal d'un Banni - Psykose" 
+              className="w-full h-auto rounded-xl shadow-2xl shadow-primary/20 border border-[#2E384D]"
+              animate={{
+                x: [0, 0, -2, 2, -1, 1, 0, 0, 0, 0, 0, -3, 3, -2, 2, 0, 0, 0, 0, 0],
+                y: [0, 0, 0, 0, 1, -1, 0, 0, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0, 0],
+              }}
+              transition={{
+                duration: 20,
+                repeat: Infinity,
+                ease: "easeInOut",
+                times: [0, 0.1, 0.12, 0.14, 0.16, 0.18, 0.2, 0.3, 0.4, 0.5, 0.55, 0.57, 0.59, 0.61, 0.63, 0.65, 0.7, 0.8, 0.9, 1]
+              }}
+            />
+            
+            <motion.div
+              className="absolute top-1/2 right-[35%] w-4 h-4"
+              animate={{
+                opacity: [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0.8, 0, 0, 0, 0, 0, 0, 0],
+                scale: [0, 0, 1.5, 2, 0, 0, 0, 0, 0, 0, 0, 1.5, 2, 0, 0, 0, 0, 0, 0, 0],
+              }}
+              transition={{
+                duration: 20,
+                repeat: Infinity,
+                times: [0, 0.1, 0.12, 0.18, 0.2, 0.3, 0.4, 0.5, 0.55, 0.56, 0.57, 0.58, 0.64, 0.65, 0.7, 0.8, 0.9, 0.95, 0.98, 1]
+              }}
+            >
+              <div className="w-full h-full bg-orange-400/80 rounded-full blur-sm" />
+              <div className="absolute inset-0 bg-yellow-300/60 rounded-full blur-md animate-ping" />
+            </motion.div>
+            
+            <motion.div
+              className="absolute top-[45%] right-[38%] w-6 h-6"
+              animate={{
+                opacity: [0, 0, 0.8, 0, 0, 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, 0, 0],
+              }}
+              transition={{
+                duration: 20,
+                repeat: Infinity,
+                times: [0, 0.1, 0.13, 0.19, 0.2, 0.3, 0.4, 0.5, 0.55, 0.56, 0.57, 0.59, 0.65, 0.7, 0.8, 0.85, 0.9, 0.95, 0.98, 1]
+              }}
+            >
+              {[...Array(6)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="absolute w-1 h-1 bg-orange-300 rounded-full"
+                  style={{
+                    left: '50%',
+                    top: '50%',
+                  }}
+                  animate={{
+                    x: [0, (Math.random() - 0.5) * 40],
+                    y: [0, (Math.random() - 0.5) * 40],
+                    opacity: [1, 0],
+                    scale: [1, 0.3],
+                  }}
+                  transition={{
+                    duration: 0.4,
+                    repeat: Infinity,
+                    repeatDelay: 19.6,
+                    delay: i * 0.05,
+                  }}
+                />
+              ))}
+            </motion.div>
+            
+            <motion.div
+              className="absolute inset-0 rounded-xl"
+              animate={{
+                boxShadow: [
+                  "0 0 0px rgba(255, 150, 50, 0)",
+                  "0 0 0px rgba(255, 150, 50, 0)",
+                  "0 0 30px rgba(255, 150, 50, 0.3)",
+                  "0 0 0px rgba(255, 150, 50, 0)",
+                  "0 0 0px rgba(255, 150, 50, 0)",
+                  "0 0 0px rgba(255, 150, 50, 0)",
+                  "0 0 0px rgba(255, 150, 50, 0)",
+                  "0 0 0px rgba(255, 150, 50, 0)",
+                  "0 0 0px rgba(255, 150, 50, 0)",
+                  "0 0 0px rgba(255, 150, 50, 0)",
+                  "0 0 0px rgba(255, 150, 50, 0)",
+                  "0 0 25px rgba(255, 150, 50, 0.25)",
+                  "0 0 0px rgba(255, 150, 50, 0)",
+                  "0 0 0px rgba(255, 150, 50, 0)",
+                  "0 0 0px rgba(255, 150, 50, 0)",
+                  "0 0 0px rgba(255, 150, 50, 0)",
+                  "0 0 0px rgba(255, 150, 50, 0)",
+                  "0 0 0px rgba(255, 150, 50, 0)",
+                  "0 0 0px rgba(255, 150, 50, 0)",
+                  "0 0 0px rgba(255, 150, 50, 0)",
+                ]
+              }}
+              transition={{
+                duration: 20,
+                repeat: Infinity,
+                times: [0, 0.1, 0.14, 0.2, 0.25, 0.3, 0.4, 0.5, 0.55, 0.56, 0.57, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1]
+              }}
+            />
+          </motion.div>
         </div>
         <div className="text-center space-y-4">
           <p className="text-gray-400 italic text-lg">
