@@ -173,12 +173,26 @@ const chapters: Chapter[] = [
     mood: "neutral",
     content: (
       <div className="flex flex-col items-center justify-center -mt-4">
-        <div className="relative w-full max-w-lg mx-auto mb-6">
-          <motion.div 
-            className="relative rounded-xl overflow-hidden shadow-2xl shadow-primary/20 border border-[#2E384D]"
-            whileHover={{ scale: 1.02 }}
-            transition={{ duration: 0.3 }}
-          >
+        <motion.div 
+          className="w-full max-w-2xl mx-auto mb-8"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <img 
+            src="/journal-cover.png" 
+            alt="Le Journal d'un Banni - Psykose" 
+            className="w-full h-auto rounded-2xl shadow-2xl shadow-primary/30 border-2 border-[#2E384D]"
+          />
+        </motion.div>
+        
+        <motion.div 
+          className="w-full max-w-md mx-auto mb-6"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        >
+          <div className="relative rounded-xl overflow-hidden shadow-xl shadow-primary/20 border border-[#2E384D]">
             <video
               autoPlay
               loop
@@ -189,24 +203,24 @@ const chapters: Chapter[] = [
               data-testid="cover-video"
             >
               <source src="/journal-cover-video.mp4" type="video/mp4" />
-              <img src="/journal-cover.png" alt="Le Journal d'un Banni - Psykose" />
             </video>
             
-            <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
             
             <motion.div
-              className="absolute bottom-4 left-4 right-4 text-center"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
+              className="absolute bottom-3 left-3 right-3 text-center"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1 }}
             >
-              <div className="inline-flex items-center gap-2 bg-black/60 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/10">
+              <div className="inline-flex items-center gap-2 bg-black/70 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/10">
                 <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-                <span className="text-white/80 text-xs font-medium">Vidéo en boucle</span>
+                <span className="text-white/80 text-xs font-medium">Animation en direct</span>
               </div>
             </motion.div>
-          </motion.div>
-        </div>
+          </div>
+        </motion.div>
+        
         <div className="text-center space-y-4">
           <p className="text-gray-400 italic text-lg">
             Une histoire vraie. Un bannissement. Une leçon.
