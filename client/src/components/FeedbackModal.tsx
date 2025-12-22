@@ -54,7 +54,8 @@ export default function FeedbackModal() {
     }
   };
 
-  if (location !== "/") {
+  const allowedPages = ["/", "/journal-banni"];
+  if (!allowedPages.includes(location)) {
     return null;
   }
 
