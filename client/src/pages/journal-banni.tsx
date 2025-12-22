@@ -167,6 +167,43 @@ const TerminalMessage = ({ lines }: { lines: string[] }) => {
 
 const chapters: Chapter[] = [
   {
+    date: "",
+    title: "Couverture",
+    icon: BookOpen,
+    mood: "neutral",
+    content: (
+      <div className="flex flex-col items-center justify-center -mt-4">
+        <div className="relative w-full max-w-lg mx-auto mb-6">
+          <img 
+            src="/journal-cover.png" 
+            alt="Le Journal d'un Banni - Psykose" 
+            className="w-full h-auto rounded-xl shadow-2xl shadow-primary/20 border border-[#2E384D]"
+          />
+        </div>
+        <div className="text-center space-y-4">
+          <p className="text-gray-400 italic text-lg">
+            Une histoire vraie. Un bannissement. Une leçon.
+          </p>
+          <div className="flex items-center justify-center gap-2 text-gray-500 text-sm">
+            <Calendar className="w-4 h-4" />
+            <span>Décembre 2024</span>
+          </div>
+          <motion.div 
+            className="pt-6"
+            animate={{ y: [0, 5, 0] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
+            <p className="text-primary font-medium flex items-center justify-center gap-2">
+              <ChevronRight className="w-5 h-5" />
+              Cliquez pour commencer la lecture
+              <ChevronRight className="w-5 h-5" />
+            </p>
+          </motion.div>
+        </div>
+      </div>
+    )
+  },
+  {
     date: "05 décembre",
     title: "L'instant où le jeu s'arrête mais pas la tête",
     icon: AlertTriangle,
