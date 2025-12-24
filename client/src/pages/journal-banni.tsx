@@ -881,6 +881,200 @@ const chapters: Chapter[] = [
             <span className="font-bold text-2xl">Hercules est là.</span>
           </motion.div>
         </div>
+        
+        <div className="mt-10 p-6 bg-green-900/20 border border-green-500/30 rounded-xl text-center">
+          <p className="text-green-400 italic">
+            Je me dis que c'est fini. Que j'ai eu de la chance.
+          </p>
+          <p className="text-gray-400 mt-2">
+            Que je ne referai plus jamais cette erreur.
+          </p>
+        </div>
+      </div>
+    )
+  },
+  {
+    date: "23 décembre",
+    title: "Le même jour, quelques heures plus tard",
+    icon: Lock,
+    mood: "despair",
+    content: (
+      <div className="space-y-6">
+        <p className="text-xl text-gray-400">Je venais à peine de respirer.</p>
+        <p className="text-gray-400">Hercules était revenu. J'avais eu ma seconde chance.</p>
+        <p className="text-gray-400">Je me disais que le pire était derrière.</p>
+        
+        <div className="my-10 text-center">
+          <motion.p 
+            className="text-4xl font-bold text-red-400"
+            animate={{ opacity: [1, 0.7, 1] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
+            Et puis le message est arrivé.
+          </motion.p>
+        </div>
+        
+        <TerminalMessage lines={[
+          "> Message reçu : 23/12/2025 15:54:08",
+          "> Expéditeur : Super Opérateur Yoh",
+          "> Objet : Bannissement définitif",
+          "---",
+          "Suite au débanissement de votre compte,",
+          "précédemment banni à la suite d'une extension",
+          "de votre bannissement pour botusing sur Scorpius,",
+          "nous avons voulu vérifier si, effectivement,",
+          "vous n'utilisez pas de bot sur Hercules.",
+          "---",
+          "! L'analyse conséquente a permis de constater",
+          "! que c'est malheureusement également le cas.",
+          "---",
+          "! Le compte est donc banni définitivement",
+          "! pour botusing."
+        ]} />
+        
+        <div className="bg-red-900/30 border-2 border-red-500/50 rounded-2xl p-8 my-10">
+          <p className="text-center text-red-400 font-bold text-2xl mb-4">
+            La seconde chance venait d'être retirée.
+          </p>
+          <p className="text-center text-gray-400">
+            Non pas pour une nouvelle faute. Mais pour une ancienne.
+          </p>
+          <p className="text-center text-gray-400 mt-2">
+            Une faute que je pensais enterrée. Une faute sur un autre compte.
+          </p>
+        </div>
+        
+        <div className="text-center space-y-4">
+          <p className="text-gray-400">Je regarde l'écran.</p>
+          <p className="text-gray-400">Je ne ressens même plus de colère.</p>
+          <p className="text-white font-semibold text-xl">Juste une fatigue immense.</p>
+        </div>
+        
+        <div className="mt-10 p-6 bg-[#1C2230] border border-[#2E384D] rounded-xl">
+          <p className="text-gray-400 italic text-center">
+            C'est là que je comprends que c'est vraiment terminé.
+          </p>
+          <p className="text-gray-500 text-center mt-2">
+            Pas juste le compte. Pas juste le jeu.
+          </p>
+          <p className="text-primary font-semibold text-center mt-2">
+            Toute une époque.
+          </p>
+        </div>
+      </div>
+    )
+  },
+  {
+    date: "Communication importante",
+    title: "Lettre ouverte à la communauté",
+    icon: Heart,
+    mood: "neutral",
+    content: (
+      <div className="space-y-6">
+        <div className="bg-gradient-to-br from-primary/10 via-[#1C2230] to-[#151924] border-2 border-primary/30 rounded-2xl p-8 md:p-10">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-12 h-12 bg-primary/20 rounded-xl flex items-center justify-center">
+              <Heart className="w-6 h-6 text-primary" />
+            </div>
+            <div>
+              <h4 className="text-xl font-bold text-white">Communication importante</h4>
+              <p className="text-gray-500 text-sm">De Psykose, à tous ceux qui ont suivi l'aventure</p>
+            </div>
+          </div>
+          
+          <div className="space-y-4 text-gray-300 leading-relaxed">
+            <p>
+              Après des années passées dans l'univers d'OGame, à construire des flottes, 
+              à tisser des alliances, à partager ma passion à travers des vidéos et des lives... 
+              je dois aujourd'hui accepter que cette aventure touche à sa fin.
+            </p>
+            
+            <p>
+              Le bannissement définitif de mon compte Hercules marque la fin d'un cycle. 
+              Pas seulement la fin d'un compte, mais la fin d'une époque.
+            </p>
+            
+            <p className="font-semibold text-white">
+              Je tiens à être clair : aucun retour n'est prévu.
+            </p>
+            
+            <p>
+              Même si un hypothétique déban devait survenir un jour, 
+              l'épuisement est là. Le cycle est terminé. 
+              Il est temps de passer à autre chose.
+            </p>
+          </div>
+        </div>
+        
+        <div className="bg-[#1C2230] border border-[#2E384D] rounded-xl p-6 md:p-8">
+          <h5 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+            <Sparkles className="w-5 h-5 text-primary" />
+            Ce qui change pour Psykoverse
+          </h5>
+          
+          <div className="space-y-4">
+            <div className="flex items-start gap-3 p-4 bg-red-900/20 border border-red-500/30 rounded-lg">
+              <div className="w-8 h-8 bg-red-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                <span className="text-red-400 font-bold">×</span>
+              </div>
+              <div>
+                <p className="text-red-400 font-semibold">Fin des lives Twitch</p>
+                <p className="text-gray-500 text-sm">Les streams OGame s'arrêtent définitivement.</p>
+              </div>
+            </div>
+            
+            <div className="flex items-start gap-3 p-4 bg-red-900/20 border border-red-500/30 rounded-lg">
+              <div className="w-8 h-8 bg-red-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                <span className="text-red-400 font-bold">×</span>
+              </div>
+              <div>
+                <p className="text-red-400 font-semibold">Fin des vidéos YouTube OGame</p>
+                <p className="text-gray-500 text-sm">La chaîne reste en archive, mais plus de nouveaux contenus OGame.</p>
+              </div>
+            </div>
+            
+            <div className="flex items-start gap-3 p-4 bg-green-900/20 border border-green-500/30 rounded-lg">
+              <div className="w-8 h-8 bg-green-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                <span className="text-green-400 font-bold">✓</span>
+              </div>
+              <div>
+                <p className="text-green-400 font-semibold">Le site Psykoverse continue</p>
+                <p className="text-gray-500 text-sm">Maintenance, améliorations modestes, mises à jour mensuelles des tutoriels.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div className="bg-gradient-to-br from-[#5865F2]/10 via-[#1C2230] to-[#151924] border-2 border-[#5865F2]/30 rounded-2xl p-8">
+          <h5 className="text-xl font-bold text-white mb-6 text-center">Remerciements</h5>
+          
+          <div className="space-y-4 text-gray-300 text-center leading-relaxed">
+            <p>
+              Merci à tous ceux qui ont fait cette aventure OGame avec moi.
+            </p>
+            <p>
+              Aux alliés qui m'ont fait confiance. Aux adversaires qui m'ont fait progresser.
+            </p>
+            <p>
+              Aux amis en vocal à 3h du matin pour un retour de flotte.
+            </p>
+            <p>
+              Aux lecteurs de ce journal. Aux contributeurs du Discord.
+            </p>
+            <p className="text-white font-semibold text-lg mt-6">
+              Cette communauté restera ma plus belle construction dans OGame.
+            </p>
+          </div>
+        </div>
+        
+        <div className="text-center mt-8">
+          <p className="text-gray-500 italic">
+            Sans regret d'avoir essayé.
+          </p>
+          <p className="text-primary font-semibold mt-2">
+            — Psykose
+          </p>
+        </div>
       </div>
     )
   },

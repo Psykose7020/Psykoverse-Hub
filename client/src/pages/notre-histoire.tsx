@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowLeft, Youtube, MessageSquare, Rocket, Users, Heart, Star, Calendar, Target, Sparkles } from "lucide-react";
+import { ArrowLeft, Youtube, MessageSquare, Rocket, Users, Heart, Star, Calendar, BookOpen, AlertTriangle, Sparkles, Archive } from "lucide-react";
 import { Link } from "wouter";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
@@ -47,34 +47,45 @@ const timeline = [
     color: "from-orange-500 to-amber-500"
   },
   {
+    period: "Décembre 2025",
+    title: "La chute",
+    description: "Un bannissement. Puis un autre. La seconde chance accordée, puis retirée. L'aventure OGame s'arrête brutalement. Mais l'histoire ne s'arrête pas là...",
+    icon: AlertTriangle,
+    color: "from-red-600 to-rose-600"
+  },
+  {
     period: "Aujourd'hui",
-    title: "Psykoverse Alliance",
-    description: "Ce site, cette communauté, cette alliance... Tout ça représente des mois de travail, de passion et d'investissement. Un projet 100% bénévole, fait pour les joueurs, par un joueur.",
+    title: "Un nouveau chapitre",
+    description: "Le jeu s'arrête, mais le projet continue. Psykoverse devient un héritage : des tutoriels, des outils, une communauté. Moins de lives, moins de vidéos, mais toujours la même passion de partager.",
     icon: Heart,
-    color: "from-pink-500 to-rose-500"
+    color: "from-primary to-cyan-500"
   }
 ];
 
-const values = [
+const whatChanges = [
   {
-    icon: Users,
-    title: "Collectif fiable",
-    description: "Une équipe sur laquelle on peut compter, des joueurs actifs et engagés."
+    icon: AlertTriangle,
+    title: "Fin des lives OGame",
+    description: "Les streams Twitch sur OGame s'arrêtent définitivement.",
+    status: "ended"
   },
   {
-    icon: Heart,
-    title: "Passer de bons moments",
-    description: "OGame c'est avant tout un jeu. On est là pour s'amuser ensemble."
+    icon: Youtube,
+    title: "Chaîne YouTube en archive",
+    description: "Plus de nouveaux contenus OGame, mais les tutoriels restent accessibles.",
+    status: "archive"
   },
   {
     icon: Star,
-    title: "Transmettre l'expérience",
-    description: "Partager nos connaissances, aider les nouveaux, progresser tous ensemble."
+    title: "Site en maintenance",
+    description: "Mises à jour mensuelles, correctifs, nouveaux tutoriels occasionnels.",
+    status: "active"
   },
   {
-    icon: Target,
-    title: "Faire découvrir le jeu",
-    description: "Rendre OGame accessible à tous, démystifier les mécaniques complexes."
+    icon: Users,
+    title: "Discord toujours actif",
+    description: "La communauté reste, les échanges continuent, l'entraide perdure.",
+    status: "active"
   }
 ];
 
@@ -88,7 +99,7 @@ export default function NotreHistoire() {
         
         <div className="container mx-auto px-4 relative z-10">
           <Link href="/">
-            <Button variant="ghost" className="mb-8 text-gray-400 hover:text-white">
+            <Button variant="ghost" className="mb-8 text-gray-400 hover:text-white" data-testid="btn-back-home">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Retour à l'accueil
             </Button>
@@ -119,8 +130,43 @@ export default function NotreHistoire() {
               className="text-xl text-gray-400 leading-relaxed"
             >
               De l'idée d'un passionné à une communauté grandissante. 
-              Découvrez comment Psykoverse est né et ce qui nous anime.
+              De l'apogée à la chute. Et de la chute... à la suite.
             </motion.p>
+          </motion.div>
+        </div>
+      </section>
+
+      <section className="py-10">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="max-w-2xl mx-auto"
+          >
+            <Link href="/journal-banni">
+              <div className="group bg-gradient-to-br from-red-900/30 via-[#1C2230] to-orange-900/20 border-2 border-red-500/40 rounded-2xl p-6 md:p-8 hover:border-red-500/60 transition-all cursor-pointer">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-14 h-14 bg-red-500/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <BookOpen className="w-7 h-7 text-red-400" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="px-2 py-0.5 bg-red-500/20 text-red-400 text-xs font-bold rounded">NOUVEAU</span>
+                    </div>
+                    <h3 className="text-xl font-bold text-white mt-1">Journal d'un banni</h3>
+                  </div>
+                </div>
+                <p className="text-gray-400 mb-4">
+                  L'histoire complète du bannissement. Un récit personnel, sans filtre, 
+                  qui raconte la chute, la seconde chance, et la fin définitive.
+                </p>
+                <div className="flex items-center text-primary font-semibold group-hover:gap-3 transition-all gap-2">
+                  <span>Lire le journal complet</span>
+                  <ArrowLeft className="w-4 h-4 rotate-180" />
+                </div>
+              </div>
+            </Link>
           </motion.div>
         </div>
       </section>
@@ -128,7 +174,7 @@ export default function NotreHistoire() {
       <section className="py-20 relative">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary/50 via-secondary/50 to-primary/50 hidden md:block" style={{ transform: 'translateX(-50%)' }}></div>
+            <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary/50 via-red-500/50 to-primary/50 hidden md:block" style={{ transform: 'translateX(-50%)' }}></div>
             
             {timeline.map((item, index) => {
               const Icon = item.icon;
@@ -190,16 +236,16 @@ export default function NotreHistoire() {
             className="text-center mb-12"
           >
             <motion.h2 variants={fadeInUp} className="font-display text-3xl md:text-4xl font-bold text-white mb-4">
-              Nos valeurs
+              Ce qui change
             </motion.h2>
             <motion.p variants={fadeInUp} className="text-gray-400 max-w-2xl mx-auto">
-              Ce qui nous guide au quotidien et fait de Psykoverse une communauté unique.
+              La fin d'une ère ne signifie pas la fin du projet. Voici ce qui évolue.
             </motion.p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
-            {values.map((value, index) => {
-              const Icon = value.icon;
+            {whatChanges.map((item, index) => {
+              const Icon = item.icon;
               return (
                 <motion.div
                   key={index}
@@ -207,13 +253,38 @@ export default function NotreHistoire() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  className="group text-center p-8 bg-[#1C2230] rounded-xl border border-[#2E384D] hover:border-primary/30 transition-all"
+                  className={`group text-center p-8 rounded-xl border transition-all ${
+                    item.status === 'ended' 
+                      ? 'bg-red-900/20 border-red-500/30' 
+                      : item.status === 'archive'
+                      ? 'bg-yellow-900/20 border-yellow-500/30'
+                      : 'bg-green-900/20 border-green-500/30'
+                  }`}
                 >
-                  <div className="w-16 h-16 mx-auto mb-5 rounded-full bg-gradient-to-br from-primary/20 to-cyan-500/10 flex items-center justify-center border border-primary/20 group-hover:scale-110 transition-transform">
-                    <Icon className="w-7 h-7 text-primary" />
+                  <div className={`w-16 h-16 mx-auto mb-5 rounded-full flex items-center justify-center border group-hover:scale-110 transition-transform ${
+                    item.status === 'ended'
+                      ? 'bg-red-500/10 border-red-500/30'
+                      : item.status === 'archive'
+                      ? 'bg-yellow-500/10 border-yellow-500/30'
+                      : 'bg-green-500/10 border-green-500/30'
+                  }`}>
+                    <Icon className={`w-7 h-7 ${
+                      item.status === 'ended' ? 'text-red-400' : item.status === 'archive' ? 'text-yellow-400' : 'text-green-400'
+                    }`} />
                   </div>
-                  <h3 className="font-display text-lg font-bold text-white mb-2">{value.title}</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">{value.description}</p>
+                  <div className="mb-2">
+                    <span className={`inline-block px-2 py-0.5 rounded text-xs font-bold ${
+                      item.status === 'ended' 
+                        ? 'bg-red-500/20 text-red-400' 
+                        : item.status === 'archive'
+                        ? 'bg-yellow-500/20 text-yellow-400'
+                        : 'bg-green-500/20 text-green-400'
+                    }`}>
+                      {item.status === 'ended' ? 'TERMINÉ' : item.status === 'archive' ? 'ARCHIVÉ' : 'ACTIF'}
+                    </span>
+                  </div>
+                  <h3 className="font-display text-lg font-bold text-white mb-2">{item.title}</h3>
+                  <p className="text-gray-400 text-sm leading-relaxed">{item.description}</p>
                 </motion.div>
               );
             })}
@@ -235,14 +306,24 @@ export default function NotreHistoire() {
               <div className="absolute bottom-10 left-10 w-24 h-24 bg-secondary/5 rounded-full blur-2xl"></div>
               
               <div className="relative z-10">
+                <Archive className="w-12 h-12 text-primary mx-auto mb-6" />
+                
                 <h3 className="font-display text-2xl md:text-3xl font-bold text-white mb-6">
-                  Et ce n'est que le début...
+                  L'héritage continue
                 </h3>
 
                 <p className="text-gray-400 mb-8 leading-relaxed max-w-xl mx-auto">
-                  L'aventure Psykoverse continue de grandir. Nouveaux guides, nouvelles fonctionnalités, 
-                  nouvelles conquêtes sur les serveurs saison... Rejoignez-nous pour écrire la suite ensemble !
+                  Les tutoriels restent. Les outils restent. La communauté reste.
+                  Psykoverse n'est plus une alliance active, mais un projet vivant
+                  au service de tous les joueurs OGame francophones.
                 </p>
+
+                <div className="bg-[#0B0E14] border border-[#2E384D] rounded-xl p-6 mb-8">
+                  <p className="text-primary font-semibold mb-2">Prochaines mises à jour</p>
+                  <p className="text-gray-400 text-sm">
+                    Maintenance mensuelle • Correctifs • Nouveaux tutoriels occasionnels
+                  </p>
+                </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Button 
@@ -250,7 +331,7 @@ export default function NotreHistoire() {
                     className="bg-[#5865F2] hover:bg-[#4752C4] text-white font-display font-bold uppercase tracking-widest"
                     asChild
                   >
-                    <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer">
+                    <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer" data-testid="btn-discord">
                       <MessageSquare className="mr-2 w-5 h-5" />
                       Rejoindre le Discord
                     </a>
@@ -261,10 +342,10 @@ export default function NotreHistoire() {
                     className="border-primary/50 text-primary hover:bg-primary/10 font-display font-bold uppercase tracking-widest"
                     asChild
                   >
-                    <a href="https://www.youtube.com/@7020Psykose" target="_blank" rel="noopener noreferrer">
-                      <Youtube className="mr-2 w-5 h-5" />
-                      Voir les vidéos
-                    </a>
+                    <Link href="/journal-banni" data-testid="btn-journal">
+                      <BookOpen className="mr-2 w-5 h-5" />
+                      Lire le journal
+                    </Link>
                   </Button>
                 </div>
               </div>
@@ -275,8 +356,11 @@ export default function NotreHistoire() {
 
       <section className="py-10 border-t border-[#2E384D]">
         <div className="container mx-auto px-4 text-center">
+          <p className="text-gray-500 italic mb-4">
+            "Sans regret d'avoir essayé."
+          </p>
           <Link href="/">
-            <Button variant="ghost" className="text-gray-400 hover:text-white">
+            <Button variant="ghost" className="text-gray-400 hover:text-white" data-testid="btn-back-home-footer">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Retour à l'accueil
             </Button>

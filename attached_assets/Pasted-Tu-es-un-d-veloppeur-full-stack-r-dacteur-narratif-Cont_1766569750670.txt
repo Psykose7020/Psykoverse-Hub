@@ -1,0 +1,65 @@
+Tu es un développeur full-stack + rédacteur narratif. 
+Contexte : site Psykoverse (OGame) déjà existant. Il contient une page “Journal d’un banni” (récit narratif humoristique) et une homepage avec différentes sections (dont lives et vidéos). 
+Objectif : intégrer les derniers événements + refondre l’interface (mobile-first) pour mettre en avant le Journal et les futures MAJ, tout en restant élégant et dynamique.
+
+IMPORTANT : 
+- Le contenu doit rester narratif (histoire d’un commandant spatial) + humour subtil + vérité factuelle (fidèle aux tickets).
+- Ne pas tomber dans un texte explicatif ou juridique. Ça doit se lire comme une histoire.
+- Ton global : digne, humain, parfois drôle, jamais insultant.
+- Optimiser pour mobile (responsive, sections courtes, typography lisible, navigation simple).
+- Ne pas inventer des faits nouveaux : utiliser uniquement les éléments fournis ci-dessous.
+
+DERNIERS ÉVÉNEMENTS À AJOUTER AU “Journal d’un banni” :
+- Après un réexamen par un Community Manager (CoMa), le compte Hercules avait été débanni (“after review / decided to give you another chance”).
+- Le même jour, le compte Hercules a été de nouveau banni définitivement.
+- Message staff (Super Opérateur Yoh) reçu le 23/12/2025 15:54:08 :
+  “Suite au débanissement de votre compte, précédemment banni à la suite d'une extension de votre bannissement pour botusing sur l'univers Scorpius, nous avons voulu vérifier si, effectivement, vous n'utilisez pas de bot sur votre compte Hercules. L'analyse conséquente a permis de constater que c'est malheureusement également le cas. Le compte est donc banni définitivement pour botusing.”
+- Le narrateur veut insister sur : seconde chance accordée puis retirée, impression d’avoir cru “trop tard”, fin totale du jeu, départ digne, impact sur le Psykoverse.
+
+FIN / LETTRE À INTÉGRER (À METTRE COMME “Communication importante” DANS LE JOURNAL) :
+Inclure intégralement la lettre suivante, en l’intégrant au récit (possible d’ajouter de petites transitions narrées mais ne pas dénaturer le texte) :
+
+[COLLER ICI LE TEXTE EXACT “Communication importante … Sans regret d’avoir essayé.”]
+
+AJOUTER AUSSI :
+1) Un paragraphe de remerciements : remercier tous ceux qui ont fait l’aventure OGame (alliés, adversaires, amis en vocal, lecteurs, contributeurs). Ton sincère.
+2) Annoncer la fin des lives + supprimer la section “lives” du site (ou la remplacer par un bloc “Clôturé” très discret).
+3) Annoncer la fin des vidéos YouTube sur OGame (au vu du temps investi). Garder la chaîne comme archive, mais stop nouveaux contenus OGame.
+4) Dire explicitement : “aucun retour n’est prévu” ; même en cas de déban futur hypothétique, le retour est très peu envisageable (épuisement, fin d’un cycle).
+5) Adapter la section “Notre projet” : nouvelle orientation = maintenance + améliorations modestes.
+6) Adapter la roadmap : annoncer des mises à jour mensuelles (correctifs + ajouts éventuels de tutoriels). Pas de promesses énormes, juste régularité.
+7) Refaire la homepage : épurer et mieux intégrer :
+   - un accès évident au “Journal d’un banni”
+   - un bloc “Prochaines MAJ (mensuelles)” + changelog
+   - un message court “État du projet” (post-OGame)
+   - retirer ou minimiser tout ce qui ressemble à “rejoins / joue / live”
+8) UI/UX :
+   - Design moderne, sobre, spacieux, lisible, compatible mobile.
+   - Navbar simple (Accueil, Journal, Tutoriels, MAJ).
+   - Page Journal : sections découpées, ancres, progression de lecture (table des matières ou sommaire), mode lecture confortable.
+   - Ajoute une petite animation discrète (fade-in) et un composant “timeline” pour les dates clés.
+   - Accessibilité : contrastes, tailles de police, boutons.
+   - Performances : pas d’images lourdes inutiles.
+
+STRUCTURE NARRATIVE À RESPECTER DANS LE “Journal d’un banni” :
+- Chapitre “05/12/2025” : bannissement (motif botusing / script) -> choc.
+- Chapitre “12/12/2025” : extension / lobby / Hercules impact (sans trop revenir sur Scorpius dans la conclusion, juste contexte minimal).
+- Chapitre “(date du déban)” : moment de seconde chance accordée (CoMa), espoir.
+- Chapitre “23/12/2025 (même journée)” : reban définitif Hercules + message de Yoh -> bascule finale.
+- Épilogue : “Communication importante” + remerciements + fin des lives/vidéos + avenir Psykoverse (MAJ mensuelles).
+
+CONTRAINTE D’ÉCRITURE :
+- Chaque chapitre doit être développé, avec anecdotes, métaphores spatiales, humour discret, dialogues type transmissions.
+- Fidélité aux formulations clés du staff (ex: “after review / second chance”, “analyse conséquente”, “banni définitivement pour botusing”).
+- Pas de diffamation : pas d’attaques personnelles (ex éviter “il a voulu me faire tomber à tout prix” formulé ainsi). On peut exprimer un ressenti, mais factuel et digne.
+
+LIVRABLES DEMANDÉS :
+A) Modifications de contenu : mise à jour complète du “Journal d’un banni” (long récit, plusieurs pages).
+B) Refactor UI : homepage épurée + page journal plus dynamique + suppression/archivage section lives + update roadmap.
+C) Optimisation mobile : vérifie breakpoints, navigation, lisibilité.
+D) Donne le code modifié + liste claire des fichiers touchés + instructions pour déployer.
+
+Commence par me montrer :
+1) Le nouveau plan de la homepage (wireframe textuel).
+2) Le plan du Journal (chapitres + intention).
+Puis implémente.
