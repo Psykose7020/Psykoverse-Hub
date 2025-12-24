@@ -73,7 +73,8 @@ const categories = [
       { title: "Chantier spatial et défense", description: "Vaisseaux et défenses", icon: Rocket, color: "from-slate-500 to-slate-700", link: "/guide/chantier", keywords: "chantier spatial vaisseau défense construction" },
       { title: "Coûts Flotte & Défenses", description: "Calculateur de ressources", icon: Rocket, color: "from-orange-500 to-red-600", link: "/guide/cout-flotte", featured: true, keywords: "coût flotte défense calculateur ressources métal cristal deutérium" },
       { title: "Formules & Calculateurs", description: "Outils de calcul interactifs", icon: Calculator, color: "from-emerald-500 to-teal-600", link: "/guide/formules", keywords: "formule calculateur temps vol vitesse consommation distance production" },
-      { title: "Développement", description: "Stratégie de compte", icon: TrendingUp, color: "from-emerald-500 to-green-600", link: "/guide/developpement", keywords: "développement stratégie compte évolution progression" }
+      { title: "Développement", description: "Stratégie de compte", icon: TrendingUp, color: "from-emerald-500 to-green-600", link: "/guide/developpement", keywords: "développement stratégie compte évolution progression" },
+      { title: "Ordre de Construction", description: "Robot, Nanite, Chantier optimal", icon: Factory, color: "from-cyan-500 to-blue-600", link: "/guide/ordre-construction", featured: true, keywords: "ordre construction robot nanite chantier spatial optimisation temps réduction" }
     ]
   },
   {

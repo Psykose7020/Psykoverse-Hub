@@ -90,7 +90,7 @@ export default function Home() {
             </motion.p>
             
             <motion.p variants={fadeInUp} className="text-gray-400 text-lg mb-8 max-w-xl mx-auto">
-              48 guides complets, des ressources pour tous les joueurs, et une communauté active sur Discord.
+              49 guides complets, des ressources pour tous les joueurs, et une communauté active sur Discord.
             </motion.p>
             
             <motion.div variants={fadeInUp} className="flex flex-wrap justify-center gap-4">
@@ -104,7 +104,7 @@ export default function Home() {
               <Button size="lg" variant="outline" className="border-primary/50 text-primary hover:bg-primary/10" asChild>
                 <Link href="/tutoriels" data-testid="btn-tutorials-hero">
                   <BookOpen className="w-5 h-5 mr-2" />
-                  48 Guides
+                  49 Guides
                 </Link>
               </Button>
             </motion.div>
@@ -226,7 +226,7 @@ export default function Home() {
                   <BookOpen className="w-6 h-6 text-white" />
                 </div>
                 <h3 className="font-display text-lg font-bold text-white mb-2 group-hover:text-primary transition-colors">
-                  48 Guides
+                  49 Guides
                 </h3>
                 <p className="text-gray-500 text-sm">
                   Du débutant à l'expert, tout pour progresser.
