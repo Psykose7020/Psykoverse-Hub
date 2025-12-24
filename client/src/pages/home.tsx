@@ -147,7 +147,7 @@ export default function Home() {
               </motion.div>
             </Link>
 
-            <Link href="/journal-banni#communication-importante" data-testid="link-lettre-home">
+            <Link href="/journal-banni#lettre-ouverte" data-testid="link-lettre-home">
               <motion.div 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

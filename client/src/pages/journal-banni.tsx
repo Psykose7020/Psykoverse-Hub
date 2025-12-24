@@ -1677,8 +1677,33 @@ const SpaceBackground = ({ mood, chapterIndex }: { mood: string; chapterIndex: n
   );
 };
 
+const CHAPTER_SLUGS: Record<string, number> = {
+  "lettre-ouverte": 15,
+  "open-letter": 15,
+  "reponse-staff": 14,
+  "re-ban": 13,
+  "debanissement": 12,
+};
+
 export default function JournalBanni() {
-  const [currentPage, setCurrentPage] = useState(0);
+  const getInitialPage = () => {
+    if (typeof window !== 'undefined') {
+      const hash = window.location.hash.replace('#', '');
+      if (hash && CHAPTER_SLUGS[hash] !== undefined) {
+        return CHAPTER_SLUGS[hash];
+      }
+    }
+    return 0;
+  };
+
+  const [currentPage, setCurrentPage] = useState(getInitialPage);
+
+  useEffect(() => {
+    const hash = window.location.hash.replace('#', '');
+    if (hash && CHAPTER_SLUGS[hash] !== undefined) {
+      setCurrentPage(CHAPTER_SLUGS[hash]);
+    }
+  }, []);
 
   const nextPage = () => {
     if (currentPage < chapters.length - 1) {
