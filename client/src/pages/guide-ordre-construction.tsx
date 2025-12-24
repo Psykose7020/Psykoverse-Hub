@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { Factory, Zap, Rocket, Clock, ArrowDown, ArrowRight } from "lucide-react";
+import { Factory, Zap, Rocket, Clock, ArrowDown } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
@@ -10,66 +11,91 @@ const fadeInUp = {
   visible: { opacity: 1, y: 0 }
 };
 
-const developmentSteps = [
-  { step: "Robots 1", type: "robot" },
-  { step: "Robots 2", type: "robot" },
-  { step: "Robots 3", type: "robot" },
-  { step: "Robots 4", type: "robot" },
-  { step: "Robots 5", type: "robot" },
-  { step: "Robots 6", type: "robot" },
-  { step: "Robots 7", type: "robot" },
-  { step: "Robots 8", type: "robot" },
-  { step: "Robots 9", type: "robot" },
-  { step: "Robots 10", type: "robot" },
-  { step: "Nanites 1", type: "nanite" },
-  { step: "Robots 11", type: "robot" },
-  { step: "Nanites 3", type: "nanite" },
-  { step: "Robots 12", type: "robot" },
-  { step: "Nanites 4", type: "nanite" },
-  { step: "Robots 13", type: "robot" },
-  { step: "Nanites 5", type: "nanite" },
-  { step: "Robots 14", type: "robot" },
-  { step: "Robots 15", type: "robot" },
-  { step: "Robots 16", type: "robot" },
-  { step: "Nanites 8", type: "nanite" },
-  { step: "Nanites 9", type: "nanite" },
-  { step: "Nanites 10", type: "nanite" },
-  { step: "Robots 17", type: "robot" },
-  { step: "Robots 18", type: "robot" },
-  { step: "Robots 19", type: "robot" },
-  { step: "Nanites 12", type: "nanite" },
-  { step: "Robots 20", type: "robot" },
+const taux2_1_5_1 = [
+  { step: "Robot 1", type: "robot" },
+  { step: "Robot 2", type: "robot" },
+  { step: "Robot 3", type: "robot" },
+  { step: "Robot 4", type: "robot" },
+  { step: "Robot 5", type: "robot" },
+  { step: "Robot 6", type: "robot" },
+  { step: "Robot 7", type: "robot" },
+  { step: "Robot 8", type: "robot" },
+  { step: "Robot 9", type: "robot" },
+  { step: "Robot 10", type: "robot" },
+  { step: "Robot 11", type: "robot" },
+  { step: "Nanite 1", type: "nanite" },
+  { step: "Robot 12", type: "robot" },
+  { step: "Nanite 2", type: "nanite" },
+  { step: "Robot 13", type: "robot" },
+  { step: "Nanite 3", type: "nanite" },
+  { step: "Robot 14", type: "robot" },
+  { step: "Nanite 4", type: "nanite" },
+  { step: "Nanite 5", type: "nanite" },
+  { step: "Robot 16", type: "robot" },
+  { step: "Nanite 6", type: "nanite" },
+  { step: "Robot 17", type: "robot" },
+  { step: "Nanite 7", type: "nanite" },
+  { step: "Nanite 8", type: "nanite" },
+  { step: "Robot 18", type: "robot" },
+  { step: "Nanite 9", type: "nanite" },
+  { step: "Robot 19", type: "robot" },
+  { step: "Nanite 10", type: "nanite" },
+  { step: "Robot 20", type: "robot" },
+  { step: "Nanite 11", type: "nanite" },
+  { step: "Robot 21", type: "robot" },
+  { step: "Nanite 12", type: "nanite" },
+  { step: "Robot 22", type: "robot" },
+  { step: "Nanite 13", type: "nanite" },
+  { step: "Nanite 14", type: "nanite" },
+  { step: "Robot 23", type: "robot" },
+  { step: "Robot 24", type: "robot" },
+  { step: "Nanite 15", type: "nanite" },
+  { step: "Robot 25", type: "robot" },
+  { step: "Nanite 16", type: "nanite" },
+  { step: "Robot 26", type: "robot" },
 ];
 
-const shipyardSteps = [
-  { step: "CS 1", type: "shipyard" },
-  { step: "CS 2", type: "shipyard" },
-  { step: "CS 3", type: "shipyard" },
-  { step: "CS 4", type: "shipyard" },
-  { step: "CS 5", type: "shipyard" },
-  { step: "CS 6", type: "shipyard" },
-  { step: "CS 7", type: "shipyard" },
-  { step: "CS 8", type: "shipyard" },
-  { step: "CS 9", type: "shipyard" },
-  { step: "Nanites 1", type: "nanite" },
-  { step: "CS 10", type: "shipyard" },
-  { step: "CS 11", type: "shipyard" },
-  { step: "Nanites 3", type: "nanite" },
-  { step: "CS 12", type: "shipyard" },
-  { step: "CS 13", type: "shipyard" },
-  { step: "Nanites 5", type: "nanite" },
-  { step: "CS 14", type: "shipyard" },
-  { step: "Nanites 5", type: "nanite" },
-  { step: "Nanites 6", type: "nanite" },
-  { step: "Nanites 7", type: "nanite" },
-  { step: "Nanites 8", type: "nanite" },
-  { step: "Nanites 8", type: "nanite" },
-  { step: "Nanites 9", type: "nanite" },
-  { step: "CS 17", type: "shipyard" },
-  { step: "Nanites 10", type: "nanite" },
-  { step: "CS 19", type: "shipyard" },
-  { step: "Nanites 4", type: "nanite" },
-  { step: "CS 20", type: "shipyard" },
+const taux3_2_1 = [
+  { step: "Robot 1", type: "robot" },
+  { step: "Robot 2", type: "robot" },
+  { step: "Robot 3", type: "robot" },
+  { step: "Robot 4", type: "robot" },
+  { step: "Robot 5", type: "robot" },
+  { step: "Robot 6", type: "robot" },
+  { step: "Robot 7", type: "robot" },
+  { step: "Robot 8", type: "robot" },
+  { step: "Robot 9", type: "robot" },
+  { step: "Robot 10", type: "robot" },
+  { step: "Nanite 1", type: "nanite" },
+  { step: "Robot 11", type: "robot" },
+  { step: "Nanite 2", type: "nanite" },
+  { step: "Robot 12", type: "robot" },
+  { step: "Nanite 3", type: "nanite" },
+  { step: "Robot 13", type: "robot" },
+  { step: "Nanite 4", type: "nanite" },
+  { step: "Nanite 5", type: "nanite" },
+  { step: "Nanite 6", type: "nanite" },
+  { step: "Nanite 7", type: "nanite" },
+  { step: "Robot 16", type: "robot" },
+  { step: "Nanite 8", type: "nanite" },
+  { step: "Robot 17", type: "robot" },
+  { step: "Nanite 9", type: "nanite" },
+  { step: "Robot 18", type: "robot" },
+  { step: "Nanite 10", type: "nanite" },
+  { step: "Robot 19", type: "robot" },
+  { step: "Robot 20", type: "robot" },
+  { step: "Nanite 11", type: "nanite" },
+  { step: "Robot 21", type: "robot" },
+  { step: "Nanite 12", type: "nanite" },
+  { step: "Robot 22", type: "robot" },
+  { step: "Nanite 13", type: "nanite" },
+  { step: "Nanite 14", type: "nanite" },
+  { step: "Robot 23", type: "robot" },
+  { step: "Nanite 15", type: "nanite" },
+  { step: "Robot 24", type: "robot" },
+  { step: "Robot 25", type: "robot" },
+  { step: "Nanite 16", type: "nanite" },
+  { step: "Robot 26", type: "robot" },
 ];
 
 const getStepColor = (type: string) => {
@@ -78,19 +104,25 @@ const getStepColor = (type: string) => {
       return "bg-orange-500/20 text-orange-300 border-orange-500/40";
     case "nanite":
       return "bg-green-500/20 text-green-300 border-green-500/40";
-    case "shipyard":
-      return "bg-cyan-500/20 text-cyan-300 border-cyan-500/40";
     default:
       return "bg-gray-500/20 text-gray-300 border-gray-500/40";
   }
 };
 
+const splitIntoColumns = (arr: typeof taux2_1_5_1, cols: number) => {
+  const perColumn = Math.ceil(arr.length / cols);
+  const result = [];
+  for (let i = 0; i < cols; i++) {
+    result.push(arr.slice(i * perColumn, (i + 1) * perColumn));
+  }
+  return result;
+};
+
 export default function GuideOrdreConstruction() {
-  const leftColumn = developmentSteps.slice(0, 14);
-  const rightColumn = developmentSteps.slice(14);
+  const [selectedRate, setSelectedRate] = useState<"2/1.5/1" | "3/2/1">("2/1.5/1");
   
-  const shipyardLeft = shipyardSteps.slice(0, 14);
-  const shipyardRight = shipyardSteps.slice(14);
+  const data = selectedRate === "2/1.5/1" ? taux2_1_5_1 : taux3_2_1;
+  const columns = splitIntoColumns(data, 2);
 
   return (
     <Layout>
@@ -116,7 +148,7 @@ export default function GuideOrdreConstruction() {
                 Ordre de Construction Optimal
               </h1>
               <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-                Usine de Robots, Nanite et Chantier Spatial : l'ordre idéal pour optimiser vos temps de construction
+                Usine de Robots et Nanites : l'ordre idéal pour optimiser vos temps de construction
               </p>
             </div>
 
@@ -134,7 +166,7 @@ export default function GuideOrdreConstruction() {
                   </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="bg-orange-900/20 border border-orange-700/30 rounded-lg p-4 text-center">
                     <Factory className="w-8 h-8 text-orange-400 mx-auto mb-2" />
                     <h3 className="font-bold text-orange-300 mb-1">Usine de Robots</h3>
@@ -145,112 +177,69 @@ export default function GuideOrdreConstruction() {
                     <h3 className="font-bold text-green-300 mb-1">Usine de Nanites</h3>
                     <p className="text-gray-400 text-sm">Division par 2 par niveau</p>
                   </div>
-                  <div className="bg-cyan-900/20 border border-cyan-700/30 rounded-lg p-4 text-center">
-                    <Rocket className="w-8 h-8 text-cyan-400 mx-auto mb-2" />
-                    <h3 className="font-bold text-cyan-300 mb-1">Chantier Spatial</h3>
-                    <p className="text-gray-400 text-sm">Production de vaisseaux</p>
-                  </div>
                 </div>
               </div>
 
               <div className="bg-[#1C2230] border border-[#2E384D] rounded-xl p-6">
-                <div className="flex items-center gap-3 mb-6">
-                  <Clock className="w-6 h-6 text-primary" />
-                  <h2 className="font-display text-xl font-bold text-white">Développement idéal</h2>
+                <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
+                  <div className="flex items-center gap-3">
+                    <Clock className="w-6 h-6 text-primary" />
+                    <h2 className="font-display text-xl font-bold text-white">Développement idéal</h2>
+                  </div>
+                  
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setSelectedRate("2/1.5/1")}
+                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                        selectedRate === "2/1.5/1"
+                          ? "bg-primary text-white"
+                          : "bg-[#151924] text-gray-400 hover:text-white"
+                      }`}
+                    >
+                      Taux 2/1.5/1
+                    </button>
+                    <button
+                      onClick={() => setSelectedRate("3/2/1")}
+                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                        selectedRate === "3/2/1"
+                          ? "bg-primary text-white"
+                          : "bg-[#151924] text-gray-400 hover:text-white"
+                      }`}
+                    >
+                      Taux 3/2/1
+                    </button>
+                  </div>
                 </div>
                 
-                <p className="text-gray-400 mb-6">
-                  Suivez cet ordre pour un développement optimal. Lisez de haut en bas dans chaque colonne, 
-                  puis passez à la colonne suivante.
+                <p className="text-gray-400 mb-4">
+                  Suivez cet ordre pour un développement optimal selon le taux de votre univers. 
+                  Lisez de haut en bas dans chaque colonne.
                 </p>
 
                 <div className="flex items-center gap-2 mb-4 text-sm text-gray-500">
                   <ArrowDown className="w-4 h-4" />
-                  <span>Colonne gauche d'abord</span>
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                  <span>Puis colonne droite</span>
+                  <span>Colonne gauche d'abord, puis colonne droite</span>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    {leftColumn.map((item, index) => (
-                      <div 
-                        key={`left-${index}`}
-                        className={`px-3 py-2 rounded border text-sm font-medium ${getStepColor(item.type)}`}
-                      >
-                        {item.step}
-                      </div>
-                    ))}
-                  </div>
-                  <div className="space-y-1">
-                    {rightColumn.map((item, index) => (
-                      <div 
-                        key={`right-${index}`}
-                        className={`px-3 py-2 rounded border text-sm font-medium ${getStepColor(item.type)}`}
-                      >
-                        {item.step}
-                      </div>
-                    ))}
-                  </div>
+                  {columns.map((col, colIndex) => (
+                    <div key={colIndex} className="space-y-1">
+                      {col.map((item, index) => (
+                        <div 
+                          key={`col-${colIndex}-${index}`}
+                          className={`px-3 py-2 rounded border text-sm font-medium ${getStepColor(item.type)}`}
+                        >
+                          {item.step}
+                        </div>
+                      ))}
+                    </div>
+                  ))}
                 </div>
 
                 <div className="flex gap-4 mt-6 flex-wrap">
                   <div className="flex items-center gap-2">
                     <div className="w-4 h-4 rounded bg-orange-500/40 border border-orange-500/60"></div>
                     <span className="text-gray-400 text-sm">Usine de Robots</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 rounded bg-green-500/40 border border-green-500/60"></div>
-                    <span className="text-gray-400 text-sm">Usine de Nanites</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-[#1C2230] border border-[#2E384D] rounded-xl p-6">
-                <div className="flex items-center gap-3 mb-6">
-                  <Rocket className="w-6 h-6 text-cyan-400" />
-                  <h2 className="font-display text-xl font-bold text-white">Développement Chantier Spatial</h2>
-                </div>
-                
-                <p className="text-gray-400 mb-6">
-                  Pour optimiser la construction des vaisseaux, alternez entre le Chantier Spatial et les Nanites 
-                  selon cet ordre.
-                </p>
-
-                <div className="flex items-center gap-2 mb-4 text-sm text-gray-500">
-                  <ArrowDown className="w-4 h-4" />
-                  <span>Colonne gauche d'abord</span>
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                  <span>Puis colonne droite</span>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    {shipyardLeft.map((item, index) => (
-                      <div 
-                        key={`ship-left-${index}`}
-                        className={`px-3 py-2 rounded border text-sm font-medium ${getStepColor(item.type)}`}
-                      >
-                        {item.step}
-                      </div>
-                    ))}
-                  </div>
-                  <div className="space-y-1">
-                    {shipyardRight.map((item, index) => (
-                      <div 
-                        key={`ship-right-${index}`}
-                        className={`px-3 py-2 rounded border text-sm font-medium ${getStepColor(item.type)}`}
-                      >
-                        {item.step}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="flex gap-4 mt-6 flex-wrap">
-                  <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 rounded bg-cyan-500/40 border border-cyan-500/60"></div>
-                    <span className="text-gray-400 text-sm">Chantier Spatial (CS)</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-4 h-4 rounded bg-green-500/40 border border-green-500/60"></div>
@@ -277,6 +266,14 @@ export default function GuideOrdreConstruction() {
                   <li className="flex items-start gap-2">
                     <span className="text-amber-400">•</span>
                     <span>Ces ordres sont optimaux pour minimiser le temps total de développement</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-amber-400">•</span>
+                    <span><strong className="text-white">Taux 2/1.5/1</strong> : Univers avec économie standard</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-amber-400">•</span>
+                    <span><strong className="text-white">Taux 3/2/1</strong> : Univers avec économie accélérée</span>
                   </li>
                 </ul>
               </div>
