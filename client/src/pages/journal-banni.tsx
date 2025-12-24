@@ -953,6 +953,47 @@ const chapters: Chapter[] = [
           <p className="text-white font-semibold text-xl">Juste une fatigue immense.</p>
         </div>
         
+        <div className="mt-10 bg-[#1C2230] border border-[#2E384D] rounded-xl p-6 md:p-8">
+          <h5 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+            <Clock className="w-5 h-5 text-gray-500" />
+            Ce que je me dis à ce moment-là
+          </h5>
+          
+          <div className="space-y-4 text-gray-400 leading-relaxed">
+            <p>
+              J'avais gardé l'espoir. Tout au long de cette histoire, j'avais gardé l'espoir qu'aucune trace 
+              de ce script ne soit visible sur Hercules. À mes yeux, il n'avait pas vraiment servi sur ce compte. 
+              Pas comme sur Scorpius.
+            </p>
+            
+            <p>
+              Et pourtant, ils ont trouvé.
+            </p>
+            
+            <p className="text-gray-500 italic border-l-2 border-gray-600 pl-4">
+              Une "analyse conséquente" en 5 heures ? C'est ce qu'on m'a dit.
+              <br/>
+              Je ne peux m'empêcher de penser que le dossier était déjà prêt. 
+              Préparé "au cas où" le Community Manager serait favorable à une seconde chance.
+            </p>
+            
+            <p>
+              Comme si, depuis le début, l'objectif avait toujours été de me mettre hors-ligne définitivement.
+            </p>
+          </div>
+        </div>
+        
+        <div className="mt-8 bg-gradient-to-r from-yellow-900/20 to-transparent border-l-4 border-yellow-500/50 p-6 rounded-r-xl">
+          <p className="text-yellow-400/80 font-medium mb-3">Un sentiment qui reste</p>
+          <p className="text-gray-400">
+            Je garde la sensation que nous ne sommes pas tous égaux face au staff. 
+            Même si ces derniers semblent faire de leur mieux, un traitement plus humain aurait été souhaitable.
+          </p>
+          <p className="text-gray-500 mt-3 text-sm italic">
+            Je ne dis pas qu'ils ont tort. Je dis juste que la manière compte autant que la décision.
+          </p>
+        </div>
+        
         <div className="mt-10 text-center">
           <p className="text-gray-500 italic mb-4">Je n'avais plus rien à défendre. Juste quelque chose à dire.</p>
           <p className="text-gray-400">Alors j'ai écrit une dernière réponse.</p>
