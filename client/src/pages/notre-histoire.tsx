@@ -136,41 +136,6 @@ export default function NotreHistoire() {
         </div>
       </section>
 
-      <section className="py-10">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="max-w-2xl mx-auto"
-          >
-            <Link href="/journal-banni">
-              <div className="group bg-gradient-to-br from-red-900/30 via-[#1C2230] to-orange-900/20 border-2 border-red-500/40 rounded-2xl p-6 md:p-8 hover:border-red-500/60 transition-all cursor-pointer">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-14 h-14 bg-red-500/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <BookOpen className="w-7 h-7 text-red-400" />
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <span className="px-2 py-0.5 bg-red-500/20 text-red-400 text-xs font-bold rounded">NOUVEAU</span>
-                    </div>
-                    <h3 className="text-xl font-bold text-white mt-1">Journal d'un banni</h3>
-                  </div>
-                </div>
-                <p className="text-gray-400 mb-4">
-                  L'histoire complète du bannissement. Un récit personnel, sans filtre, 
-                  qui raconte la chute, la seconde chance, et la fin définitive.
-                </p>
-                <div className="flex items-center text-primary font-semibold group-hover:gap-3 transition-all gap-2">
-                  <span>Lire le journal complet</span>
-                  <ArrowLeft className="w-4 h-4 rotate-180" />
-                </div>
-              </div>
-            </Link>
-          </motion.div>
-        </div>
-      </section>
-
       <section className="py-20 relative">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
@@ -289,6 +254,39 @@ export default function NotreHistoire() {
               );
             })}
           </div>
+        </div>
+      </section>
+
+      <section className="py-10">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="max-w-2xl mx-auto"
+          >
+            <Link href="/journal-banni">
+              <div className="group bg-gradient-to-br from-red-900/30 via-[#1C2230] to-orange-900/20 border-2 border-red-500/40 rounded-2xl p-6 md:p-8 hover:border-red-500/60 transition-all cursor-pointer">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-14 h-14 bg-red-500/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <BookOpen className="w-7 h-7 text-red-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-white mt-1">Journal d'un banni</h3>
+                    <p className="text-gray-500 text-sm">Décembre 2025</p>
+                  </div>
+                </div>
+                <p className="text-gray-400 mb-4">
+                  L'histoire complète du bannissement. Un récit personnel, sans filtre, 
+                  qui raconte la chute, la seconde chance, et la fin définitive.
+                </p>
+                <div className="flex items-center text-primary font-semibold group-hover:gap-3 transition-all gap-2">
+                  <span>Lire le journal complet</span>
+                  <ArrowLeft className="w-4 h-4 rotate-180" />
+                </div>
+              </div>
+            </Link>
+          </motion.div>
         </div>
       </section>
 

@@ -67,14 +67,6 @@ const sections = [
     stats: "Actifs"
   },
   {
-    href: "/projets",
-    icon: Rocket,
-    title: "Projets",
-    description: "Notre roadmap et les événements à venir.",
-    color: "from-secondary to-orange-600",
-    stats: "2025"
-  },
-  {
     href: "/support",
     icon: Shield,
     title: "Support",
@@ -621,45 +613,7 @@ export default function Home() {
             viewport={{ once: true }}
             className="max-w-4xl mx-auto"
           >
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Link href="/twitch" data-testid="link-twitch-home">
-                <div className="group relative bg-gradient-to-br from-purple-900/30 via-[#1C2230] to-[#151924] border border-purple-500/30 rounded-2xl p-6 md:p-8 hover:border-purple-500/50 transition-all cursor-pointer overflow-hidden h-full">
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500" />
-                  <div className="absolute -top-20 -right-20 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl" />
-                  
-                  <div className="relative">
-                    <div className="flex items-center gap-4 mb-4">
-                      <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/30 group-hover:scale-110 transition-transform">
-                        <Radio className="w-7 h-7 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-bold text-white group-hover:text-purple-400 transition-colors">Lives Twitch</h3>
-                        <p className="text-purple-400 text-sm">@psykoseogame</p>
-                      </div>
-                    </div>
-                    
-                    <p className="text-gray-400 text-sm mb-4">
-                      Suivez l'évolution de mon compte Veritate en direct ! Streams hebdomadaires avec stratégies en temps réel.
-                    </p>
-                    
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      <span className="bg-purple-500/20 text-purple-400 px-2 py-1 rounded text-xs border border-purple-500/30">
-                        OGame Live
-                      </span>
-                      <span className="bg-purple-500/20 text-purple-400 px-2 py-1 rounded text-xs border border-purple-500/30">
-                        Serveur Saison
-                      </span>
-                    </div>
-                    
-                    <div className="flex items-center gap-2 text-purple-400 text-sm font-medium group-hover:gap-3 transition-all">
-                      <Bell className="w-4 h-4" />
-                      Voir la chaîne
-                      <ExternalLink className="w-3 h-3" />
-                    </div>
-                  </div>
-                </div>
-              </Link>
-
+            <div className="max-w-lg mx-auto">
               <div className="bg-gradient-to-br from-[#1C2230] to-[#151924] border border-[#2E384D] rounded-2xl p-6 md:p-8">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-14 h-14 bg-red-600 rounded-xl flex items-center justify-center shadow-lg shadow-red-500/20">

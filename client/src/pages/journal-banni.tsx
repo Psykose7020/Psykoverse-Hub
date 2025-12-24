@@ -953,6 +953,53 @@ const chapters: Chapter[] = [
           <p className="text-white font-semibold text-xl">Juste une fatigue immense.</p>
         </div>
         
+        <div className="mt-10 text-center">
+          <p className="text-gray-500 italic mb-4">Mais je voulais comprendre. Pas contester. Juste... comprendre.</p>
+          <p className="text-gray-400">Alors j'ai écrit une dernière réponse.</p>
+        </div>
+        
+        <div className="mt-8 bg-gradient-to-br from-primary/5 via-[#1C2230] to-[#151924] border border-primary/30 rounded-2xl p-6 md:p-8">
+          <div className="flex items-center gap-3 mb-4 pb-4 border-b border-primary/20">
+            <div className="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center">
+              <MessageSquare className="w-5 h-5 text-primary" />
+            </div>
+            <div>
+              <p className="text-white font-semibold">Ma réponse au staff</p>
+              <p className="text-gray-500 text-xs">23/12/2025 16:13:37</p>
+            </div>
+          </div>
+          
+          <div className="space-y-4 text-gray-300 text-sm leading-relaxed">
+            <p>Bonjour,</p>
+            <p>
+              Merci pour votre réponse et pour le temps que vous avez consacré à mon dossier.
+            </p>
+            <p>
+              Je me permets simplement de revenir vers vous, non pas pour contester la décision prise, 
+              mais pour mieux comprendre ce qu'il s'est passé de mon côté.
+            </p>
+            <p>
+              Lorsque le Community Manager m'a indiqué, après réexamen de mon cas, qu'une seconde chance 
+              m'était accordée et que le compte Hercules était débloqué, j'ai sincèrement cru que cela 
+              signifiait que la situation du compte avait été regardée dans son ensemble. Ce message m'a 
+              beaucoup marqué, car il m'a donné le sentiment qu'un examen humain et bienveillant avait été fait.
+            </p>
+            <p>
+              C'est pourquoi le bannissement définitif intervenu ensuite, le même jour, a été difficile 
+              à comprendre pour moi. Je cherche simplement à savoir si cette seconde décision correspond 
+              à une analyse complémentaire réalisée après coup, ou si je me suis mépris sur la portée du 
+              message qui m'avait été adressé.
+            </p>
+            <p>
+              Je ne remets pas en cause les règles ni votre travail, et je comprends que vous ayez des 
+              obligations à respecter. Mon intention est uniquement de comprendre la succession de ces 
+              décisions, afin de pouvoir tourner la page de manière apaisée.
+            </p>
+            <p>Merci encore pour votre écoute.</p>
+            <p className="text-gray-400">Bien cordialement,<br/>Psykose</p>
+          </div>
+        </div>
+        
         <div className="mt-10 p-6 bg-[#1C2230] border border-[#2E384D] rounded-xl">
           <p className="text-gray-400 italic text-center">
             C'est là que je comprends que c'est vraiment terminé.
