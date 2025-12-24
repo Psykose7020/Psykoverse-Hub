@@ -916,7 +916,7 @@ const chapters: Chapter[] = [
         
         <TerminalMessage lines={[
           "> Message reçu : 23/12/2025 15:54:08",
-          "> Expéditeur : Super Opérateur Yoh",
+          "> Expéditeur : Super Opérateur",
           "> Objet : Bannissement définitif",
           "---",
           "Suite au débanissement de votre compte,",
