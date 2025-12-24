@@ -937,10 +937,10 @@ const chapters: Chapter[] = [
             La seconde chance venait d'être retirée.
           </p>
           <p className="text-center text-gray-400">
-            Non pas pour une nouvelle faute. Mais pour une ancienne.
+            L'analyse avait été faite. Sur Hercules.
           </p>
           <p className="text-center text-gray-400 mt-2">
-            Une faute que je pensais enterrée. Une faute sur un autre compte.
+            Ils ont trouvé ce qu'ils cherchaient.
           </p>
         </div>
         
