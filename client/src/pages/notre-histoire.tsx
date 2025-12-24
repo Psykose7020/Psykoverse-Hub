@@ -19,9 +19,9 @@ const staggerContainer = {
 
 const timeline = [
   {
-    period: "Il y a plusieurs mois",
+    period: "Fin 2022",
     title: "Une idée germe",
-    description: "Tout commence par une simple envie : partager ma passion pour OGame. Des heures passées à jouer, à apprendre, à comprendre les mécaniques du jeu... et l'envie de transmettre tout ça à d'autres joueurs.",
+    description: "Tout commence par une simple envie : partager ma passion pour OGame. Des heures passées à jouer, à apprendre, à comprendre les mécaniques du jeu... Les premières vidéos YouTube sont créées, mais restent offline. L'idée mûrit dans l'ombre.",
     icon: Sparkles,
     color: "from-purple-500 to-indigo-500"
   },
