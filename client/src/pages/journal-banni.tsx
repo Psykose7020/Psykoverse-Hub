@@ -970,111 +970,156 @@ const chapters: Chapter[] = [
     icon: Heart,
     mood: "neutral",
     content: (
-      <div className="space-y-6">
-        <div className="bg-gradient-to-br from-primary/10 via-[#1C2230] to-[#151924] border-2 border-primary/30 rounded-2xl p-8 md:p-10">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-12 h-12 bg-primary/20 rounded-xl flex items-center justify-center">
-              <Heart className="w-6 h-6 text-primary" />
+      <div className="space-y-8">
+        <div className="bg-gradient-to-br from-primary/5 via-[#1C2230] to-[#151924] border border-primary/20 rounded-2xl p-8 md:p-12">
+          <div className="flex items-center gap-3 mb-8 pb-6 border-b border-primary/20">
+            <div className="w-14 h-14 bg-primary/20 rounded-xl flex items-center justify-center">
+              <Heart className="w-7 h-7 text-primary" />
             </div>
             <div>
-              <h4 className="text-xl font-bold text-white">Communication importante</h4>
-              <p className="text-gray-500 text-sm">De Psykose, à tous ceux qui ont suivi l'aventure</p>
+              <h4 className="text-2xl font-bold text-white">Communication importante</h4>
+              <p className="text-gray-500">De Psykose, à tous ceux qui ont suivi l'aventure</p>
             </div>
           </div>
           
-          <div className="space-y-4 text-gray-300 leading-relaxed">
-            <p>
-              Après des années passées dans l'univers d'OGame, à construire des flottes, 
-              à tisser des alliances, à partager ma passion à travers des vidéos et des lives... 
-              je dois aujourd'hui accepter que cette aventure touche à sa fin.
-            </p>
+          <div className="space-y-8 text-gray-300 leading-relaxed text-lg">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="bg-red-900/20 border-l-4 border-red-500 p-6 rounded-r-xl"
+            >
+              <p className="text-red-300 font-semibold text-xl mb-2">Il n'y aura pas de retour.</p>
+              <p className="text-gray-400">
+                Pas de nouveau départ, pas de compte recréé, pas d'univers parallèle pour faire semblant que rien ne s'est passé. Ce qui s'achève ici n'est pas seulement Hercules, ni même OGame dans son ensemble, mais une histoire complète, commencée il y a des années et menée jusqu'à son terme.
+              </p>
+            </motion.div>
             
-            <p>
-              Le bannissement définitif de mon compte Hercules marque la fin d'un cycle. 
-              Pas seulement la fin d'un compte, mais la fin d'une époque.
-            </p>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="space-y-4"
+            >
+              <p className="text-white font-medium italic text-center text-xl">L'écran s'éteint sans bruit.</p>
+              <p className="text-gray-400 text-center">Le bouton « Jouer » devient inutile.</p>
+              <p className="text-gray-400">
+                Et avec lui disparaissent des habitudes, des réflexes, une présence quotidienne devenue presque naturelle. OGame ne sera plus un détour, ni un refuge, ni même une tentation. Cette décision marque une fin totale du jeu pour moi.
+              </p>
+            </motion.div>
             
-            <p className="font-semibold text-white">
-              Je tiens à être clair : aucun retour n'est prévu.
-            </p>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+              className="bg-[#0B0E14] border border-[#2E384D] rounded-xl p-6"
+            >
+              <p className="text-gray-300">
+                Ce qui rend cette fin particulière, ce n'est pas la sanction en elle-même, mais ce qu'elle emporte. Des années d'investissement, de patience, de passion parfois déraisonnable. Un parcours imparfait, comme tous les parcours humains, mais sincère. Un seul écart, jugé insignifiant sur le moment, aura entraîné des conséquences dont je n'avais jamais imaginé l'ampleur. Non pas une simple correction, mais une rupture nette, définitive, irréversible.
+              </p>
+            </motion.div>
             
-            <p>
-              Même si un hypothétique déban devait survenir un jour, 
-              l'épuisement est là. Le cycle est terminé. 
-              Il est temps de passer à autre chose.
-            </p>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4 }}
+              className="bg-gradient-to-r from-green-900/20 to-transparent border-l-4 border-green-500/50 p-6 rounded-r-xl"
+            >
+              <p className="text-green-400 font-medium mb-3">Il y a eu l'espoir, pourtant.</p>
+              <p className="text-gray-400">
+                Un moment bref, fragile, mais réel. Lorsqu'une seconde chance a été accordée. Lorsqu'un regard humain a semblé primer sur la mécanique. Cet espoir n'était pas une illusion volontaire, mais une confiance accordée, pleinement, honnêtement. Sa disparition n'en a été que plus douloureuse, laissant derrière elle cette sensation étrange d'avoir cru encore, trop tard.
+              </p>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.5 }}
+              className="text-center py-8"
+            >
+              <p className="text-2xl text-white font-display">Alors vient le temps du retrait.</p>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.6 }}
+            >
+              <p className="text-gray-300">
+                Le commandant quitte l'univers sans fracas, sans colère affichée, sans chercher à convaincre ou à réécrire ce qui ne changera plus. Avec de l'amertume, oui, mais aussi avec une forme de lucidité. Tout ne se gagne pas. Tout ne se corrige pas. Et parfois, partir dignement est la seule chose qu'il reste à faire.
+              </p>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.7 }}
+              className="bg-primary/10 border border-primary/30 rounded-xl p-6"
+            >
+              <p className="text-primary font-medium mb-3">Le Psykoverse, lui aussi, sera impacté.</p>
+              <p className="text-gray-400">
+                Il ne peut en être autrement. Un projet né de la passion du jeu, construit autour du partage, de la transmission, de l'envie d'aider les autres à progresser sans se perdre. Cette dynamique ne disparaîtra pas du jour au lendemain, mais elle devra évoluer, se transformer, s'adapter à une réalité nouvelle.
+              </p>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.8 }}
+            >
+              <p className="text-white font-medium mb-3">Je m'assurerai que la suite se fasse avec dignité.</p>
+              <p className="text-gray-400">
+                Sans amertume projetée sur les autres. Sans abandon brutal. Le Psykoverse ne sera pas laissé à l'abandon, mais il ne sera plus porté de la même manière. Ce qui doit s'éteindre s'éteindra proprement. Ce qui peut subsister le fera sans trahir l'esprit initial.
+              </p>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.9 }}
+              className="text-center space-y-2 py-6 text-gray-500 italic"
+            >
+              <p>Les univers continueront sans moi.</p>
+              <p>Les classements évolueront.</p>
+              <p>D'autres construiront, d'autres tomberont, d'autres apprendront à leurs dépens les règles invisibles de ces mondes persistants.</p>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 1.0 }}
+              className="bg-gradient-to-br from-[#5865F2]/10 via-[#1C2230] to-transparent border border-[#5865F2]/30 rounded-xl p-6"
+            >
+              <p className="text-gray-300">
+                Et quelque part, dans la mémoire silencieuse du jeu, restera la trace d'un commandant imparfait, passionné, parfois naïf, mais toujours investi. Quelqu'un qui aura joué longtemps, sincèrement, et jusqu'au bout.
+              </p>
+            </motion.div>
           </div>
         </div>
         
-        <div className="bg-[#1C2230] border border-[#2E384D] rounded-xl p-6 md:p-8">
-          <h5 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-primary" />
-            Ce qui change pour Psykoverse
-          </h5>
-          
-          <div className="space-y-4">
-            <div className="flex items-start gap-3 p-4 bg-red-900/20 border border-red-500/30 rounded-lg">
-              <div className="w-8 h-8 bg-red-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                <span className="text-red-400 font-bold">×</span>
-              </div>
-              <div>
-                <p className="text-red-400 font-semibold">Fin des lives Twitch</p>
-                <p className="text-gray-500 text-sm">Les streams OGame s'arrêtent définitivement.</p>
-              </div>
-            </div>
-            
-            <div className="flex items-start gap-3 p-4 bg-red-900/20 border border-red-500/30 rounded-lg">
-              <div className="w-8 h-8 bg-red-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                <span className="text-red-400 font-bold">×</span>
-              </div>
-              <div>
-                <p className="text-red-400 font-semibold">Fin des vidéos YouTube OGame</p>
-                <p className="text-gray-500 text-sm">La chaîne reste en archive, mais plus de nouveaux contenus OGame.</p>
-              </div>
-            </div>
-            
-            <div className="flex items-start gap-3 p-4 bg-green-900/20 border border-green-500/30 rounded-lg">
-              <div className="w-8 h-8 bg-green-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                <span className="text-green-400 font-bold">✓</span>
-              </div>
-              <div>
-                <p className="text-green-400 font-semibold">Le site Psykoverse continue</p>
-                <p className="text-gray-500 text-sm">Maintenance, améliorations modestes, mises à jour mensuelles des tutoriels.</p>
-              </div>
-            </div>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          className="text-center py-10 bg-gradient-to-b from-transparent via-[#1C2230]/50 to-transparent rounded-2xl"
+        >
+          <p className="text-2xl text-white font-display mb-4">La transmission s'achève ici.</p>
+          <p className="text-gray-400 text-lg mb-2">Sans retour prévu.</p>
+          <p className="text-primary font-semibold text-xl mt-6">Mais sans regret d'avoir essayé.</p>
+          <div className="mt-8">
+            <p className="text-gray-600 text-sm">— Psykose</p>
           </div>
-        </div>
-        
-        <div className="bg-gradient-to-br from-[#5865F2]/10 via-[#1C2230] to-[#151924] border-2 border-[#5865F2]/30 rounded-2xl p-8">
-          <h5 className="text-xl font-bold text-white mb-6 text-center">Remerciements</h5>
-          
-          <div className="space-y-4 text-gray-300 text-center leading-relaxed">
-            <p>
-              Merci à tous ceux qui ont fait cette aventure OGame avec moi.
-            </p>
-            <p>
-              Aux alliés qui m'ont fait confiance. Aux adversaires qui m'ont fait progresser.
-            </p>
-            <p>
-              Aux amis en vocal à 3h du matin pour un retour de flotte.
-            </p>
-            <p>
-              Aux lecteurs de ce journal. Aux contributeurs du Discord.
-            </p>
-            <p className="text-white font-semibold text-lg mt-6">
-              Cette communauté restera ma plus belle construction dans OGame.
-            </p>
-          </div>
-        </div>
-        
-        <div className="text-center mt-8">
-          <p className="text-gray-500 italic">
-            Sans regret d'avoir essayé.
-          </p>
-          <p className="text-primary font-semibold mt-2">
-            — Psykose
-          </p>
-        </div>
+        </motion.div>
       </div>
     )
   },
