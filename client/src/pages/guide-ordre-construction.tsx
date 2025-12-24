@@ -56,9 +56,13 @@ const shipyardSteps = [
   { step: "CS 11", type: "shipyard" },
   { step: "Nanites 3", type: "nanite" },
   { step: "CS 12", type: "shipyard" },
+  { step: "CS 13", type: "shipyard" },
+  { step: "Nanites 5", type: "nanite" },
+  { step: "CS 14", type: "shipyard" },
   { step: "Nanites 5", type: "nanite" },
   { step: "Nanites 6", type: "nanite" },
   { step: "Nanites 7", type: "nanite" },
+  { step: "Nanites 8", type: "nanite" },
   { step: "Nanites 8", type: "nanite" },
   { step: "Nanites 9", type: "nanite" },
   { step: "CS 17", type: "shipyard" },
@@ -85,8 +89,8 @@ export default function GuideOrdreConstruction() {
   const leftColumn = developmentSteps.slice(0, 14);
   const rightColumn = developmentSteps.slice(14);
   
-  const shipyardLeft = shipyardSteps.slice(0, 12);
-  const shipyardRight = shipyardSteps.slice(12);
+  const shipyardLeft = shipyardSteps.slice(0, 14);
+  const shipyardRight = shipyardSteps.slice(14);
 
   return (
     <Layout>
