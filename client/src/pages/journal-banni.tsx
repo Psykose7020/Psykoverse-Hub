@@ -940,7 +940,10 @@ const chapters: Chapter[] = [
             L'analyse avait été faite. Sur Hercules.
           </p>
           <p className="text-center text-gray-400 mt-2">
-            Ils ont trouvé ce qu'ils cherchaient.
+            Ils ont trouvé l'usage du même script. Celui que j'avais créé pour Scorpius.
+          </p>
+          <p className="text-center text-gray-500 mt-2 text-sm italic">
+            Le même outil. Un autre univers. Même conséquence.
           </p>
         </div>
         
