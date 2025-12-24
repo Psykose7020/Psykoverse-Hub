@@ -954,7 +954,7 @@ const chapters: Chapter[] = [
         </div>
         
         <div className="mt-10 text-center">
-          <p className="text-gray-500 italic mb-4">Mais je voulais comprendre. Pas contester. Juste... comprendre.</p>
+          <p className="text-gray-500 italic mb-4">Je n'avais plus rien à défendre. Juste quelque chose à dire.</p>
           <p className="text-gray-400">Alors j'ai écrit une dernière réponse.</p>
         </div>
         
@@ -965,38 +965,41 @@ const chapters: Chapter[] = [
             </div>
             <div>
               <p className="text-white font-semibold">Ma réponse au staff</p>
-              <p className="text-gray-500 text-xs">23/12/2025 16:13:37</p>
+              <p className="text-gray-500 text-xs">23/12/2025 17:52:56</p>
             </div>
           </div>
           
           <div className="space-y-4 text-gray-300 text-sm leading-relaxed">
             <p>Bonjour,</p>
             <p>
-              Merci pour votre réponse et pour le temps que vous avez consacré à mon dossier.
+              Je vous remercie pour votre dernier message et pour les explications apportées.
             </p>
             <p>
-              Je me permets simplement de revenir vers vous, non pas pour contester la décision prise, 
-              mais pour mieux comprendre ce qu'il s'est passé de mon côté.
+              Je souhaite simplement vous faire part, une dernière fois, de ce que cette décision représente 
+              pour moi. Après de très nombreuses années passées sur OGame, ce bannissement définitif marque 
+              pour moi la fin de mon parcours dans le jeu.
             </p>
             <p>
-              Lorsque le Community Manager m'a indiqué, après réexamen de mon cas, qu'une seconde chance 
-              m'était accordée et que le compte Hercules était débloqué, j'ai sincèrement cru que cela 
-              signifiait que la situation du compte avait été regardée dans son ensemble. Ce message m'a 
-              beaucoup marqué, car il m'a donné le sentiment qu'un examen humain et bienveillant avait été fait.
+              L'infraction reconnue, que je considère comme un écart isolé et sans précédent dans mon gameplay, 
+              a eu des conséquences d'une ampleur que je n'aurais jamais pu imaginer. Je n'ai jamais cherché à 
+              contourner durablement les règles, ni à m'inscrire dans une pratique systématique ou répétée. 
+              Malgré cela, l'enchaînement des décisions et la rapidité avec laquelle la situation a évolué 
+              m'ont donné le sentiment d'un processus devenu impossible à enrayer.
             </p>
             <p>
-              C'est pourquoi le bannissement définitif intervenu ensuite, le même jour, a été difficile 
-              à comprendre pour moi. Je cherche simplement à savoir si cette seconde décision correspond 
-              à une analyse complémentaire réalisée après coup, ou si je me suis mépris sur la portée du 
-              message qui m'avait été adressé.
+              Au-delà de la sanction elle-même, c'est surtout la perte d'un univers dans lequel je me suis 
+              investi pendant des années, en temps, en énergie et en engagement, qui est difficile à accepter. 
+              <span className="text-gray-500 italic">(Hercules étant l'aboutissement de cela)</span>
             </p>
             <p>
-              Je ne remets pas en cause les règles ni votre travail, et je comprends que vous ayez des 
-              obligations à respecter. Mon intention est uniquement de comprendre la succession de ces 
-              décisions, afin de pouvoir tourner la page de manière apaisée.
+              Je prends néanmoins acte de votre position et de la décision finale. Mon message n'a pas vocation 
+              à relancer un débat, mais simplement à exprimer, de manière sincère, ce que cette issue représente 
+              humainement pour moi.
             </p>
-            <p>Merci encore pour votre écoute.</p>
-            <p className="text-gray-400">Bien cordialement,<br/>Psykose</p>
+            <p>
+              Je vous remercie pour le temps consacré à mon dossier et vous souhaite une bonne continuation.
+            </p>
+            <p className="text-gray-400">Cordialement,<br/>Psykose</p>
           </div>
         </div>
         
