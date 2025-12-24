@@ -98,12 +98,49 @@ const taux3_2_1 = [
   { step: "Robot 26", type: "robot" },
 ];
 
+const shipyardSteps = [
+  { step: "CS 1", type: "shipyard" },
+  { step: "CS 2", type: "shipyard" },
+  { step: "CS 3", type: "shipyard" },
+  { step: "CS 4", type: "shipyard" },
+  { step: "CS 5", type: "shipyard" },
+  { step: "CS 6", type: "shipyard" },
+  { step: "CS 7", type: "shipyard" },
+  { step: "CS 8", type: "shipyard" },
+  { step: "CS 9", type: "shipyard" },
+  { step: "Nanites 1", type: "nanite" },
+  { step: "CS 10", type: "shipyard" },
+  { step: "Nanites 2", type: "nanite" },
+  { step: "CS 11", type: "shipyard" },
+  { step: "Nanites 3", type: "nanite" },
+  { step: "CS 12", type: "shipyard" },
+  { step: "Nanites 4", type: "nanite" },
+  { step: "CS 13", type: "shipyard" },
+  { step: "Nanites 5", type: "nanite" },
+  { step: "CS 14", type: "shipyard" },
+  { step: "Nanites 6", type: "nanite" },
+  { step: "CS 15", type: "shipyard" },
+  { step: "Nanites 7", type: "nanite" },
+  { step: "Nanites 8", type: "nanite" },
+  { step: "CS 16", type: "shipyard" },
+  { step: "Nanites 9", type: "nanite" },
+  { step: "CS 17", type: "shipyard" },
+  { step: "Nanites 10", type: "nanite" },
+  { step: "CS 18", type: "shipyard" },
+  { step: "Nanites 11", type: "nanite" },
+  { step: "CS 19", type: "shipyard" },
+  { step: "Nanites 12", type: "nanite" },
+  { step: "CS 20", type: "shipyard" },
+];
+
 const getStepColor = (type: string) => {
   switch (type) {
     case "robot":
       return "bg-orange-500/20 text-orange-300 border-orange-500/40";
     case "nanite":
       return "bg-green-500/20 text-green-300 border-green-500/40";
+    case "shipyard":
+      return "bg-cyan-500/20 text-cyan-300 border-cyan-500/40";
     default:
       return "bg-gray-500/20 text-gray-300 border-gray-500/40";
   }
@@ -123,6 +160,7 @@ export default function GuideOrdreConstruction() {
   
   const data = selectedRate === "2/1.5/1" ? taux2_1_5_1 : taux3_2_1;
   const columns = splitIntoColumns(data, 2);
+  const shipyardColumns = splitIntoColumns(shipyardSteps as typeof taux2_1_5_1, 2);
 
   return (
     <Layout>
@@ -240,6 +278,48 @@ export default function GuideOrdreConstruction() {
                   <div className="flex items-center gap-2">
                     <div className="w-4 h-4 rounded bg-orange-500/40 border border-orange-500/60"></div>
                     <span className="text-gray-400 text-sm">Usine de Robots</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 rounded bg-green-500/40 border border-green-500/60"></div>
+                    <span className="text-gray-400 text-sm">Usine de Nanites</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-[#1C2230] border border-[#2E384D] rounded-xl p-6">
+                <div className="flex items-center gap-3 mb-6">
+                  <Rocket className="w-6 h-6 text-cyan-400" />
+                  <h2 className="font-display text-xl font-bold text-white">Développement Chantier Spatial</h2>
+                </div>
+                
+                <p className="text-gray-400 mb-4">
+                  Pour optimiser la construction des vaisseaux, alternez entre le Chantier Spatial et les Nanites selon cet ordre.
+                </p>
+
+                <div className="flex items-center gap-2 mb-4 text-sm text-gray-500">
+                  <ArrowDown className="w-4 h-4" />
+                  <span>Colonne gauche d'abord, puis colonne droite</span>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  {shipyardColumns.map((col, colIndex) => (
+                    <div key={`ship-col-${colIndex}`} className="space-y-1">
+                      {col.map((item, index) => (
+                        <div 
+                          key={`ship-${colIndex}-${index}`}
+                          className={`px-3 py-2 rounded border text-sm font-medium ${getStepColor(item.type)}`}
+                        >
+                          {item.step}
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex gap-4 mt-6 flex-wrap">
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 rounded bg-cyan-500/40 border border-cyan-500/60"></div>
+                    <span className="text-gray-400 text-sm">Chantier Spatial (CS)</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-4 h-4 rounded bg-green-500/40 border border-green-500/60"></div>
