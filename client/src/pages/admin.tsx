@@ -71,7 +71,6 @@ export default function Admin() {
   const [loading, setLoading] = useState(false);
   const [stats, setStats] = useState<VisitStats | null>(null);
   const [geoData, setGeoData] = useState<GeoData[]>([]);
-  const [token, setToken] = useState("");
   const [feedbackList, setFeedbackList] = useState<Feedback[]>([]);
   const [selectedFeedback, setSelectedFeedback] = useState<Feedback | null>(null);
   const [activeTab, setActiveTab] = useState<"stats" | "feedback" | "leaderboard" | "guides" | "compositions">("stats");
@@ -81,15 +80,13 @@ export default function Admin() {
   const [exportingExcel, setExportingExcel] = useState(false);
 
   useEffect(() => {
-    const savedToken = localStorage.getItem("adminToken");
-    if (savedToken) {
-      setToken(savedToken);
-      setIsLoggedIn(true);
-    }
+    fetch("/api/admin/verify", { credentials: "include" })
+      .then(res => { if (res.ok) setIsLoggedIn(true); })
+      .catch(() => {});
   }, []);
 
   useEffect(() => {
-    if (isLoggedIn && token) {
+    if (isLoggedIn) {
       fetchStats();
       fetchGeoData();
       fetchFeedback();
@@ -108,12 +105,12 @@ export default function Admin() {
         clearInterval(compositionsInterval);
       };
     }
-  }, [isLoggedIn, token]);
+  }, [isLoggedIn]);
 
   const fetchGeoData = async () => {
     try {
       const res = await fetch("/api/admin/geo", {
-        headers: { Authorization: `Bearer ${token}` },
+        credentials: "include" as const,
       });
       if (res.ok) {
         const data = await res.json();
@@ -127,7 +124,7 @@ export default function Admin() {
   const fetchStats = async () => {
     try {
       const res = await fetch("/api/admin/stats", {
-        headers: { Authorization: `Bearer ${token}` },
+        credentials: "include" as const,
       });
       if (res.ok) {
         const data = await res.json();
@@ -143,7 +140,7 @@ export default function Admin() {
   const fetchFeedback = async () => {
     try {
       const res = await fetch("/api/admin/feedback", {
-        headers: { Authorization: `Bearer ${token}` },
+        credentials: "include" as const,
       });
       if (res.ok) {
         const data = await res.json();
@@ -157,7 +154,7 @@ export default function Admin() {
   const fetchLeaderboard = async () => {
     try {
       const res = await fetch("/api/admin/leaderboard", {
-        headers: { Authorization: `Bearer ${token}` },
+        credentials: "include" as const,
       });
       if (res.ok) {
         const data = await res.json();
@@ -171,7 +168,7 @@ export default function Admin() {
   const fetchCompositions = async () => {
     try {
       const res = await fetch("/api/admin/compositions", {
-        headers: { Authorization: `Bearer ${token}` },
+        credentials: "include" as const,
       });
       if (res.ok) {
         const data = await res.json();
@@ -187,7 +184,7 @@ export default function Admin() {
     setExportingExcel(true);
     try {
       const res = await fetch("/api/admin/compositions/export", {
-        headers: { Authorization: `Bearer ${token}` },
+        credentials: "include" as const,
       });
       if (res.ok) {
         const blob = await res.blob();
@@ -214,7 +211,7 @@ export default function Admin() {
     try {
       const res = await fetch(`/api/admin/compositions/fleet/${id}`, {
         method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
+        credentials: "include" as const,
       });
       if (res.ok) {
         setFleetCompositions(prev => prev.filter(c => c.id !== id));
@@ -229,7 +226,7 @@ export default function Admin() {
     try {
       const res = await fetch(`/api/admin/compositions/defense/${id}`, {
         method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
+        credentials: "include" as const,
       });
       if (res.ok) {
         setDefenseCompositions(prev => prev.filter(c => c.id !== id));
@@ -244,7 +241,7 @@ export default function Admin() {
     try {
       const res = await fetch(`/api/admin/leaderboard/${id}`, {
         method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
+        credentials: "include" as const,
       });
       if (res.ok) {
         setLeaderboard(prev => prev.filter(e => e.id !== id));
@@ -258,10 +255,8 @@ export default function Admin() {
     try {
       const res = await fetch(`/api/admin/feedback/${id}`, {
         method: "PATCH",
-        headers: { 
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
+        credentials: "include" as const,
         body: JSON.stringify({ status }),
       });
       if (res.ok) {
@@ -290,8 +285,6 @@ export default function Admin() {
 
       if (res.ok) {
         const data = await res.json();
-        setToken(data.token);
-        localStorage.setItem("adminToken", data.token);
         setIsLoggedIn(true);
         setPassword("");
       } else {
@@ -308,11 +301,9 @@ export default function Admin() {
     try {
       await fetch("/api/admin/logout", {
         method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
+        credentials: "include" as const,
       });
     } catch {}
-    localStorage.removeItem("adminToken");
-    setToken("");
     setIsLoggedIn(false);
     setStats(null);
   };
@@ -965,7 +956,7 @@ export default function Admin() {
                 <p className="text-gray-500 text-sm">Ajoutez et modifiez les guides personnalisés</p>
               </div>
             </div>
-            <AdminGuidesManager token={token} />
+            <AdminGuidesManager />
           </div>
         )}
 

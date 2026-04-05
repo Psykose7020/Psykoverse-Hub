@@ -53,7 +53,7 @@ function getIconComponent(iconId: string) {
   return found ? found.component : BookOpen;
 }
 
-export function AdminGuidesManager({ token }: { token: string }) {
+export function AdminGuidesManager() {
   const [guides, setGuides] = useState<CustomGuide[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -101,10 +101,8 @@ export function AdminGuidesManager({ token }: { token: string }) {
 
       const res = await fetch(url, {
         method,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify(formData),
       });
 
@@ -123,7 +121,7 @@ export function AdminGuidesManager({ token }: { token: string }) {
     try {
       const res = await fetch(`/api/admin/guides/${id}`, {
         method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
+        credentials: "include",
       });
 
       if (res.ok) {

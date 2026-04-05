@@ -1,16 +1,74 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { randomBytes, createHmac } from "crypto";
+import { randomBytes, createHmac, timingSafeEqual } from "crypto";
 import { z } from "zod";
 import ExcelJS from "exceljs";
 
 const SESSION_SECRET = process.env.SESSION_SECRET || randomBytes(32).toString("hex");
 const activeSessions = new Map<string, { createdAt: number }>();
 
+function validateExternalUrl(url: string | null | undefined): string | null {
+  if (!url) return null;
+  try {
+    const parsed = new URL(url);
+    if (!["http:", "https:"].includes(parsed.protocol)) return null;
+    return parsed.toString();
+  } catch {
+    return null;
+  }
+}
+
+// Valide un lien interne (chemin relatif uniquement, pas d'URL absolue)
+function validateInternalLink(link: string | null | undefined): string | null {
+  if (!link) return null;
+  if (/^\/[a-zA-Z0-9\-_/]*$/.test(link)) return link;
+  return null;
+}
+
 const loginAttempts = new Map<string, { count: number; lastAttempt: number }>();
 const MAX_LOGIN_ATTEMPTS = 5;
 const LOCKOUT_DURATION = 15 * 60 * 1000;
+
+// Validation format IP (IPv4 + IPv6 basique)
+function isValidIp(ip: string): boolean {
+  const clean = ip.replace(/^::ffff:/, "");
+  const ipv4 = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/;
+  const m = clean.match(ipv4);
+  if (m) return m.slice(1).every(o => parseInt(o) <= 255);
+  return /^[0-9a-fA-F:]{2,39}$/.test(clean);
+}
+
+// Extrait l'IP client via req.ip (Express résout X-Forwarded-For via trust proxy — non spoofable)
+function extractClientIp(req: any): string | null {
+  const raw = (req.ip || "").replace(/^::ffff:/, "");
+  return raw && isValidIp(raw) ? raw : null;
+}
+
+// Rate limiter générique pour les endpoints publics
+const publicLimits = new Map<string, { count: number; windowStart: number }>();
+
+function checkPublicRateLimit(key: string, max: number, windowMs: number): boolean {
+  const now = Date.now();
+  const entry = publicLimits.get(key);
+  if (!entry || now - entry.windowStart > windowMs) {
+    publicLimits.set(key, { count: 1, windowStart: now });
+    return false;
+  }
+  entry.count++;
+  return entry.count > max;
+}
+
+// Sanitisation HTML renforcée (admin content editor)
+function stripHtml(content: string): string {
+  return content
+    .replace(/<script[\s\S]*?<\/script>/gi, "")
+    .replace(/<style[\s\S]*?<\/style>/gi, "")
+    .replace(/<[^>]*>/g, "")
+    .replace(/javascript\s*:/gi, "")
+    .replace(/on[a-z]+\s*=/gi, "")
+    .trim();
+}
 
 const visitSchema = z.object({
   page: z.string().max(500).optional(),
@@ -50,11 +108,13 @@ function recordLoginAttempt(ip: string, success: boolean): void {
   loginAttempts.set(ip, attempt);
 }
 
+const TOKEN_TTL = 4 * 60 * 60 * 1000; // 4 heures
+
 function generateSecureToken(): string {
   const sessionId = randomBytes(32).toString("hex");
   const timestamp = Date.now().toString();
   const signature = createHmac("sha256", SESSION_SECRET)
-    .update(sessionId + timestamp)
+    .update(`${sessionId}|${timestamp}`)
     .digest("hex");
   return `${sessionId}.${timestamp}.${signature}`;
 }
@@ -63,28 +123,43 @@ function validateToken(token: string): boolean {
   try {
     const parts = token.split(".");
     if (parts.length !== 3) return false;
-    
+
     const [sessionId, timestamp, signature] = parts;
-    const expectedSignature = createHmac("sha256", SESSION_SECRET)
-      .update(sessionId + timestamp)
-      .digest("hex");
-    
-    if (signature !== expectedSignature) return false;
-    
+    const expectedSig = createHmac("sha256", SESSION_SECRET)
+      .update(`${sessionId}|${timestamp}`)
+      .digest();
+    const actualSig = Buffer.from(signature, "hex");
+    if (actualSig.length !== expectedSig.length) return false;
+    if (!timingSafeEqual(actualSig, expectedSig)) return false;
+
     const session = activeSessions.get(sessionId);
     if (!session) return false;
-    
+
     const tokenAge = Date.now() - parseInt(timestamp);
-    if (tokenAge > 24 * 60 * 60 * 1000) {
+    if (tokenAge > TOKEN_TTL) {
       activeSessions.delete(sessionId);
       return false;
     }
-    
+
     return true;
   } catch {
     return false;
   }
 }
+
+// Nettoyage périodique des sessions et tentatives expirées
+setInterval(() => {
+  const now = Date.now();
+  activeSessions.forEach((session, id) => {
+    if (now - session.createdAt > TOKEN_TTL) activeSessions.delete(id);
+  });
+  loginAttempts.forEach((attempt, ip) => {
+    if (now - attempt.lastAttempt > LOCKOUT_DURATION) loginAttempts.delete(ip);
+  });
+  publicLimits.forEach((entry, key) => {
+    if (now - entry.windowStart > 15 * 60 * 1000) publicLimits.delete(key);
+  });
+}, 30 * 60 * 1000);
 
 export async function registerRoutes(
   httpServer: Server,
@@ -100,8 +175,12 @@ export async function registerRoutes(
       
       const { page, referrer } = parsed.data;
       const userAgent = req.headers["user-agent"] || null;
-      const ip = req.headers["x-forwarded-for"]?.toString().split(",")[0] || req.ip || null;
-      
+      const ip = extractClientIp(req);
+
+      if (ip && checkPublicRateLimit(`visit:${ip}`, 60, 60 * 1000)) {
+        return res.status(429).json({ error: "Too many requests" });
+      }
+
       await storage.recordVisit({
         page: page || "/",
         userAgent,
@@ -138,8 +217,9 @@ export async function registerRoutes(
 
   app.post("/api/admin/login", async (req, res) => {
     try {
-      const ip = req.ip || req.socket?.remoteAddress || "unknown";
-      
+      // Socket IP uniquement pour le rate limiting — non spoofable via X-Forwarded-For
+      const ip = (req.socket?.remoteAddress || req.ip || "unknown").replace(/^::ffff:/, "");
+
       if (isRateLimited(ip)) {
         return res.status(429).json({ error: "Trop de tentatives. Réessayez dans 15 minutes." });
       }
@@ -151,19 +231,33 @@ export async function registerRoutes(
       
       const { password } = parsed.data;
       const adminPassword = process.env.ADMIN_PASSWORD;
-      
+
       if (!adminPassword) {
         return res.status(500).json({ error: "Admin password not configured" });
       }
-      
-      if (password === adminPassword) {
+
+      // Comparaison timing-safe via HMAC pour éviter les attaques temporelles
+      const hmacInput = createHmac("sha256", SESSION_SECRET).update(password).digest();
+      const hmacExpected = createHmac("sha256", SESSION_SECRET).update(adminPassword).digest();
+      const passwordMatch = timingSafeEqual(hmacInput, hmacExpected);
+
+      if (passwordMatch) {
         recordLoginAttempt(ip, true);
         const token = generateSecureToken();
         const sessionId = token.split(".")[0];
         activeSessions.set(sessionId, { createdAt: Date.now() });
-        res.json({ success: true, token });
+        res.cookie("adminToken", token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "strict",
+          maxAge: TOKEN_TTL,
+          path: "/",
+        });
+        res.json({ success: true });
       } else {
         recordLoginAttempt(ip, false);
+        const attempts = loginAttempts.get(ip)?.count ?? 1;
+        console.warn(`[AUTH] Tentative échouée depuis ${ip} (${attempts}/${MAX_LOGIN_ATTEMPTS})`);
         res.status(401).json({ error: "Invalid password" });
       }
     } catch (error) {
@@ -174,28 +268,24 @@ export async function registerRoutes(
 
   app.post("/api/admin/logout", async (req, res) => {
     try {
-      const authHeader = req.headers.authorization;
-      if (authHeader?.startsWith("Bearer ")) {
-        const token = authHeader.slice(7);
+      const token = req.cookies?.adminToken;
+      if (token) {
         const sessionId = token.split(".")[0];
         activeSessions.delete(sessionId);
       }
+      res.clearCookie("adminToken", { path: "/" });
       res.json({ success: true });
     } catch (error) {
+      res.clearCookie("adminToken", { path: "/" });
       res.json({ success: true });
     }
   });
 
   app.get("/api/admin/stats", async (req, res) => {
     try {
-      const authHeader = req.headers.authorization;
-      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      const token = req.cookies?.adminToken;
+      if (!token || !validateToken(token)) {
         return res.status(401).json({ error: "Unauthorized" });
-      }
-      
-      const token = authHeader.slice(7);
-      if (!validateToken(token)) {
-        return res.status(401).json({ error: "Invalid or expired token" });
       }
 
       const stats = await storage.getVisitStats();
@@ -208,14 +298,9 @@ export async function registerRoutes(
 
   app.get("/api/admin/geo", async (req, res) => {
     try {
-      const authHeader = req.headers.authorization;
-      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      const token = req.cookies?.adminToken;
+      if (!token || !validateToken(token)) {
         return res.status(401).json({ error: "Unauthorized" });
-      }
-      
-      const token = authHeader.slice(7);
-      if (!validateToken(token)) {
-        return res.status(401).json({ error: "Invalid or expired token" });
       }
 
       const stats = await storage.getVisitStats();
@@ -225,8 +310,21 @@ export async function registerRoutes(
       const geoData: Array<{ ip: string; lat: number; lon: number; city: string; country: string; count: number }> = [];
       
       for (const ip of uniqueIPs.slice(0, 20)) {
+        if (!isValidIp(ip)) {
+          console.warn(`Geo API: IP invalide ignorée: ${ip}`);
+          continue;
+        }
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 5000);
         try {
-          const response = await fetch(`https://ipapi.co/${ip}/json/`);
+          const response = await fetch(`https://ipapi.co/${ip}/json/`, {
+            signal: controller.signal,
+          });
+          const contentLength = parseInt(response.headers.get("content-length") || "0", 10);
+          if (contentLength > 10000) {
+            console.error(`Geo API: response too large for IP ${ip}`);
+            continue;
+          }
           const data = await response.json();
           if (data.latitude && data.longitude) {
             const count = stats.recentVisits.filter(v => v.ip === ip).length;
@@ -239,7 +337,11 @@ export async function registerRoutes(
               count
             });
           }
-        } catch {}
+        } catch (err) {
+          console.error(`Geo API error for IP ${ip}:`, err);
+        } finally {
+          clearTimeout(timeout);
+        }
       }
       
       res.json(geoData);
@@ -259,8 +361,12 @@ export async function registerRoutes(
       
       const { message, page } = parsed.data;
       const userAgent = req.headers["user-agent"] || null;
-      const ip = req.headers["x-forwarded-for"]?.toString().split(",")[0] || req.ip || null;
-      
+      const ip = extractClientIp(req);
+
+      if (ip && checkPublicRateLimit(`feedback:${ip}`, 5, 10 * 60 * 1000)) {
+        return res.status(429).json({ error: "Trop de messages. Réessayez dans 10 minutes." });
+      }
+
       await storage.createFeedback({
         message: message.trim(),
         page: page || null,
@@ -277,14 +383,9 @@ export async function registerRoutes(
 
   app.get("/api/admin/feedback", async (req, res) => {
     try {
-      const authHeader = req.headers.authorization;
-      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      const token = req.cookies?.adminToken;
+      if (!token || !validateToken(token)) {
         return res.status(401).json({ error: "Unauthorized" });
-      }
-      
-      const token = authHeader.slice(7);
-      if (!validateToken(token)) {
-        return res.status(401).json({ error: "Invalid or expired token" });
       }
 
       const feedbackList = await storage.listFeedback();
@@ -297,14 +398,9 @@ export async function registerRoutes(
 
   app.patch("/api/admin/feedback/:id", async (req, res) => {
     try {
-      const authHeader = req.headers.authorization;
-      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      const token = req.cookies?.adminToken;
+      if (!token || !validateToken(token)) {
         return res.status(401).json({ error: "Unauthorized" });
-      }
-      
-      const token = authHeader.slice(7);
-      if (!validateToken(token)) {
-        return res.status(401).json({ error: "Invalid or expired token" });
       }
 
       const { id } = req.params;
@@ -328,8 +424,13 @@ export async function registerRoutes(
 
   app.post("/api/suggestions", async (req, res) => {
     try {
+      const ip = extractClientIp(req);
+      if (ip && checkPublicRateLimit(`suggestion:${ip}`, 3, 10 * 60 * 1000)) {
+        return res.status(429).json({ error: "Trop de suggestions. Réessayez dans 10 minutes." });
+      }
+
       const { pseudo, content } = req.body;
-      
+
       if (!content || typeof content !== "string" || content.trim().length < 10) {
         return res.status(400).json({ error: "La suggestion doit contenir au moins 10 caractères" });
       }
@@ -352,14 +453,9 @@ export async function registerRoutes(
 
   app.get("/api/admin/suggestions", async (req, res) => {
     try {
-      const authHeader = req.headers.authorization;
-      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      const token = req.cookies?.adminToken;
+      if (!token || !validateToken(token)) {
         return res.status(401).json({ error: "Unauthorized" });
-      }
-      
-      const token = authHeader.slice(7);
-      if (!validateToken(token)) {
-        return res.status(401).json({ error: "Invalid or expired token" });
       }
 
       const suggestionsList = await storage.listSuggestions();
@@ -386,8 +482,12 @@ export async function registerRoutes(
         return res.status(400).json({ error: "Score invalide" });
       }
       
-      const ip = req.headers["x-forwarded-for"]?.toString().split(",")[0] || req.ip || null;
-      
+      const ip = extractClientIp(req);
+
+      if (ip && checkPublicRateLimit(`leaderboard:${ip}`, 10, 10 * 60 * 1000)) {
+        return res.status(429).json({ error: "Trop de tentatives. Réessayez dans 10 minutes." });
+      }
+
       const result = await storage.addLeaderboardEntry({
         pseudo: pseudo.trim(),
         univers: univers?.trim() || "-",
@@ -419,14 +519,9 @@ export async function registerRoutes(
 
   app.get("/api/admin/leaderboard", async (req, res) => {
     try {
-      const authHeader = req.headers.authorization;
-      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      const token = req.cookies?.adminToken;
+      if (!token || !validateToken(token)) {
         return res.status(401).json({ error: "Unauthorized" });
-      }
-      
-      const token = authHeader.slice(7);
-      if (!validateToken(token)) {
-        return res.status(401).json({ error: "Invalid or expired token" });
       }
 
       const entries = await storage.getLeaderboard(100);
@@ -439,14 +534,9 @@ export async function registerRoutes(
 
   app.delete("/api/admin/leaderboard/:id", async (req, res) => {
     try {
-      const authHeader = req.headers.authorization;
-      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      const token = req.cookies?.adminToken;
+      if (!token || !validateToken(token)) {
         return res.status(401).json({ error: "Unauthorized" });
-      }
-      
-      const token = authHeader.slice(7);
-      if (!validateToken(token)) {
-        return res.status(401).json({ error: "Invalid or expired token" });
       }
 
       const { id } = req.params;
@@ -474,14 +564,9 @@ export async function registerRoutes(
 
   app.get("/api/admin/verify", async (req, res) => {
     try {
-      const authHeader = req.headers.authorization;
-      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      const token = req.cookies?.adminToken;
+      if (!token || !validateToken(token)) {
         return res.status(401).json({ error: "Unauthorized" });
-      }
-      
-      const token = authHeader.slice(7);
-      if (!validateToken(token)) {
-        return res.status(401).json({ error: "Invalid or expired token" });
       }
 
       res.json({ valid: true });
@@ -492,14 +577,9 @@ export async function registerRoutes(
 
   app.post("/api/admin/content", async (req, res) => {
     try {
-      const authHeader = req.headers.authorization;
-      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      const token = req.cookies?.adminToken;
+      if (!token || !validateToken(token)) {
         return res.status(401).json({ error: "Unauthorized" });
-      }
-      
-      const token = authHeader.slice(7);
-      if (!validateToken(token)) {
-        return res.status(401).json({ error: "Invalid or expired token" });
       }
 
       const { id, content } = req.body;
@@ -511,7 +591,7 @@ export async function registerRoutes(
         return res.status(400).json({ error: "Content too long" });
       }
 
-      const sanitizedContent = content.replace(/<[^>]*>/g, "").trim();
+      const sanitizedContent = stripHtml(content);
       const updated = await storage.upsertEditableContent({ id, content: sanitizedContent });
       res.json(updated);
     } catch (error) {
@@ -522,14 +602,9 @@ export async function registerRoutes(
 
   app.post("/api/admin/content/bulk", async (req, res) => {
     try {
-      const authHeader = req.headers.authorization;
-      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      const token = req.cookies?.adminToken;
+      if (!token || !validateToken(token)) {
         return res.status(401).json({ error: "Unauthorized" });
-      }
-      
-      const token = authHeader.slice(7);
-      if (!validateToken(token)) {
-        return res.status(401).json({ error: "Invalid or expired token" });
       }
 
       const { contents } = req.body;
@@ -540,7 +615,7 @@ export async function registerRoutes(
       const results: Record<string, string> = {};
       for (const [id, content] of Object.entries(contents)) {
         if (typeof content === "string" && id.length <= 100 && content.length <= 10000) {
-          const sanitizedContent = content.replace(/<[^>]*>/g, "").trim();
+          const sanitizedContent = stripHtml(content);
           await storage.upsertEditableContent({ id, content: sanitizedContent });
           results[id] = sanitizedContent;
         }
@@ -638,14 +713,9 @@ export async function registerRoutes(
 
   app.post("/api/admin/guides", async (req, res) => {
     try {
-      const authHeader = req.headers.authorization;
-      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      const token = req.cookies?.adminToken;
+      if (!token || !validateToken(token)) {
         return res.status(401).json({ error: "Unauthorized" });
-      }
-      
-      const token = authHeader.slice(7);
-      if (!validateToken(token)) {
-        return res.status(401).json({ error: "Invalid or expired token" });
       }
 
       const { categoryId, title, description, content, icon, color, link, externalLink, featured, sortOrder } = req.body;
@@ -661,8 +731,8 @@ export async function registerRoutes(
         content: content ? content.substring(0, 10000) : null,
         icon: icon || "BookOpen",
         color: color || "from-blue-500 to-cyan-600",
-        link: link || null,
-        externalLink: externalLink || null,
+        link: validateInternalLink(link),
+        externalLink: validateExternalUrl(externalLink),
         featured: featured ? 1 : 0,
         sortOrder: sortOrder || 0,
       });
@@ -676,18 +746,36 @@ export async function registerRoutes(
 
   app.put("/api/admin/guides/:id", async (req, res) => {
     try {
-      const authHeader = req.headers.authorization;
-      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      const token = req.cookies?.adminToken;
+      if (!token || !validateToken(token)) {
         return res.status(401).json({ error: "Unauthorized" });
-      }
-      
-      const token = authHeader.slice(7);
-      if (!validateToken(token)) {
-        return res.status(401).json({ error: "Invalid or expired token" });
       }
 
       const { id } = req.params;
-      const updates = req.body;
+
+      const guideUpdateSchema = z.object({
+        categoryId: z.string().max(100).optional(),
+        title: z.string().max(200).optional(),
+        description: z.string().max(500).optional(),
+        content: z.string().max(10000).nullable().optional(),
+        icon: z.string().max(50).optional(),
+        color: z.string().max(100).optional(),
+        link: z.string().max(500).nullable().optional(),
+        externalLink: z.string().max(2000).nullable().optional(),
+        featured: z.number().int().min(0).max(1).optional(),
+        sortOrder: z.number().int().optional(),
+      });
+
+      const parsed = guideUpdateSchema.safeParse(req.body);
+      if (!parsed.success) {
+        return res.status(400).json({ error: "Invalid fields" });
+      }
+
+      const updates = {
+        ...parsed.data,
+        link: validateInternalLink(parsed.data.link),
+        externalLink: validateExternalUrl(parsed.data.externalLink),
+      };
 
       const guide = await storage.updateCustomGuide(id, updates);
       if (!guide) {
@@ -703,14 +791,9 @@ export async function registerRoutes(
 
   app.delete("/api/admin/guides/:id", async (req, res) => {
     try {
-      const authHeader = req.headers.authorization;
-      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      const token = req.cookies?.adminToken;
+      if (!token || !validateToken(token)) {
         return res.status(401).json({ error: "Unauthorized" });
-      }
-      
-      const token = authHeader.slice(7);
-      if (!validateToken(token)) {
-        return res.status(401).json({ error: "Invalid or expired token" });
       }
 
       const { id } = req.params;
@@ -770,14 +853,9 @@ export async function registerRoutes(
 
   app.get("/api/admin/compositions", async (req, res) => {
     try {
-      const authHeader = req.headers.authorization;
-      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      const token = req.cookies?.adminToken;
+      if (!token || !validateToken(token)) {
         return res.status(401).json({ error: "Unauthorized" });
-      }
-      
-      const token = authHeader.slice(7);
-      if (!validateToken(token)) {
-        return res.status(401).json({ error: "Invalid or expired token" });
       }
 
       const fleetCompositions = await storage.listFleetCompositions();
@@ -795,14 +873,9 @@ export async function registerRoutes(
 
   app.delete("/api/admin/compositions/fleet/:id", async (req, res) => {
     try {
-      const authHeader = req.headers.authorization;
-      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      const token = req.cookies?.adminToken;
+      if (!token || !validateToken(token)) {
         return res.status(401).json({ error: "Unauthorized" });
-      }
-      
-      const token = authHeader.slice(7);
-      if (!validateToken(token)) {
-        return res.status(401).json({ error: "Invalid or expired token" });
       }
 
       await storage.deleteFleetComposition(req.params.id);
@@ -815,14 +888,9 @@ export async function registerRoutes(
 
   app.delete("/api/admin/compositions/defense/:id", async (req, res) => {
     try {
-      const authHeader = req.headers.authorization;
-      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      const token = req.cookies?.adminToken;
+      if (!token || !validateToken(token)) {
         return res.status(401).json({ error: "Unauthorized" });
-      }
-      
-      const token = authHeader.slice(7);
-      if (!validateToken(token)) {
-        return res.status(401).json({ error: "Invalid or expired token" });
       }
 
       await storage.deleteDefenseComposition(req.params.id);
@@ -835,14 +903,14 @@ export async function registerRoutes(
 
   app.get("/api/admin/compositions/export", async (req, res) => {
     try {
-      const authHeader = req.headers.authorization;
-      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      const token = req.cookies?.adminToken;
+      if (!token || !validateToken(token)) {
         return res.status(401).json({ error: "Unauthorized" });
       }
-      
-      const token = authHeader.slice(7);
-      if (!validateToken(token)) {
-        return res.status(401).json({ error: "Invalid or expired token" });
+
+      const exportIp = extractClientIp(req) || "admin";
+      if (checkPublicRateLimit(`export:${exportIp}`, 5, 60 * 1000)) {
+        return res.status(429).json({ error: "Trop de requêtes d'export. Attendez 1 minute." });
       }
 
       const fleetCompositions = await storage.listFleetCompositions();
