@@ -4,6 +4,7 @@ import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import RelatedGuides from "@/components/RelatedGuides";
+import { dbImages } from "@/data/database-images";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -67,11 +68,20 @@ export default function GuideProduction() {
                   Plus une mine est haute, plus elle produit, mais plus elle coûte cher et consomme d'énergie.
                 </p>
                 <div className="bg-[#0B0E14] rounded-lg p-4 mb-4">
-                  <img 
-                    src="https://img.tedomum.net/data/Production%201-2faa87.png" 
-                    alt="Les mines"
-                    className="rounded w-full"
-                  />
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="rounded-xl overflow-hidden border border-gray-800 bg-[#111827]">
+                      <img src={dbImages.batiments.mineMetal} alt="Mine de métal" className="w-full h-44 object-cover" />
+                      <div className="p-3 text-center text-sm text-gray-300">Mine de métal</div>
+                    </div>
+                    <div className="rounded-xl overflow-hidden border border-gray-800 bg-[#111827]">
+                      <img src={dbImages.batiments.mineCristal} alt="Mine de cristal" className="w-full h-44 object-cover" />
+                      <div className="p-3 text-center text-sm text-gray-300">Mine de cristal</div>
+                    </div>
+                    <div className="rounded-xl overflow-hidden border border-gray-800 bg-[#111827]">
+                      <img src={dbImages.batiments.mineDeuterium} alt="Synthétiseur de deutérium" className="w-full h-44 object-cover" />
+                      <div className="p-3 text-center text-sm text-gray-300">Synthétiseur de deutérium</div>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -83,20 +93,12 @@ export default function GuideProduction() {
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="bg-[#0B0E14] rounded-lg p-3">
-                    <img 
-                      src="https://img.tedomum.net/data/Production%202-2f7456.png" 
-                      alt="Coût d'une mine"
-                      className="rounded w-full"
-                    />
-                    <p className="text-xs text-gray-500 mt-2 text-center">Détails de la mine</p>
+                    <img src={dbImages.batiments.laboratoireRecherche} alt="Recherche et coût" className="rounded w-full h-48 object-cover" />
+                    <p className="text-xs text-gray-500 mt-2 text-center">Laboratoire de recherche et progression</p>
                   </div>
                   <div className="bg-[#0B0E14] rounded-lg p-3">
-                    <img 
-                      src="https://img.tedomum.net/data/Production%203-9e0073.png" 
-                      alt="Différence de production"
-                      className="rounded w-full"
-                    />
-                    <p className="text-xs text-gray-500 mt-2 text-center">Différence de production entre niveaux</p>
+                    <img src={dbImages.batiments.chantierSpatial} alt="Infrastructure" className="rounded w-full h-48 object-cover" />
+                    <p className="text-xs text-gray-500 mt-2 text-center">Infrastructure et montée en puissance</p>
                   </div>
                 </div>
               </div>
@@ -134,14 +136,17 @@ export default function GuideProduction() {
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="bg-[#151924] rounded-lg p-4">
+                    <img src={dbImages.batiments.centraleSolaire} alt="Centrale solaire" className="w-full h-28 object-cover rounded-lg mb-3" />
                     <h3 className="font-bold text-white mb-2">Centrale solaire</h3>
                     <p className="text-gray-400 text-sm">Source principale d'énergie. Facile à construire mais prend de la place.</p>
                   </div>
                   <div className="bg-[#151924] rounded-lg p-4">
+                    <img src={dbImages.batiments.centraleFusion} alt="Centrale de fusion" className="w-full h-28 object-cover rounded-lg mb-3" />
                     <h3 className="font-bold text-white mb-2">Centrale de fusion</h3>
                     <p className="text-gray-400 text-sm">Consomme du deutérium mais produit plus d'énergie par niveau.</p>
                   </div>
                   <div className="bg-[#151924] rounded-lg p-4">
+                    <img src={dbImages.ressources.deuterium} alt="Ressource énergétique" className="w-full h-28 object-contain rounded-lg mb-3 bg-[#0B0E14]" />
                     <h3 className="font-bold text-white mb-2">Satellites solaires</h3>
                     <p className="text-gray-400 text-sm">Produisent de l'énergie sans cases, mais vulnérables aux attaques.</p>
                   </div>
@@ -158,6 +163,11 @@ export default function GuideProduction() {
                   la production s'arrête (overflow).
                 </p>
                 <div className="bg-amber-900/20 border border-amber-700/30 rounded-lg p-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+                    <img src={dbImages.batiments.hangarMetal} alt="Hangar métal" className="w-full h-28 object-cover rounded-lg" />
+                    <img src={dbImages.batiments.hangarCristal} alt="Hangar cristal" className="w-full h-28 object-cover rounded-lg" />
+                    <img src={dbImages.batiments.hangarDeuterium} alt="Réservoir de deutérium" className="w-full h-28 object-cover rounded-lg" />
+                  </div>
                   <p className="text-sm text-amber-300">
                     <strong>Conseil :</strong> Montez vos hangars régulièrement, surtout avant une longue absence. 
                     Vous ne voulez pas perdre de production !

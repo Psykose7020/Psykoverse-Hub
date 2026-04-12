@@ -5,6 +5,7 @@ import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import RelatedGuides from "@/components/RelatedGuides";
+import { dbImages } from "@/data/database-images";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -18,6 +19,7 @@ const classes = [
     icon: Pickaxe,
     color: "from-yellow-500 to-amber-600",
     vaisseau: "Foreuse",
+    image: dbImages.classes.collecteur,
     bonus: [
       "+25% Production des mines",
       "+100% vitesse des transporteurs",
@@ -34,6 +36,7 @@ const classes = [
     icon: Sword,
     color: "from-red-500 to-red-700",
     vaisseau: "Faucheur",
+    image: dbImages.classes.general,
     bonus: [
       "+100% vitesse vaisseaux de combat",
       "+100% vitesse recycleurs",
@@ -51,6 +54,7 @@ const classes = [
     icon: Compass,
     color: "from-blue-500 to-indigo-600",
     vaisseau: "Éclaireur",
+    image: dbImages.classes.explorateur,
     bonus: [
       "-25% temps de recherche",
       "+10% cases planètes colonisées",
@@ -192,24 +196,35 @@ export default function GuideClasses() {
               animate={{ opacity: 1, y: 0 }}
               className="bg-[#1C2230] border border-[#2E384D] rounded-xl p-6 mb-8"
             >
-              <div className="flex items-center gap-4 mb-6">
-                <div className={`w-16 h-16 bg-gradient-to-br ${selectedClass.color} rounded-xl flex items-center justify-center`}>
-                  <Icon className="w-8 h-8 text-white" />
-                </div>
+              <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-6 items-start">
                 <div>
-                  <h2 className="font-display text-2xl font-bold text-white">{selectedClass.name}</h2>
-                  <p className="text-gray-400">Vaisseau exclusif : <span className="text-primary">{selectedClass.vaisseau}</span></p>
-                </div>
-              </div>
-
-              <h3 className="font-bold text-white mb-4">Bonus de classe</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                {selectedClass.bonus.map((bonus, index) => (
-                  <div key={index} className="flex items-center gap-2 p-2 bg-[#151924] rounded">
-                    <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />
-                    <span className="text-gray-300 text-sm">{bonus}</span>
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className={`w-16 h-16 bg-gradient-to-br ${selectedClass.color} rounded-xl flex items-center justify-center`}>
+                      <Icon className="w-8 h-8 text-white" />
+                    </div>
+                    <div>
+                      <h2 className="font-display text-2xl font-bold text-white">{selectedClass.name}</h2>
+                      <p className="text-gray-400">Vaisseau exclusif : <span className="text-primary">{selectedClass.vaisseau}</span></p>
+                    </div>
                   </div>
-                ))}
+
+                  <h3 className="font-bold text-white mb-4">Bonus de classe</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    {selectedClass.bonus.map((bonus, index) => (
+                      <div key={index} className="flex items-center gap-2 p-2 bg-[#151924] rounded">
+                        <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />
+                        <span className="text-gray-300 text-sm">{bonus}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="rounded-2xl overflow-hidden border border-white/10 bg-[#0B0E14] shadow-[0_0_40px_rgba(0,0,0,0.25)]">
+                  <img
+                    src={selectedClass.image}
+                    alt={selectedClass.name}
+                    className="w-full h-full object-cover min-h-[320px]"
+                  />
+                </div>
               </div>
             </motion.div>
 

@@ -2,27 +2,33 @@ import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { 
-  Users, 
   Youtube, 
   MessageSquare, 
   BookOpen,
-  Globe,
-  Shield,
   ExternalLink,
-  Star,
   Sparkles,
   Gamepad2,
   Eye,
   BookMarked,
   ChevronRight,
   Heart,
-  Archive
+  Archive,
+  Wrench,
+  Scale
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Layout from "@/components/layout/Layout";
 import SpaceGame from "@/components/SpaceGame";
 import { useYoutubeStats } from "@/hooks/useYoutubeStats";
 import { useDiscordStats } from "@/hooks/useDiscordStats";
+import {
+  beginnerGuideCount,
+  featuredGuideCount,
+  guidesBySlug,
+  rulesGuideCount,
+  toolGuideCount,
+  totalGuideCount,
+} from "@/data/guides";
 
 import heroBg from "@assets/generated_videos/specific_ogame_destroyer_fleet_formation.mp4";
 import allianceLogo from "@assets/Design_sans_titre_(2)_1765292527261.png";
@@ -54,6 +60,21 @@ export default function Home() {
     staleTime: 60000,
   });
   const totalVisits = visitData?.total || 0;
+
+  const { data: popularGuidesData } = useQuery<{ slug: string; views: number }[]>({
+    queryKey: ['/api/guides/popular'],
+    queryFn: async () => {
+      const res = await fetch('/api/guides/popular');
+      if (!res.ok) return [];
+      return res.json();
+    },
+    staleTime: 60000,
+  });
+
+  const spotlightGuides = (popularGuidesData || [])
+    .map((item) => guidesBySlug[item.slug])
+    .filter(Boolean)
+    .slice(0, 3);
   
   return (
     <Layout>
@@ -90,7 +111,7 @@ export default function Home() {
             </motion.p>
             
             <motion.p variants={fadeInUp} className="text-gray-400 text-lg mb-8 max-w-xl mx-auto">
-              49 guides complets, des ressources pour tous les joueurs, et une communauté active sur Discord.
+              {totalGuideCount} guides complets, des ressources pour tous les joueurs, et une communauté active sur Discord.
             </motion.p>
             
             <motion.div variants={fadeInUp} className="flex flex-wrap justify-center gap-4">
@@ -104,9 +125,25 @@ export default function Home() {
               <Button size="lg" variant="outline" className="border-primary/50 text-primary hover:bg-primary/10" asChild>
                 <Link href="/tutoriels" data-testid="btn-tutorials-hero">
                   <BookOpen className="w-5 h-5 mr-2" />
-                  49 Guides
+                  {totalGuideCount} Guides
                 </Link>
               </Button>
+            </motion.div>
+
+            <motion.div variants={fadeInUp} className="mt-6 flex flex-wrap justify-center gap-2.5">
+              {[
+                `${toolGuideCount} outils interactifs`,
+                `${rulesGuideCount} règles essentielles`,
+                `${featuredGuideCount} guides recommandés`,
+                totalVisits > 0 ? `${totalVisits.toLocaleString()} visites` : `${beginnerGuideCount} guides débutant`,
+              ].map((item) => (
+                <span
+                  key={item}
+                  className="rounded-full border border-white/10 bg-black/20 px-3 py-1.5 text-xs text-gray-300 backdrop-blur-sm"
+                >
+                  {item}
+                </span>
+              ))}
             </motion.div>
           </motion.div>
         </div>
@@ -200,6 +237,61 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="py-10 border-b border-[#2E384D]">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="max-w-5xl mx-auto"
+          >
+            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-6">
+              <div>
+                <p className="text-primary text-sm font-medium mb-2">À explorer maintenant</p>
+                <h2 className="font-display text-2xl md:text-3xl font-bold text-white">
+                  Le site bouge avec les guides les plus consultés
+                </h2>
+              </div>
+              <Link href="/tutoriels" className="text-gray-400 hover:text-primary transition-colors text-sm flex items-center gap-2">
+                Voir toute la bibliothèque <ChevronRight className="w-4 h-4" />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {spotlightGuides.map((guide, index) => {
+                const Icon = guide.icon;
+                return (
+                  <Link key={guide.link} href={guide.link}>
+                    <motion.div
+                      initial={{ opacity: 0, y: 16 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.08 }}
+                      className="group h-full rounded-2xl border border-[#2E384D] bg-[linear-gradient(180deg,rgba(28,34,48,0.96),rgba(14,19,29,0.98))] p-5 cursor-pointer hover:border-primary/40 hover:-translate-y-1 transition-all"
+                    >
+                      <div className="flex items-start justify-between gap-3 mb-4">
+                        <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${guide.color} flex items-center justify-center shadow-lg`}>
+                          <Icon className="w-5 h-5 text-white" />
+                        </div>
+                        <span className="text-[10px] uppercase tracking-[0.2em] text-primary/70">
+                          {guide.categoryTitle}
+                        </span>
+                      </div>
+                      <h3 className="text-white font-bold text-lg mb-2 group-hover:text-primary transition-colors">
+                        {guide.title}
+                      </h3>
+                      <p className="text-gray-400 text-sm leading-6">
+                        {guide.description}
+                      </p>
+                    </motion.div>
+                  </Link>
+                );
+              })}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       <section className="py-12 md:py-16 border-b border-[#2E384D]">
         <div className="container mx-auto px-4">
           <motion.div
@@ -211,68 +303,59 @@ export default function Home() {
             <h2 className="font-display text-2xl md:text-3xl font-bold text-white mb-2">
               Ressources disponibles
             </h2>
-            <p className="text-gray-500">Tout ce dont vous avez besoin pour progresser sur OGame</p>
+            <p className="text-gray-500">Des entrées plus vivantes, alimentées par les vraies données du site</p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            <Link href="/tutoriels" data-testid="link-tutoriels">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="group bg-[#1C2230] border border-[#2E384D] hover:border-primary/50 rounded-xl p-6 transition-all cursor-pointer hover:-translate-y-1"
-              >
-                <div className="w-12 h-12 bg-gradient-to-br from-primary to-blue-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <BookOpen className="w-6 h-6 text-white" />
-                </div>
-                <h3 className="font-display text-lg font-bold text-white mb-2 group-hover:text-primary transition-colors">
-                  49 Guides
-                </h3>
-                <p className="text-gray-500 text-sm">
-                  Du débutant à l'expert, tout pour progresser.
-                </p>
-              </motion.div>
-            </Link>
-
-            <Link href="/alliance" data-testid="link-alliance">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.1 }}
-                className="group bg-[#1C2230] border border-[#2E384D] hover:border-green-500/50 rounded-xl p-6 transition-all cursor-pointer hover:-translate-y-1"
-              >
-                <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <Globe className="w-6 h-6 text-white" />
-                </div>
-                <h3 className="font-display text-lg font-bold text-white mb-2 group-hover:text-green-400 transition-colors">
-                  Univers
-                </h3>
-                <p className="text-gray-500 text-sm">
-                  Informations sur les univers de jeu.
-                </p>
-              </motion.div>
-            </Link>
-
-            <Link href="/support" data-testid="link-support">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2 }}
-                className="group bg-[#1C2230] border border-[#2E384D] hover:border-purple-500/50 rounded-xl p-6 transition-all cursor-pointer hover:-translate-y-1"
-              >
-                <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <Shield className="w-6 h-6 text-white" />
-                </div>
-                <h3 className="font-display text-lg font-bold text-white mb-2 group-hover:text-purple-400 transition-colors">
-                  Support
-                </h3>
-                <p className="text-gray-500 text-sm">
-                  Besoin d'aide ? Ouvrez un ticket Discord.
-                </p>
-              </motion.div>
-            </Link>
+            {[
+              {
+                href: "/tutoriels",
+                title: `${totalGuideCount} guides`,
+                description: `${beginnerGuideCount} pour bien démarrer et ${featuredGuideCount} à prioriser.`,
+                icon: BookOpen,
+                accent: "from-primary to-blue-600",
+                hover: "group-hover:text-primary",
+              },
+              {
+                href: "/tutoriels#outils",
+                title: `${toolGuideCount} outils`,
+                description: "Des calculateurs et simulateurs qui font gagner du temps en jeu.",
+                icon: Wrench,
+                accent: "from-emerald-500 to-teal-600",
+                hover: "group-hover:text-emerald-400",
+              },
+              {
+                href: "/regles",
+                title: `${rulesGuideCount} règles`,
+                description: "Les rappels utiles pour éviter les erreurs de compte, de push ou de bash.",
+                icon: Scale,
+                accent: "from-amber-500 to-orange-600",
+                hover: "group-hover:text-amber-400",
+              },
+            ].map((item, index) => {
+              const Icon = item.icon;
+              return (
+                <Link key={item.href} href={item.href} data-testid={`link-resource-${index}`}>
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                    className="group bg-[#1C2230] border border-[#2E384D] hover:border-primary/50 rounded-xl p-6 transition-all cursor-pointer hover:-translate-y-1"
+                  >
+                    <div className={`w-12 h-12 bg-gradient-to-br ${item.accent} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                      <Icon className="w-6 h-6 text-white" />
+                    </div>
+                    <h3 className={`font-display text-lg font-bold text-white mb-2 transition-colors ${item.hover}`}>
+                      {item.title}
+                    </h3>
+                    <p className="text-gray-500 text-sm">
+                      {item.description}
+                    </p>
+                  </motion.div>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>

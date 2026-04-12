@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
-import { Lock, Users, Eye, Calendar, TrendingUp, ExternalLink, LogOut, BarChart3, Globe, MessageCircle, Mail, Archive, CheckCircle, Clock, ChevronRight, X, Edit, BookOpen, Trash2, Rocket, Shield, Download } from "lucide-react";
+import { Lock, Users, Eye, Calendar, TrendingUp, ExternalLink, LogOut, BarChart3, Globe, MessageCircle, Mail, Archive, CheckCircle, Clock, ChevronRight, X, Edit, BookOpen, Trash2, Rocket, Shield, Download, Image as ImageIcon } from "lucide-react";
 import { AdminGuidesManager } from "../components/AdminGuidesManager";
+import { AdminImageLibraryManager } from "../components/AdminImageLibraryManager";
 
 interface FleetComposition {
   id: string;
@@ -73,7 +74,7 @@ export default function Admin() {
   const [geoData, setGeoData] = useState<GeoData[]>([]);
   const [feedbackList, setFeedbackList] = useState<Feedback[]>([]);
   const [selectedFeedback, setSelectedFeedback] = useState<Feedback | null>(null);
-  const [activeTab, setActiveTab] = useState<"stats" | "feedback" | "leaderboard" | "guides" | "compositions">("stats");
+  const [activeTab, setActiveTab] = useState<"stats" | "feedback" | "leaderboard" | "guides" | "images" | "compositions">("stats");
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
   const [fleetCompositions, setFleetCompositions] = useState<FleetComposition[]>([]);
   const [defenseCompositions, setDefenseCompositions] = useState<DefenseComposition[]>([]);
@@ -484,6 +485,18 @@ export default function Admin() {
           >
             <MessageCircle className="w-4 h-4" />
             Guides
+          </button>
+          <button
+            onClick={() => setActiveTab("images")}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+              activeTab === "images"
+                ? "bg-gradient-to-r from-sky-500 to-cyan-500 text-white"
+                : "bg-[#1E2A3A] text-gray-400 hover:text-white"
+            }`}
+            data-testid="tab-images"
+          >
+            <ImageIcon className="w-4 h-4" />
+            Images
           </button>
           <button
             onClick={() => setActiveTab("compositions")}
@@ -957,6 +970,21 @@ export default function Admin() {
               </div>
             </div>
             <AdminGuidesManager />
+          </div>
+        )}
+
+        {activeTab === "images" && (
+          <div className="bg-[#12161F] border border-[#1E2A3A] rounded-xl p-6">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 bg-gradient-to-br from-sky-500 to-cyan-500 rounded-lg flex items-center justify-center">
+                <ImageIcon className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h2 className="text-xl font-bold text-white">Bibliothèque d’images</h2>
+                <p className="text-gray-500 text-sm">Centralisez les visuels et leurs métadonnées</p>
+              </div>
+            </div>
+            <AdminImageLibraryManager />
           </div>
         )}
 

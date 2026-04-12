@@ -1,745 +1,1178 @@
-import { useState, useEffect } from "react";
+import { type ReactNode, useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
-import { 
-  Play, BookOpen, Monitor, Users, Factory, FlaskConical, 
-  Rocket, Globe, BookText, AlertTriangle, ExternalLink,
-  GraduationCap, Compass, Trophy, Shield, Eye, Crosshair, Moon, Globe2,
-  Target, TrendingUp, Ghost, Layers, Bomb, Plane, Sparkles, Scale,
-  ArrowLeftRight, Swords, Dna, Settings, Search, Filter, ChevronRight,
-  Star, Clock, Zap, MessageSquare, ChevronDown, Network, Mountain, BarChart3, Calculator, Fuel
+import {
+  ArrowRight,
+  BarChart3,
+  ChevronRight,
+  Compass,
+  ExternalLink,
+  Filter,
+  GraduationCap,
+  MessageSquare,
+  Play,
+  Rocket,
+  Search,
+  Shield,
+  Sparkles,
+  Star,
+  TrendingUp,
+  Users,
+  X,
+  type LucideIcon,
 } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { EditableText } from "@/components/EditableText";
 import { useDiscordStats } from "@/hooks/useDiscordStats";
+import { useFavorites } from "@/hooks/useFavorites";
+import { guideCategories, totalGuideCount } from "@/data/guides";
+import { dbImages } from "@/data/database-images";
+import { cn } from "@/lib/utils";
 
 const fadeInUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0 }
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0 },
 };
 
 const staggerContainer = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.05 }
-  }
+    transition: { staggerChildren: 0.06 },
+  },
 };
 
-const categories = [
-  {
-    id: "regles",
-    title: "Règles du Jeu",
-    description: "Les règles officielles d'OGame.fr",
-    icon: Scale,
-    color: "from-amber-500 to-orange-600",
-    level: "Important",
-    guides: [
-      { title: "VPN, IP et Multi-comptes", description: "Règles sur les comptes", icon: Users, color: "from-blue-500 to-cyan-600", link: "/regles/compte", keywords: "vpn ip multi compte ban sanction règles" },
-      { title: "Sitting & Échanges", description: "Surveillance de compte", icon: ArrowLeftRight, color: "from-green-500 to-emerald-600", link: "/regles/sitting", keywords: "sitting échange surveillance compte absence vacances" },
-      { title: "Push & Pull", description: "Commerce et mercenariat", icon: TrendingUp, color: "from-amber-500 to-orange-600", link: "/regles/push", keywords: "push pull mercenaire commerce échange ressources" },
-      { title: "Bash", description: "Limite d'attaques", icon: Swords, color: "from-red-500 to-rose-600", link: "/regles/bash", keywords: "bash limite attaque 6 fois 24h règle" }
-    ]
-  },
-  {
-    id: "bases",
-    title: "Les bases du jeu",
-    description: "Comprendre l'univers OGame et ses mécaniques fondamentales",
-    icon: GraduationCap,
-    color: "from-green-500 to-emerald-600",
-    level: "Débutant",
-    guides: [
-      { title: "L'Interface", description: "Vue d'ensemble du jeu", icon: Monitor, color: "from-blue-500 to-cyan-600", link: "/guide/interface", featured: true, keywords: "interface menu ressources métal cristal deutérium antimatière énergie" },
-      { title: "Jargon", description: "Vocabulaire de la communauté", icon: BookText, color: "from-amber-500 to-orange-600", link: "/guide/jargon", keywords: "jargon vocabulaire ghost opé fs fleetsave raid mb dg acs rip edlm pt gt vb bb bc" },
-      { title: "Univers", description: "Caractéristiques et paramètres", icon: Settings, color: "from-indigo-500 to-purple-600", link: "/guide/univers", keywords: "univers vitesse économie flotte debris galaxies systèmes" },
-      { title: "Les Classes", description: "Collecteur, Général, Explorateur", icon: Users, color: "from-purple-500 to-pink-600", link: "/guide/classes", featured: true, keywords: "classe collecteur général explorateur bonus production combat expédition" },
-      { title: "Classes Alliance", description: "Guerrier, Marchand, Chercheur", icon: Users, color: "from-violet-500 to-purple-600", link: "/guide/alliance-classes", keywords: "alliance classe guerrier marchand chercheur bonus" },
-      { title: "Lune & CDR", description: "Champs de débris et lunes", icon: Moon, color: "from-gray-500 to-slate-700", link: "/guide/lune", keywords: "lune cdr champs débris recyclage taille probabilité" }
-    ]
-  },
-  {
-    id: "economie",
-    title: "Économie & Infrastructure",
-    description: "Construire une base économique solide",
-    icon: Factory,
-    color: "from-emerald-500 to-teal-600",
-    level: "Débutant",
-    guides: [
-      { title: "Production", description: "Mines et gestion de l'énergie", icon: Factory, color: "from-green-500 to-emerald-600", link: "/guide/production", featured: true, keywords: "mine métal cristal deutérium synthétiseur énergie solaire fusion plasma rentabilité" },
-      { title: "Technos Prioritaires", description: "Les 10 étapes clés", icon: FlaskConical, color: "from-teal-500 to-emerald-600", link: "/guide/technos-prioritaires", featured: true, keywords: "technologie recherche priorité réacteur combustion impulsion hyperespace" },
-      { title: "Recherches", description: "Arbre des technologies", icon: FlaskConical, color: "from-teal-500 to-cyan-600", link: "/guide/recherches", keywords: "recherche technologie arbre laboratoire espionnage armement bouclier" },
-      { title: "Chantier spatial et défense", description: "Vaisseaux et défenses", icon: Rocket, color: "from-slate-500 to-slate-700", link: "/guide/chantier", keywords: "chantier spatial vaisseau défense construction" },
-      { title: "Coûts Flotte & Défenses", description: "Calculateur de ressources", icon: Rocket, color: "from-orange-500 to-red-600", link: "/guide/cout-flotte", featured: true, keywords: "coût flotte défense calculateur ressources métal cristal deutérium" },
-      { title: "Formules & Calculateurs", description: "Outils de calcul interactifs", icon: Calculator, color: "from-emerald-500 to-teal-600", link: "/guide/formules", keywords: "formule calculateur temps vol vitesse consommation distance production" },
-      { title: "Développement", description: "Stratégie de compte", icon: TrendingUp, color: "from-emerald-500 to-green-600", link: "/guide/developpement", keywords: "développement stratégie compte évolution progression" },
-      { title: "Ordre de Construction", description: "Robot, Nanite, Chantier optimal", icon: Factory, color: "from-cyan-500 to-blue-600", link: "/guide/ordre-construction", featured: true, keywords: "ordre construction robot nanite chantier spatial optimisation temps réduction" }
-    ]
-  },
-  {
-    id: "expansion",
-    title: "Expansion Galactique",
-    description: "Étendre et consolider son empire",
-    icon: Globe2,
-    color: "from-teal-500 to-cyan-600",
-    level: "Intermédiaire",
-    guides: [
-      { title: "Colonisation", description: "Étendre son empire", icon: Globe2, color: "from-green-500 to-teal-600", link: "/guide/colonisation", featured: true, keywords: "colonisation colonie vaisseau colonisation planète cases emplacement" },
-      { title: "Galaxie", description: "Navigation et exploration", icon: Globe, color: "from-indigo-500 to-purple-600", link: "/guide/galaxie", keywords: "galaxie système navigation exploration position" },
-      { title: "Expéditions", description: "Explorer l'espace profond", icon: Compass, color: "from-indigo-500 to-blue-600", link: "/guide/expeditions", keywords: "expédition explorateur antimatière ressources flotte pirate alien slot item objet épuisement système cargo pathfinder" },
-      { title: "Volantes", description: "Flotte mobile défensive", icon: Plane, color: "from-cyan-500 to-blue-600", link: "/guide/volante", keywords: "volante défense mobile flotte stationnement bunker" },
-      { title: "Optimisation RRI", description: "Réseau de Recherche Intergalactique", icon: Network, color: "from-purple-500 to-indigo-600", link: "/guide/rri", keywords: "rri réseau recherche intergalactique laboratoire bonus niveau" }
-    ]
-  },
-  {
-    id: "renseignement",
-    title: "Renseignement & Préparation",
-    description: "Préparer ses raids avec précision",
-    icon: Eye,
-    color: "from-violet-500 to-purple-600",
-    level: "Intermédiaire",
-    guides: [
-      { title: "Espionnage", description: "Renseignement et infiltration", icon: Eye, color: "from-violet-500 to-purple-600", link: "/guide/espionnage", featured: true, keywords: "espionnage sonde rapport technologie niveau flotte défense ressources" },
-      { title: "Activité", description: "Triangle d'activité", icon: AlertTriangle, color: "from-red-500 to-red-700", link: "/guide/activite", keywords: "activité triangle 15 minutes astérisque étoile inactif" },
-      { title: "Recherche Cibles", description: "Trouver les meilleures proies", icon: Search, color: "from-violet-500 to-purple-600", link: "/guide/recherche-cibles", featured: true, keywords: "cible proie inactif ressources rentabilité scan" },
-      { title: "Reco de 3h00", description: "Confirmer l'absence d'une cible", icon: Clock, color: "from-indigo-500 to-purple-600", link: "/guide/reco-3h", keywords: "reco reconnaissance 3h nuit absence connexion" },
-      { title: "Décalage à la Sonde", description: "Détecter les DG", icon: Eye, color: "from-cyan-500 to-blue-600", link: "/guide/decalage-sonde", keywords: "décalage sonde détection dg contre-attaque piège" },
-      { title: "Timing & Connexions", description: "Exploiter les habitudes", icon: Clock, color: "from-amber-500 to-orange-600", link: "/guide/timing-raid", keywords: "timing connexion habitude heure raid nuit absence" }
-    ]
-  },
-  {
-    id: "offensive",
-    title: "Offensive & Coordination",
-    description: "Maîtriser l'art de l'attaque",
-    icon: Crosshair,
-    color: "from-red-500 to-rose-600",
-    level: "Avancé",
-    guides: [
-      { title: "Attaque", description: "Bases du combat", icon: Crosshair, color: "from-red-500 to-rose-600", link: "/guide/attaque", keywords: "attaque combat mission ressources pillage butin" },
-      { title: "Tips du Bon Raideur", description: "Les bases pour réussir", icon: Target, color: "from-orange-500 to-red-600", link: "/guide/raid", featured: true, keywords: "raid raideur pillage ressources profit rentabilité inactif" },
-      { title: "Split Flotte (Dégroupage)", description: "Optimiser l'ordre d'attaque", icon: Layers, color: "from-purple-500 to-violet-600", link: "/guide/split", keywords: "split dégroupage flotte ordre attaque vagues temps vol" },
-      { title: "ACS", description: "Combat en groupe", icon: Users, color: "from-orange-500 to-amber-600", link: "/guide/acs", keywords: "acs combat groupe alliance coordination attaque défense" },
-      { title: "Rapid Fire", description: "Tirs multiples en combat", icon: Zap, color: "from-yellow-500 to-orange-600", link: "/guide/rapid-fire", featured: true, keywords: "rapid fire rf tir multiple combat vaisseau contre" }
-    ]
-  },
-  {
-    id: "protection",
-    title: "Protection & Contre-mesures",
-    description: "Protéger sa flotte et contrer les attaques",
-    icon: Shield,
-    color: "from-blue-600 to-indigo-700",
-    level: "Avancé",
-    guides: [
-      { title: "Ghost (Fleetsave)", description: "12 techniques de protection", icon: Ghost, color: "from-blue-600 to-indigo-700", link: "/guide/fleetsave", featured: true, keywords: "ghost fleetsave fs opé protection flotte nuit absence mission transport déploiement expédition" },
-      { title: "Guide des Défenses", description: "Construire une défense efficace", icon: Shield, color: "from-blue-500 to-indigo-600", link: "/guide/defenses", featured: true, keywords: "défense lm llo lg gauss ion plasma bouclier dôme bunker protection" },
-      { title: "Éviter Interception", description: "Raider en sécurité", icon: Shield, color: "from-blue-500 to-cyan-600", link: "/guide/eviter-interception", keywords: "interception contre-attaque dg phalange sécurité retour" },
-      { title: "MoonBreak", description: "Destruction de lune", icon: Bomb, color: "from-red-600 to-red-800", link: "/guide/moonbreak", keywords: "moonbreak mb destruction lune rip edlm étoile mort probabilité vague fatale" },
-      { title: "Classements", description: "Points d'honneur et gestion PH", icon: Trophy, color: "from-yellow-500 to-amber-600", link: "/guide/classements", keywords: "classement points honneur ph rang top militaire économie recherche" }
-    ]
-  },
-  {
-    id: "expert",
-    title: "Spécialisations Expert",
-    description: "Mécaniques avancées et formes de vie",
-    icon: Dna,
-    color: "from-purple-500 to-pink-600",
-    level: "Expert",
-    guides: [
-      { title: "Rapid Fire (Expert)", description: "Formules et calculs détaillés du RF", icon: Calculator, color: "from-purple-500 to-pink-600", link: "/guide/rapid-fire-formules", keywords: "rapid fire rf formule calcul probabilité dégâts combat" },
-      { title: "Guide Complet FDV", description: "Races, recherches, artéfacts", icon: Dna, color: "from-purple-500 to-pink-600", link: "/guide/fdv", featured: true, keywords: "fdv forme vie race humain rocktal mecha kaelesh artéfact recherche bonus" },
-      { title: "Rock'tal & Mineur", description: "Développer les FDV pour mineurs", icon: Mountain, color: "from-amber-500 to-orange-600", link: "/guide/rocktal", keywords: "rocktal mineur fdv forme vie production bonus mine" },
-      { title: "Réduction Temps FDV", description: "Cap -99% et optimisation", icon: Clock, color: "from-purple-500 to-pink-600", link: "/guide/reduction-fdv", keywords: "réduction temps fdv forme vie cap 99 optimisation construction recherche" }
-    ]
-  },
-  {
-    id: "outils",
-    title: "Outils & Calculateurs",
-    description: "Calculateurs interactifs pour optimiser votre jeu",
-    icon: Calculator,
-    color: "from-emerald-500 to-teal-600",
-    level: "Tous niveaux",
-    guides: [
-      { title: "Calculateur Production", description: "Mines et ressources par heure", icon: Factory, color: "from-green-500 to-emerald-600", link: "/outils/production", featured: true, keywords: "calculateur production mine métal cristal deutérium ressources heure" },
-      { title: "Calculateur Bâtiments", description: "Temps et coûts de construction", icon: Zap, color: "from-blue-500 to-cyan-600", link: "/outils/batiments", keywords: "calculateur bâtiment temps construction coût robot nanite" },
-      { title: "Calculateur Recherches", description: "Temps et coûts des technologies", icon: FlaskConical, color: "from-teal-500 to-cyan-600", link: "/outils/recherches", keywords: "calculateur recherche technologie temps coût laboratoire rri" },
-      { title: "Calculateur Consommation", description: "Deutérium consommé par trajet", icon: Fuel, color: "from-cyan-500 to-blue-600", link: "/outils/consommation", keywords: "calculateur consommation deutérium carburant trajet mission" },
-      { title: "Calculateur MoonBreak", description: "Probabilités de destruction de lune", icon: Bomb, color: "from-red-600 to-red-800", link: "/outils/moonbreak", featured: true, keywords: "calculateur moonbreak mb destruction lune rip probabilité vague fatale" },
-      { title: "Calculateur Colonisation", description: "Cases et température par position", icon: Globe2, color: "from-green-500 to-teal-600", link: "/outils/colonisation", featured: true, keywords: "calculateur colonisation cases température position diamètre explorateur chercheur" }
-    ]
-  }
-];
+const categories = guideCategories;
 
-const levelColors: Record<string, string> = {
-  "Débutant": "bg-green-500/20 text-green-400 border-green-500/30",
-  "Intermédiaire": "bg-blue-500/20 text-blue-400 border-blue-500/30",
-  "Avancé": "bg-orange-500/20 text-orange-400 border-orange-500/30",
-  "Expert": "bg-purple-500/20 text-purple-400 border-purple-500/30",
-  "Important": "bg-amber-500/20 text-amber-400 border-amber-500/30",
-  "Tous niveaux": "bg-emerald-500/20 text-emerald-400 border-emerald-500/30"
-};
-
-const allGuides = categories.flatMap(cat => 
-  cat.guides.map(g => ({ ...g, category: cat.title }))
+const allGuides = categories.flatMap((category) =>
+  category.guides.map((guide) => ({
+    ...guide,
+    categoryId: category.id,
+    category: category.title,
+    categoryDescription: category.description,
+    level: category.level,
+  })),
 );
 
-const guidesBySlug: Record<string, typeof allGuides[0]> = {};
-allGuides.forEach(g => {
-  const slug = g.link.replace('/guide/', '').replace('/regles/', '');
-  guidesBySlug[slug] = g;
-});
+type GuideItem = (typeof allGuides)[number];
+
+const guidesBySlug = Object.fromEntries(
+  allGuides.map((guide) => [
+    guide.link.replace("/guide/", "").replace("/regles/", "").replace("/outils/", ""),
+    guide,
+  ]),
+) as Record<string, GuideItem>;
+
+const guidesByLink = Object.fromEntries(
+  allGuides.map((guide) => [guide.link, guide]),
+) as Record<string, GuideItem>;
+
+const levelColors: Record<string, string> = {
+  Débutant: "bg-green-500/15 text-green-300 border-green-500/30",
+  Intermédiaire: "bg-blue-500/15 text-blue-300 border-blue-500/30",
+  Avancé: "bg-orange-500/15 text-orange-300 border-orange-500/30",
+  Expert: "bg-purple-500/15 text-purple-300 border-purple-500/30",
+  Important: "bg-amber-500/15 text-amber-300 border-amber-500/30",
+  "Tous niveaux": "bg-emerald-500/15 text-emerald-300 border-emerald-500/30",
+};
+
+const levelOrder = ["Débutant", "Intermédiaire", "Avancé", "Expert", "Important", "Tous niveaux"];
+const starField = [
+  { left: "6%", top: "12%", size: 2, delay: 0 },
+  { left: "18%", top: "28%", size: 3, delay: 0.8 },
+  { left: "34%", top: "18%", size: 2, delay: 1.3 },
+  { left: "52%", top: "10%", size: 2, delay: 0.4 },
+  { left: "68%", top: "24%", size: 3, delay: 1.7 },
+  { left: "82%", top: "16%", size: 2, delay: 0.9 },
+  { left: "91%", top: "32%", size: 2, delay: 1.2 },
+  { left: "11%", top: "72%", size: 2, delay: 1.5 },
+  { left: "27%", top: "86%", size: 3, delay: 0.7 },
+  { left: "49%", top: "78%", size: 2, delay: 1.8 },
+  { left: "71%", top: "88%", size: 2, delay: 0.5 },
+  { left: "88%", top: "74%", size: 3, delay: 1.1 },
+];
+const nebulaClouds = [
+  { className: "left-[-6%] top-[4%] h-56 w-56 bg-cyan-400/14", duration: 18, x: 40, y: -10 },
+  { className: "right-[2%] top-[10%] h-48 w-48 bg-blue-500/14", duration: 16, x: -30, y: 16 },
+  { className: "left-[42%] top-[58%] h-44 w-44 bg-violet-500/10", duration: 20, x: 18, y: -22 },
+];
+
+function pickGuides(links: string[]) {
+  return links.map((link) => guidesByLink[link]).filter(Boolean);
+}
+
+const learningPaths: Array<{
+  id: string;
+  title: string;
+  description: string;
+  icon: LucideIcon;
+  accent: string;
+  categoryId?: string;
+  links: string[];
+}> = [
+  {
+    id: "start",
+    title: "Démarrer proprement",
+    description: "Le chemin le plus rapide pour comprendre l'interface, choisir sa classe et poser une base solide.",
+    icon: GraduationCap,
+    accent: "from-emerald-500/20 via-cyan-500/10 to-transparent",
+    categoryId: "bases",
+    links: ["/guide/interface", "/guide/classes", "/guide/production"],
+  },
+  {
+    id: "eco",
+    title: "Booster son économie",
+    description: "Optimise tes priorités, réduis tes temps morts et transforme tes ressources en progression.",
+    icon: TrendingUp,
+    accent: "from-blue-500/20 via-indigo-500/10 to-transparent",
+    categoryId: "economie",
+    links: ["/guide/production", "/guide/technos-prioritaires", "/guide/ordre-construction"],
+  },
+  {
+    id: "raid",
+    title: "Raider sans te faire punir",
+    description: "Une sélection pensée pour les joueurs qui veulent cibler, frapper et rentrer sans se faire intercepter.",
+    icon: Shield,
+    accent: "from-orange-500/20 via-red-500/10 to-transparent",
+    categoryId: "offensive",
+    links: ["/guide/espionnage", "/guide/recherche-cibles", "/guide/eviter-interception"],
+  },
+  {
+    id: "tools",
+    title: "Jouer avec les bons outils",
+    description: "Les calculateurs qui évitent les erreurs coûteuses et accélèrent vraiment la prise de décision.",
+    icon: Rocket,
+    accent: "from-teal-500/20 via-cyan-500/10 to-transparent",
+    categoryId: "outils",
+    links: ["/outils/production", "/outils/temps-vol", "/outils/intercepteur"],
+  },
+];
+
+function FilterChip({
+  active,
+  children,
+  onClick,
+  icon: Icon,
+}: {
+  active: boolean;
+  children: ReactNode;
+  onClick: () => void;
+  icon?: LucideIcon;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={cn(
+        "inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm transition-all",
+        active
+          ? "border-primary/60 bg-primary text-black shadow-[0_12px_40px_rgba(34,211,238,0.2)]"
+          : "border-[#2E384D] bg-[#141A24]/80 text-gray-300 hover:border-primary/30 hover:text-white",
+      )}
+    >
+      {Icon ? <Icon className="h-4 w-4" /> : null}
+      {children}
+    </button>
+  );
+}
+
+function getGuideTypeLabel(guide: GuideItem) {
+  if (guide.link.startsWith("/outils/")) return "Calculateur";
+  if (guide.link.startsWith("/regles/")) return "Règle";
+  return "Guide";
+}
+
+function getGuideTags(guide: GuideItem, searchQuery: string) {
+  const rawKeywords = guide.keywords
+    ?.split(/\s+/)
+    .map((keyword) => keyword.trim())
+    .filter(Boolean) ?? [];
+
+  const uniqueKeywords = Array.from(new Set(rawKeywords));
+  const queryTerms = searchQuery
+    .toLowerCase()
+    .split(/\s+/)
+    .map((term) => term.trim())
+    .filter(Boolean);
+
+  const matchingKeywords = uniqueKeywords.filter((keyword) =>
+    queryTerms.some((term) => keyword.toLowerCase().includes(term)),
+  );
+
+  const fallbackKeywords = uniqueKeywords.slice(0, 3);
+  return (matchingKeywords.length > 0 ? matchingKeywords : fallbackKeywords).slice(0, 3);
+}
+
+function SpaceBackdrop() {
+  return (
+    <div className="pointer-events-none absolute inset-0 overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_15%,rgba(96,165,250,0.2),transparent_22%),radial-gradient(circle_at_78%_18%,rgba(34,211,238,0.18),transparent_24%),radial-gradient(circle_at_50%_82%,rgba(168,85,247,0.13),transparent_18%),linear-gradient(180deg,rgba(8,12,21,0.18),rgba(5,8,16,0.38))]" />
+
+      {nebulaClouds.map((cloud) => (
+        <motion.div
+          key={cloud.className}
+          className={cn("absolute rounded-full blur-3xl", cloud.className)}
+          animate={{ x: [0, cloud.x, 0], y: [0, cloud.y, 0], opacity: [0.25, 0.45, 0.25] }}
+          transition={{ duration: cloud.duration, repeat: Infinity, ease: "easeInOut" }}
+        />
+      ))}
+
+      {starField.map((star, index) => (
+        <motion.span
+          key={`${star.left}-${star.top}-${index}`}
+          className="absolute rounded-full bg-white/80 shadow-[0_0_10px_rgba(255,255,255,0.35)]"
+          style={{ left: star.left, top: star.top, width: star.size, height: star.size }}
+          animate={{ opacity: [0.2, 1, 0.25], scale: [1, 1.6, 1] }}
+          transition={{ duration: 3.5 + star.delay, delay: star.delay, repeat: Infinity, ease: "easeInOut" }}
+        />
+      ))}
+
+      <motion.div
+        className="absolute -left-16 top-12 h-40 w-40 rounded-full border border-cyan-300/10 bg-cyan-400/10 blur-3xl"
+        animate={{ x: [0, 30, 0], y: [0, -10, 0], opacity: [0.2, 0.35, 0.2] }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute right-[12%] top-[18%] h-24 w-24 rounded-full border border-blue-200/10 bg-blue-400/10 blur-2xl"
+        animate={{ y: [0, 18, 0], x: [0, -12, 0], opacity: [0.18, 0.32, 0.18] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute left-[58%] top-[22%] h-px w-28 -rotate-[28deg] bg-gradient-to-r from-transparent via-cyan-200/80 to-transparent"
+        animate={{ x: [-20, 120], y: [-10, 50], opacity: [0, 0.9, 0] }}
+        transition={{ duration: 4.2, repeat: Infinity, repeatDelay: 5, ease: "easeOut" }}
+      />
+      <motion.div
+        className="absolute right-[18%] top-[64%] h-px w-20 rotate-[18deg] bg-gradient-to-r from-transparent via-violet-200/70 to-transparent"
+        animate={{ x: [0, -90], y: [0, -30], opacity: [0, 0.85, 0] }}
+        transition={{ duration: 3.6, repeat: Infinity, repeatDelay: 7, ease: "easeOut" }}
+      />
+      <motion.div
+        className="absolute left-[14%] top-[34%] h-px w-36 -rotate-[18deg] bg-gradient-to-r from-transparent via-sky-100/90 to-transparent"
+        animate={{ x: [0, 150], y: [0, 48], opacity: [0, 1, 0] }}
+        transition={{ duration: 5.2, repeat: Infinity, repeatDelay: 8, ease: "easeOut" }}
+      />
+      <motion.div
+        className="absolute left-[74%] top-[8%] h-28 w-28 rounded-full border border-primary/15"
+        animate={{ rotate: 360 }}
+        transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
+      >
+        <div className="absolute -top-1 left-1/2 h-2 w-2 -translate-x-1/2 rounded-full bg-primary shadow-[0_0_12px_rgba(34,211,238,0.7)]" />
+      </motion.div>
+      <motion.div
+        className="absolute left-[8%] bottom-[10%] h-40 w-40 rounded-full border border-white/6"
+        animate={{ rotate: -360, scale: [1, 1.04, 1] }}
+        transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
+      >
+        <div className="absolute bottom-3 left-1/2 h-2 w-2 -translate-x-1/2 rounded-full bg-blue-200 shadow-[0_0_14px_rgba(191,219,254,0.7)]" />
+      </motion.div>
+    </div>
+  );
+}
+
+function GuideCard({
+  guide,
+  isFavorite,
+  toggleFavorite,
+  activeCategory,
+  activeLevel,
+  searchQuery,
+}: {
+  guide: GuideItem;
+  isFavorite: boolean;
+  toggleFavorite: (link: string) => void;
+  activeCategory: string | null;
+  activeLevel: string | null;
+  searchQuery: string;
+}) {
+  const Icon = guide.icon;
+  const typeLabel = getGuideTypeLabel(guide);
+  const tags = getGuideTags(guide, searchQuery);
+  const showCategory = !activeCategory;
+  const showLevel = !activeLevel;
+
+  return (
+    <motion.div layout initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="relative h-full">
+      <Link href={guide.link}>
+        <div className="group relative flex h-full cursor-pointer flex-col overflow-hidden rounded-[1.6rem] border border-[#273247] bg-[linear-gradient(180deg,rgba(20,26,36,0.96),rgba(11,16,24,0.98))] p-4 shadow-[0_14px_40px_rgba(5,9,15,0.34)] transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-[0_20px_60px_rgba(34,211,238,0.1)]">
+          <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+            <motion.div
+              className="absolute right-0 top-0 h-24 w-24 rounded-full bg-cyan-300/10 blur-2xl"
+              animate={{ scale: [1, 1.18, 1], opacity: [0.35, 0.65, 0.35] }}
+              transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
+            />
+            <motion.div
+              className="absolute left-4 top-5 h-px w-12 bg-gradient-to-r from-transparent via-cyan-200/70 to-transparent"
+              animate={{ x: [-8, 24, -8], opacity: [0.2, 0.95, 0.2] }}
+              transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
+            />
+            <div className="absolute bottom-6 right-6 h-1.5 w-1.5 rounded-full bg-white/70 shadow-[0_0_10px_rgba(255,255,255,0.5)]" />
+            <motion.div
+              className="absolute -right-5 bottom-8 h-16 w-16 rounded-full border border-primary/10"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+            >
+              <div className="absolute left-1/2 top-0 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-primary" />
+            </motion.div>
+          </div>
+          <div className="mb-4 flex items-start justify-between gap-3 pr-10">
+            <div className="flex items-center gap-3 min-w-0">
+              <div className={cn("flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br shadow-lg", guide.color)}>
+                <Icon className="h-5 w-5 text-white" />
+              </div>
+              <div className="min-w-0">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="rounded-full border border-primary/20 bg-primary/10 px-2 py-0.5 text-[11px] uppercase tracking-[0.14em] text-primary">
+                    {typeLabel}
+                  </span>
+                  {showCategory ? (
+                    <p className="truncate text-[11px] uppercase tracking-[0.18em] text-cyan-200/65">{guide.category}</p>
+                  ) : null}
+                </div>
+                {showLevel ? (
+                  <span className={cn("mt-1 inline-flex rounded-full border px-2 py-0.5 text-[11px]", levelColors[guide.level])}>
+                    {guide.level}
+                  </span>
+                ) : null}
+              </div>
+            </div>
+          </div>
+
+          <div className="mb-4 flex-1">
+            <h3 className="mb-2 text-base font-bold leading-tight text-white transition-colors group-hover:text-primary">
+              {guide.title}
+            </h3>
+            <p className="text-sm leading-5 text-gray-400">{guide.description}</p>
+            {tags.length > 0 ? (
+              <div className="mt-3 flex flex-wrap gap-2">
+                {tags.map((tag) => (
+                  <span
+                    key={`${guide.link}-${tag}`}
+                    className="rounded-full border border-white/8 bg-white/5 px-2.5 py-1 text-[11px] text-gray-300"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            ) : null}
+          </div>
+
+          <div className="flex items-center justify-between border-t border-white/8 pt-3 text-sm">
+            <span className="line-clamp-1 text-xs text-gray-500">
+              {guide.featured
+                ? `${typeLabel} recommandé`
+                : guide.link.startsWith("/outils/")
+                  ? "Accès direct à l'outil"
+                  : guide.link.startsWith("/regles/")
+                    ? "Lecture utile avant de jouer"
+                    : "Lecture ciblée"}
+            </span>
+            <span className="inline-flex items-center gap-2 font-medium text-primary">
+              Ouvrir
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </span>
+          </div>
+        </div>
+      </Link>
+
+      <button
+        onClick={(event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          toggleFavorite(guide.link);
+        }}
+        className={cn(
+          "absolute right-4 top-4 z-10 rounded-full border p-2 backdrop-blur transition-all",
+          isFavorite
+            ? "border-amber-400/40 bg-amber-400/15 text-amber-300"
+            : "border-white/10 bg-black/30 text-gray-500 hover:border-amber-400/30 hover:text-amber-300",
+        )}
+        title={isFavorite ? "Retirer des favoris" : "Ajouter aux favoris"}
+      >
+        <Star className={cn("h-4 w-4", isFavorite && "fill-amber-300")} />
+      </button>
+    </motion.div>
+  );
+}
 
 export default function Tutorials() {
-  const [activeFilter, setActiveFilter] = useState<string | null>(null);
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [activeLevel, setActiveLevel] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set(["regles"]));
+  const [clearConfirm, setClearConfirm] = useState(false);
+  const [libraryOpen, setLibraryOpen] = useState(false);
   const discordMembers = useDiscordStats();
+  const { favorites, toggleFavorite, clearFavorites, isFavorite, storageAvailable } = useFavorites();
 
   const { data: popularGuidesData } = useQuery<{ slug: string; views: number }[]>({
-    queryKey: ['/api/guides/popular'],
+    queryKey: ["/api/guides/popular"],
     queryFn: async () => {
-      const res = await fetch('/api/guides/popular');
+      const res = await fetch("/api/guides/popular");
       if (!res.ok) return [];
       return res.json();
     },
     staleTime: 60000,
   });
 
-  const popularGuides = (popularGuidesData || [])
-    .map(p => guidesBySlug[p.slug])
-    .filter(Boolean)
-    .slice(0, 4);
-  
-  const toggleCategory = (categoryId: string) => {
-    setExpandedCategories(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(categoryId)) {
-        newSet.delete(categoryId);
-      } else {
-        newSet.add(categoryId);
+  useEffect(() => {
+    const syncHashCategory = () => {
+      const hash = window.location.hash.replace("#", "");
+      if (!hash) return;
+
+      const category = categories.find((item) => item.id === hash);
+      if (category) {
+        setLibraryOpen(true);
+        setActiveCategory(category.id);
+        requestAnimationFrame(() => {
+          document.getElementById("guide-library")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
       }
-      return newSet;
-    });
-  };
+    };
 
-  const expandAll = () => {
-    setExpandedCategories(new Set(categories.map(c => c.id)));
-  };
+    syncHashCategory();
+    window.addEventListener("hashchange", syncHashCategory);
+    return () => window.removeEventListener("hashchange", syncHashCategory);
+  }, []);
 
-  const collapseAll = () => {
-    setExpandedCategories(new Set());
-  };
-  
-  const totalGuides = categories.reduce((acc, cat) => acc + cat.guides.length, 0);
-  
-  const filteredCategories = categories
-    .filter(cat => !activeFilter || cat.id === activeFilter)
-    .map(cat => ({
-      ...cat,
-      guides: cat.guides.filter(guide => {
-        if (!searchQuery) return true;
-        const query = searchQuery.toLowerCase();
-        return guide.title.toLowerCase().includes(query) ||
-          guide.description.toLowerCase().includes(query) ||
-          (guide.keywords && guide.keywords.toLowerCase().includes(query));
-      })
-    }))
-    .filter(cat => cat.guides.length > 0);
-
-  const featuredGuides = categories.flatMap(cat => 
-    cat.guides.filter(g => g.featured).map(g => ({ ...g, category: cat.title }))
+  const featuredGuides = useMemo(
+    () => allGuides.filter((guide) => guide.featured),
+    [],
   );
-  
+
+  const favoriteGuides = favorites
+    .map((link) => guidesByLink[link])
+    .filter(Boolean);
+
+  const popularGuides = useMemo(
+    () =>
+      (popularGuidesData || [])
+        .map((item) => guidesBySlug[item.slug])
+        .filter(Boolean)
+        .slice(0, 4),
+    [popularGuidesData],
+  );
+
   const displayPopularGuides = popularGuides.length > 0 ? popularGuides : featuredGuides.slice(0, 4);
-  
+
+  const filteredGuides = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+
+    return [...allGuides]
+      .filter((guide) => {
+        const categoryMatch = !activeCategory || guide.categoryId === activeCategory;
+        const levelMatch = !activeLevel || guide.level === activeLevel;
+        const textMatch =
+          !query ||
+          guide.title.toLowerCase().includes(query) ||
+          guide.description.toLowerCase().includes(query) ||
+          (guide.keywords && guide.keywords.toLowerCase().includes(query)) ||
+          guide.category.toLowerCase().includes(query);
+
+        return categoryMatch && levelMatch && textMatch;
+      })
+      .sort((left, right) => {
+        const leftFav = favorites.includes(left.link) ? 1 : 0;
+        const rightFav = favorites.includes(right.link) ? 1 : 0;
+        const leftFeatured = left.featured ? 1 : 0;
+        const rightFeatured = right.featured ? 1 : 0;
+
+        if (rightFav !== leftFav) return rightFav - leftFav;
+        if (rightFeatured !== leftFeatured) return rightFeatured - leftFeatured;
+        return left.title.localeCompare(right.title, "fr");
+      });
+  }, [activeCategory, activeLevel, favorites, searchQuery]);
+
+  const visibleCategories = useMemo(
+    () =>
+      categories
+        .map((category) => ({
+          ...category,
+          count: filteredGuides.filter((guide) => guide.categoryId === category.id).length,
+        }))
+        .filter((category) => category.count > 0 || !searchQuery),
+    [filteredGuides, searchQuery],
+  );
+
+  const activeCategoryTitle = categories.find((category) => category.id === activeCategory)?.title;
+
+  const resultHeading = searchQuery
+    ? `Résultats pour “${searchQuery}”`
+    : activeCategoryTitle
+      ? activeCategoryTitle
+      : activeLevel
+        ? activeLevel
+        : "Bibliothèque complète";
+
+  const pathCards = learningPaths.map((path) => ({
+    ...path,
+    guides: pickGuides(path.links),
+  }));
+
+  const shouldShowLibrary = libraryOpen || Boolean(activeCategory || activeLevel || searchQuery);
+
+  const handleClearFavorites = () => {
+    if (clearConfirm) {
+      clearFavorites();
+      setClearConfirm(false);
+      return;
+    }
+
+    setClearConfirm(true);
+    window.setTimeout(() => setClearConfirm(false), 3000);
+  };
+
+  const resetFilters = () => {
+    setActiveCategory(null);
+    setActiveLevel(null);
+    setSearchQuery("");
+    setLibraryOpen(false);
+  };
+
   return (
     <Layout>
-      <section className="py-8 md:py-16">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={staggerContainer}
-            className="text-center mb-10"
-          >
-            <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
-              <BookOpen className="w-4 h-4" />
-              {totalGuides} guides disponibles
-            </motion.div>
-            <motion.div variants={fadeInUp} className="mb-4">
-              <EditableText
-                id="tutorials-hero-title"
-                defaultValue="Guides & Tutoriels"
-                as="h1"
-                className="font-display text-4xl md:text-5xl font-bold text-white"
-              />
-            </motion.div>
-            <motion.p variants={fadeInUp} className="text-gray-400 max-w-2xl mx-auto text-lg mb-8">
-              <EditableText
-                id="tutorials-hero-description"
-                defaultValue="Apprenez à maîtriser OGame avec nos guides complets rédigés par la communauté"
-                as="span"
-                multiline
-              />
-            </motion.p>
+      <section className="relative overflow-hidden py-8 md:py-10">
+        <SpaceBackdrop />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.14),transparent_28%),radial-gradient(circle_at_top_right,rgba(59,130,246,0.12),transparent_32%),linear-gradient(180deg,#0b1018_0%,#101722_45%,#0b1018_100%)]" />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-400/30 to-transparent" />
 
-            <motion.div variants={fadeInUp} className="max-w-xl mx-auto mb-8">
-              <div className="relative">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
-                <input
-                  type="text"
-                  placeholder="Rechercher un guide..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-[#1C2230] border border-[#2E384D] rounded-xl pl-12 pr-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:border-primary/50 transition-colors"
-                  data-testid="search-guides"
-                />
-              </div>
+        <div className="container relative mx-auto px-4">
+          <motion.div initial="hidden" animate="visible" variants={staggerContainer}>
+            <motion.div variants={fadeInUp} className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-sm font-medium text-primary">
+              <Sparkles className="h-4 w-4" />
+              {totalGuideCount} guides, outils et raccourcis d'apprentissage
             </motion.div>
 
-            <motion.div variants={fadeInUp} className="flex flex-wrap justify-center gap-2 mb-8 px-2">
-              <button
-                onClick={() => setActiveFilter(null)}
-                className={`px-3 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 sm:gap-2 ${
-                  !activeFilter 
-                    ? "bg-primary text-black shadow-lg shadow-primary/30" 
-                    : "bg-[#1C2230] text-gray-400 hover:text-white border border-[#2E384D] hover:border-primary/30"
-                }`}
-                data-testid="filter-all"
-              >
-                <Filter className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                <span className="hidden sm:inline">Tous</span> ({totalGuides})
-              </button>
-              {categories.map(cat => {
-                const Icon = cat.icon;
-                const isActive = activeFilter === cat.id;
-                return (
-                  <button
-                    key={cat.id}
-                    onClick={() => setActiveFilter(isActive ? null : cat.id)}
-                    className={`px-2 sm:px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all flex items-center gap-1 sm:gap-2 ${
-                      isActive 
-                        ? "bg-primary text-black shadow-lg shadow-primary/30" 
-                        : "bg-[#1C2230] text-gray-400 hover:text-white border border-[#2E384D] hover:border-primary/30"
-                    }`}
-                    data-testid={`filter-${cat.id}`}
+            <div className="grid gap-6 lg:grid-cols-[minmax(0,1.2fr)_420px] lg:items-start">
+              <motion.div variants={fadeInUp}>
+                <div className="relative max-w-3xl">
+                  <motion.div
+                    className="absolute -left-10 top-6 hidden h-24 w-24 rounded-full border border-cyan-300/10 lg:block"
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
                   >
-                    <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
-                    <span className="hidden sm:inline whitespace-nowrap">{cat.title}</span>
-                    <span className={`text-[10px] sm:text-xs px-1 sm:px-1.5 py-0.5 rounded flex-shrink-0 ${isActive ? 'bg-black/20' : 'bg-white/10'}`}>
-                      {cat.guides.length}
-                    </span>
-                  </button>
-                );
-              })}
-            </motion.div>
-            
-            <motion.div variants={fadeInUp} className="flex justify-center gap-3 mb-4">
-              <button
-                onClick={expandAll}
-                className="text-xs text-gray-500 hover:text-primary transition-colors"
-                data-testid="btn-expand-all"
-              >
-                Tout déplier
-              </button>
-              <span className="text-gray-700">|</span>
-              <button
-                onClick={collapseAll}
-                className="text-xs text-gray-500 hover:text-primary transition-colors"
-                data-testid="btn-collapse-all"
-              >
-                Tout replier
-              </button>
-            </motion.div>
-          </motion.div>
-
-          {!activeFilter && !searchQuery && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mb-12"
-            >
-              <div className="bg-gradient-to-r from-yellow-500/10 via-amber-500/5 to-transparent border border-yellow-500/20 rounded-2xl p-6">
-                <div className="flex items-center gap-2 mb-4">
-                  <div className="w-8 h-8 bg-yellow-500/20 rounded-lg flex items-center justify-center">
-                    <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
+                    <div className="absolute left-1/2 top-0 h-2 w-2 -translate-x-1/2 rounded-full bg-cyan-200 shadow-[0_0_12px_rgba(165,243,252,0.8)]" />
+                  </motion.div>
+                  <motion.div
+                    className="absolute right-10 top-16 hidden h-14 w-14 rounded-full bg-violet-400/10 blur-2xl lg:block"
+                    animate={{ scale: [1, 1.35, 1], opacity: [0.25, 0.5, 0.25] }}
+                    transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                  />
+                  <motion.div
+                    className="mb-4 inline-flex items-center gap-2 rounded-full border border-cyan-300/15 bg-black/20 px-3 py-1.5 text-[11px] uppercase tracking-[0.24em] text-cyan-200/70 backdrop-blur-sm"
+                    animate={{ boxShadow: ["0 0 0 rgba(34,211,238,0)", "0 0 28px rgba(34,211,238,0.12)", "0 0 0 rgba(34,211,238,0)"] }}
+                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                  >
+                    <Rocket className="h-3.5 w-3.5" />
+                    Cartographie galactique des guides
+                  </motion.div>
+                  <EditableText
+                    id="tutorials-hero-title"
+                    defaultValue="Apprendre OGame sans se perdre"
+                    as="h1"
+                    className="font-display text-3xl font-bold leading-tight text-white md:text-5xl"
+                  />
+                  <div className="mt-3 max-w-2xl text-base leading-7 text-gray-300">
+                    <EditableText
+                      id="tutorials-hero-description"
+                      defaultValue="Explore les guides par objectif, niveau ou besoin immédiat. L'idée est simple : moins chercher, mieux apprendre, plus vite appliquer."
+                      as="span"
+                      multiline
+                    />
                   </div>
-                  <h2 className="font-display text-lg font-bold text-white">Guides populaires</h2>
-                  <span className="text-xs text-yellow-400/70 bg-yellow-500/10 px-2 py-0.5 rounded-full">
-                    {popularGuides.length > 0 ? 'Les plus consultés' : 'Recommandés'}
-                  </span>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-                  {displayPopularGuides.map((guide, index) => {
-                    const Icon = guide.icon;
+
+                <div className="mt-5 max-w-2xl">
+                  <motion.div
+                    className="relative"
+                    animate={{ y: [0, -2, 0] }}
+                    transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                  >
+                    <Search className="pointer-events-none absolute left-5 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-500" />
+                    <input
+                      type="text"
+                      placeholder="Ex: économies, ghost, intercepteur, lune..."
+                      value={searchQuery}
+                      onChange={(event) => setSearchQuery(event.target.value)}
+                      className="h-14 w-full rounded-[1.4rem] border border-[#2E384D] bg-[#121925]/95 pl-14 pr-14 text-base text-white shadow-[0_20px_50px_rgba(0,0,0,0.24)] outline-none transition-colors placeholder:text-gray-500 focus:border-primary/50"
+                      data-testid="search-guides"
+                    />
+                    {searchQuery ? (
+                      <button
+                        onClick={() => setSearchQuery("")}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full border border-white/10 bg-white/5 p-2 text-gray-400 transition-colors hover:text-white"
+                        aria-label="Effacer la recherche"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
+                    ) : null}
+                  </motion.div>
+                </div>
+
+                <div className="mt-4 flex flex-wrap gap-2.5">
+                  <FilterChip active={!activeCategory} onClick={() => setActiveCategory(null)} icon={Filter}>
+                    Tout explorer
+                  </FilterChip>
+                  {categories.slice(0, 5).map((category) => {
+                    const Icon = category.icon;
                     return (
-                      <Link key={index} href={guide.link}>
-                        <div className="group bg-[#1C2230]/80 border-2 border-yellow-500/20 rounded-xl p-4 hover:border-yellow-500/50 transition-all cursor-pointer hover:shadow-lg hover:shadow-yellow-500/10 hover:-translate-y-1">
-                          <div className="flex items-start gap-3">
-                            <div className={`w-11 h-11 bg-gradient-to-br ${guide.color} rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform flex-shrink-0`}>
-                              <Icon className="w-5 h-5 text-white" />
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <h3 className="font-bold text-white text-sm mb-0.5 group-hover:text-yellow-400 transition-colors leading-tight">
-                                {guide.title}
-                              </h3>
-                              <p className="text-gray-500 text-xs leading-tight">{guide.description}</p>
-                              <span className="text-[10px] text-primary/60 mt-1 block">{guide.category}</span>
-                            </div>
-                          </div>
-                        </div>
-                      </Link>
+                      <FilterChip
+                        key={category.id}
+                        active={activeCategory === category.id}
+                        onClick={() => {
+                          setLibraryOpen(true);
+                          setActiveCategory((current) => (current === category.id ? null : category.id));
+                        }}
+                        icon={Icon}
+                      >
+                        {category.title}
+                      </FilterChip>
                     );
                   })}
                 </div>
-              </div>
-            </motion.div>
-          )}
-
-          <AnimatePresence mode="wait">
-            {filteredCategories.length === 0 ? (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="text-center py-16"
-              >
-                <Search className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-                <h3 className="text-xl font-bold text-white mb-2">Aucun guide trouvé</h3>
-                <p className="text-gray-500">Essayez avec d'autres termes de recherche</p>
               </motion.div>
-            ) : (
-              filteredCategories.map((category) => {
-                const CategoryIcon = category.icon;
-                const isExpanded = expandedCategories.has(category.id);
-                
-                if (category.id === "regles") {
-                  return (
-                    <motion.div
-                      key={category.id}
-                      initial="hidden"
-                      animate="visible"
-                      variants={staggerContainer}
-                      className="mb-6"
-                      layout
-                    >
-                      <Link href="/regles">
-                        <motion.div
-                          variants={fadeInUp}
-                          className="w-full flex items-center justify-between p-3 sm:p-4 bg-gradient-to-r from-amber-900/30 via-orange-900/20 to-[#1C2230] border-2 border-amber-500/40 rounded-xl hover:border-amber-400/60 transition-all cursor-pointer group shadow-lg shadow-amber-500/10"
-                          data-testid={`link-category-${category.id}`}
-                        >
-                          <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
-                            <div className={`w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-br ${category.color} rounded-lg flex items-center justify-center shadow-lg ring-2 ring-amber-400/30 flex-shrink-0`}>
-                              <CategoryIcon className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
-                            </div>
-                            <div className="text-left min-w-0 flex-1">
-                              <div className="flex flex-wrap items-center gap-1 sm:gap-2">
-                                <h2 className="font-display text-base sm:text-lg font-bold text-white group-hover:text-amber-400 transition-colors">{category.title}</h2>
-                                <span className={`text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 rounded-full border ${levelColors[category.level]} flex-shrink-0`}>
-                                  {category.level}
-                                </span>
-                              </div>
-                              <p className="text-gray-400 text-xs sm:text-sm hidden sm:block">{category.description}</p>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0 ml-2">
-                            <span className="text-amber-400/80 text-xs sm:text-sm font-medium hidden xs:inline">{category.guides.length}</span>
-                            <div className="w-7 h-7 sm:w-8 sm:h-8 bg-amber-500/20 rounded-lg flex items-center justify-center group-hover:bg-amber-500/30 transition-colors">
-                              <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-amber-400 group-hover:translate-x-0.5 transition-transform" />
-                            </div>
-                          </div>
-                        </motion.div>
-                      </Link>
-                    </motion.div>
-                  );
-                }
-                
-                return (
+
+              <motion.div variants={fadeInUp} className="grid gap-3 sm:grid-cols-4 lg:grid-cols-1">
+                <div className="relative overflow-hidden rounded-[1.6rem] border border-cyan-400/15 bg-[linear-gradient(180deg,rgba(18,25,37,0.92),rgba(13,18,27,0.98))] p-4 shadow-[0_20px_60px_rgba(7,12,18,0.34)] sm:col-span-3 lg:col-span-1">
                   <motion.div
-                    key={category.id}
-                    initial="hidden"
-                    animate="visible"
-                    variants={staggerContainer}
-                    className="mb-6"
-                    layout
+                    className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(34,211,238,0.12),transparent_24%),radial-gradient(circle_at_70%_80%,rgba(96,165,250,0.08),transparent_22%)]"
+                    animate={{ opacity: [0.4, 0.8, 0.4] }}
+                    transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                  />
+                  <motion.div
+                    className="absolute -right-6 top-3 h-20 w-20 rounded-full border border-cyan-300/10"
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 16, repeat: Infinity, ease: "linear" }}
                   >
-                    <motion.button
-                      variants={fadeInUp}
-                      onClick={() => toggleCategory(category.id)}
-                      className="w-full flex items-center justify-between p-3 sm:p-4 bg-[#1C2230] border border-[#2E384D] rounded-xl hover:border-primary/30 transition-all cursor-pointer group"
-                      data-testid={`toggle-category-${category.id}`}
-                    >
-                      <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
-                        <div className={`w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-br ${category.color} rounded-lg flex items-center justify-center shadow-lg flex-shrink-0`}>
-                          <CategoryIcon className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
-                        </div>
-                        <div className="text-left min-w-0 flex-1">
-                          <div className="flex flex-wrap items-center gap-1 sm:gap-2">
-                            <h2 className="font-display text-base sm:text-lg font-bold text-white group-hover:text-primary transition-colors truncate">{category.title}</h2>
-                            <span className={`text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 rounded-full border ${levelColors[category.level]} flex-shrink-0`}>
-                              {category.level}
-                            </span>
-                          </div>
-                          <p className="text-gray-500 text-xs sm:text-sm hidden sm:block">{category.description}</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0 ml-2">
-                        <span className="text-gray-500 text-xs sm:text-sm hidden xs:inline">{category.guides.length}</span>
-                        <ChevronDown className={`w-5 h-5 text-gray-500 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
-                      </div>
-                    </motion.button>
-
-                    <AnimatePresence>
-                      {isExpanded && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.3 }}
-                          className="overflow-hidden"
-                        >
-                          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 pt-4">
-                            {category.guides.map((guide, index) => {
-                              const Icon = guide.icon;
-                              return (
-                                <motion.div 
-                                  key={index} 
-                                  initial={{ opacity: 0, y: 10 }}
-                                  animate={{ opacity: 1, y: 0 }}
-                                  transition={{ delay: index * 0.03 }}
-                                >
-                                  <Link href={guide.link}>
-                                    <div className="group h-full bg-[#1C2230] border border-[#2E384D] rounded-xl p-4 hover:border-primary/50 transition-all cursor-pointer hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1 text-center relative">
-                                      {guide.featured && (
-                                        <div className="absolute -top-1.5 -right-1.5">
-                                          <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-                                        </div>
-                                      )}
-                                      <div className={`w-12 h-12 bg-gradient-to-br ${guide.color} rounded-xl flex items-center justify-center mx-auto mb-3 shadow-lg group-hover:scale-110 transition-transform`}>
-                                        <Icon className="w-6 h-6 text-white" />
-                                      </div>
-                                      <h3 className="font-bold text-white text-sm mb-1 group-hover:text-primary transition-colors leading-tight">
-                                        {guide.title}
-                                      </h3>
-                                      <p className="text-gray-500 text-xs leading-tight">
-                                        {guide.description}
-                                      </p>
-                                    </div>
-                                  </Link>
-                                </motion.div>
-                              );
-                            })}
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
+                    <div className="absolute left-1/2 top-0 h-2 w-2 -translate-x-1/2 rounded-full bg-cyan-200 shadow-[0_0_10px_rgba(103,232,249,0.7)]" />
                   </motion.div>
-                );
-              })
-            )}
-          </AnimatePresence>
+                  <p className="text-xs uppercase tracking-[0.24em] text-cyan-200/60">Accès rapide</p>
+                  <div className="mt-3 grid grid-cols-3 gap-2">
+                    <div className="rounded-xl border border-white/6 bg-white/4 p-3">
+                      <p className="text-2xl font-bold text-white">{totalGuideCount}</p>
+                      <p className="mt-1 text-xs text-gray-400">guides</p>
+                    </div>
+                    <div className="rounded-xl border border-white/6 bg-white/4 p-3">
+                      <p className="text-2xl font-bold text-white">{featuredGuides.length}</p>
+                      <p className="mt-1 text-xs text-gray-400">recommandés</p>
+                    </div>
+                    <div className="rounded-xl border border-white/6 bg-white/4 p-3">
+                      <p className="text-2xl font-bold text-white">{favoriteGuides.length}</p>
+                      <p className="mt-1 text-xs text-gray-400">favoris</p>
+                    </div>
+                  </div>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {pathCards.map((path) => (
+                      <button
+                        key={path.id}
+                        onClick={() => {
+                          setLibraryOpen(true);
+                          setActiveCategory(path.categoryId ?? null);
+                        }}
+                        className="rounded-full border border-primary/15 bg-primary/8 px-3 py-1.5 text-xs text-primary transition-colors hover:bg-primary/15"
+                      >
+                        {path.title}
+                      </button>
+                    ))}
+                  </div>
+                </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="bg-gradient-to-r from-primary/10 to-cyan-900/20 border border-primary/30 rounded-xl p-6 mb-8"
-          >
-            <div className="flex items-center gap-3 mb-3">
-              <Sparkles className="w-6 h-6 text-primary" />
-              <h3 className="font-display text-lg font-bold text-white">Contribuez aux tutoriels !</h3>
-            </div>
-            <p className="text-gray-400 text-sm mb-4">
-              Ces guides ont été rassemblés de toutes les sources possibles et inimaginables afin de vous offrir 
-              un endroit unique où retrouver tous les tutoriels OGame. Vous souhaitez participer ?
-            </p>
-            <div className="flex flex-wrap gap-3">
-              <Link href="/suggestion-tutoriel">
-                <span className="inline-flex items-center gap-2 bg-primary/20 hover:bg-primary/30 text-primary px-4 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer">
-                  <MessageSquare className="w-4 h-4" />
-                  Proposer via suggestions
-                </span>
-              </Link>
-              <a 
-                href="https://discord.gg/3PWk4HmfNn" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-[#5865F2]/20 hover:bg-[#5865F2]/30 text-[#5865F2] px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-              >
-                <Users className="w-4 h-4" />
-                Partager sur Discord
-              </a>
+                <div className="rounded-[1.6rem] border border-[#273247] bg-[#121925]/90 p-4 sm:col-span-1">
+                  <p className="text-xs uppercase tracking-[0.24em] text-gray-500">Discord</p>
+                  <p className="mt-2 text-sm leading-6 text-gray-400">
+                    {discordMembers ?? "..."} membres disponibles.
+                  </p>
+                  <Button className="mt-3 w-full bg-[#5865F2] hover:bg-[#4752C4]" asChild>
+                    <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer" data-testid="link-discord-hero">
+                      Rejoindre
+                      <ExternalLink className="h-4 w-4" />
+                    </a>
+                  </Button>
+                </div>
+              </motion.div>
             </div>
           </motion.div>
+        </div>
+      </section>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="bg-[#0D1117] border border-[#2E384D] rounded-2xl p-8 mt-8"
-          >
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+      <section className="py-4">
+        <div className="container mx-auto px-4">
+          <div className="rounded-[1.6rem] border border-[#243043] bg-[#0f1621]/92 p-4 md:p-5">
+            <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
+              <div className="flex flex-wrap gap-2">
+                <FilterChip active={!activeLevel} onClick={() => setActiveLevel(null)}>
+                  Tous niveaux
+                </FilterChip>
+                {levelOrder.map((level) => (
+                  <FilterChip
+                    key={level}
+                    active={activeLevel === level}
+                    onClick={() => {
+                      setLibraryOpen(true);
+                      setActiveLevel((current) => (current === level ? null : level));
+                    }}
+                  >
+                    {level}
+                  </FilterChip>
+                ))}
+              </div>
+            </div>
+
+            {(activeCategory || activeLevel || searchQuery) && (
+              <div className="mt-3 flex flex-wrap items-center gap-3 rounded-xl border border-primary/15 bg-primary/5 px-4 py-3 text-sm">
+                <span className="text-gray-400">Filtres actifs :</span>
+                {activeCategory ? <span className="rounded-full border border-primary/20 px-3 py-1 text-primary">{activeCategoryTitle}</span> : null}
+                {activeLevel ? <span className="rounded-full border border-primary/20 px-3 py-1 text-primary">{activeLevel}</span> : null}
+                {searchQuery ? <span className="rounded-full border border-primary/20 px-3 py-1 text-primary">“{searchQuery}”</span> : null}
+                <button onClick={resetFilters} className="ml-auto text-primary transition-colors hover:text-cyan-200">
+                  Réinitialiser
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {!storageAvailable && (
+        <section className="pb-2">
+          <div className="container mx-auto px-4">
+            <div className="rounded-2xl border border-amber-500/20 bg-amber-500/10 px-4 py-3 text-sm text-amber-300">
+              Les favoris ne peuvent pas être sauvegardés dans ce mode de navigation.
+            </div>
+          </div>
+        </section>
+      )}
+
+      <section id="guide-library" className="py-4">
+        <div className="container mx-auto px-4">
+          <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_320px]">
+            <div className="relative overflow-hidden rounded-[1.7rem] border border-[#243043] bg-[#0d121b]/96 p-5 md:p-6">
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/20 to-transparent" />
+              <div className="mb-6 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.24em] text-cyan-200/55">Bibliothèque intelligente</p>
+                  <h2 className="mt-2 text-2xl font-bold text-white">{resultHeading}</h2>
+                  <p className="mt-1 text-sm leading-6 text-gray-400">
+                    {filteredGuides.length} résultat{filteredGuides.length > 1 ? "s" : ""} avec priorité aux favoris et guides clés.
+                  </p>
+                </div>
+                <Link href="/regles">
+                  <div className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-amber-500/25 bg-amber-500/10 px-4 py-2 text-sm text-amber-300 transition-colors hover:bg-amber-500/15">
+                    Règles officielles
+                    <ChevronRight className="h-4 w-4" />
+                  </div>
+                </Link>
+              </div>
+
+              <div className="mb-5 flex flex-wrap gap-2">
+                {visibleCategories.map((category) => (
+                  <button
+                    key={category.id}
+                    onClick={() => {
+                      setLibraryOpen(true);
+                      setActiveCategory((current) => (current === category.id ? null : category.id));
+                    }}
+                    className={cn(
+                      "rounded-full border px-3 py-2 text-sm transition-colors",
+                      activeCategory === category.id
+                        ? "border-primary/40 bg-primary/10 text-primary"
+                        : "border-[#2E384D] bg-[#141A24]/80 text-gray-300 hover:border-primary/30 hover:text-white",
+                    )}
+                  >
+                    {category.title} ({category.count})
+                  </button>
+                ))}
+              </div>
+
+              <AnimatePresence mode="wait">
+                {!shouldShowLibrary ? (
+                  <motion.div
+                    key="explorer"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="space-y-6"
+                  >
+                    <div className="grid gap-4 lg:grid-cols-3">
+                      {[
+                        {
+                          title: "Je débute",
+                          description: "Trouver vite les bases, les mécaniques essentielles et les premiers réflexes utiles.",
+                          action: "Activer parcours débutant",
+                          onClick: () => {
+                            setLibraryOpen(true);
+                            setActiveLevel("Débutant");
+                          },
+                        },
+                        {
+                          title: "Je veux optimiser",
+                          description: "Passer directement vers l'économie, les technos, les temps et les bons calculateurs.",
+                          action: "Ouvrir l'optimisation",
+                          onClick: () => {
+                            setLibraryOpen(true);
+                            setActiveCategory("economie");
+                          },
+                        },
+                        {
+                          title: "Je cherche un outil",
+                          description: "Accéder sans détour aux calculateurs et outils les plus pratiques du site.",
+                          action: "Afficher les outils",
+                          onClick: () => {
+                            setLibraryOpen(true);
+                            setActiveCategory("outils");
+                          },
+                        },
+                      ].map((entry) => (
+                        <button
+                          key={entry.title}
+                          onClick={entry.onClick}
+                          className="group rounded-[1.4rem] border border-[#273247] bg-[linear-gradient(180deg,rgba(20,26,36,0.88),rgba(10,14,22,0.96))] p-5 text-left transition-all hover:-translate-y-1 hover:border-primary/35"
+                        >
+                          <p className="text-[11px] uppercase tracking-[0.22em] text-cyan-200/55">Mission</p>
+                          <h3 className="mt-3 text-lg font-bold text-white group-hover:text-primary">{entry.title}</h3>
+                          <p className="mt-2 text-sm leading-6 text-gray-400">{entry.description}</p>
+                          <span className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-primary">
+                            {entry.action}
+                            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+
+                    <div>
+                      <div className="mb-4 flex items-end justify-between gap-3">
+                        <div>
+                          <p className="text-xs uppercase tracking-[0.22em] text-gray-500">Hubs</p>
+                          <h3 className="mt-1 text-xl font-bold text-white">Choisis un secteur avant d’ouvrir la bibliothèque</h3>
+                        </div>
+                        <button
+                          onClick={() => setLibraryOpen(true)}
+                          className="rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-sm text-primary transition-colors hover:bg-primary/15"
+                        >
+                          Voir toute la bibliothèque
+                        </button>
+                      </div>
+
+                      <div className="grid gap-4 md:grid-cols-2">
+                        {visibleCategories.map((category) => {
+                          const Icon = category.icon;
+                          return (
+                            <button
+                              key={category.id}
+                              onClick={() => {
+                                setLibraryOpen(true);
+                                setActiveCategory(category.id);
+                              }}
+                              className="group rounded-[1.4rem] border border-[#273247] bg-[#121925]/85 p-5 text-left transition-all hover:-translate-y-1 hover:border-primary/30"
+                            >
+                              <div className="flex items-start justify-between gap-4">
+                                <div className="flex items-start gap-4">
+                                  <div className={cn("flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br shadow-lg", category.color)}>
+                                    <Icon className="h-5 w-5 text-white" />
+                                  </div>
+                                  <div>
+                                    <h4 className="text-base font-bold text-white group-hover:text-primary">{category.title}</h4>
+                                    <p className="mt-1 text-sm leading-6 text-gray-400">{category.description}</p>
+                                  </div>
+                                </div>
+                                <span className={cn("rounded-full border px-2 py-1 text-xs", levelColors[category.level])}>{category.level}</span>
+                              </div>
+                              <div className="mt-4 flex items-center justify-between text-sm">
+                                <span className="text-gray-500">{category.count} guide{category.count > 1 ? "s" : ""}</span>
+                                <span className="inline-flex items-center gap-2 text-primary">
+                                  Entrer
+                                  <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                                </span>
+                              </div>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </motion.div>
+                ) : filteredGuides.length === 0 ? (
+                  <motion.div
+                    key="empty"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="rounded-[1.5rem] border border-dashed border-[#2E384D] bg-[#121925]/60 px-6 py-14 text-center"
+                  >
+                    <Search className="mx-auto h-14 w-14 text-gray-600" />
+                    <h3 className="mt-4 text-xl font-bold text-white">Aucun guide trouvé</h3>
+                    <p className="mt-2 text-gray-500">Essaie un autre mot-clé ou retire un filtre.</p>
+                    <button onClick={resetFilters} className="mt-5 text-primary transition-colors hover:text-cyan-200">
+                      Réinitialiser les filtres
+                    </button>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="grid"
+                    layout
+                    className="grid gap-4 md:grid-cols-2 xl:grid-cols-3"
+                  >
+                    {filteredGuides.map((guide) => (
+                      <GuideCard
+                        key={guide.link}
+                        guide={guide}
+                        isFavorite={isFavorite(guide.link)}
+                        toggleFavorite={toggleFavorite}
+                        activeCategory={activeCategory}
+                        activeLevel={activeLevel}
+                        searchQuery={searchQuery}
+                      />
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            <div className="space-y-4">
+              {!activeCategory && !activeLevel && !searchQuery && (
+                <div className="rounded-[1.6rem] border border-[#273247] bg-[#0f1621]/94 p-4">
+                  <p className="text-xs uppercase tracking-[0.22em] text-cyan-200/55">Parcours rapides</p>
+                  <div className="mt-3 space-y-2">
+                    {pathCards.map((path) => {
+                      const Icon = path.icon;
+                      return (
+                        <button
+                          key={path.id}
+                          onClick={() => {
+                            setLibraryOpen(true);
+                            setActiveCategory(path.categoryId ?? null);
+                          }}
+                          className={cn("flex w-full items-center gap-3 rounded-xl border border-white/8 bg-gradient-to-r px-3 py-3 text-left transition-colors hover:border-primary/25", path.accent)}
+                        >
+                          <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/5">
+                            <Icon className="h-4 w-4 text-white" />
+                          </div>
+                          <div className="min-w-0">
+                            <p className="text-sm font-medium text-white">{path.title}</p>
+                            <p className="line-clamp-1 text-xs text-gray-400">{path.description}</p>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              <div className="rounded-[1.6rem] border border-yellow-500/20 bg-[linear-gradient(180deg,rgba(30,26,16,0.94),rgba(15,20,28,0.98))] p-4">
+                <div className="mb-5 flex items-center gap-3">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-yellow-500/15">
+                    <Star className="h-5 w-5 text-yellow-300 fill-yellow-300" />
+                  </div>
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.22em] text-yellow-200/55">À la une</p>
+                    <h2 className="text-xl font-bold text-white">Guides populaires</h2>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  {displayPopularGuides.map((guide) => (
+                    <div key={guide.link} className="relative">
+                      <Link href={guide.link}>
+                        <div className="group cursor-pointer rounded-2xl border border-white/8 bg-black/20 px-4 py-4 transition-colors hover:border-yellow-500/25 hover:bg-white/5">
+                          <div className="pr-10">
+                            <p className="text-sm font-semibold text-white group-hover:text-yellow-300">{guide.title}</p>
+                            <p className="mt-1 text-xs leading-5 text-gray-400">{guide.description}</p>
+                            <p className="mt-2 text-[11px] uppercase tracking-[0.18em] text-yellow-200/45">{guide.category}</p>
+                          </div>
+                        </div>
+                      </Link>
+                      <button
+                        onClick={(event) => {
+                          event.preventDefault();
+                          event.stopPropagation();
+                          toggleFavorite(guide.link);
+                        }}
+                        className={cn(
+                          "absolute right-3 top-3 rounded-full border p-2 transition-colors",
+                          isFavorite(guide.link)
+                            ? "border-amber-400/40 bg-amber-400/15 text-amber-300"
+                            : "border-white/10 bg-black/30 text-gray-500 hover:text-amber-300",
+                        )}
+                      >
+                        <Star className={cn("h-4 w-4", isFavorite(guide.link) && "fill-amber-300")} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <AnimatePresence>
+                {favoriteGuides.length > 0 && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="rounded-[1.6rem] border border-amber-500/20 bg-[linear-gradient(180deg,rgba(27,22,13,0.94),rgba(15,20,28,0.98))] p-4"
+                  >
+                    <div className="mb-4 flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-3">
+                        <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-500/15">
+                          <Star className="h-5 w-5 text-amber-300 fill-amber-300" />
+                        </div>
+                        <div>
+                          <p className="text-xs uppercase tracking-[0.22em] text-amber-200/55">Personnel</p>
+                          <h2 className="text-xl font-bold text-white">Tes favoris</h2>
+                        </div>
+                      </div>
+
+                      <button
+                        onClick={handleClearFavorites}
+                        className={cn(
+                          "rounded-full border px-3 py-2 text-xs transition-colors",
+                          clearConfirm
+                            ? "border-red-500/30 bg-red-500/15 text-red-300"
+                            : "border-white/10 bg-white/5 text-gray-400 hover:text-white",
+                        )}
+                      >
+                        {clearConfirm ? "Confirmer ?" : "Vider"}
+                      </button>
+                    </div>
+
+                    <div className="space-y-3">
+                      {favoriteGuides.slice(0, 4).map((guide) => (
+                        <Link key={guide.link} href={guide.link}>
+                          <div className="group cursor-pointer rounded-2xl border border-white/8 bg-black/20 px-4 py-4 transition-colors hover:border-amber-500/25 hover:bg-white/5">
+                            <p className="text-sm font-semibold text-white group-hover:text-amber-300">{guide.title}</p>
+                            <p className="mt-1 text-xs leading-5 text-gray-400">{guide.description}</p>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-6">
+        <div className="container mx-auto px-4">
+          <div className="rounded-[2rem] border border-primary/20 bg-[linear-gradient(135deg,rgba(16,24,36,0.98),rgba(9,15,24,0.98))] p-6 md:p-8">
+            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
               <div>
-                <h2 className="font-display text-2xl font-bold text-white mb-2">
-                  Aperçu des Tutoriels
-                </h2>
-                <p className="text-gray-400">
-                  Apprenez les stratégies avec <span className="text-primary">@7020Psykose</span>
+                <p className="text-xs uppercase tracking-[0.24em] text-primary/60">Contribuer</p>
+                <h2 className="mt-2 text-2xl font-bold text-white">Améliorer la bibliothèque du Psykoverse</h2>
+                <p className="mt-2 max-w-2xl text-sm leading-6 text-gray-400">
+                  Ces guides rassemblent des années de ressources et d’expérience communautaire. Si tu veux corriger, compléter ou proposer un nouveau sujet, on le centralise ici.
                 </p>
               </div>
-              <Button className="bg-red-600 hover:bg-red-700 mt-4 md:mt-0" asChild>
+
+              <div className="flex flex-wrap gap-3">
+                <Link href="/suggestion-tutoriel">
+                  <span className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-3 text-sm font-medium text-primary transition-colors hover:bg-primary/15">
+                    <MessageSquare className="h-4 w-4" />
+                    Proposer un guide
+                  </span>
+                </Link>
+                <a
+                  href="https://discord.gg/3PWk4HmfNn"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full border border-[#5865F2]/20 bg-[#5865F2]/10 px-4 py-3 text-sm font-medium text-[#7f8cff] transition-colors hover:bg-[#5865F2]/15"
+                >
+                  <Users className="h-4 w-4" />
+                  Échanger sur Discord
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-6">
+        <div className="container mx-auto px-4">
+          <div className="rounded-[2rem] border border-[#243043] bg-[#0d1117] p-6 md:p-8">
+            <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+              <div>
+                <p className="text-xs uppercase tracking-[0.24em] text-gray-500">Vidéo</p>
+                <h2 className="mt-2 text-2xl font-bold text-white">Compléter les guides avec la chaîne</h2>
+                <p className="mt-2 text-sm leading-6 text-gray-400">
+                  Quelques portes d’entrée vidéo pour les sujets où la démonstration visuelle aide vraiment.
+                </p>
+              </div>
+              <Button className="bg-red-600 hover:bg-red-700" asChild>
                 <a href="https://www.youtube.com/@7020Psykose" target="_blank" rel="noopener noreferrer" data-testid="link-youtube">
                   Voir la chaîne
-                  <ExternalLink className="w-4 h-4 ml-2" />
+                  <ExternalLink className="h-4 w-4" />
                 </a>
               </Button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <a 
-                href="https://www.youtube.com/@7020Psykose" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="group cursor-pointer"
-              >
-                <div className="relative rounded-xl overflow-hidden mb-4">
-                  <img 
-                    src="https://images.unsplash.com/photo-1614732414444-096e5f1122d5?w=400&h=225&fit=crop" 
-                    alt="Tutoriel"
-                    className="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  <span className="absolute bottom-3 left-3 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded">
-                    TUTORIEL
-                  </span>
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <div className="w-14 h-14 bg-red-600/90 rounded-full flex items-center justify-center">
-                      <Play className="w-6 h-6 text-white ml-1" />
+            <div className="grid gap-5 md:grid-cols-3">
+              {[
+                {
+                  title: "Prise en retour d'attaque",
+                  description: "Calcule un retour de flotte ennemi à la seconde près sans perdre de temps.",
+                  image: dbImages.alliance.guerrier,
+                  tag: "Tutoriel",
+                },
+                {
+                  title: "Guide LifeForms",
+                  description: "Comprends les bonus raciaux et leur impact réel sur l’économie.",
+                  image: dbImages.races.kaelesh,
+                  tag: "Stratégie",
+                },
+                {
+                  title: "Mécaniques de combat",
+                  description: "Rapid Fire, ordre de tir, lecture des rapports et décisions de compo.",
+                  image: dbImages.recherches.armes,
+                  tag: "Combat",
+                },
+              ].map((video) => (
+                <a
+                  key={video.title}
+                  href="https://www.youtube.com/@7020Psykose"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group"
+                >
+                  <div className="overflow-hidden rounded-[1.75rem] border border-[#273247] bg-[#131a25]">
+                    <div className="relative overflow-hidden">
+                      <img src={video.image} alt={video.title} className="h-52 w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-transparent" />
+                      <span className="absolute left-4 top-4 rounded-full bg-black/55 px-3 py-1 text-[11px] uppercase tracking-[0.2em] text-white">
+                        {video.tag}
+                      </span>
+                      <div className="absolute bottom-4 right-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-600 text-white shadow-lg shadow-red-900/40">
+                        <Play className="ml-0.5 h-5 w-5" />
+                      </div>
+                    </div>
+                    <div className="p-5">
+                      <h3 className="text-lg font-bold text-white transition-colors group-hover:text-red-400">{video.title}</h3>
+                      <p className="mt-2 text-sm leading-6 text-gray-400">{video.description}</p>
                     </div>
                   </div>
-                </div>
-                <h3 className="font-bold text-white group-hover:text-red-400 transition-colors mb-1">
-                  Prise en retour d'attaque
-                </h3>
-                <p className="text-gray-500 text-sm">
-                  Calculez le retour de flotte ennemi à la seconde près.
-                </p>
-              </a>
-
-              <a 
-                href="https://www.youtube.com/@7020Psykose" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="group cursor-pointer"
-              >
-                <div className="relative rounded-xl overflow-hidden mb-4">
-                  <img 
-                    src="https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=400&h=225&fit=crop" 
-                    alt="Stratégie"
-                    className="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  <span className="absolute bottom-3 left-3 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded">
-                    STRATÉGIE
-                  </span>
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <div className="w-14 h-14 bg-red-600/90 rounded-full flex items-center justify-center">
-                      <Play className="w-6 h-6 text-white ml-1" />
-                    </div>
-                  </div>
-                </div>
-                <h3 className="font-bold text-white group-hover:text-red-400 transition-colors mb-1">
-                  Guide LifeForms
-                </h3>
-                <p className="text-gray-500 text-sm">
-                  Optimisez vos bonus raciaux et boostez votre économie.
-                </p>
-              </a>
-
-              <a 
-                href="https://www.youtube.com/@7020Psykose" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="group cursor-pointer"
-              >
-                <div className="relative rounded-xl overflow-hidden mb-4">
-                  <img 
-                    src="https://images.unsplash.com/photo-1581822261290-991b38693d1b?w=400&h=225&fit=crop" 
-                    alt="Combat"
-                    className="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  <span className="absolute bottom-3 left-3 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded">
-                    COMBAT
-                  </span>
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <div className="w-14 h-14 bg-red-600/90 rounded-full flex items-center justify-center">
-                      <Play className="w-6 h-6 text-white ml-1" />
-                    </div>
-                  </div>
-                </div>
-                <h3 className="font-bold text-white group-hover:text-red-400 transition-colors mb-1">
-                  Mécaniques de Combat
-                </h3>
-                <p className="text-gray-500 text-sm">
-                  RapidFire, ordre de tir et composition de flotte.
-                </p>
-              </a>
+                </a>
+              ))}
             </div>
-          </motion.div>
+          </div>
+        </div>
+      </section>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="bg-gradient-to-r from-orange-900/20 via-red-900/10 to-purple-900/20 border border-orange-500/20 rounded-xl p-5 mt-8"
-          >
-            <div className="flex flex-col sm:flex-row items-center gap-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center flex-shrink-0">
-                <BarChart3 className="w-6 h-6 text-white" />
+      <section className="pb-12 pt-6">
+        <div className="container mx-auto px-4">
+          <div className="rounded-[2rem] border border-orange-500/20 bg-[linear-gradient(135deg,rgba(55,23,7,0.24),rgba(12,16,24,0.98))] p-5">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-500 to-red-600">
+                <BarChart3 className="h-6 w-6 text-white" />
               </div>
-              <div className="flex-1 text-center sm:text-left">
-                <h3 className="font-bold text-white mb-1">Sondage Communautaire</h3>
-                <p className="text-gray-400 text-sm">
-                  Partagez votre composition de flotte ou défense idéale !
-                </p>
+              <div className="flex-1">
+                <h3 className="font-bold text-white">Sondage communautaire</h3>
+                <p className="mt-1 text-sm text-gray-400">Partage ta composition de flotte ou de défense idéale pour enrichir les repères de la communauté.</p>
               </div>
               <Link href="/sondage-compositions">
                 <Button size="sm" className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700" data-testid="btn-survey-cta">
-                  <MessageSquare className="w-4 h-4 mr-2" />
+                  <Compass className="mr-2 h-4 w-4" />
                   Participer
                 </Button>
               </Link>
             </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="bg-gradient-to-r from-[#5865F2]/20 to-[#5865F2]/5 border border-[#5865F2]/30 rounded-xl p-6 mt-6"
-          >
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-14 bg-[#5865F2] rounded-xl flex items-center justify-center flex-shrink-0">
-                <Users className="w-7 h-7 text-white" />
-              </div>
-              <div className="flex-1">
-                <h2 className="font-display text-lg font-bold text-white mb-1">
-                  Aide personnalisée
-                </h2>
-                <p className="text-gray-400 text-sm mb-3">
-                  {discordMembers ?? "..."} membres prêts à vous aider sur Discord
-                </p>
-              </div>
-              <Button className="bg-[#5865F2] hover:bg-[#4752C4]" asChild>
-                <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer" data-testid="link-discord">
-                  Rejoindre Discord
-                  <ExternalLink className="w-3 h-3 ml-2" />
-                </a>
-              </Button>
-            </div>
-          </motion.div>
+          </div>
         </div>
       </section>
     </Layout>

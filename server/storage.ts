@@ -1,4 +1,4 @@
-import { users, visits, feedback, suggestions, leaderboard, editableContent, customGuides, fleetCompositions, defenseCompositions, type User, type InsertUser, type InsertVisit, type Visit, type InsertFeedback, type Feedback, type InsertSuggestion, type Suggestion, type InsertLeaderboard, type Leaderboard, type EditableContent, type InsertEditableContent, type CustomGuide, type InsertCustomGuide, type FleetComposition, type InsertFleetComposition, type DefenseComposition, type InsertDefenseComposition } from "@shared/schema";
+import { users, visits, feedback, suggestions, leaderboard, editableContent, customGuides, imageLibrary, fleetCompositions, defenseCompositions, type User, type InsertUser, type InsertVisit, type Visit, type InsertFeedback, type Feedback, type InsertSuggestion, type Suggestion, type InsertLeaderboard, type Leaderboard, type EditableContent, type InsertEditableContent, type CustomGuide, type InsertCustomGuide, type ImageLibraryItem, type InsertImageLibrary, type FleetComposition, type InsertFleetComposition, type DefenseComposition, type InsertDefenseComposition } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, sql, gte } from "drizzle-orm";
 
@@ -33,6 +33,11 @@ export interface IStorage {
   createCustomGuide(data: InsertCustomGuide): Promise<CustomGuide>;
   updateCustomGuide(id: string, data: Partial<InsertCustomGuide>): Promise<CustomGuide | undefined>;
   deleteCustomGuide(id: string): Promise<boolean>;
+  getActiveImageLibrary(): Promise<ImageLibraryItem[]>;
+  getAllImageLibrary(): Promise<ImageLibraryItem[]>;
+  createImageLibraryItem(data: InsertImageLibrary): Promise<ImageLibraryItem>;
+  updateImageLibraryItem(id: string, data: Partial<InsertImageLibrary>): Promise<ImageLibraryItem | undefined>;
+  deleteImageLibraryItem(id: string): Promise<boolean>;
   createFleetComposition(data: InsertFleetComposition): Promise<FleetComposition>;
   listFleetCompositions(): Promise<FleetComposition[]>;
   deleteFleetComposition(id: string): Promise<boolean>;
@@ -239,6 +244,35 @@ export class DatabaseStorage implements IStorage {
 
   async deleteCustomGuide(id: string): Promise<boolean> {
     const result = await db.delete(customGuides).where(eq(customGuides.id, id));
+    return true;
+  }
+
+  async getActiveImageLibrary(): Promise<ImageLibraryItem[]> {
+    return await db.select().from(imageLibrary)
+      .where(eq(imageLibrary.isActive, 1))
+      .orderBy(imageLibrary.sortOrder, desc(imageLibrary.createdAt));
+  }
+
+  async getAllImageLibrary(): Promise<ImageLibraryItem[]> {
+    return await db.select().from(imageLibrary)
+      .orderBy(imageLibrary.sortOrder, desc(imageLibrary.createdAt));
+  }
+
+  async createImageLibraryItem(data: InsertImageLibrary): Promise<ImageLibraryItem> {
+    const [item] = await db.insert(imageLibrary).values(data).returning();
+    return item;
+  }
+
+  async updateImageLibraryItem(id: string, data: Partial<InsertImageLibrary>): Promise<ImageLibraryItem | undefined> {
+    const [updated] = await db.update(imageLibrary)
+      .set({ ...data, updatedAt: new Date() })
+      .where(eq(imageLibrary.id, id))
+      .returning();
+    return updated;
+  }
+
+  async deleteImageLibraryItem(id: string): Promise<boolean> {
+    await db.delete(imageLibrary).where(eq(imageLibrary.id, id));
     return true;
   }
 

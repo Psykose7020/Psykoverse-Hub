@@ -124,6 +124,31 @@ export const insertCustomGuideSchema = createInsertSchema(customGuides).omit({
 export type InsertCustomGuide = z.infer<typeof insertCustomGuideSchema>;
 export type CustomGuide = typeof customGuides.$inferSelect;
 
+export const imageLibrary = pgTable("image_library", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  title: text("title").notNull(),
+  imageUrl: text("image_url").notNull(),
+  thumbnailUrl: text("thumbnail_url"),
+  altText: text("alt_text"),
+  category: text("category").default("general").notNull(),
+  tags: text("tags"),
+  sourceUrl: text("source_url"),
+  credit: text("credit"),
+  isActive: integer("is_active").default(1).notNull(),
+  sortOrder: integer("sort_order").default(0).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertImageLibrarySchema = createInsertSchema(imageLibrary).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export type InsertImageLibrary = z.infer<typeof insertImageLibrarySchema>;
+export type ImageLibraryItem = typeof imageLibrary.$inferSelect;
+
 export const fleetCompositions = pgTable("fleet_compositions", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   composition: text("composition").notNull(),

@@ -5,29 +5,7 @@ import { Link } from "wouter";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { useMutation } from "@tanstack/react-query";
-
-import imgPetitTransporteur from "@assets/ogame_ships/petit-transporteur.png";
-import imgGrandTransporteur from "@assets/ogame_ships/grand-transporteur.png";
-import imgRecycleur from "@assets/ogame_ships/recycleur.png";
-import imgChasseurLeger from "@assets/ogame_ships/chasseur-leger.png";
-import imgChasseurLourd from "@assets/ogame_ships/chasseur-lourd.png";
-import imgCroiseur from "@assets/ogame_ships/croiseur.png";
-import imgVaisseauBataille from "@assets/ogame_ships/vaisseau-bataille.png";
-import imgBombardier from "@assets/ogame_ships/bombardier.png";
-import imgDestructeur from "@assets/ogame_ships/destructeur.png";
-import imgTraqueur from "@assets/ogame_ships/traqueur.png";
-import imgEtoileMort from "@assets/ogame_ships/etoile-mort.png";
-import imgFaucheur from "@assets/ogame_ships/faucheur.png";
-import imgEclaireur from "@assets/ogame_ships/eclaireur.png";
-import imgSondeEspionnage from "@assets/ogame_ships/sonde-espionnage.png";
-import imgLanceurMissiles from "@assets/ogame_ships/lanceur-missiles.png";
-import imgLaserLeger from "@assets/ogame_ships/laser-leger.png";
-import imgLaserLourd from "@assets/ogame_ships/laser-lourd.png";
-import imgCanonGauss from "@assets/ogame_ships/canon-gauss.png";
-import imgArtillerieIons from "@assets/ogame_ships/artillerie-ions.png";
-import imgLanceurPlasma from "@assets/ogame_ships/lanceur-plasma.png";
-import imgPetitBouclier from "@assets/ogame_ships/petit-bouclier.png";
-import imgGrandBouclier from "@assets/ogame_ships/grand-bouclier.png";
+import { ogameDefenseImageDatabase, ogameFleetImageDatabase } from "@/data/ogame-image-database";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -35,31 +13,31 @@ const fadeInUp = {
 };
 
 const fleetShips = [
-  { id: "pt", name: "Petit Transporteur", abbrev: "PT", image: imgPetitTransporteur, category: "civil" },
-  { id: "gt", name: "Grand Transporteur", abbrev: "GT", image: imgGrandTransporteur, category: "civil" },
-  { id: "rec", name: "Recycleur", abbrev: "REC", image: imgRecycleur, category: "civil" },
-  { id: "sonde", name: "Sonde d'Espionnage", abbrev: "SE", image: imgSondeEspionnage, category: "civil" },
-  { id: "cl", name: "Chasseur Léger", abbrev: "CL", image: imgChasseurLeger, category: "combat" },
-  { id: "clo", name: "Chasseur Lourd", abbrev: "CLo", image: imgChasseurLourd, category: "combat" },
-  { id: "cr", name: "Croiseur", abbrev: "CR", image: imgCroiseur, category: "combat" },
-  { id: "vb", name: "Vaisseau de Bataille", abbrev: "VB", image: imgVaisseauBataille, category: "combat" },
-  { id: "bb", name: "Bombardier", abbrev: "BB", image: imgBombardier, category: "combat" },
-  { id: "dest", name: "Destructeur", abbrev: "DEST", image: imgDestructeur, category: "combat" },
-  { id: "traq", name: "Traqueur", abbrev: "TRAQ", image: imgTraqueur, category: "combat" },
-  { id: "edm", name: "Étoile de la Mort", abbrev: "EDM", image: imgEtoileMort, category: "combat" },
-  { id: "fauch", name: "Faucheur", abbrev: "FAUCH", image: imgFaucheur, category: "combat" },
-  { id: "ecl", name: "Éclaireur", abbrev: "ECL", image: imgEclaireur, category: "combat" },
+  { id: "pt", name: "Petit Transporteur", abbrev: "PT", image: ogameFleetImageDatabase.find((item) => item.code === "PT")!.image, category: "civil" },
+  { id: "gt", name: "Grand Transporteur", abbrev: "GT", image: ogameFleetImageDatabase.find((item) => item.code === "GT")!.image, category: "civil" },
+  { id: "rec", name: "Recycleur", abbrev: "REC", image: ogameFleetImageDatabase.find((item) => item.code === "REC")!.image, category: "civil" },
+  { id: "sonde", name: "Sonde d'Espionnage", abbrev: "SE", image: ogameFleetImageDatabase.find((item) => item.code === "SE")!.image, category: "civil" },
+  { id: "cl", name: "Chasseur Léger", abbrev: "CL", image: ogameFleetImageDatabase.find((item) => item.code === "CL")!.image, category: "combat" },
+  { id: "clo", name: "Chasseur Lourd", abbrev: "CLo", image: ogameFleetImageDatabase.find((item) => item.code === "CLo")!.image, category: "combat" },
+  { id: "cr", name: "Croiseur", abbrev: "CR", image: ogameFleetImageDatabase.find((item) => item.code === "CR")!.image, category: "combat" },
+  { id: "vb", name: "Vaisseau de Bataille", abbrev: "VB", image: ogameFleetImageDatabase.find((item) => item.code === "VB")!.image, category: "combat" },
+  { id: "bb", name: "Bombardier", abbrev: "BB", image: ogameFleetImageDatabase.find((item) => item.code === "BB")!.image, category: "combat" },
+  { id: "dest", name: "Destructeur", abbrev: "DEST", image: ogameFleetImageDatabase.find((item) => item.code === "DEST")!.image, category: "combat" },
+  { id: "traq", name: "Traqueur", abbrev: "TRAQ", image: ogameFleetImageDatabase.find((item) => item.code === "TRAQ")!.image, category: "combat" },
+  { id: "edm", name: "Étoile de la Mort", abbrev: "EDM", image: ogameFleetImageDatabase.find((item) => item.code === "EDM")!.image, category: "combat" },
+  { id: "fauch", name: "Faucheur", abbrev: "FAUCH", image: ogameFleetImageDatabase.find((item) => item.code === "FAUCH")!.image, category: "combat" },
+  { id: "ecl", name: "Éclaireur", abbrev: "ECL", image: ogameFleetImageDatabase.find((item) => item.code === "ECL")!.image, category: "combat" },
 ];
 
 const defenseUnits = [
-  { id: "lm", name: "Lanceur de Missiles", abbrev: "LM", image: imgLanceurMissiles },
-  { id: "ll", name: "Artillerie Laser Légère", abbrev: "LL", image: imgLaserLeger },
-  { id: "llo", name: "Artillerie Laser Lourde", abbrev: "LLo", image: imgLaserLourd },
-  { id: "gauss", name: "Canon de Gauss", abbrev: "Gauss", image: imgCanonGauss },
-  { id: "ion", name: "Artillerie à Ions", abbrev: "Ion", image: imgArtillerieIons },
-  { id: "plasma", name: "Lanceur de Plasma", abbrev: "Plasma", image: imgLanceurPlasma },
-  { id: "pb", name: "Petit Bouclier", abbrev: "PB", image: imgPetitBouclier },
-  { id: "gb", name: "Grand Bouclier", abbrev: "GB", image: imgGrandBouclier },
+  { id: "lm", name: "Lanceur de Missiles", abbrev: "LM", image: ogameDefenseImageDatabase.find((item) => item.code === "LM")!.image },
+  { id: "ll", name: "Artillerie Laser Légère", abbrev: "LL", image: ogameDefenseImageDatabase.find((item) => item.code === "LL")!.image },
+  { id: "llo", name: "Artillerie Laser Lourde", abbrev: "LLo", image: ogameDefenseImageDatabase.find((item) => item.code === "LLo")!.image },
+  { id: "gauss", name: "Canon de Gauss", abbrev: "Gauss", image: ogameDefenseImageDatabase.find((item) => item.code === "Gauss")!.image },
+  { id: "ion", name: "Artillerie à Ions", abbrev: "Ion", image: ogameDefenseImageDatabase.find((item) => item.code === "Ion")!.image },
+  { id: "plasma", name: "Lanceur de Plasma", abbrev: "Plasma", image: ogameDefenseImageDatabase.find((item) => item.code === "Plasma")!.image },
+  { id: "pb", name: "Petit Bouclier", abbrev: "PB", image: ogameDefenseImageDatabase.find((item) => item.code === "PB")!.image },
+  { id: "gb", name: "Grand Bouclier", abbrev: "GB", image: ogameDefenseImageDatabase.find((item) => item.code === "GB")!.image },
 ];
 
 export default function SurveyCompositionsPage() {

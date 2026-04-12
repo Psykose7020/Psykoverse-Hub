@@ -24,9 +24,13 @@ export default function Legal() {
             <section>
               <h2 className="font-display text-xl font-bold text-primary mb-4">2. Hébergement</h2>
               <p className="text-gray-400 leading-relaxed">
-                Ce site est hébergé par Replit, Inc.
+                Hébergeur : Hetzner Online GmbH
                 <br />
-                Adresse : 350 Brannan Street, Suite 125, San Francisco, CA 94107, USA
+                Adresse : Industriestr. 25, 91710 Gunzenhausen, Allemagne
+                <br />
+                Serveur : Nuremberg, Allemagne
+                <br />
+                Site : <a href="https://www.hetzner.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">https://www.hetzner.com</a>
               </p>
             </section>
 
@@ -72,7 +76,7 @@ export default function Legal() {
           </div>
 
           <p className="text-center text-gray-600 text-sm mt-8">
-            Dernière mise à jour : Décembre 2025
+            Dernière mise à jour : Avril 2026
           </p>
         </div>
       </div>

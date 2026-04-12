@@ -7,10 +7,7 @@ import {
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-
-import guerrierImg from "@assets/Screenshot_2025-12-10-06-07-55-22_32cba261fc08a501ce70de75bdbe_1765343303471.jpg";
-import marchandImg from "@assets/Screenshot_2025-12-10-06-07-30-52_32cba261fc08a501ce70de75bdbe_1765343303497.jpg";
-import chercheurImg from "@assets/Screenshot_2025-12-10-06-07-10-84_32cba261fc08a501ce70de75bdbe_1765343303502.jpg";
+import { dbImages } from "@/data/database-images";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -29,7 +26,7 @@ const allianceClasses = [
     textColor: "text-red-400",
     prix: "400.000 AM",
     duree: "Permanent",
-    image: guerrierImg,
+    image: dbImages.alliance.guerrier,
     bonus: [
       { 
         icon: Zap, 
@@ -71,7 +68,7 @@ const allianceClasses = [
     textColor: "text-amber-400",
     prix: "400.000 AM",
     duree: "Permanent",
-    image: marchandImg,
+    image: dbImages.alliance.marchand,
     bonus: [
       { 
         icon: Rocket, 
@@ -108,7 +105,7 @@ const allianceClasses = [
     textColor: "text-blue-400",
     prix: "400.000 AM",
     duree: "Permanent",
-    image: chercheurImg,
+    image: dbImages.alliance.chercheur,
     bonus: [
       { 
         icon: Zap, 

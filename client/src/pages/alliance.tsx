@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Globe, Star, Calendar, Users, Zap, ExternalLink } from "lucide-react";
+import { Globe, Star, Users, Zap, ExternalLink, Shield } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { EditableText } from "@/components/EditableText";
@@ -17,47 +17,6 @@ const staggerContainer = {
   }
 };
 
-const universes = [
-  {
-    name: "Veritate",
-    status: "new",
-    type: "Serveur Saison",
-    players: "Lancé le 19 Décembre",
-    description: "Notre nouveau serveur saison ! Compétition intense et nouveau départ pour tous.",
-    features: ["CDR 80%", "Vitesse x6", "Catégorie Agressif"],
-    joinable: true,
-    allianceLink: "https://s277-fr.ogame.gameforge.com/game/allianceInfo.php?allianceId=500043"
-  },
-  {
-    name: "Scorpius",
-    status: "active",
-    type: "Univers Principal",
-    players: "Alliance établie",
-    description: "Notre univers principal avec une communauté active et des joueurs expérimentés. Rejoignez-nous !",
-    features: ["Joueurs actifs", "Entraide quotidienne", "Progression ensemble"],
-    joinable: true
-  },
-  {
-    name: "Hercules",
-    status: "active",
-    type: "Nouvelle Alliance",
-    players: "Recrutement ouvert",
-    description: "Nous venons d'ouvrir l'alliance sur cet univers. Rejoignez-nous pour construire ensemble !",
-    features: ["Nouvelle alliance", "Recrutement actif", "Nouvelles opportunités"],
-    joinable: true
-  }
-];
-
-const serverStats = [
-  { label: "CDR", value: "80%" },
-  { label: "Défense CDR", value: "50%" },
-  { label: "Cases Bonus", value: "+25" },
-  { label: "Galaxies", value: "6" },
-  { label: "Conso Deut", value: "0.5" },
-  { label: "Catégorie", value: "AGRESSIF" },
-  { label: "AG/DG", value: "OUI" }
-];
-
 export default function Alliance() {
   return (
     <Layout>
@@ -67,7 +26,7 @@ export default function Alliance() {
             initial="hidden"
             animate="visible"
             variants={staggerContainer}
-            className="text-center mb-12"
+            className="text-center mb-16"
           >
             <motion.div variants={fadeInUp} className="flex items-center justify-center gap-3 mb-4">
               <Globe className="w-8 h-8 text-primary" />
@@ -78,123 +37,113 @@ export default function Alliance() {
                 className="font-display text-3xl md:text-5xl font-bold text-white"
               />
             </motion.div>
-            <motion.p variants={fadeInUp} className="text-gray-400 max-w-2xl mx-auto">
+            <motion.p variants={fadeInUp} className="text-gray-400 max-w-2xl mx-auto text-lg">
               <EditableText
                 id="alliance-hero-description"
-                defaultValue="La Psykoverse est présente sur plusieurs univers OGame. Rejoignez-nous là où vous jouez !"
+                defaultValue="La Psykoverse est présente sur deux univers OGame. Rejoignez-nous là où vous jouez !"
                 as="span"
                 multiline
               />
             </motion.p>
           </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-16">
-            {universes.map((universe, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.15 }}
-                className={`relative bg-[#1C2230] border rounded-lg overflow-hidden ${
-                  universe.status === "new" 
-                    ? "border-green-500/50 shadow-[0_0_20px_rgba(34,197,94,0.2)]" 
-                    : "border-[#2E384D] hover:border-primary/50"
-                } transition-all`}
-              >
-                {universe.status === "new" && (
-                  <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-green-500 to-emerald-600 text-white text-xs font-bold uppercase tracking-wider py-2 text-center">
-                    <Zap className="w-4 h-4 inline mr-2" />
-                    Nouveau Serveur Saison
-                  </div>
-                )}
-                
-                <div className={`p-6 ${universe.status === "new" ? "pt-12" : ""}`}>
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="font-display text-2xl font-bold text-white">{universe.name}</h3>
-                    <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${
-                      universe.status === "new"
-                        ? "bg-green-500/20 text-green-400 animate-pulse"
-                        : universe.status === "active" 
-                        ? "bg-green-900/50 text-green-400" 
-                        : "bg-orange-900/50 text-orange-400"
-                    }`}>
-                      {universe.status === "new" ? "Nouveau" : universe.status === "active" ? "Actif" : "Bientôt"}
-                    </span>
-                  </div>
-                  
-                  <p className="text-primary text-sm font-mono mb-2">{universe.type}</p>
-                  <p className="text-gray-400 mb-4">{universe.description}</p>
-                  
-                  <div className="space-y-2 mb-6">
-                    {universe.features.map((feature, fIndex) => (
-                      <div key={fIndex} className="flex items-center gap-2 text-sm text-gray-300">
-                        <Star className="w-4 h-4 text-secondary" />
-                        {feature}
-                      </div>
-                    ))}
-                  </div>
-                  
-                  <div className="space-y-2">
-                    {universe.joinable && (
-                      <Button 
-                        className={`w-full ${
-                          universe.status === "new" 
-                            ? "bg-green-500 hover:bg-green-600 text-white" 
-                            : ""
-                        }`} 
-                        asChild
-                      >
-                        <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer">
-                          <Users className="w-4 h-4 mr-2" />
-                          Rejoindre sur Discord
-                        </a>
-                      </Button>
-                    )}
-                    {'allianceLink' in universe && universe.allianceLink && (
-                      <Button 
-                        variant="outline"
-                        className="w-full border-primary/50 text-primary hover:bg-primary/10" 
-                        asChild
-                      >
-                        <a href={universe.allianceLink} target="_blank" rel="noopener noreferrer">
-                          <ExternalLink className="w-4 h-4 mr-2" />
-                          Page Alliance OGame
-                        </a>
-                      </Button>
-                    )}
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+          {/* Scorpius — Serveur Principal */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="relative bg-gradient-to-br from-[#1C2230] to-[#151924] border border-primary/60 rounded-2xl overflow-hidden mb-8 shadow-[0_0_40px_rgba(99,102,241,0.15)]"
+          >
+            {/* Badge serveur principal */}
+            <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-primary to-indigo-500 text-white text-xs font-bold uppercase tracking-widest py-2 text-center">
+              <Zap className="w-4 h-4 inline mr-2" />
+              Serveur Principal
+            </div>
 
+            <div className="p-8 pt-14 md:flex md:items-center md:gap-10">
+              <div className="flex-1 mb-6 md:mb-0">
+                <div className="flex items-center gap-4 mb-3">
+                  <h2 className="font-display text-4xl font-bold text-white">Scorpius</h2>
+                  <span className="px-3 py-1 rounded-full text-xs font-bold uppercase bg-primary/20 text-primary animate-pulse">
+                    Actif
+                  </span>
+                </div>
+                <p className="text-primary text-sm font-mono mb-3">Univers Principal</p>
+                <p className="text-gray-300 text-base leading-relaxed mb-6">
+                  Notre univers de référence. Une communauté soudée, des joueurs expérimentés et une alliance bien établie. C'est ici que se passe l'essentiel de notre activité !
+                </p>
+                <div className="flex flex-wrap gap-4 mb-6">
+                  {["Joueurs actifs", "Entraide quotidienne", "Progression ensemble"].map((feature, i) => (
+                    <div key={i} className="flex items-center gap-2 text-sm text-gray-300 bg-[#0F1520] px-3 py-1.5 rounded-full border border-[#2E384D]">
+                      <Star className="w-3.5 h-3.5 text-secondary flex-shrink-0" />
+                      {feature}
+                    </div>
+                  ))}
+                </div>
+                <Button size="lg" asChild>
+                  <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer">
+                    <Users className="w-5 h-5 mr-2" />
+                    Rejoindre sur Discord
+                  </a>
+                </Button>
+              </div>
+
+              <div className="md:w-56 flex-shrink-0">
+                <div className="bg-[#0F1520] border border-[#2E384D] rounded-xl p-6 text-center">
+                  <Shield className="w-10 h-10 text-primary mx-auto mb-3" />
+                  <p className="text-gray-400 text-xs uppercase tracking-widest mb-1">Alliance</p>
+                  <p className="text-white font-display font-bold text-xl">Psykoverse</p>
+                  <p className="text-gray-500 text-xs mt-2">Alliance établie</p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Hercules — Secondaire */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="bg-[#151924] border border-[#2E384D] rounded-lg p-8"
+            transition={{ delay: 0.25 }}
+            className="relative bg-[#1C2230] border border-[#2E384D] hover:border-primary/40 rounded-2xl overflow-hidden transition-all"
           >
-            <h2 className="font-display text-2xl font-bold text-white mb-6 text-center flex items-center justify-center gap-3">
-              <Zap className="w-6 h-6 text-secondary" />
-              Paramètres Serveur Saison
-            </h2>
-            
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 mb-6">
-              {serverStats.map((stat, index) => (
-                <div key={index} className="bg-[#1C2230] border border-[#2E384D] p-4 text-center rounded-lg">
-                  <div className="text-gray-500 text-xs uppercase tracking-wider mb-1">{stat.label}</div>
-                  <div className="font-display text-xl font-bold text-white">{stat.value}</div>
+            <div className="p-8 md:flex md:items-center md:gap-10">
+              <div className="flex-1 mb-6 md:mb-0">
+                <div className="flex items-center gap-4 mb-3">
+                  <h2 className="font-display text-3xl font-bold text-white">Hercules</h2>
+                  <span className="px-3 py-1 rounded-full text-xs font-bold uppercase bg-green-900/50 text-green-400">
+                    Actif
+                  </span>
                 </div>
-              ))}
+                <p className="text-primary text-sm font-mono mb-3">Univers Secondaire</p>
+                <p className="text-gray-400 text-base leading-relaxed mb-6">
+                  Nous venons d'ouvrir l'alliance sur cet univers. Rejoignez-nous pour construire quelque chose ensemble et étendre la communauté Psykoverse !
+                </p>
+                <div className="flex flex-wrap gap-4 mb-6">
+                  {["Nouvelle alliance", "Recrutement actif", "Nouvelles opportunités"].map((feature, i) => (
+                    <div key={i} className="flex items-center gap-2 text-sm text-gray-300 bg-[#0F1520] px-3 py-1.5 rounded-full border border-[#2E384D]">
+                      <Star className="w-3.5 h-3.5 text-secondary flex-shrink-0" />
+                      {feature}
+                    </div>
+                  ))}
+                </div>
+                <Button variant="outline" asChild>
+                  <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer">
+                    <Users className="w-4 h-4 mr-2" />
+                    Rejoindre sur Discord
+                  </a>
+                </Button>
+              </div>
             </div>
-            
-            <p className="text-center text-gray-500 text-sm font-mono">
-              AM: 10.000 • Deut dans CDR: OUI • Fret Sonde: NON
-            </p>
           </motion.div>
 
-          <div className="mt-12 text-center">
-            <p className="text-gray-400 mb-6">
+          {/* Footer CTA */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.45 }}
+            className="mt-12 text-center"
+          >
+            <p className="text-gray-500 mb-6 text-sm">
               Vous jouez sur un autre univers ? Contactez-nous sur Discord pour discuter d'une expansion !
             </p>
             <Button size="lg" variant="outline" asChild>
@@ -203,7 +152,7 @@ export default function Alliance() {
                 <ExternalLink className="w-4 h-4 ml-2" />
               </a>
             </Button>
-          </div>
+          </motion.div>
         </div>
       </section>
     </Layout>

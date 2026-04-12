@@ -1,12 +1,20 @@
 import { Link } from "wouter";
 import allianceLogo from "@assets/Design_sans_titre_(2)_1765292527261.png";
+import { featuredGuideCount, toolGuideCount, totalGuideCount } from "@/data/guides";
 
 export default function Footer() {
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className="py-10 md:py-12 bg-[#0B0E14] border-t border-[#2E384D] text-center relative z-10">
       <div className="container mx-auto px-4">
         <img src={allianceLogo} alt="Logo" className="h-10 w-10 mx-auto mb-4 opacity-40 grayscale hover:grayscale-0 hover:opacity-80 transition-all duration-300" />
-        <p className="text-gray-600 text-xs md:text-sm mb-4">© 2025 Psykoverse Community. Fan project non affilié à Gameforge.</p>
+        <p className="text-gray-600 text-xs md:text-sm mb-4">© {currentYear} Psykoverse Community. Fan project non affilié à Gameforge.</p>
+        <div className="flex flex-wrap justify-center gap-2 mb-5 text-[11px] uppercase tracking-[0.2em] text-gray-500">
+          <span className="rounded-full border border-white/6 bg-white/5 px-3 py-1">{totalGuideCount} guides</span>
+          <span className="rounded-full border border-white/6 bg-white/5 px-3 py-1">{toolGuideCount} outils</span>
+          <span className="rounded-full border border-white/6 bg-white/5 px-3 py-1">{featuredGuideCount} recommandations</span>
+        </div>
         <div className="flex flex-wrap justify-center gap-4 md:gap-6 text-xs md:text-sm font-bold text-gray-500 uppercase tracking-wider">
           <Link href="/notre-histoire" className="hover:text-primary transition-colors">Notre Histoire</Link>
           <Link href="/mentions-legales" className="hover:text-primary transition-colors">

@@ -9,6 +9,12 @@ const app = express();
 const httpServer = createServer(app);
 
 const isProd = process.env.NODE_ENV === "production";
+const dashboardFrameAncestors = [
+  "'self'",
+  "http://46.225.165.163:8080",
+  "http://127.0.0.1:8080",
+  "http://localhost:8080",
+];
 
 app.use(helmet({
   contentSecurityPolicy: {
@@ -16,15 +22,18 @@ app.use(helmet({
       defaultSrc: ["'self'"],
       // unsafe-eval retiré en production (besoin de Vite en dev seulement)
       scriptSrc: isProd
-        ? ["'self'", "'unsafe-inline'"]
+        ? ["'self'"]
         : ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
       styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
       fontSrc: ["'self'", "https://fonts.gstatic.com"],
       imgSrc: ["'self'", "data:", "https:"],
       connectSrc: ["'self'"],
+      frameAncestors: dashboardFrameAncestors,
     },
   },
   crossOriginEmbedderPolicy: false,
+  crossOriginResourcePolicy: false,
+  frameguard: false,
 }));
 // Fait confiance au premier proxy upstream (reverse proxy / Nginx)
 app.set("trust proxy", 1);
@@ -68,13 +77,19 @@ app.use((req, res, next) => {
     return originalResJson.apply(res, [bodyJson, ...args]);
   };
 
-  const SENSITIVE_PATHS = ["/api/admin/login", "/api/admin/verify", "/api/admin/logout"];
+  const SENSITIVE_PATH_PREFIXES = [
+    "/api/admin",
+    "/api/feedback",
+    "/api/suggestions",
+    "/api/leaderboard",
+    "/api/visit",
+  ];
 
   res.on("finish", () => {
     const duration = Date.now() - start;
     if (path.startsWith("/api")) {
       let logLine = `${req.method} ${path} ${res.statusCode} in ${duration}ms`;
-      const isSensitive = SENSITIVE_PATHS.some(p => path.startsWith(p));
+      const isSensitive = SENSITIVE_PATH_PREFIXES.some(p => path.startsWith(p));
       if (capturedJsonResponse && !isSensitive) {
         logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
       }
@@ -90,6 +105,14 @@ app.use((req, res, next) => {
   await registerRoutes(httpServer, app);
 
   app.use((err: any, req: Request, res: Response, _next: NextFunction) => {
+    if (err instanceof URIError) {
+      log(`Rejected malformed URL on ${req.method} ${req.originalUrl}`, "security");
+      if (!res.headersSent) {
+        res.status(400).json({ message: "Malformed URL" });
+      }
+      return;
+    }
+
     console.error(`Unhandled error [${req.method} ${req.path}]:`, err);
     const status = err.status || err.statusCode || 500;
     // Ne jamais exposer les détails d'erreur en production

@@ -4,6 +4,7 @@ import { storage } from "./storage";
 import { randomBytes, createHmac, timingSafeEqual } from "crypto";
 import { z } from "zod";
 import ExcelJS from "exceljs";
+import { calculateProductionSimulator, getProductionSimulatorConfig } from "./production-simulator";
 
 const SESSION_SECRET = process.env.SESSION_SECRET || randomBytes(32).toString("hex");
 const activeSessions = new Map<string, { createdAt: number }>();
@@ -17,6 +18,18 @@ function validateExternalUrl(url: string | null | undefined): string | null {
   } catch {
     return null;
   }
+}
+
+function validateImageUrl(url: string | null | undefined): string | null {
+  if (!url) return null;
+  const trimmed = url.trim();
+  if (!trimmed) return null;
+
+  if (/^\/[a-zA-Z0-9\-._~:/?#[\]@!$&'()*+,;=%/]*$/.test(trimmed)) {
+    return trimmed;
+  }
+
+  return validateExternalUrl(trimmed);
 }
 
 // Valide un lien interne (chemin relatif uniquement, pas d'URL absolue)
@@ -165,6 +178,14 @@ export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
+  app.get("/api/health", (_req, res) => {
+    res.json({
+      ok: true,
+      app: "psykoverse",
+      environment: process.env.NODE_ENV || "development",
+      timestamp: new Date().toISOString(),
+    });
+  });
   
   app.post("/api/visit", async (req, res) => {
     try {
@@ -711,6 +732,16 @@ export async function registerRoutes(
     }
   });
 
+  app.get("/api/images", async (_req, res) => {
+    try {
+      const items = await storage.getActiveImageLibrary();
+      res.json(items);
+    } catch (error) {
+      console.error("Get image library error:", error);
+      res.status(500).json({ error: "Failed to get image library" });
+    }
+  });
+
   app.post("/api/admin/guides", async (req, res) => {
     try {
       const token = req.cookies?.adminToken;
@@ -741,6 +772,151 @@ export async function registerRoutes(
     } catch (error) {
       console.error("Create guide error:", error);
       res.status(500).json({ error: "Failed to create guide" });
+    }
+  });
+
+  app.get("/api/admin/images", async (req, res) => {
+    try {
+      const token = req.cookies?.adminToken;
+      if (!token || !validateToken(token)) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+
+      const items = await storage.getAllImageLibrary();
+      res.json(items);
+    } catch (error) {
+      console.error("Get admin image library error:", error);
+      res.status(500).json({ error: "Failed to get image library" });
+    }
+  });
+
+  app.post("/api/admin/images", async (req, res) => {
+    try {
+      const token = req.cookies?.adminToken;
+      if (!token || !validateToken(token)) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+
+      const imageSchema = z.object({
+        title: z.string().min(1).max(200),
+        imageUrl: z.string().min(1).max(2000),
+        thumbnailUrl: z.string().max(2000).nullable().optional(),
+        altText: z.string().max(500).nullable().optional(),
+        category: z.string().max(100).optional(),
+        tags: z.string().max(1000).nullable().optional(),
+        sourceUrl: z.string().max(2000).nullable().optional(),
+        credit: z.string().max(200).nullable().optional(),
+        isActive: z.number().int().min(0).max(1).optional(),
+        sortOrder: z.number().int().optional(),
+      });
+
+      const parsed = imageSchema.safeParse(req.body);
+      if (!parsed.success) {
+        return res.status(400).json({ error: "Invalid fields" });
+      }
+
+      const imageUrl = validateImageUrl(parsed.data.imageUrl);
+      const thumbnailUrl = validateImageUrl(parsed.data.thumbnailUrl);
+      const sourceUrl = validateExternalUrl(parsed.data.sourceUrl);
+
+      if (!imageUrl) {
+        return res.status(400).json({ error: "Invalid image URL" });
+      }
+
+      const item = await storage.createImageLibraryItem({
+        title: parsed.data.title.trim(),
+        imageUrl,
+        thumbnailUrl,
+        altText: parsed.data.altText?.trim() || null,
+        category: parsed.data.category?.trim() || "general",
+        tags: parsed.data.tags?.trim() || null,
+        sourceUrl,
+        credit: parsed.data.credit?.trim() || null,
+        isActive: parsed.data.isActive ?? 1,
+        sortOrder: parsed.data.sortOrder ?? 0,
+      });
+
+      res.json(item);
+    } catch (error) {
+      console.error("Create image library item error:", error);
+      res.status(500).json({ error: "Failed to create image library item" });
+    }
+  });
+
+  app.put("/api/admin/images/:id", async (req, res) => {
+    try {
+      const token = req.cookies?.adminToken;
+      if (!token || !validateToken(token)) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+
+      const { id } = req.params;
+      const imageUpdateSchema = z.object({
+        title: z.string().min(1).max(200).optional(),
+        imageUrl: z.string().min(1).max(2000).optional(),
+        thumbnailUrl: z.string().max(2000).nullable().optional(),
+        altText: z.string().max(500).nullable().optional(),
+        category: z.string().max(100).optional(),
+        tags: z.string().max(1000).nullable().optional(),
+        sourceUrl: z.string().max(2000).nullable().optional(),
+        credit: z.string().max(200).nullable().optional(),
+        isActive: z.number().int().min(0).max(1).optional(),
+        sortOrder: z.number().int().optional(),
+      });
+
+      const parsed = imageUpdateSchema.safeParse(req.body);
+      if (!parsed.success) {
+        return res.status(400).json({ error: "Invalid fields" });
+      }
+
+      const validatedImageUrl = parsed.data.imageUrl !== undefined
+        ? validateImageUrl(parsed.data.imageUrl)
+        : undefined;
+      const validatedThumbnailUrl = parsed.data.thumbnailUrl !== undefined
+        ? validateImageUrl(parsed.data.thumbnailUrl)
+        : undefined;
+
+      if (parsed.data.imageUrl && !validatedImageUrl) {
+        return res.status(400).json({ error: "Invalid image URL" });
+      }
+
+      const updates = {
+        ...parsed.data,
+        title: parsed.data.title?.trim(),
+        imageUrl: validatedImageUrl === null ? undefined : validatedImageUrl,
+        thumbnailUrl: validatedThumbnailUrl,
+        altText: parsed.data.altText !== undefined ? (parsed.data.altText?.trim() || null) : undefined,
+        category: parsed.data.category?.trim(),
+        tags: parsed.data.tags !== undefined ? (parsed.data.tags?.trim() || null) : undefined,
+        sourceUrl: parsed.data.sourceUrl !== undefined ? validateExternalUrl(parsed.data.sourceUrl) : undefined,
+        credit: parsed.data.credit !== undefined ? (parsed.data.credit?.trim() || null) : undefined,
+      };
+
+      const item = await storage.updateImageLibraryItem(id, updates);
+      if (!item) {
+        return res.status(404).json({ error: "Image not found" });
+      }
+
+      res.json(item);
+    } catch (error) {
+      console.error("Update image library item error:", error);
+      res.status(500).json({ error: "Failed to update image library item" });
+    }
+  });
+
+  app.delete("/api/admin/images/:id", async (req, res) => {
+    try {
+      const token = req.cookies?.adminToken;
+      if (!token || !validateToken(token)) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+
+      const { id } = req.params;
+      await storage.deleteImageLibraryItem(id);
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Delete image library item error:", error);
+      res.status(500).json({ error: "Failed to delete image library item" });
     }
   });
 
@@ -992,6 +1168,61 @@ export async function registerRoutes(
     } catch (error) {
       console.error("Error exporting compositions:", error);
       res.status(500).json({ error: "Failed to export compositions" });
+    }
+  });
+
+  app.post("/api/dev-access/verify", (req, res) => {
+    const { code } = req.body as { code?: string };
+    const devAccessCode = process.env.DEV_ACCESS_CODE || "psykoseleroi";
+    if (!devAccessCode || !code) {
+      return res.json({ valid: false });
+    }
+    return res.json({ valid: code === devAccessCode });
+  });
+
+  app.get("/api/production-simulator/config", async (_req, res) => {
+    try {
+      const config = await getProductionSimulatorConfig();
+      res.json(config);
+    } catch (error) {
+      console.error("Production simulator config error:", error);
+      res.status(500).json({ error: "Failed to load simulator config" });
+    }
+  });
+
+  const simulatorStateSchema = z.object({
+    planetCount: z.number().int().min(1).max(20),
+    globals: z.record(z.union([z.string(), z.number()])),
+    planets: z.array(
+      z.object({
+        values: z.record(z.union([z.string(), z.number()])),
+        statuses: z.record(
+          z.object({
+            status: z.string(),
+            level: z.number(),
+          }),
+        ),
+      }),
+    ).length(20),
+  });
+
+  app.post("/api/production-simulator/calculate", async (req, res) => {
+    try {
+      const payloadSchema = z.object({
+        base: simulatorStateSchema,
+        simulation: simulatorStateSchema,
+      });
+
+      const parsed = payloadSchema.safeParse(req.body);
+      if (!parsed.success) {
+        return res.status(400).json({ error: "Invalid simulator payload" });
+      }
+
+      const result = await calculateProductionSimulator(parsed.data.base, parsed.data.simulation);
+      res.json(result);
+    } catch (error) {
+      console.error("Production simulator calculation error:", error);
+      res.status(500).json({ error: "Failed to calculate simulator results" });
     }
   });
 

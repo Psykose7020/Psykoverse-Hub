@@ -1,16 +1,15 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import allianceLogo from "@assets/Design_sans_titre_(2)_1765292527261.png";
+import { dbImages } from "@/data/database-images";
 
 const INTRO_VERSION = "psykoverse:intro:v2";
-const MIN_DURATION = 3000;
-const MAX_DURATION = 8000;
+const MIN_DURATION = 900;
+const MAX_DURATION = 2200;
 
 const imagesToPreload = [
   allianceLogo,
-  "https://images.unsplash.com/photo-1614732414444-096e5f1122d5?w=400&h=225&fit=crop",
-  "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=400&h=225&fit=crop",
-  "https://images.unsplash.com/photo-1581822261290-991b38693d1b?w=400&h=225&fit=crop",
+  dbImages.classes.explorateur,
 ];
 
 function Star({ delay }: { delay: number }) {
@@ -230,7 +229,7 @@ export default function IntroAnimation({ children }: { children: React.ReactNode
         )}
       </AnimatePresence>
       
-      <div className={showIntro ? "opacity-0" : "opacity-100 transition-opacity duration-500"}>
+      <div className="transition-opacity duration-500">
         {children}
       </div>
     </>
