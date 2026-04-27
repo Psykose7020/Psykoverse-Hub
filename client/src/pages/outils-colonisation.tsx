@@ -1,33 +1,17 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { Globe2, Info, Thermometer, Grid3X3 } from "lucide-react";
+import { useMemo, useState } from "react";
+import { Globe2, Grid3X3, Info, Thermometer } from "lucide-react";
 import Layout from "@/components/layout/Layout";
-import { Button } from "@/components/ui/button";
-import { Link } from "wouter";
 import RelatedGuides from "@/components/RelatedGuides";
-
-const fadeInUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0 }
-};
-
-const positionData: Record<number, { casesMin: number; casesMax: number; tempMin: number; tempMax: number }> = {
-  1: { casesMin: 96, casesMax: 172, tempMin: 220, tempMax: 260 },
-  2: { casesMin: 104, casesMax: 176, tempMin: 170, tempMax: 210 },
-  3: { casesMin: 112, casesMax: 182, tempMin: 120, tempMax: 160 },
-  4: { casesMin: 118, casesMax: 208, tempMin: 70, tempMax: 110 },
-  5: { casesMin: 133, casesMax: 232, tempMin: 60, tempMax: 100 },
-  6: { casesMin: 146, casesMax: 242, tempMin: 50, tempMax: 90 },
-  7: { casesMin: 152, casesMax: 248, tempMin: 40, tempMax: 80 },
-  8: { casesMin: 156, casesMax: 252, tempMin: 30, tempMax: 70 },
-  9: { casesMin: 150, casesMax: 246, tempMin: 20, tempMax: 60 },
-  10: { casesMin: 142, casesMax: 232, tempMin: 10, tempMax: 50 },
-  11: { casesMin: 136, casesMax: 210, tempMin: 0, tempMax: 40 },
-  12: { casesMin: 125, casesMax: 186, tempMin: -10, tempMax: 30 },
-  13: { casesMin: 114, casesMax: 172, tempMin: -50, tempMax: -10 },
-  14: { casesMin: 100, casesMax: 168, tempMin: -90, tempMax: -50 },
-  15: { casesMin: 90, casesMax: 164, tempMin: -130, tempMax: -90 }
-};
+import { COLONIZATION_POSITION_DATA } from "@/data/ogame-calculators";
+import { clampNumber, formatInteger } from "@/lib/formatters";
+import {
+  FormulaNotice,
+  PageBackLink,
+  PageContainer,
+  PageHero,
+  ResultStat,
+  SectionCard,
+} from "@/components/content/page-shell";
 
 export default function OutilsColonisation() {
   const [position, setPosition] = useState(8);
@@ -36,267 +20,210 @@ export default function OutilsColonisation() {
   const [universeBonus, setUniverseBonus] = useState(0);
   const [explorerBonusPercent, setExplorerBonusPercent] = useState(0);
 
-  const data = positionData[position];
-  
+  const data = COLONIZATION_POSITION_DATA[position];
   const explorerBaseBonus = playerClass === "explorer" ? 0.10 : 0;
   const explorerClassBonus = playerClass === "explorer" ? (explorerBonusPercent / 100) * 0.10 : 0;
   const totalExplorerBonus = explorerBaseBonus + explorerClassBonus;
-  
   const allianceBonus = allianceClass === "researcher" ? 0.05 : 0;
-  
   const totalDiameterBonus = 1 + totalExplorerBonus + allianceBonus;
-  
-  const baseDiamMin = Math.ceil(Math.sqrt(data.casesMin) * 1000);
-  const baseDiamMax = Math.ceil(Math.sqrt(data.casesMax) * 1000);
-  
-  const diamMinWithBonus = Math.ceil(baseDiamMin * totalDiameterBonus);
-  const diamMaxWithBonus = Math.ceil(baseDiamMax * totalDiameterBonus);
-  
-  const casesMin = Math.floor(Math.pow(diamMinWithBonus / 1000, 2)) + universeBonus;
-  const casesMax = Math.floor(Math.pow(diamMaxWithBonus / 1000, 2)) + universeBonus;
+
+  const results = useMemo(() => {
+    const baseDiamMin = Math.ceil(Math.sqrt(data.casesMin) * 1000);
+    const baseDiamMax = Math.ceil(Math.sqrt(data.casesMax) * 1000);
+    const diamMinWithBonus = Math.ceil(baseDiamMin * totalDiameterBonus);
+    const diamMaxWithBonus = Math.ceil(baseDiamMax * totalDiameterBonus);
+    const casesMin = Math.floor(Math.pow(diamMinWithBonus / 1000, 2)) + universeBonus;
+    const casesMax = Math.floor(Math.pow(diamMaxWithBonus / 1000, 2)) + universeBonus;
+
+    return {
+      diamMinWithBonus,
+      diamMaxWithBonus,
+      casesMin,
+      casesMax,
+    };
+  }, [data, totalDiameterBonus, universeBonus]);
 
   const bonusPercentDisplay = ((totalDiameterBonus - 1) * 100).toFixed(1);
 
   return (
     <Layout>
-      <section className="py-12 md:py-20">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={fadeInUp}
-            className="max-w-5xl mx-auto"
-          >
-            <Link href="/tutoriels">
-              <Button variant="outline" className="mb-6 bg-primary/10 border-primary/30 text-primary hover:bg-primary/20 hover:text-white">
-                ← Retour aux tutoriels
-              </Button>
-            </Link>
+      <PageContainer>
+        <PageBackLink />
 
-            <div className="text-center mb-12">
-              <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-teal-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-green-500/20">
-                <Globe2 className="w-10 h-10 text-white" />
+        <PageHero
+          icon={Globe2}
+          title="Calculateur de Colonisation"
+          description="Visualise diamètre, cases et température par position avec les bonus explicitement pris en compte par l’outil."
+          gradient="bg-gradient-to-br from-green-500 to-teal-600 shadow-green-500/20"
+        />
+
+        <div className="space-y-8">
+          <FormulaNotice
+            title="Hypothèses actuellement modélisées"
+            lines={[
+              <p key="1">Diamètre : <code className="rounded bg-black/30 px-1">√(cases) × 1000 × bonus</code></p>,
+              <p key="2">Cases : <code className="rounded bg-black/30 px-1">(diamètre / 1000)² + bonus univers</code></p>,
+              <p key="3" className="text-xs text-gray-400">Les bonus Explorateur, Chercheur et bonus additionnel Explorateur sont laissés explicites. Si votre univers applique d’autres règles, vérifiez-les en jeu.</p>,
+            ]}
+          />
+
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+            <SectionCard title="Paramètres" description="Saisie simplifiée et bornée." icon={Info}>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <label className="space-y-2 md:col-span-2">
+                  <span className="block text-sm text-gray-400">Position dans le système</span>
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="range"
+                      min="1"
+                      max="15"
+                      value={position}
+                      onChange={(e) => setPosition(clampNumber(Number(e.target.value), 1, 15))}
+                      className="flex-1 accent-primary"
+                    />
+                    <input
+                      type="number"
+                      min="1"
+                      max="15"
+                      value={position}
+                      onChange={(e) => setPosition(clampNumber(Number(e.target.value), 1, 15))}
+                      className="w-20 rounded-lg border border-[#2E384D] bg-[#0B0E14] px-3 py-2 text-center text-white"
+                    />
+                  </div>
+                </label>
+
+                <label className="space-y-2">
+                  <span className="block text-sm text-gray-400">Classe du joueur</span>
+                  <select
+                    value={playerClass}
+                    onChange={(e) => setPlayerClass(e.target.value)}
+                    className="w-full rounded-lg border border-[#2E384D] bg-[#0B0E14] px-3 py-2 text-white"
+                    data-testid="select-player-class"
+                  >
+                    <option value="none">Collecteur / Général</option>
+                    <option value="explorer">Explorateur</option>
+                  </select>
+                </label>
+
+                <label className="space-y-2">
+                  <span className="block text-sm text-gray-400">Classe d’alliance</span>
+                  <select
+                    value={allianceClass}
+                    onChange={(e) => setAllianceClass(e.target.value)}
+                    className="w-full rounded-lg border border-[#2E384D] bg-[#0B0E14] px-3 py-2 text-white"
+                    data-testid="select-alliance-class"
+                  >
+                    <option value="none">Aucune / Guerrier / Marchand</option>
+                    <option value="researcher">Chercheur (+5%)</option>
+                  </select>
+                </label>
+
+                {playerClass === "explorer" ? (
+                  <label className="space-y-2">
+                    <span className="block text-sm text-gray-400">Bonus additionnel Explorateur (%)</span>
+                    <input
+                      type="number"
+                      min="0"
+                      max="100"
+                      value={explorerBonusPercent}
+                      onChange={(e) => setExplorerBonusPercent(clampNumber(Number(e.target.value), 0, 100))}
+                      className="w-full rounded-lg border border-[#2E384D] bg-[#0B0E14] px-3 py-2 text-white"
+                      data-testid="input-explorer-bonus"
+                    />
+                  </label>
+                ) : null}
+
+                <label className="space-y-2">
+                  <span className="block text-sm text-gray-400">Bonus de cases d’univers</span>
+                  <select
+                    value={universeBonus}
+                    onChange={(e) => setUniverseBonus(clampNumber(Number(e.target.value), 0, 30))}
+                    className="w-full rounded-lg border border-[#2E384D] bg-[#0B0E14] px-3 py-2 text-white"
+                    data-testid="select-universe-bonus"
+                  >
+                    <option value={0}>+0 case</option>
+                    <option value={10}>+10 cases</option>
+                    <option value={25}>+25 cases</option>
+                    <option value={30}>+30 cases</option>
+                  </select>
+                </label>
               </div>
-              <h1 className="font-display text-4xl md:text-5xl font-bold text-white mb-4">
-                Calculateur de Colonisation
-              </h1>
-              <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-                Calculez le diamètre, les cases et la température selon la position
-              </p>
+            </SectionCard>
+
+            <SectionCard title="Synthèse de position" description={`Position ${position} • bonus diamètre ${bonusPercentDisplay}%`}>
+              <div className="grid grid-cols-1 gap-4">
+                <ResultStat
+                  label="Diamètre estimé"
+                  value={`${formatInteger(results.diamMinWithBonus)} à ${formatInteger(results.diamMaxWithBonus)} km`}
+                  valueClassName="text-blue-300"
+                />
+                <ResultStat
+                  label="Cases estimées"
+                  value={`${results.casesMin} à ${results.casesMax}`}
+                  valueClassName="text-green-300"
+                />
+                <ResultStat
+                  label="Température"
+                  value={`${data.tempMin}°C à ${data.tempMax}°C`}
+                  valueClassName="text-orange-300"
+                />
+              </div>
+            </SectionCard>
+          </div>
+
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+            <SectionCard title="Diamètre" icon={Globe2}>
+              <ResultStat label="Minimum" value={`${formatInteger(results.diamMinWithBonus)} km`} valueClassName="text-blue-300" />
+              <div className="mt-4">
+                <ResultStat label="Maximum" value={`${formatInteger(results.diamMaxWithBonus)} km`} valueClassName="text-blue-300" />
+              </div>
+            </SectionCard>
+
+            <SectionCard title="Cases" icon={Grid3X3}>
+              <ResultStat label="Minimum" value={results.casesMin} valueClassName="text-green-300" />
+              <div className="mt-4">
+                <ResultStat label="Maximum" value={results.casesMax} valueClassName="text-green-300" />
+              </div>
+            </SectionCard>
+
+            <SectionCard title="Température" icon={Thermometer}>
+              <ResultStat label="Minimum" value={`${data.tempMin}°C`} valueClassName="text-orange-300" />
+              <div className="mt-4">
+                <ResultStat label="Maximum" value={`${data.tempMax}°C`} valueClassName="text-orange-300" />
+              </div>
+            </SectionCard>
+          </div>
+
+          <SectionCard title="Tableau de référence sans bonus" description="Base utilisée pour les calculs ci-dessus.">
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-[#2E384D]">
+                    <th className="px-3 py-2 text-left text-gray-400">Pos.</th>
+                    <th className="px-3 py-2 text-left text-gray-400">Cases</th>
+                    <th className="px-3 py-2 text-left text-gray-400">Température</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Object.entries(COLONIZATION_POSITION_DATA).map(([pos, values]) => (
+                    <tr key={pos} className="border-b border-[#2E384D]/50">
+                      <td className="px-3 py-2 text-white">{pos}</td>
+                      <td className="px-3 py-2 text-gray-300">
+                        {values.casesMin} à {values.casesMax}
+                      </td>
+                      <td className="px-3 py-2 text-gray-300">
+                        {values.tempMin}°C à {values.tempMax}°C
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
+          </SectionCard>
 
-            <div className="space-y-8">
-              <div className="bg-primary/10 border border-primary/30 rounded-lg p-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <Info className="w-4 h-4 text-primary" />
-                  <span className="font-bold text-white">Formules de calcul</span>
-                </div>
-                <div className="text-sm text-gray-400 space-y-1">
-                  <p>Diamètre : <code className="bg-black/30 px-1 rounded">√(cases) × 1000 × bonus_classe</code></p>
-                  <p>Cases : <code className="bg-black/30 px-1 rounded">(diamètre / 1000)² + bonus_univers</code></p>
-                  <p className="text-xs text-gray-500 mt-2">
-                    Explorateur : +10% diamètre | Alliance Chercheur : +5% diamètre | Bonus de personnage : multiplicatif
-                  </p>
-                </div>
-              </div>
-
-              <div className="bg-[#1C2230] border border-[#2E384D] rounded-xl p-6">
-                <h3 className="font-bold text-white mb-4">Paramètres</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-4">
-                    <div>
-                      <label className="text-gray-400 text-sm mb-2 block">Position dans le système (1-15)</label>
-                      <div className="flex items-center gap-3">
-                        <input 
-                          type="range" 
-                          min="1" 
-                          max="15" 
-                          value={position} 
-                          onChange={(e) => setPosition(Number(e.target.value))}
-                          className="flex-1 accent-primary"
-                        />
-                        <span className="text-2xl font-bold text-primary w-8 text-center">{position}</span>
-                      </div>
-                    </div>
-                    <div>
-                      <label className="text-gray-400 text-sm mb-2 block">Classe du joueur</label>
-                      <select 
-                        value={playerClass} 
-                        onChange={(e) => setPlayerClass(e.target.value)}
-                        className="w-full bg-[#0B0E14] border border-[#2E384D] rounded px-3 py-2 text-white"
-                        data-testid="select-player-class"
-                      >
-                        <option value="none">Collecteur / Général</option>
-                        <option value="explorer">Explorateur (+10% diamètre)</option>
-                      </select>
-                    </div>
-                    {playerClass === "explorer" && (
-                      <div className="bg-purple-900/20 border border-purple-700/30 rounded-lg p-4">
-                        <label className="text-purple-300 text-sm mb-2 block">
-                          Bonus de classe de personnage (%)
-                        </label>
-                        <input 
-                          type="number" 
-                          value={explorerBonusPercent} 
-                          onChange={(e) => setExplorerBonusPercent(Math.max(0, Math.min(100, Number(e.target.value))))}
-                          className="w-full bg-[#0B0E14] border border-purple-700/30 rounded px-3 py-2 text-white"
-                          min="0"
-                          max="100"
-                          placeholder="Ex: 56 pour 56%"
-                          data-testid="input-explorer-bonus"
-                        />
-                        <p className="text-xs text-purple-400 mt-2">
-                          Ce bonus s'applique de manière multiplicative sur le +10% de l'explorateur.
-                          <br />
-                          Ex: 56% → 10% + (56% de 10%) = <span className="font-bold">+{(10 + 56 * 0.1).toFixed(1)}%</span>
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                  <div className="space-y-4">
-                    <div>
-                      <label className="text-gray-400 text-sm mb-2 block">Classe d'alliance</label>
-                      <select 
-                        value={allianceClass} 
-                        onChange={(e) => setAllianceClass(e.target.value)}
-                        className="w-full bg-[#0B0E14] border border-[#2E384D] rounded px-3 py-2 text-white"
-                        data-testid="select-alliance-class"
-                      >
-                        <option value="none">Aucune / Guerrier / Marchand</option>
-                        <option value="researcher">Chercheur (+5% diamètre)</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label className="text-gray-400 text-sm mb-2 block">Bonus de cases de l'univers</label>
-                      <select 
-                        value={universeBonus} 
-                        onChange={(e) => setUniverseBonus(Number(e.target.value))}
-                        className="w-full bg-[#0B0E14] border border-[#2E384D] rounded px-3 py-2 text-white"
-                        data-testid="select-universe-bonus"
-                      >
-                        <option value={0}>+0 cases</option>
-                        <option value={10}>+10 cases</option>
-                        <option value={25}>+25 cases</option>
-                        <option value={30}>+30 cases</option>
-                      </select>
-                    </div>
-                    {(totalDiameterBonus > 1 || universeBonus > 0) && (
-                      <div className="bg-green-900/20 border border-green-700/30 rounded-lg p-3">
-                        <p className="text-green-400 text-sm font-medium">Bonus actifs :</p>
-                        <ul className="text-xs text-green-300 mt-1 space-y-1">
-                          {totalDiameterBonus > 1 && (
-                            <li>• Diamètre : +{bonusPercentDisplay}%</li>
-                          )}
-                          {universeBonus > 0 && (
-                            <li>• Cases univers : +{universeBonus}</li>
-                          )}
-                        </ul>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="bg-[#1C2230] border border-[#2E384D] rounded-xl p-6 text-center">
-                  <div className="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <Globe2 className="w-6 h-6 text-blue-400" />
-                  </div>
-                  <h3 className="font-bold text-white mb-3">Diamètre</h3>
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-400">Min</span>
-                      <span className="font-mono text-blue-400" data-testid="text-diam-min">{diamMinWithBonus.toLocaleString()} km</span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-400">Max</span>
-                      <span className="font-mono text-blue-400" data-testid="text-diam-max">{diamMaxWithBonus.toLocaleString()} km</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-[#1C2230] border border-[#2E384D] rounded-xl p-6 text-center">
-                  <div className="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <Grid3X3 className="w-6 h-6 text-green-400" />
-                  </div>
-                  <h3 className="font-bold text-white mb-3">Cases</h3>
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-400">Min</span>
-                      <span className="font-mono text-green-400" data-testid="text-cases-min">{casesMin}</span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-400">Max</span>
-                      <span className="font-mono text-green-400 text-xl font-bold" data-testid="text-cases-max">{casesMax}</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-[#1C2230] border border-[#2E384D] rounded-xl p-6 text-center">
-                  <div className="w-12 h-12 bg-orange-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <Thermometer className="w-6 h-6 text-orange-400" />
-                  </div>
-                  <h3 className="font-bold text-white mb-3">Température</h3>
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-400">Min</span>
-                      <span className="font-mono text-orange-400" data-testid="text-temp-min">{data.tempMin}°C</span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-400">Max</span>
-                      <span className="font-mono text-orange-400" data-testid="text-temp-max">{data.tempMax}°C</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-amber-900/20 border border-amber-700/30 rounded-xl p-6">
-                <h3 className="font-bold text-amber-400 mb-4">Tableau de référence (sans bonus)</h3>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="border-b border-amber-700/30">
-                        <th className="text-left py-2 px-2 text-gray-400">Pos</th>
-                        <th className="text-left py-2 px-2 text-gray-400">Diamètre</th>
-                        <th className="text-left py-2 px-2 text-gray-400">Cases</th>
-                        <th className="text-left py-2 px-2 text-gray-400">Température</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {Object.entries(positionData).map(([pos, d]) => {
-                        const diamMin = Math.ceil(Math.sqrt(d.casesMin) * 1000);
-                        const diamMax = Math.ceil(Math.sqrt(d.casesMax) * 1000);
-                        const isSelected = Number(pos) === position;
-                        return (
-                          <tr 
-                            key={pos} 
-                            className={`border-b border-amber-700/20 ${isSelected ? 'bg-amber-500/20' : ''}`}
-                          >
-                            <td className={`py-1 px-2 ${isSelected ? 'text-amber-400 font-bold' : 'text-white'}`}>
-                              {pos}
-                            </td>
-                            <td className="py-1 px-2 text-gray-300 font-mono text-xs">
-                              {diamMin.toLocaleString()} - {diamMax.toLocaleString()} km
-                            </td>
-                            <td className="py-1 px-2 text-green-400 font-mono text-xs">
-                              {d.casesMin} - {d.casesMax}
-                            </td>
-                            <td className="py-1 px-2 text-orange-400 font-mono text-xs">
-                              {d.tempMin}°C à {d.tempMax}°C
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              <RelatedGuides currentGuide="colonisation" />
-            </div>
-          </motion.div>
+          <RelatedGuides currentGuide="colonisation" />
         </div>
-      </section>
+      </PageContainer>
     </Layout>
   );
 }

@@ -28,6 +28,12 @@ app.use(helmet({
       fontSrc: ["'self'", "https://fonts.gstatic.com"],
       imgSrc: ["'self'", "data:", "https:"],
       connectSrc: ["'self'"],
+      frameSrc: [
+        "'self'",
+        "https://www.youtube.com",
+        "https://www.youtube-nocookie.com",
+        "https://player.twitch.tv",
+      ],
       frameAncestors: dashboardFrameAncestors,
     },
   },

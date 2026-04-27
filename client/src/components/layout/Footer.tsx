@@ -6,32 +6,34 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="py-10 md:py-12 bg-[#0B0E14] border-t border-[#2E384D] text-center relative z-10">
+    <footer className="relative z-10 border-t border-white/8 bg-[rgba(8,12,19,0.9)] py-10 md:py-12">
       <div className="container mx-auto px-4">
-        <img src={allianceLogo} alt="Logo" className="h-10 w-10 mx-auto mb-4 opacity-40 grayscale hover:grayscale-0 hover:opacity-80 transition-all duration-300" />
-        <p className="text-gray-600 text-xs md:text-sm mb-4">© {currentYear} Psykoverse Community. Fan project non affilié à Gameforge.</p>
-        <div className="flex flex-wrap justify-center gap-2 mb-5 text-[11px] uppercase tracking-[0.2em] text-gray-500">
-          <span className="rounded-full border border-white/6 bg-white/5 px-3 py-1">{totalGuideCount} guides</span>
-          <span className="rounded-full border border-white/6 bg-white/5 px-3 py-1">{toolGuideCount} outils</span>
-          <span className="rounded-full border border-white/6 bg-white/5 px-3 py-1">{featuredGuideCount} recommandations</span>
-        </div>
-        <div className="flex flex-wrap justify-center gap-4 md:gap-6 text-xs md:text-sm font-bold text-gray-500 uppercase tracking-wider">
-          <Link href="/notre-histoire" className="hover:text-primary transition-colors">Notre Histoire</Link>
-          <Link href="/mentions-legales" className="hover:text-primary transition-colors">
-            Mentions Légales
-          </Link>
-          <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">Discord</a>
-          <a href="https://www.youtube.com/@7020Psykose" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">YouTube</a>
-          <Link href="/soutenir" className="hover:text-yellow-500 transition-colors">🍺 Soutenir</Link>
-        </div>
-        <div className="mt-8 pt-4 border-t border-[#2E384D]/30">
-          <Link 
-            href="/admin" 
-            className="text-[10px] text-gray-600 hover:text-gray-400 transition-colors"
-            data-testid="link-admin"
-          >
-            Admin
-          </Link>
+        <div className="mx-auto max-w-5xl rounded-3xl border border-white/8 bg-white/[0.03] px-6 py-8 text-center">
+          <img src={allianceLogo} alt="Logo" className="mx-auto mb-4 h-10 w-10 rounded-xl border border-white/8 bg-white/5 p-1 opacity-70" />
+          <p className="mb-4 text-sm text-gray-500">© {currentYear} Psykoverse Community. Fan project non affilié à Gameforge.</p>
+          <div className="mb-5 flex flex-wrap justify-center gap-2 text-[11px] uppercase tracking-[0.18em] text-gray-400">
+            <span className="rounded-full border border-white/8 bg-black/20 px-3 py-1">{totalGuideCount} guides</span>
+            <span className="rounded-full border border-white/8 bg-black/20 px-3 py-1">{toolGuideCount} outils</span>
+            <span className="rounded-full border border-white/8 bg-black/20 px-3 py-1">{featuredGuideCount} recommandations</span>
+          </div>
+          <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-400">
+            <Link href="/notre-histoire" className="transition-colors hover:text-white">Notre Histoire</Link>
+            <Link href="/mentions-legales" className="transition-colors hover:text-white">
+              Mentions légales
+            </Link>
+            <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-white">Discord</a>
+            <a href="https://www.youtube.com/@7020Psykose" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-white">YouTube</a>
+            <Link href="/soutenir" className="transition-colors hover:text-amber-300">Soutenir</Link>
+          </div>
+          <div className="mt-6 border-t border-white/6 pt-4">
+            <Link
+              href="/admin"
+              className="text-[10px] text-gray-600 transition-colors hover:text-gray-400"
+              data-testid="link-admin"
+            >
+              Admin
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

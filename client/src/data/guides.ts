@@ -133,21 +133,19 @@ export const guideCategories = [
   },
   {
     id: "outils",
-    title: "Outils & Calculateurs",
-    description: "Calculateurs interactifs pour optimiser votre jeu",
+    title: "Outils & Références",
+    description: "Les outils publics utiles de Psykoverse et les références externes recommandées",
     icon: Calculator,
     color: "from-emerald-500 to-teal-600",
     level: "Tous niveaux",
     guides: [
-      { title: "Calculateur Production", description: "Mines et ressources par heure", icon: Factory, color: "from-green-500 to-emerald-600", link: "/outils/production", featured: true, keywords: "calculateur production mine métal cristal deutérium ressources heure" },
-      { title: "Calculateur Bâtiments", description: "Temps et coûts de construction", icon: Zap, color: "from-blue-500 to-cyan-600", link: "/outils/batiments", keywords: "calculateur bâtiment temps construction coût robot nanite" },
-      { title: "Calculateur Recherches", description: "Temps et coûts des technologies", icon: FlaskConical, color: "from-teal-500 to-cyan-600", link: "/outils/recherches", keywords: "calculateur recherche technologie temps coût laboratoire rri" },
-      { title: "Calculateur Consommation", description: "Deutérium consommé par trajet", icon: Fuel, color: "from-cyan-500 to-blue-600", link: "/outils/consommation", keywords: "calculateur consommation deutérium carburant trajet mission" },
-      { title: "Calculateur MoonBreak", description: "Probabilités de destruction de lune", icon: Bomb, color: "from-red-600 to-red-800", link: "/outils/moonbreak", featured: true, keywords: "calculateur moonbreak mb destruction lune rip probabilité vague fatale" },
-      { title: "Calculateur Colonisation", description: "Cases et température par position", icon: Globe2, color: "from-green-500 to-teal-600", link: "/outils/colonisation", featured: true, keywords: "calculateur colonisation cases température position diamètre explorateur chercheur" },
-      { title: "Calculateur Temps de Vol", description: "Durée, carburant et cargo par mission", icon: Rocket, color: "from-amber-500 to-orange-600", link: "/outils/temps-vol", featured: true, keywords: "calculateur temps vol vitesse flotte mission durée carburant deutérium cargo ghost fleetsave" },
-      { title: "Guide : Temps de Vol", description: "Comment utiliser le calculateur", icon: Clock, color: "from-amber-500 to-orange-600", link: "/guide/calc-temps-vol", keywords: "guide temps vol calculateur vitesse flotte consommation planification points sauvegarde" },
-      { title: "Intercepteur de Flotte", description: "Calculez l'heure de retour d'une flotte ennemie en 3 secondes", icon: Crosshair, color: "from-red-500 to-orange-600", link: "/outils/intercepteur", featured: true, keywords: "intercepteur flotte retour ennemi phalange rappel arrivée départ calcul rapide" }
+      { title: "Convertisseur de combat", description: "Référence externe OGameDB pour convertir un RC proprement", icon: Swords, color: "from-red-500 to-orange-600", link: "https://ogamedb.com/en/tools/combat-converter", featured: true, keywords: "convertisseur combat rc rapport combat ogamedb référence externe" },
+      { title: "Répartiteur de butin", description: "Référence externe OGameDB pour le partage ACS du profit", icon: ArrowLeftRight, color: "from-amber-500 to-yellow-500", link: "https://ogamedb.com/en/tools/profit-splitter", featured: true, keywords: "répartiteur butin profit splitter ogamedb référence externe" },
+      { title: "Serveurs OGame", description: "Référence externe OGameDB pour parcourir les univers et leurs réglages", icon: Globe, color: "from-cyan-500 to-blue-600", link: "https://ogamedb.com/en/tools/servers?q=server%3Afr", featured: true, keywords: "serveurs ogame univers ogamedb référence externe" },
+      { title: "Simulation de production", description: "Comparez base et scénario de progression", icon: Factory, color: "from-green-500 to-emerald-600", link: "/outils/production", featured: true, keywords: "simulation production mine métal cristal deutérium fdv foreuse scenario" },
+      { title: "Simulateur de combat", description: "Référence externe OGame Tools pour les réglages et simulations de combat", icon: Crosshair, color: "from-violet-500 to-fuchsia-600", link: "https://simulator.ogame-tools.com/fr", featured: true, keywords: "simulateur combat ogame tools référence externe" },
+      { title: "Intercepteur de flotte", description: "Retrouvez une heure de retour à partir des horodatages connus", icon: Crosshair, color: "from-red-500 to-orange-600", link: "/outils/intercepteur", featured: true, keywords: "intercepteur flotte retour ennemi phalange rappel arrivée départ calcul rapide" },
+      { title: "Calculateur MoonBreak", description: "Probabilités de destruction de lune", icon: Bomb, color: "from-red-600 to-red-800", link: "/outils/moonbreak", keywords: "calculateur moonbreak mb destruction lune rip probabilité vague fatale" }
     ]
   }
 ];

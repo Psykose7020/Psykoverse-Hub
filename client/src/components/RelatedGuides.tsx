@@ -1,5 +1,6 @@
 import { Link } from "wouter";
 import { ArrowRight } from "lucide-react";
+import { allGuides } from "@/data/guides";
 
 interface RelatedGuide {
   title: string;
@@ -200,11 +201,34 @@ const guideRelations: Record<string, RelatedGuide[]> = {
     { title: "Chantier spatial", link: "/guide/chantier" },
     { title: "Fleetsave", link: "/guide/fleetsave" },
     { title: "Coûts Flotte & Défenses", link: "/guide/cout-flotte" }
+  ],
+  "batiments": [
+    { title: "Ordre de Construction", link: "/guide/ordre-construction" },
+    { title: "Production", link: "/guide/production" },
+    { title: "Formules & Calculateurs", link: "/guide/formules" }
+  ],
+  "consommation": [
+    { title: "Guide : Temps de Vol", link: "/guide/calc-temps-vol" },
+    { title: "Intercepteur de Flotte", link: "/outils/intercepteur" },
+    { title: "Tips du Bon Raideur", link: "/guide/raid" }
+  ],
+  "calc-temps-vol": [
+    { title: "Calculateur Temps de Vol", link: "/outils/temps-vol" },
+    { title: "Intercepteur de Flotte", link: "/outils/intercepteur" },
+    { title: "Calculateur Consommation", link: "/outils/consommation" }
+  ],
+  "ordre-construction": [
+    { title: "Calculateur Bâtiments", link: "/outils/batiments" },
+    { title: "Production", link: "/guide/production" },
+    { title: "Technos Prioritaires", link: "/guide/technos-prioritaires" }
   ]
 };
 
 export default function RelatedGuides({ currentGuide }: RelatedGuidesProps) {
-  const guides = guideRelations[currentGuide] || [];
+  const guides = (guideRelations[currentGuide] || []).map((guide) => {
+    const metadata = allGuides.find((entry) => entry.link === guide.link);
+    return metadata ? { ...guide, title: metadata.title } : guide;
+  });
   
   if (guides.length === 0) return null;
   

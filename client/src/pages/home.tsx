@@ -1,20 +1,19 @@
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
-import { 
-  Youtube, 
-  MessageSquare, 
+import {
+  Youtube,
+  MessageSquare,
   BookOpen,
   ExternalLink,
-  Sparkles,
   Gamepad2,
   Eye,
-  BookMarked,
   ChevronRight,
   Heart,
   Archive,
   Wrench,
-  Scale
+  Scale,
+  BookMarked,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Layout from "@/components/layout/Layout";
@@ -29,31 +28,22 @@ import {
   toolGuideCount,
   totalGuideCount,
 } from "@/data/guides";
-
-import heroBg from "@assets/generated_videos/specific_ogame_destroyer_fleet_formation.mp4";
 import allianceLogo from "@assets/Design_sans_titre_(2)_1765292527261.png";
+import heroBg from "@assets/generated_videos/specific_ogame_destroyer_fleet_formation.mp4";
 
 const fadeInUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0 }
-};
-
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.1 }
-  }
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0 },
 };
 
 export default function Home() {
   const youtubeSubscribers = useYoutubeStats();
   const discordMembers = useDiscordStats();
-  
+
   const { data: visitData } = useQuery<{ total: number }>({
-    queryKey: ['/api/visits/total'],
+    queryKey: ["/api/visits/total"],
     queryFn: async () => {
-      const res = await fetch('/api/visits/total');
+      const res = await fetch("/api/visits/total");
       if (!res.ok) return { total: 0 };
       return res.json();
     },
@@ -62,9 +52,9 @@ export default function Home() {
   const totalVisits = visitData?.total || 0;
 
   const { data: popularGuidesData } = useQuery<{ slug: string; views: number }[]>({
-    queryKey: ['/api/guides/popular'],
+    queryKey: ["/api/guides/popular"],
     queryFn: async () => {
-      const res = await fetch('/api/guides/popular');
+      const res = await fetch("/api/guides/popular");
       if (!res.ok) return [];
       return res.json();
     },
@@ -75,407 +65,336 @@ export default function Home() {
     .map((item) => guidesBySlug[item.slug])
     .filter(Boolean)
     .slice(0, 3);
-  
+
   return (
     <Layout>
-      <header className="relative py-20 md:py-28 overflow-hidden flex items-center border-b border-[#2E384D]">
-        <div className="absolute inset-0 z-0">
-          <video 
-            src={heroBg} 
-            autoPlay 
-            loop 
-            muted 
-            playsInline
-            className="w-full h-full object-cover opacity-50"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background" />
-        </div>
-
-        <div className="container relative z-20 px-4">
-          <motion.div 
-            className="max-w-3xl mx-auto text-center"
-            initial="hidden"
-            animate="visible"
-            variants={staggerContainer}
-          >
-            <motion.div variants={fadeInUp} className="flex justify-center mb-6">
-              <img src={allianceLogo} alt="Psykoverse" className="w-20 h-20 md:w-24 md:h-24 drop-shadow-[0_0_30px_rgba(0,191,255,0.4)]" />
-            </motion.div>
-            
-            <motion.h1 variants={fadeInUp} className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
-              Psykoverse
-            </motion.h1>
-            
-            <motion.p variants={fadeInUp} className="text-xl md:text-2xl text-primary font-medium mb-6">
-              Communauté OGame Francophone
-            </motion.p>
-            
-            <motion.p variants={fadeInUp} className="text-gray-400 text-lg mb-8 max-w-xl mx-auto">
-              {totalGuideCount} guides complets, des ressources pour tous les joueurs, et une communauté active sur Discord.
-            </motion.p>
-            
-            <motion.div variants={fadeInUp} className="flex flex-wrap justify-center gap-4">
-              <Button size="lg" className="bg-[#5865F2] hover:bg-[#4752C4] text-white font-bold" asChild>
-                <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer" data-testid="btn-discord-hero">
-                  <MessageSquare className="w-5 h-5 mr-2" />
-                  Discord
-                  <span className="ml-2 text-xs opacity-80 bg-white/10 px-2 py-0.5 rounded">{discordMembers ?? "..."}</span>
-                </a>
-              </Button>
-              <Button size="lg" variant="outline" className="border-primary/50 text-primary hover:bg-primary/10" asChild>
-                <Link href="/tutoriels" data-testid="btn-tutorials-hero">
-                  <BookOpen className="w-5 h-5 mr-2" />
-                  {totalGuideCount} Guides
-                </Link>
-              </Button>
-            </motion.div>
-
-            <motion.div variants={fadeInUp} className="mt-6 flex flex-wrap justify-center gap-2.5">
-              {[
-                `${toolGuideCount} outils interactifs`,
-                `${rulesGuideCount} règles essentielles`,
-                `${featuredGuideCount} guides recommandés`,
-                totalVisits > 0 ? `${totalVisits.toLocaleString()} visites` : `${beginnerGuideCount} guides débutant`,
-              ].map((item) => (
-                <span
-                  key={item}
-                  className="rounded-full border border-white/10 bg-black/20 px-3 py-1.5 text-xs text-gray-300 backdrop-blur-sm"
-                >
-                  {item}
-                </span>
-              ))}
-            </motion.div>
-          </motion.div>
-        </div>
-      </header>
-
-      <section className="py-8 md:py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-5xl mx-auto">
-            <Link href="/journal-banni" data-testid="link-journal-home">
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="group h-full bg-gradient-to-br from-red-900/40 via-[#1C2230] to-orange-900/30 border-2 border-red-500/50 rounded-2xl p-6 md:p-8 hover:border-red-500/70 transition-all cursor-pointer"
-              >
-                <div className="flex items-start gap-4 mb-4">
-                  <div className="w-14 h-14 bg-gradient-to-br from-red-500 to-orange-500 rounded-xl flex items-center justify-center shadow-lg shadow-red-500/30 group-hover:scale-110 transition-transform flex-shrink-0">
-                    <BookMarked className="w-7 h-7 text-white" />
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase">
-                        Récit
-                      </span>
-                    </div>
-                    <h3 className="font-display text-xl md:text-2xl font-bold text-white group-hover:text-red-300 transition-colors">
-                      Journal d'un banni
-                    </h3>
-                  </div>
-                </div>
-                <p className="text-gray-400 mb-4">
-                  L'histoire complète d'un commandant spatial banni. Un récit personnel, sans filtre, 
-                  qui raconte la chute, la seconde chance, et la fin définitive.
-                </p>
-                <div className="flex items-center gap-2 text-red-400 font-semibold group-hover:gap-3 transition-all">
-                  Lire le journal
-                  <ChevronRight className="w-5 h-5" />
-                </div>
-              </motion.div>
-            </Link>
-
-            <Link href="/journal-banni#lettre-ouverte" data-testid="link-lettre-home">
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="group h-full bg-gradient-to-br from-primary/20 via-[#1C2230] to-purple-900/20 border-2 border-primary/40 rounded-2xl p-6 md:p-8 hover:border-primary/60 transition-all cursor-pointer"
-              >
-                <div className="flex items-start gap-4 mb-4">
-                  <div className="w-14 h-14 bg-gradient-to-br from-primary to-purple-500 rounded-xl flex items-center justify-center shadow-lg shadow-primary/30 group-hover:scale-110 transition-transform flex-shrink-0">
-                    <Heart className="w-7 h-7 text-white" />
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="bg-primary text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase">
-                        Message
-                      </span>
-                    </div>
-                    <h3 className="font-display text-xl md:text-2xl font-bold text-white group-hover:text-primary transition-colors">
-                      Lettre ouverte
-                    </h3>
-                  </div>
-                </div>
-                <p className="text-gray-400 mb-4">
-                  Communication importante à la communauté. Ce que cette aventure représente, 
-                  ce qui change pour le Psykoverse, et les remerciements sincères.
-                </p>
-                <div className="flex items-center gap-2 text-primary font-semibold group-hover:gap-3 transition-all">
-                  Lire la lettre
-                  <ChevronRight className="w-5 h-5" />
-                </div>
-              </motion.div>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-6 bg-gradient-to-r from-amber-900/20 via-[#1C2230] to-amber-900/20 border-y border-amber-700/30">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-center justify-center gap-4 text-center">
-            <div className="flex items-center gap-3">
-              <Archive className="w-5 h-5 text-amber-400" />
-              <p className="text-amber-200 text-sm md:text-base">
-                <span className="font-bold text-amber-100">Projet en maintenance</span> — 
-                Mises à jour mensuelles, tutoriels préservés.
-              </p>
-            </div>
-            <Link href="/notre-histoire" className="text-amber-400 hover:text-amber-300 font-medium text-sm flex items-center gap-1">
-              En savoir plus <ChevronRight className="w-4 h-4" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-10 border-b border-[#2E384D]">
+      <section className="border-b border-white/8 py-16 md:py-24">
         <div className="container mx-auto px-4">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="max-w-5xl mx-auto"
+            initial="hidden"
+            animate="visible"
+            variants={fadeInUp}
+            className="mx-auto max-w-5xl"
           >
-            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-6">
+            <div className="relative overflow-hidden rounded-[2rem] border border-white/8 bg-[linear-gradient(180deg,rgba(18,24,35,0.92),rgba(12,16,24,0.86))]">
+              <div className="absolute inset-0">
+                <video
+                  src={heroBg}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="h-full w-full object-cover opacity-45"
+                />
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,11,18,0.32),rgba(7,11,18,0.78))]" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(82,199,255,0.18),transparent_38%)]" />
+                <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#0b1018] to-transparent" />
+              </div>
+
+              <div className="relative p-8 md:p-12">
+                <div className="mb-8 flex justify-center">
+                  <div className="rounded-2xl border border-white/10 bg-black/20 p-3 backdrop-blur-sm">
+                    <img src={allianceLogo} alt="Psykoverse" className="h-16 w-16 object-contain md:h-20 md:w-20" />
+                  </div>
+                </div>
+
+                <div className="mx-auto max-w-3xl text-center">
+                  <p className="mb-4 text-sm uppercase tracking-[0.28em] text-primary/90">
+                    Communauté OGame francophone
+                  </p>
+                  <h1 className="font-display text-4xl font-bold text-white md:text-6xl">
+                    Une base propre pour apprendre, retrouver et transmettre
+                  </h1>
+                  <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-gray-300 md:text-lg">
+                    Psykoverse rassemble guides, outils et archives utiles sans surcharge. L’idée reste simple :
+                    retrouver vite la bonne ressource et aller droit au concret.
+                  </p>
+                </div>
+
+                <div className="mt-8 flex flex-wrap justify-center gap-3">
+                  <Button size="lg" className="rounded-full bg-primary px-6 text-black shadow-[0_10px_30px_rgba(82,199,255,0.22)] hover:bg-primary/90" asChild>
+                    <Link href="/tutoriels" data-testid="btn-tutorials-hero">
+                      <BookOpen className="mr-2 h-5 w-5" />
+                      Explorer les tutoriels
+                    </Link>
+                  </Button>
+                  <Button size="lg" variant="outline" className="rounded-full border-white/14 bg-black/20 px-6 text-white backdrop-blur-sm hover:bg-white/10" asChild>
+                    <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer" data-testid="btn-discord-hero">
+                      <MessageSquare className="mr-2 h-5 w-5" />
+                      Rejoindre le Discord
+                    </a>
+                  </Button>
+                </div>
+
+                <div className="mt-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+                  {[
+                    `${totalGuideCount} guides`,
+                    `${toolGuideCount} outils`,
+                    `${featuredGuideCount} recommandations`,
+                    totalVisits > 0 ? `${totalVisits.toLocaleString()} visites` : `${beginnerGuideCount} guides débutant`,
+                  ].map((item) => (
+                    <div key={item} className="rounded-2xl border border-white/10 bg-black/25 px-4 py-3 text-center text-sm text-gray-200 backdrop-blur-sm">
+                      {item}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      <section className="border-b border-white/8 py-8">
+        <div className="container mx-auto px-4">
+          <div className="mx-auto flex max-w-5xl flex-col gap-3 rounded-2xl border border-amber-400/15 bg-amber-400/[0.05] px-5 py-4 md:flex-row md:items-center md:justify-between">
+            <div className="flex items-center gap-3 text-sm text-amber-100">
+              <Archive className="h-4 w-4 text-amber-300" />
+              <span>
+                Projet en maintenance, contenu préservé, améliorations progressives.
+              </span>
+            </div>
+            <Link href="/notre-histoire" className="inline-flex items-center gap-2 text-sm text-amber-300 transition-colors hover:text-amber-200">
+              Lire le contexte <ChevronRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-white/8 py-14 md:py-16">
+        <div className="container mx-auto px-4">
+          <div className="mx-auto max-w-5xl">
+            <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
               <div>
-                <p className="text-primary text-sm font-medium mb-2">À explorer maintenant</p>
-                <h2 className="font-display text-2xl md:text-3xl font-bold text-white">
-                  Le site bouge avec les guides les plus consultés
+                <p className="mb-2 text-sm uppercase tracking-[0.2em] text-gray-500">Entrées principales</p>
+                <h2 className="font-display text-2xl font-bold text-white md:text-3xl">
+                  Les accès les plus utiles du site
                 </h2>
               </div>
-              <Link href="/tutoriels" className="text-gray-400 hover:text-primary transition-colors text-sm flex items-center gap-2">
-                Voir toute la bibliothèque <ChevronRight className="w-4 h-4" />
+              <Link href="/tutoriels" className="inline-flex items-center gap-2 text-sm text-gray-400 transition-colors hover:text-white">
+                Voir toute la bibliothèque <ChevronRight className="h-4 w-4" />
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {spotlightGuides.map((guide, index) => {
-                const Icon = guide.icon;
+            <div className="grid gap-4 md:grid-cols-2">
+              <Link href="/journal-banni" data-testid="link-journal-home">
+                <div className="group h-full rounded-3xl border border-white/8 bg-white/[0.03] p-6 transition-colors hover:border-red-400/35 hover:bg-white/[0.05]">
+                  <div className="mb-5 flex items-center gap-4">
+                    <div className="rounded-2xl bg-red-500/12 p-3 text-red-300">
+                      <BookMarked className="h-6 w-6" />
+                    </div>
+                    <div>
+                      <p className="text-xs uppercase tracking-[0.2em] text-red-300/80">Récit</p>
+                      <h3 className="font-display text-2xl font-semibold text-white">Journal d&apos;un banni</h3>
+                    </div>
+                  </div>
+                  <p className="text-sm leading-6 text-gray-400">
+                    Le récit complet, personnel et sans filtre autour du bannissement, de la suite du projet
+                    et de ce qu&apos;il reste à transmettre.
+                  </p>
+                </div>
+              </Link>
+
+              <Link href="/journal-banni#lettre-ouverte" data-testid="link-lettre-home">
+                <div className="group h-full rounded-3xl border border-white/8 bg-white/[0.03] p-6 transition-colors hover:border-primary/35 hover:bg-white/[0.05]">
+                  <div className="mb-5 flex items-center gap-4">
+                    <div className="rounded-2xl bg-primary/12 p-3 text-primary">
+                      <Heart className="h-6 w-6" />
+                    </div>
+                    <div>
+                      <p className="text-xs uppercase tracking-[0.2em] text-primary/80">Message</p>
+                      <h3 className="font-display text-2xl font-semibold text-white">Lettre ouverte</h3>
+                    </div>
+                  </div>
+                  <p className="text-sm leading-6 text-gray-400">
+                    Le message adressé à la communauté pour expliquer la situation, la direction du site
+                    et l&apos;état actuel du Psykoverse.
+                  </p>
+                </div>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-white/8 py-14 md:py-16">
+        <div className="container mx-auto px-4">
+          <div className="mx-auto max-w-5xl">
+            <div className="mb-8">
+              <p className="mb-2 text-sm uppercase tracking-[0.2em] text-gray-500">Base du site</p>
+              <h2 className="font-display text-2xl font-bold text-white md:text-3xl">
+                Une navigation plus directe
+              </h2>
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-3">
+              {[
+                {
+                  href: "/tutoriels",
+                  title: `${totalGuideCount} guides`,
+                  description: `${beginnerGuideCount} pour démarrer et ${featuredGuideCount} à prioriser.`,
+                  icon: BookOpen,
+                  accent: "text-primary bg-primary/12",
+                },
+                {
+                  href: "/tutoriels#outils",
+                  title: `${toolGuideCount} outils`,
+                  description: "Les calculateurs et raccourcis utiles sans passer par dix pages.",
+                  icon: Wrench,
+                  accent: "text-emerald-300 bg-emerald-400/12",
+                },
+                {
+                  href: "/regles",
+                  title: `${rulesGuideCount} règles`,
+                  description: "Les rappels à connaître pour éviter les erreurs évitables.",
+                  icon: Scale,
+                  accent: "text-amber-300 bg-amber-400/12",
+                },
+              ].map((item) => {
+                const Icon = item.icon;
                 return (
-                  <Link key={guide.link} href={guide.link}>
-                    <motion.div
-                      initial={{ opacity: 0, y: 16 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: index * 0.08 }}
-                      className="group h-full rounded-2xl border border-[#2E384D] bg-[linear-gradient(180deg,rgba(28,34,48,0.96),rgba(14,19,29,0.98))] p-5 cursor-pointer hover:border-primary/40 hover:-translate-y-1 transition-all"
-                    >
-                      <div className="flex items-start justify-between gap-3 mb-4">
-                        <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${guide.color} flex items-center justify-center shadow-lg`}>
-                          <Icon className="w-5 h-5 text-white" />
-                        </div>
-                        <span className="text-[10px] uppercase tracking-[0.2em] text-primary/70">
-                          {guide.categoryTitle}
-                        </span>
+                  <Link key={item.href} href={item.href}>
+                    <div className="h-full rounded-3xl border border-white/8 bg-white/[0.03] p-6 transition-colors hover:bg-white/[0.05]">
+                      <div className={`mb-4 inline-flex rounded-2xl p-3 ${item.accent}`}>
+                        <Icon className="h-6 w-6" />
                       </div>
-                      <h3 className="text-white font-bold text-lg mb-2 group-hover:text-primary transition-colors">
-                        {guide.title}
-                      </h3>
-                      <p className="text-gray-400 text-sm leading-6">
-                        {guide.description}
-                      </p>
-                    </motion.div>
+                      <h3 className="mb-2 font-display text-xl font-semibold text-white">{item.title}</h3>
+                      <p className="text-sm leading-6 text-gray-400">{item.description}</p>
+                    </div>
                   </Link>
                 );
               })}
             </div>
-          </motion.div>
-        </div>
-      </section>
-
-      <section className="py-12 md:py-16 border-b border-[#2E384D]">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-10"
-          >
-            <h2 className="font-display text-2xl md:text-3xl font-bold text-white mb-2">
-              Ressources disponibles
-            </h2>
-            <p className="text-gray-500">Des entrées plus vivantes, alimentées par les vraies données du site</p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            {[
-              {
-                href: "/tutoriels",
-                title: `${totalGuideCount} guides`,
-                description: `${beginnerGuideCount} pour bien démarrer et ${featuredGuideCount} à prioriser.`,
-                icon: BookOpen,
-                accent: "from-primary to-blue-600",
-                hover: "group-hover:text-primary",
-              },
-              {
-                href: "/tutoriels#outils",
-                title: `${toolGuideCount} outils`,
-                description: "Des calculateurs et simulateurs qui font gagner du temps en jeu.",
-                icon: Wrench,
-                accent: "from-emerald-500 to-teal-600",
-                hover: "group-hover:text-emerald-400",
-              },
-              {
-                href: "/regles",
-                title: `${rulesGuideCount} règles`,
-                description: "Les rappels utiles pour éviter les erreurs de compte, de push ou de bash.",
-                icon: Scale,
-                accent: "from-amber-500 to-orange-600",
-                hover: "group-hover:text-amber-400",
-              },
-            ].map((item, index) => {
-              const Icon = item.icon;
-              return (
-                <Link key={item.href} href={item.href} data-testid={`link-resource-${index}`}>
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 }}
-                    className="group bg-[#1C2230] border border-[#2E384D] hover:border-primary/50 rounded-xl p-6 transition-all cursor-pointer hover:-translate-y-1"
-                  >
-                    <div className={`w-12 h-12 bg-gradient-to-br ${item.accent} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
-                      <Icon className="w-6 h-6 text-white" />
-                    </div>
-                    <h3 className={`font-display text-lg font-bold text-white mb-2 transition-colors ${item.hover}`}>
-                      {item.title}
-                    </h3>
-                    <p className="text-gray-500 text-sm">
-                      {item.description}
-                    </p>
-                  </motion.div>
-                </Link>
-              );
-            })}
           </div>
         </div>
       </section>
 
-      <section className="py-12 md:py-16 border-b border-[#2E384D]">
+      <section className="border-b border-white/8 py-14 md:py-16">
         <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="max-w-4xl mx-auto"
-          >
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-[#1C2230] border border-[#2E384D] rounded-xl p-6">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 bg-[#5865F2] rounded-xl flex items-center justify-center">
-                    <MessageSquare className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-white">Discord</h3>
-                    <p className="text-gray-500 text-sm">{discordMembers ?? "..."} membres</p>
-                  </div>
-                </div>
-                <p className="text-gray-400 text-sm mb-4">
-                  Rejoignez la communauté pour échanger, poser des questions et participer aux discussions.
-                </p>
-                <Button className="w-full bg-[#5865F2] hover:bg-[#4752C4]" asChild>
-                  <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer" data-testid="btn-discord-section">
-                    Rejoindre <ExternalLink className="w-4 h-4 ml-2" />
-                  </a>
-                </Button>
-              </div>
-
-              <div className="bg-[#1C2230] border border-[#2E384D] rounded-xl p-6">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center">
-                    <Youtube className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-white">YouTube</h3>
-                    <p className="text-gray-500 text-sm">{youtubeSubscribers ?? "..."} abonnés</p>
-                  </div>
-                </div>
-                <p className="text-gray-400 text-sm mb-4">
-                  Tutoriels vidéo et guides complets. La chaîne reste accessible en archive.
-                </p>
-                <Button variant="outline" className="w-full border-red-500/50 text-red-400 hover:bg-red-500/10" asChild>
-                  <a href="https://www.youtube.com/@7020Psykose" target="_blank" rel="noopener noreferrer" data-testid="btn-youtube-section">
-                    Voir la chaîne <ExternalLink className="w-4 h-4 ml-2" />
-                  </a>
-                </Button>
+          <div className="mx-auto max-w-5xl">
+            <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+              <div>
+                <p className="mb-2 text-sm uppercase tracking-[0.2em] text-gray-500">À lire maintenant</p>
+                <h2 className="font-display text-2xl font-bold text-white md:text-3xl">
+                  Les guides les plus consultés
+                </h2>
               </div>
             </div>
-          </motion.div>
+
+            <div className="grid gap-4 md:grid-cols-3">
+              {spotlightGuides.map((guide) => {
+                const Icon = guide.icon;
+                return (
+                  <Link key={guide.link} href={guide.link}>
+                    <div className="group h-full rounded-3xl border border-white/8 bg-white/[0.03] p-5 transition-colors hover:bg-white/[0.05]">
+                      <div className="mb-4 flex items-start justify-between gap-3">
+                        <div className={`rounded-2xl bg-gradient-to-br p-3 ${guide.color}`}>
+                          <Icon className="h-5 w-5 text-white" />
+                        </div>
+                        <span className="text-[10px] uppercase tracking-[0.2em] text-gray-500">
+                          {guide.categoryTitle}
+                        </span>
+                      </div>
+                      <h3 className="mb-2 text-lg font-semibold text-white">{guide.title}</h3>
+                      <p className="text-sm leading-6 text-gray-400">{guide.description}</p>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </section>
 
-      <section className="py-12 md:py-16 border-b border-[#2E384D]">
+      <section className="border-b border-white/8 py-14 md:py-16">
         <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="max-w-xl mx-auto text-center"
-          >
-            <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-primary/20 to-purple-500/20 rounded-2xl mb-5 border border-primary/30">
-              <Sparkles className="w-7 h-7 text-primary" />
+          <div className="mx-auto grid max-w-5xl gap-4 md:grid-cols-2">
+            <div className="rounded-3xl border border-white/8 bg-white/[0.03] p-6">
+              <div className="mb-4 flex items-center gap-4">
+                <div className="rounded-2xl bg-[#5865F2]/15 p-3 text-[#8ea1ff]">
+                  <MessageSquare className="h-6 w-6" />
+                </div>
+                <div>
+                  <h3 className="font-display text-xl font-semibold text-white">Discord</h3>
+                  <p className="text-sm text-gray-500">{discordMembers ?? "..."} membres</p>
+                </div>
+              </div>
+              <p className="mb-5 text-sm leading-6 text-gray-400">
+                Le meilleur point d&apos;entrée si tu veux poser une question, échanger rapidement ou suivre les annonces.
+              </p>
+              <Button className="w-full rounded-full bg-[#5865F2] hover:bg-[#4752C4]" asChild>
+                <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer" data-testid="btn-discord-section">
+                  Rejoindre le Discord <ExternalLink className="ml-2 h-4 w-4" />
+                </a>
+              </Button>
             </div>
-            
-            <h2 className="font-display text-xl md:text-2xl font-bold text-white mb-3">
-              Merci à la communauté
+
+            <div className="rounded-3xl border border-white/8 bg-white/[0.03] p-6">
+              <div className="mb-4 flex items-center gap-4">
+                <div className="rounded-2xl bg-red-500/12 p-3 text-red-400">
+                  <Youtube className="h-6 w-6" />
+                </div>
+                <div>
+                  <h3 className="font-display text-xl font-semibold text-white">YouTube</h3>
+                  <p className="text-sm text-gray-500">{youtubeSubscribers ?? "..."} abonnés</p>
+                </div>
+              </div>
+              <p className="mb-5 text-sm leading-6 text-gray-400">
+                Les vidéos restent accessibles en archive pour les joueurs qui préfèrent un format guidé.
+              </p>
+              <Button variant="outline" className="w-full rounded-full border-red-500/25 text-red-300 hover:bg-red-500/10" asChild>
+                <a href="https://www.youtube.com/@7020Psykose" target="_blank" rel="noopener noreferrer" data-testid="btn-youtube-section">
+                  Voir la chaîne <ExternalLink className="ml-2 h-4 w-4" />
+                </a>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-white/8 py-14 md:py-16">
+        <div className="container mx-auto px-4">
+          <div className="mx-auto max-w-3xl rounded-3xl border border-white/8 bg-white/[0.03] p-8 text-center">
+            <h2 className="font-display text-2xl font-bold text-white md:text-3xl">
+              Un retour à une interface plus calme
             </h2>
-            
-            <p className="text-gray-400 mb-6">
-              Votre soutien et vos visites nous motivent. Une suggestion ou une erreur à signaler ?
+            <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-gray-400 md:text-base">
+              L&apos;objectif est de remettre le contenu au centre. Si tu vois encore des zones trop denses,
+              tu peux me dire quelles pages doivent passer en priorité.
             </p>
-            
             <button
               onClick={() => window.dispatchEvent(new Event("openFeedbackModal"))}
-              className="inline-flex items-center gap-2 bg-primary/20 hover:bg-primary/30 text-primary px-5 py-2.5 rounded-xl font-medium transition-all border border-primary/30 cursor-pointer"
+              className="mt-6 inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/10 px-5 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary/16"
               data-testid="btn-feedback-home"
             >
-              <MessageSquare className="w-4 h-4" />
+              <MessageSquare className="h-4 w-4" />
               Donner mon feedback
             </button>
-            
             {totalVisits > 0 && (
-              <div className="mt-6 inline-flex items-center gap-2 text-gray-500 text-sm">
-                <Eye className="w-4 h-4" />
+              <div className="mt-5 inline-flex items-center gap-2 text-sm text-gray-500">
+                <Eye className="h-4 w-4" />
                 {totalVisits.toLocaleString()} visites
               </div>
             )}
-          </motion.div>
+          </div>
         </div>
       </section>
 
-      <section id="space-game" className="py-12 md:py-16">
+      <section id="space-game" className="py-14 md:py-16">
         <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-8"
-          >
-            <div className="inline-flex items-center gap-2 text-cyan-400 text-sm font-medium mb-2">
-              <Gamepad2 className="w-4 h-4" />
-              Mini-jeu
+          <div className="mx-auto max-w-3xl">
+            <div className="mb-6 text-center">
+              <div className="mb-2 inline-flex items-center gap-2 text-sm text-cyan-300">
+                <Gamepad2 className="h-4 w-4" />
+                Mini-jeu
+              </div>
+              <h2 className="font-display text-2xl font-bold text-white">
+                Une pause légère
+              </h2>
             </div>
-            <h2 className="font-display text-xl font-bold text-white">
-              Un petit jeu pour patienter
-            </h2>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="max-w-xl mx-auto"
-          >
-            <SpaceGame />
-          </motion.div>
+            <div className="rounded-3xl border border-white/8 bg-white/[0.03] p-4 md:p-6">
+              <SpaceGame />
+            </div>
+          </div>
         </div>
       </section>
     </Layout>

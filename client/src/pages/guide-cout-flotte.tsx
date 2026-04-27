@@ -104,6 +104,7 @@ const defenses: DefenseData[] = [
 export default function GuideCoutFlotte() {
   const [activeTab, setActiveTab] = useState<"fleet" | "defense">("fleet");
   const [quantities, setQuantities] = useState<Record<string, number>>({});
+  const [scrapPercentage, setScrapPercentage] = useState(70);
 
   const updateQuantity = (id: string, value: number) => {
     setQuantities(prev => ({ ...prev, [id]: Math.max(0, value) }));
@@ -123,6 +124,12 @@ export default function GuideCoutFlotte() {
   const fleetTotal = calculateTotal(ships);
   const defenseTotal = calculateTotal(defenses);
   const currentTotal = activeTab === "fleet" ? fleetTotal : defenseTotal;
+  const scrapTotal = {
+    metal: currentTotal.metal * (scrapPercentage / 100),
+    crystal: currentTotal.crystal * (scrapPercentage / 100),
+    deut: currentTotal.deut * (scrapPercentage / 100),
+    total: currentTotal.total * (scrapPercentage / 100),
+  };
 
   const resetAll = () => setQuantities({});
 
@@ -321,6 +328,58 @@ export default function GuideCoutFlotte() {
                       <div className="flex items-center justify-between p-3 bg-gradient-to-r from-primary/20 to-cyan-900/20 rounded-lg border border-primary/30">
                         <span className="text-primary font-medium">Total ressources</span>
                         <span className="text-white font-bold text-lg" data-testid="text-total-all">{formatNumber(currentTotal.total)}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 p-4 bg-[#151924] rounded-lg border border-[#2E384D]">
+                    <div className="flex items-start justify-between gap-4 mb-4">
+                      <div>
+                        <h3 className="text-sm font-medium text-white">Estimation ferrailleur</h3>
+                        <p className="text-xs text-gray-400 mt-1">
+                          Cet outil permet de simuler ce que le ferrailleur du jeu peut vous rendre selon le pourcentage choisi.
+                        </p>
+                      </div>
+                      <span className="text-lg font-bold text-orange-400" data-testid="text-scrap-percentage">
+                        {scrapPercentage}%
+                      </span>
+                    </div>
+
+                    <input
+                      type="range"
+                      min="0"
+                      max="100"
+                      step="1"
+                      value={scrapPercentage}
+                      onChange={(e) => setScrapPercentage(parseInt(e.target.value) || 0)}
+                      className="w-full accent-orange-500"
+                      data-testid="input-scrap-percentage"
+                    />
+
+                    <div className="mt-4 space-y-3">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-gray-300">Métal récupéré</span>
+                        <span className="text-white font-semibold" data-testid="text-scrap-metal">
+                          {formatNumber(scrapTotal.metal)}
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-gray-300">Cristal récupéré</span>
+                        <span className="text-white font-semibold" data-testid="text-scrap-crystal">
+                          {formatNumber(scrapTotal.crystal)}
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-gray-300">Deutérium récupéré</span>
+                        <span className="text-white font-semibold" data-testid="text-scrap-deut">
+                          {formatNumber(scrapTotal.deut)}
+                        </span>
+                      </div>
+                      <div className="pt-3 border-t border-[#2E384D] flex items-center justify-between">
+                        <span className="text-orange-400 font-medium">Total ferrailleur</span>
+                        <span className="text-white font-bold" data-testid="text-scrap-total">
+                          {formatNumber(scrapTotal.total)}
+                        </span>
                       </div>
                     </div>
                   </div>

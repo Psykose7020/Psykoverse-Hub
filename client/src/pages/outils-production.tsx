@@ -5,6 +5,7 @@ import {
   ChevronRight,
   Copy,
   Download,
+  ExternalLink,
   Factory,
   FolderUp,
   RefreshCw,
@@ -679,224 +680,65 @@ export default function OutilsProduction() {
               </p>
             </div>
 
-            <div className="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-8">
-              <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+            <div className="mb-8 rounded-2xl border border-amber-500/30 bg-gradient-to-br from-amber-500/10 via-orange-500/5 to-transparent p-6">
+              <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr] xl:items-center">
                 <div>
-                  <p className="text-white font-semibold">Interface de saisie</p>
-                  <p className="text-sm text-gray-400">
-                    Encode ici les données de base et de simulation. Les résultats détaillés sont sur une page dédiée.
+                  <p className="mb-2 text-sm font-semibold uppercase tracking-[0.18em] text-amber-300">
+                    Recommandation actuelle
                   </p>
-                  <p className="text-xs text-gray-500 mt-2">
-                    {hasUnsavedChanges ? "Configuration personnalisée sauvegardée en local." : "Configuration identique à la base du classeur."}
+                  <h2 className="mb-3 font-display text-2xl font-bold text-white">
+                    Pour la production, le plus solide aujourd&apos;hui reste l&apos;add-on OGame Tracker
+                  </h2>
+                  <p className="mb-4 max-w-3xl text-gray-300">
+                    Le simulateur Psykoverse reste disponible pour comparer rapidement des scénarios, mais si tu veux un suivi
+                    plus pratique et plus fiable au quotidien, OGame Tracker est actuellement la meilleure option.
                   </p>
+                  <p className="mb-5 text-sm text-gray-400">
+                    J&apos;explique comment l&apos;installer et bien s&apos;en servir dans cette vidéo YouTube.
+                  </p>
+                  <div className="flex flex-wrap gap-3">
+                    <Button asChild className="bg-gradient-to-r from-red-500 to-rose-600 text-white hover:from-red-600 hover:to-rose-700">
+                      <a href="https://www.youtube.com/watch?v=smHMpkM-UhQ" target="_blank" rel="noopener noreferrer">
+                        Voir la vidéo YouTube
+                        <ExternalLink className="ml-2 h-4 w-4" />
+                      </a>
+                    </Button>
+                    <Button asChild variant="outline" className="border-amber-500/40 text-amber-300 hover:bg-amber-500/10">
+                      <a href="https://chromewebstore.google.com/search/ogame%20tracker" target="_blank" rel="noopener noreferrer">
+                        Rechercher OGame Tracker
+                        <ExternalLink className="ml-2 h-4 w-4" />
+                      </a>
+                    </Button>
+                  </div>
                 </div>
-                <div className="flex flex-wrap gap-2">
-                  <Button onClick={copyBaseToSimulation} variant="outline" className="border-cyan-500/40 text-cyan-300 hover:bg-cyan-500/10">
-                    <Copy className="w-4 h-4 mr-2" />
-                    Copier Base → Simulation
-                  </Button>
-                  <Button onClick={copyCurrentPlanetToOtherScenario} variant="outline" className="border-indigo-500/40 text-indigo-300 hover:bg-indigo-500/10">
-                    <ArrowLeftRight className="w-4 h-4 mr-2" />
-                    Copier cette planète
-                  </Button>
-                  <Button onClick={exportJson} variant="outline" className="border-emerald-500/40 text-emerald-300 hover:bg-emerald-500/10">
-                    <Download className="w-4 h-4 mr-2" />
-                    Export JSON
-                  </Button>
-                  <Button onClick={exportHtml} variant="outline" className="border-sky-500/40 text-sky-300 hover:bg-sky-500/10">
-                    <Download className="w-4 h-4 mr-2" />
-                    Export HTML
-                  </Button>
-                  <label className="inline-flex">
-                    <input
-                      type="file"
-                      accept="application/json"
-                      className="hidden"
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file) void importJson(file);
-                        e.currentTarget.value = "";
-                      }}
+
+                <div className="overflow-hidden rounded-2xl border border-white/10 bg-black/30 shadow-2xl">
+                  <div className="aspect-video">
+                    <iframe
+                      className="h-full w-full"
+                      src="https://www.youtube.com/embed/smHMpkM-UhQ"
+                      title="Tutoriel OGame Tracker par Psykose"
+                      loading="lazy"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      referrerPolicy="strict-origin-when-cross-origin"
+                      allowFullScreen
                     />
-                    <span className="inline-flex items-center rounded-md border border-violet-500/40 px-4 py-2 text-sm font-medium text-violet-300 hover:bg-violet-500/10 cursor-pointer">
-                      <FolderUp className="w-4 h-4 mr-2" />
-                      Import JSON
-                    </span>
-                  </label>
-                  <Button onClick={resetDefaults} variant="outline" className="border-amber-500/40 text-amber-300 hover:bg-amber-500/10">
-                    <RefreshCw className="w-4 h-4 mr-2" />
-                    Réinitialiser
-                  </Button>
-                  <Button onClick={runCalculation} disabled={calculating} className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white">
-                    <Sparkles className="w-4 h-4 mr-2" />
-                    {calculating ? "Calcul..." : "Calculer"}
-                  </Button>
-                  <Button asChild className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white">
-                    <Link href="/outils/production/resultats">
-                      Voir les résultats
-                      <ChevronRight className="w-4 h-4 ml-2" />
-                    </Link>
-                  </Button>
+                  </div>
                 </div>
               </div>
             </div>
 
-            {error && (
-              <div className="mb-6 rounded-xl border border-red-500/30 bg-red-950/30 p-4 text-red-300">
-                {error}
-              </div>
-            )}
-
-            {statusMessage && !error && (
-              <div className="mb-6 rounded-xl border border-emerald-500/30 bg-emerald-950/20 p-4 text-emerald-300">
-                {statusMessage}
-              </div>
-            )}
-
-            <div className="space-y-8">
-              <div className="bg-[#1C2230] border border-[#2E384D] rounded-2xl p-6">
-                <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
-                  <div className="flex flex-wrap gap-2">
-                    <button
-                      className={`px-4 py-2 rounded-xl border transition-colors ${activeScenario === "base" ? "bg-white text-black border-white" : "border-[#2E384D] text-gray-300 hover:border-gray-500"}`}
-                      onClick={() => setActiveScenario("base")}
-                    >
-                      Base
-                    </button>
-                    <button
-                      className={`px-4 py-2 rounded-xl border transition-colors ${activeScenario === "simulation" ? "bg-white text-black border-white" : "border-[#2E384D] text-gray-300 hover:border-gray-500"}`}
-                      onClick={() => setActiveScenario("simulation")}
-                    >
-                      Simulation
-                    </button>
-                  </div>
-                  <div className="flex flex-col md:flex-row md:items-center gap-3">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm text-gray-400">Nombre de planètes</span>
-                      <select
-                        value={baseState.planetCount}
-                        onChange={(e) => updatePlanetCount(e.target.value)}
-                        className="bg-[#0B0E14] border border-[#2E384D] rounded-lg px-3 py-2 text-white"
-                      >
-                        {Array.from({ length: MAX_PRODUCTION_SIMULATOR_PLANETS }, (_, index) => index + 1).map((count) => (
-                          <option key={count} value={count}>
-                            {count}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <ArrowLeftRight className="w-4 h-4 text-gray-500" />
-                      <span className="text-sm text-gray-400">Planète active</span>
-                      <select
-                        value={selectedPlanet}
-                        onChange={(e) => setSelectedPlanet(Number(e.target.value))}
-                        className="bg-[#0B0E14] border border-[#2E384D] rounded-lg px-3 py-2 text-white"
-                      >
-                        {activePlanetNames.map((name, index) => (
-                          <option key={`${name}-${index}`} value={index}>
-                            {index + 1}. {name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {globalGroups.map((group) => (
-                    <div key={group} className="rounded-xl border border-[#2E384D] bg-[#151924] p-4">
-                      <h3 className="text-white font-semibold mb-4">{group}</h3>
-                      <div className="space-y-3">
-                        {config.globalFields.filter((field) => field.group === group).map((field) => (
-                          <FieldEditor
-                            key={field.id}
-                            field={field}
-                            value={currentState.globals[field.id]}
-                            onChange={(value) => updateGlobalField(field, value)}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="bg-[#1C2230] border border-[#2E384D] rounded-2xl p-6">
-                <div className="flex items-center justify-between gap-4 mb-6">
-                  <div>
-                    <h2 className="font-display text-2xl text-white font-bold">
-                      {planetLabel(planet, selectedPlanet)}
-                    </h2>
-                    <p className="text-gray-400 text-sm">
-                      Édition de la planète {selectedPlanet + 1} dans le scénario {activeScenario === "base" ? "de base" : "simulé"}.
-                    </p>
-                    {planetNameField && (
-                      <div className="mt-4 max-w-md">
-                        <FieldEditor
-                          field={planetNameField}
-                          value={planet.values[planetNameField.id]}
-                          onChange={(value) => updatePlanetField(planetNameField, value)}
-                        />
-                      </div>
-                    )}
-                  </div>
-                  <div className="text-right text-sm text-gray-500">
-                    <div>Coordonnées</div>
-                    <div className="text-white">{String(planet.values.coordinates || "-")}</div>
-                  </div>
-                </div>
-
-                <div className="space-y-6">
-                  {fieldGroups.map((group) => {
-                    const selectedRace = String(planet.values.race || "");
-                    const plainFields = config.planetFields.filter((field) =>
-                      field.group === group
-                      && field.id !== "planetName"
-                      && isFieldVisibleForRace(field, selectedRace),
-                    );
-                    const statusFields = config.planetStatusFields.filter((field) => field.group === group);
-                    if (!plainFields.length && !statusFields.length) return null;
-
-                    const isBuildingCardGroup = group === "Mines & bâtiments" || group === "Bâtiments FDV" || group === "Bâtiments boost tech FDV";
-
-                    return (
-                      <div key={group} className="rounded-xl border border-[#2E384D] bg-[#151924] p-4">
-                        <h3 className="text-white font-semibold mb-4">{group}</h3>
-                        {!!plainFields.length && (
-                          isBuildingCardGroup ? (
-                            <MinesBuildingGrid
-                              fields={plainFields}
-                              values={planet.values}
-                              onChange={(field, value) => updatePlanetField(field, value)}
-                            />
-                          ) : (
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
-                              {plainFields.map((field) => (
-                                <FieldEditor
-                                  key={field.id}
-                                  field={field}
-                                  value={planet.values[field.id]}
-                                  onChange={(value) => updatePlanetField(field, value)}
-                                />
-                              ))}
-                            </div>
-                          )
-                        )}
-                        {!!statusFields.length && (
-                          <TechnologyGrid
-                            currentState={currentState}
-                            selectedPlanet={selectedPlanet}
-                            technologyFieldsBySlot={technologyFieldsBySlot}
-                            onSelectTechnology={selectTechnologyForSlot}
-                            onUpdateLevel={(field, value) => updateStatusField(field, "level", value)}
-                          />
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
+            <div className="mb-8 rounded-2xl border border-white/10 bg-white/[0.03] p-6">
+              <p className="mb-2 text-sm font-semibold uppercase tracking-[0.18em] text-gray-300">
+                Outil en préparation
+              </p>
+              <h2 className="mb-3 font-display text-2xl font-bold text-white">
+                Le simulateur natif Psykoverse est temporairement masqué
+              </h2>
+              <p className="max-w-3xl text-gray-400">
+                Cette partie du site sera retravaillée plus tard. En attendant, la recommandation affichée plus haut reste
+                l&apos;option à suivre pour les visiteurs.
+              </p>
             </div>
 
             <RelatedGuides currentGuide="production" />
