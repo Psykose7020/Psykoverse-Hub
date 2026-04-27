@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
-import { Lock, Users, Eye, Calendar, TrendingUp, ExternalLink, LogOut, BarChart3, Globe, MessageCircle, Mail, Archive, CheckCircle, Clock, ChevronRight, X, Edit, BookOpen, Trash2, Rocket, Shield, Download, Image as ImageIcon } from "lucide-react";
+import { Lock, Users, Eye, Calendar, TrendingUp, LogOut, BarChart3, Globe, MessageCircle, Mail, Archive, CheckCircle, Clock, ChevronRight, X, Edit, BookOpen, Trash2, Rocket, Shield, Download, Image as ImageIcon } from "lucide-react";
 import { AdminGuidesManager } from "../components/AdminGuidesManager";
 import { AdminImageLibraryManager } from "../components/AdminImageLibraryManager";
 
@@ -408,16 +408,6 @@ export default function Admin() {
           
           <div className="flex gap-3">
             <EditModeButton />
-            <a
-              href="https://replit.com/@7020Psykose/psykoverse"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-[#F26207] hover:bg-[#E55100] text-white px-4 py-2 rounded-lg transition-colors"
-              data-testid="link-replit-edit"
-            >
-              <ExternalLink className="w-4 h-4" />
-              Modifier sur Replit
-            </a>
             <button
               onClick={handleLogout}
               className="flex items-center gap-2 bg-[#1E2A3A] hover:bg-[#2A3A4A] text-gray-300 px-4 py-2 rounded-lg transition-colors"
