@@ -36,6 +36,9 @@ const fadeInUp = {
   visible: { opacity: 1, y: 0 },
 };
 
+const heroActionClass =
+  "rounded-full border-white/14 bg-black/20 px-6 text-white shadow-none backdrop-blur-sm transition-all hover:border-primary hover:bg-primary hover:text-black hover:shadow-[0_10px_30px_rgba(82,199,255,0.22)]";
+
 export default function Home() {
   const youtubeSubscribers = useYoutubeStats();
   const discordMembers = useDiscordStats();
@@ -112,13 +115,13 @@ export default function Home() {
                 </div>
 
                 <div className="mt-8 flex flex-wrap justify-center gap-3">
-                  <Button size="lg" className="rounded-full bg-primary px-6 text-black shadow-[0_10px_30px_rgba(82,199,255,0.22)] hover:bg-primary/90" asChild>
+                  <Button size="lg" variant="outline" className={heroActionClass} asChild>
                     <Link href="/tutoriels" data-testid="btn-tutorials-hero">
                       <BookOpen className="mr-2 h-5 w-5" />
                       Explorer les tutoriels
                     </Link>
                   </Button>
-                  <Button size="lg" variant="outline" className="rounded-full border-white/14 bg-black/20 px-6 text-white backdrop-blur-sm hover:bg-white/10" asChild>
+                  <Button size="lg" variant="outline" className={heroActionClass} asChild>
                     <a href="https://discord.gg/3PWk4HmfNn" target="_blank" rel="noopener noreferrer" data-testid="btn-discord-hero">
                       <MessageSquare className="mr-2 h-5 w-5" />
                       Rejoindre le Discord
@@ -126,15 +129,16 @@ export default function Home() {
                   </Button>
                 </div>
 
-                <div className="mt-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+                <div className="mt-8 flex flex-wrap justify-center gap-x-5 gap-y-2 text-sm text-gray-400">
                   {[
                     `${totalGuideCount} guides`,
                     `${toolGuideCount} outils`,
                     `${featuredGuideCount} recommandations`,
                     totalVisits > 0 ? `${totalVisits.toLocaleString()} visites` : `${beginnerGuideCount} guides débutant`,
-                  ].map((item) => (
-                    <div key={item} className="rounded-2xl border border-white/10 bg-black/25 px-4 py-3 text-center text-sm text-gray-200 backdrop-blur-sm">
-                      {item}
+                  ].map((item, index) => (
+                    <div key={item} className="flex items-center gap-2">
+                      {index > 0 && <span className="hidden h-1 w-1 rounded-full bg-white/20 sm:block" aria-hidden="true" />}
+                      <span className="text-gray-300">{item}</span>
                     </div>
                   ))}
                 </div>
